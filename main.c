@@ -1,5 +1,6 @@
+#include "rt.h"
 #include <gtk/gtk.h>
-
+/*  
 static void	put_pixel(GdkPixbuf *pixbuf, int x, int y, guchar red, guchar green, guchar blue, guchar alpha)
 {
 	int width, height, rowstride, n_channels;
@@ -26,45 +27,12 @@ static void	put_pixel(GdkPixbuf *pixbuf, int x, int y, guchar red, guchar green,
 	p[1] = green;
 	p[2] = blue;
 	p[3] = alpha;
-}
+}*/
 
 int			main(int argc, char **argv)
 {
-	GtkBuilder		*builder;
-	GtkWidget		*window;
-	GtkWidget		*renderer;
-	GdkPixbuf		*pixbuf;
-
-	gtk_init(&argc, &argv);
-
-	builder = gtk_builder_new();
-	gtk_builder_add_from_file(builder, "rt_glade.glade", NULL);
-
-	window = GTK_WIDGET(gtk_builder_get_object(builder, "main_window"));
-	gtk_builder_connect_signals(builder, NULL);
-
-	renderer = GTK_WIDGET(gtk_builder_get_object(builder, "img_render"));
-	pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 1, 8, 250, 250);
-
-	int x;
-	int y;
-	x = 0;
-	while (x < 250)
-	{
-		y = 0;
-		while (y < 250)
-		{
-			put_pixel(pixbuf, x, y, (guchar)255, (guchar)1, (guchar)1, (guchar)255);
-			++y;
-		}
-		++x;
-	}
-	gtk_image_set_from_pixbuf(GTK_IMAGE(renderer), pixbuf);
-
-	g_object_unref(builder);
-
-	gtk_widget_show(window);
-	gtk_main();
+	opencl_init();
+	interface_init(argc, argv);
 
 	return (0);
 }

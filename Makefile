@@ -1,6 +1,8 @@
 NAME = rt
 
-SRCS = main.c
+SRCS = main.c \
+	   scene_manager.c \
+	   interface.c
 
 OBJS = $(SRCS:.c=.o)
 
