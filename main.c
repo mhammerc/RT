@@ -44,8 +44,21 @@ int			main(int argc, char **argv)
 	gtk_builder_connect_signals(builder, NULL);
 
 	renderer = GTK_WIDGET(gtk_builder_get_object(builder, "img_render"));
-	pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 1, 8, 200, 200);
-	put_pixel(pixbuf, 20, 20, 255, 0, 0, 1);
+	pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 1, 8, 250, 250);
+
+	int x;
+	int y;
+	x = 0;
+	while (x < 250)
+	{
+		y = 0;
+		while (y < 250)
+		{
+			put_pixel(pixbuf, x, y, (guchar)255, (guchar)1, (guchar)1, (guchar)255);
+			++y;
+		}
+		++x;
+	}
 	gtk_image_set_from_pixbuf(GTK_IMAGE(renderer), pixbuf);
 
 	g_object_unref(builder);
