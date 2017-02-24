@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/02/24 12:11:24 by racousin         ###   ########.fr       */
+/*   Updated: 2017/02/24 14:00:36 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,8 @@ typedef struct s_ray	t_ray;
 
 struct					s_cam
 {
-	float	origine;
-	float	dir;
+	FLOAT3	origine;
+	FLOAT3	dir;
 };
 typedef struct s_cam	t_cam;
 
