@@ -15,24 +15,28 @@ GTK_CLIBS = $(shell pkg-config --libs gtk+-3.0)
 
 CC = gcc
 
-CFLAGS = -Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra -Ilibs/libft
 CFLAGS += $(GTK_CFLAGS)
 
-CLIBS = -framework OpenCL
+CLIBS = -framework OpenCL -Llibs/libft -lft
 CLIBS += $(GTK_CLIBS)
 
 all: $(NAME)
 
 $(NAME): $(OBJS)
+	make -C libs/libft
 	gcc -o $(NAME) $(CLIBS) $(OBJS)
 	-mkdir resources
 	cp $(RESOURCES) resources
 
 clean:
 	rm -rf $(OBJS)
+	make -C libs/libft clean
 
-fclean: clean
+fclean:
+	rm -rf $(OBJS)
 	rm -rf $(NAME)
-	-rm -rf resources
+	rm -rf resources
+	make -C libs/libft fclean
 
 re: fclean all
