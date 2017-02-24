@@ -32,6 +32,6 @@ clean:
 
 fclean: clean
 	rm -rf $(NAME)
-	-rmdir resources
+	-rm -rf resources
 
 re: fclean all
