@@ -30,8 +30,8 @@ int				*opencl_compute_image()
 	cl_kernel			kernel;
 
 	manager = opencl_get();
-	max_x = 250;
-	max_y = 250;
+	max_x = 800;
+	max_y = 600;
 	error = CL_SUCCESS;
 	pixels = (int*)malloc(sizeof(int) * max_x * max_y);
 	bzero(pixels, sizeof(int) * max_x * max_y);

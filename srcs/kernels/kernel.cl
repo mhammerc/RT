@@ -1,5 +1,20 @@
 #include <env.h>
+/*
+int		compute_shaded_color(t_app *app, int color, double shade)
+{
+	int		shaded_color;
+	double	l;
 
+	l = app->config.ambiant_light;
+	shaded_color = (int)((double)(color & 0x0000FF)
+						 			* (l + (1 - l) * shade)) & 0x0000FF;
+	shaded_color += (int)((double)(color & 0x00FF00)
+						  			* (l + (1 - l) * shade)) & 0x00FF00;
+	shaded_color += (int)((double)(color & 0xFF0000)
+						  			* (l + (1 - l) * shade)) & 0xFF0000;
+	return (shaded_color);
+}
+*/
 int	ft_solve(float a, float b, float c, float *t)
 {
 	float	delta;
@@ -29,9 +44,9 @@ __kernel void compute_color(__global int* pixels)
 
 //ce qu il faudra passer en parametre
 	t_scene	scene;
-	scene.s_x = 250;
-	scene.s_y = 250;
-	scene.nb_ray = 250 * 250;		
+	scene.s_x = 800;
+	scene.s_y = 600;
+	scene.nb_ray = 800 * 600;		
 
 	t_cam	cam;
 	cam.origine.xyz=0;
@@ -88,13 +103,11 @@ __kernel void compute_color(__global int* pixels)
 					normal = normal / length(normal);
 					L = spot.origine -  ray.hit;
 					L = L / length(L);
-					//H = ( L - (ray.dir / length(ray.dir))) / 1.42;
+					H = 0.72f * ( L - (ray.dir / length(ray.dir)));
 					cache = 1;
-					pixels[pos] = 0xffff0000 + 150 * (cache * dot(normal, L)); //+ dot(normal, H)); 
+					pixels[pos] = 0xff000000 + ((int)(150.f * cache * dot(normal, L) + dot(normal, H)) & 0xff); 
 				}
 				else
 					pixels[pos] = 0xffff0000; 
 		}
-		else
-					pixels[pos] = 0xff000000; 
 }
