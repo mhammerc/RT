@@ -5,7 +5,8 @@ SRCS = srcs/main.c \
 	   srcs/interface.c
 
 RESOURCES = srcs/kernels/kernel.cl \
-			srcs/interface/rt_glade.glade
+			srcs/interface/rt_glade.glade \
+			srcs/env.h
 
 OBJS = $(SRCS:.c=.o)
 

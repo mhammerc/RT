@@ -95,7 +95,7 @@ void			opencl_init()
 ** Print kernel's compilations errors
 */
 	if ((error = clBuildProgram(manager->program, manager->devices_count,
-					manager->device_ids, "-I.", NULL, NULL))
+					manager->device_ids, "-Iresources", NULL, NULL))
 			== CL_BUILD_PROGRAM_FAILURE)
 	{
 		size_t	log_size;
