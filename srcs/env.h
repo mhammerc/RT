@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/02/24 11:35:31 by racousin         ###   ########.fr       */
+/*   Updated: 2017/02/24 12:11:24 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,5 +50,16 @@ struct					s_spot
 	FLOAT3	origine;
 };
 typedef struct s_spot	t_spot;
+
+struct					s_scene
+{
+	t_cam	cam;
+	int		s_x;
+	int		s_y;
+	int		nb_ray;
+	int		nb_spot;
+	int		nb_obj;
+};
+typedef struct s_scene	t_scene;
 
 #endif
