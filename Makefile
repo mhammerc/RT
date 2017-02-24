@@ -1,8 +1,11 @@
 NAME = rt
 
-SRCS = main.c \
-	   scene_manager.c \
-	   interface.c
+SRCS = srcs/main.c \
+	   srcs/scene_manager.c \
+	   srcs/interface.c
+
+RESOURCES = srcs/kernels/kernel.cl \
+			srcs/interface/rt_glade.glade
 
 OBJS = $(SRCS:.c=.o)
 
@@ -21,11 +24,14 @@ all: $(NAME)
 
 $(NAME): $(OBJS)
 	gcc -o $(NAME) $(CLIBS) $(OBJS)
+	-mkdir resources
+	cp $(RESOURCES) resources
 
 clean:
-	rm -rf *.o
+	rm -rf $(OBJS)
 
 fclean: clean
 	rm -rf $(NAME)
+	-rmdir resources
 
 re: fclean all

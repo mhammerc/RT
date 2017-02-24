@@ -47,7 +47,7 @@ void			interface_init(int argc, char **argv)
 	gtk_init(&argc, &argv);
 
 	interface->builder = gtk_builder_new();
-	gtk_builder_add_from_file(interface->builder, "rt_glade.glade", NULL);
+	gtk_builder_add_from_file(interface->builder, "resources/rt_glade.glade", NULL);
 
 	interface->window = GTK_WIDGET(gtk_builder_get_object(interface->builder, "main_window"));
 	gtk_builder_connect_signals(interface->builder, NULL);
