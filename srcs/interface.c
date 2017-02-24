@@ -22,7 +22,7 @@ void			interface_print_scene(int *pixels)
 
 	interface = interface_get();
 	image = gdk_pixbuf_get_pixels (interface->pixbuf);
-	ft_memcpy(image, pixels, sizeof(int) * 250 * 250);
+	ft_memcpy(image, pixels, sizeof(int) * 800 * 600);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(interface->image), interface->pixbuf);
 }
 
@@ -40,7 +40,7 @@ void			interface_init(int argc, char **argv)
 	gtk_builder_connect_signals(interface->builder, NULL);
 	interface->image = GTK_WIDGET(gtk_builder_get_object(interface->builder,
 				"img_render"));
-	interface->pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 1, 8, 250, 250);
+	interface->pixbuf = gdk_pixbuf_new(GDK_COLORSPACE_RGB, 1, 8, 800, 600);
 	opencl_compute_image();
 	gtk_widget_show(interface->window);
 	gtk_main();
