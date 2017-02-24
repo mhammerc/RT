@@ -23,11 +23,14 @@ CLIBS += $(GTK_CLIBS)
 
 all: $(NAME)
 
-$(NAME): $(OBJS)
+$(NAME): copy_resources $(OBJS)
 	make -C libs/libft
 	gcc -o $(NAME) $(CLIBS) $(OBJS)
+
+copy_resources:
 	-mkdir resources
 	cp $(RESOURCES) resources
+
 
 clean:
 	rm -rf $(OBJS)

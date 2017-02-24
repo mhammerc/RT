@@ -15,33 +15,37 @@
 
 # ifdef __APPLE__
 #  define FLOAT3 cl_float3
+#  define FLOAT cl_float
+#  define INT cl_int
 # else
 #  define FLOAT3 float3
+#  define FLOAT float
+#  define INT int
 # endif
 
 struct					s_ray
 {
 	FLOAT3	origine;
 	FLOAT3	dir;
-	float	t;
+	FLOAT	t;
 	FLOAT3	hit;
 };
 typedef struct s_ray	t_ray;
 
 struct					s_cam
 {
-	float	origine;
-	float	dir;
+	FLOAT	origine;
+	FLOAT	dir;
 };
 typedef struct s_cam	t_cam;
 
 struct					s_obj
 {
 	FLOAT3	origine;
-	int		type;
-	float	size;
+	INT		type;
+	FLOAT	size;
 	FLOAT3	dir;
-	float	col;
+	FLOAT	col;
 };
 typedef struct s_obj	t_obj;
 
@@ -54,11 +58,11 @@ typedef struct s_spot	t_spot;
 struct					s_scene
 {
 	t_cam	cam;
-	int		s_x;
-	int		s_y;
-	int		nb_ray;
-	int		nb_spot;
-	int		nb_obj;
+	INT		s_x;
+	INT		s_y;
+	INT		nb_ray;
+	INT		nb_spot;
+	INT		nb_obj;
 };
 typedef struct s_scene	t_scene;
 
