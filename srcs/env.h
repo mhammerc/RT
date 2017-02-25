@@ -6,12 +6,13 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/02/25 23:20:44 by vfour            ###   ########.fr       */
+/*   Updated: 2017/02/25 23:40:11 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
+# include <math.h>
 
 # ifdef __APPLE__
 #  define FLOAT3 cl_float3
@@ -23,58 +24,54 @@
 #  define INT int
 # endif
 
-typedef struct			s_color
-{
-	float				r;
-	float				g;
-	float				b;
-}						t_color;
+# define DEG_TO_RAD M_PI / 180.0
+# define RAD_TO_DEG 180.0 / M_PI
 
-struct					s_ray
+struct						s_ray
 {
-	FLOAT3				origine;
-	FLOAT3				dir;
-	FLOAT				t;
-	FLOAT3				hit;
+	FLOAT3					origine;
+	FLOAT3					dir;
+	FLOAT					t;
+	FLOAT3					hit;
 };
-typedef struct s_ray	t_ray;
+typedef struct s_ray		t_ray;
 
-struct					s_cam
+struct						s_cam
 {
-	FLOAT3				origine;
-	FLOAT3				dir;
-	FLOAT3				up;
-	FLOAT3				vx;
-	FLOAT3				vy;
-	FLOAT3				top_left;
-	FLOAT				fov;
-	FLOAT				ratio;
+	FLOAT3					origine;
+	FLOAT3					dir;
+	FLOAT3					up;
+	FLOAT3					vx;
+	FLOAT3					vy;
+	FLOAT3					top_left;
+	FLOAT					fov;
+	FLOAT					ratio;
 };
-typedef struct s_cam	t_cam;
+typedef struct s_cam		t_cam;
 
-struct					s_obj
+struct						s_obj
 {
-	FLOAT3				origine;
-	FLOAT3				dir;
-	FLOAT				PARAM;
-	INT					type;
+	FLOAT3					origine;
+	FLOAT3					dir;
+	FLOAT					PARAM;
+	INT						type;
 	//the following should live in a material struct
-	FLOAT3				color;
-	float				kspec;
-	float				kdiff;
-	float				kp;
+	FLOAT3					color;
+	float					kspec;
+	float					kdiff;
+	float					kp;
 };
-typedef struct s_obj	t_obj;
+typedef struct s_obj		t_obj;
 
-struct					s_spot
+struct						s_spot
 {
-	FLOAT3				origine;
-	FLOAT3				color;
-	FLOAT				intensity;
+	FLOAT3					origine;
+	FLOAT3					color;
+	FLOAT					intensity;
 };
-typedef struct s_spot	t_spot;
+typedef struct s_spot		t_spot;
 
-struct					s_scene
+struct						s_scene
 {
 	t_obj	*obj;
 	INT		nb_obj;
@@ -85,9 +82,9 @@ struct					s_scene
 	INT		s_x;
 	INT		s_y;
 };
-typedef struct s_scene	t_scene;
+typedef struct s_scene		t_scene;
 
-struct					s_cl_scene
+struct						s_cl_scene
 {
 	INT		nb_obj;
 	INT		nb_spot;
@@ -97,5 +94,18 @@ struct					s_cl_scene
 	INT		s_y;
 };
 typedef struct s_cl_scene	t_cl_scene;
+
+/*
+** Vectors
+*/
+FLOAT						vec3_norm(FLOAT3 v);
+void						vec3_normalize(FLOAT3 *v);
+FLOAT3						vec3_get_normalized(FLOAT3 v);
+FLOAT						vec3_norm2(FLOAT3 v);
+FLOAT3						vec3_add(FLOAT3 a, FLOAT3 b);
+FLOAT3						vec3_cross(FLOAT3 u, FLOAT3 v);
+FLOAT						vec3_dot(FLOAT3 a, FLOAT3 b);
+FLOAT3						vec3_mult(FLOAT m, FLOAT3 x);
+FLOAT3						vec3_sub(FLOAT3 a, FLOAT3 b);
 
 #endif
