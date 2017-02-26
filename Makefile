@@ -1,11 +1,14 @@
 NAME = rt
 
-SRCS = srcs/main.c \
-	   srcs/scene_manager.c \
+SRCS = srcs/main.c			\
+	   srcs/scene_manager.c	\
+	   srcs/camera.c		\
+	   srcs/vec3_norm.c		\
+	   srcs/vec3_op.c		\
 	   srcs/interface.c
 
-RESOURCES = srcs/kernels/kernel.cl \
-			srcs/interface/rt_glade.glade \
+RESOURCES = srcs/kernels/kernel.cl			\
+			srcs/interface/rt_glade.glade	\
 			srcs/env.h
 
 OBJS = $(SRCS:.c=.o)
