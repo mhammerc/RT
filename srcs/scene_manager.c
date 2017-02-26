@@ -1,4 +1,5 @@
 #include "rt.h"
+#include "env.h"
 
 // DEBUG
 #include <stdio.h>
@@ -24,31 +25,97 @@ int				*opencl_compute_image()
 {
 	t_scene_manager		*manager;
 	int					*pixels;
-	size_t				max_x;
-	size_t				max_y;
 	cl_int				error;
 	cl_kernel			kernel;
 
+	//TODO: read these from interface
+	t_cl_scene			*scene;
+	t_obj				*obj;
+	t_spot				*spot;
+
+	scene = (t_cl_scene*)malloc(sizeof(t_cl_scene));
+	scene->cam.w = 800;
+	scene->cam.h = 600;
+	scene->nb_obj = 1;
+	scene->nb_spot = 1;
+	scene->ambiant.x = 0.1;
+	scene->ambiant.y = 0.1;
+	scene->ambiant.z = 0.1;
+	scene->cam.pos.x = 0;
+	scene->cam.pos.y = 0;
+	scene->cam.pos.z = -10;
+	scene->cam.dir.x = 0;
+	scene->cam.dir.y = 0;
+	scene->cam.dir.z = 0;
+	scene->cam.up.x = 0;
+	scene->cam.up.y = 1;
+	scene->cam.up.z = 0;
+	scene->cam.fov = 45;
+	scene->cam.ratio = 1;
+	scene->cam = camera_set(scene->cam);
+
+	obj = (t_obj*)malloc(sizeof(t_obj));
+	obj[0].pos.x = 0;
+	obj[0].pos.y = 0;
+	obj[0].pos.z = 0;
+	obj[0].param = 1;
+	obj[0].color.x = 0.42;
+	obj[0].color.y = 0.42;
+	obj[0].color.z = 0;
+	obj[0].kspec = 1;
+	obj[0].kdiff = 1;
+	obj[0].kp = 256;
+
+	spot = (t_spot*)malloc(sizeof(t_spot));
+	spot[0].pos.x = 1;
+	spot[0].pos.y = 4;
+	spot[0].pos.z = -4;
+	spot[0].color.x = 1;
+	spot[0].color.y = 1;
+	spot[0].color.z = 1;
+	spot[0].intensity = 1;
+	//--
+
+	pixels = (int*)malloc(sizeof(int) * scene->cam.w * scene->cam.h);
+	bzero(pixels, sizeof(int) * scene->cam.w * scene->cam.h);
+
 	manager = opencl_get();
-	max_x = 800;
-	max_y = 600;
 	error = CL_SUCCESS;
-	pixels = (int*)malloc(sizeof(int) * max_x * max_y);
-	bzero(pixels, sizeof(int) * max_x * max_y);
 
 	cl_mem	pixel_buffer = clCreateBuffer(manager->context,
 			CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-			sizeof(int) * max_x * max_y,
+			sizeof(int) * scene->cam.w * scene->cam.h,
 			pixels, &error);
+	opencl_check_error(error);
+
+	cl_mem	scene_buffer = clCreateBuffer(manager->context,
+			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+			sizeof(t_cl_scene),
+			scene, &error);
+	opencl_check_error(error);
+
+	cl_mem	obj_buffer = clCreateBuffer(manager->context,
+			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+			sizeof(t_obj) * scene->nb_obj,
+			obj, &error);
+	opencl_check_error(error);
+
+	cl_mem	spot_buffer = clCreateBuffer(manager->context,
+			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
+			sizeof(t_spot) * scene->nb_spot,
+			spot, &error);
 	opencl_check_error(error);
 
 	kernel = clCreateKernel(manager->program, "compute_color", NULL);
 	clSetKernelArg(kernel, 0, sizeof(cl_mem), (void*)&pixel_buffer);
-	const size_t global_work_size[] = { max_x * max_y, 0, 0 };
+	clSetKernelArg(kernel, 1, sizeof(cl_mem), (void*)&scene_buffer);
+	clSetKernelArg(kernel, 2, sizeof(cl_mem), (void*)&obj_buffer);
+	clSetKernelArg(kernel, 3, sizeof(cl_mem), (void*)&spot_buffer);
+	const size_t global_work_size[] = { scene->cam.w * scene->cam.h, 0, 0 };
 	opencl_check_error(clEnqueueNDRangeKernel(manager->queue, kernel, 1, NULL,
 				global_work_size, NULL, 0, NULL, NULL));
 	opencl_check_error(clEnqueueReadBuffer(manager->queue, pixel_buffer,
-				CL_TRUE, 0, sizeof(int) * max_x * max_y, pixels, 0, NULL, NULL));
+				CL_TRUE, 0, sizeof(int) * scene->cam.w * scene->cam.h, pixels, 0, NULL, NULL));
 	interface_print_scene(pixels);
 	return (pixels);
 }

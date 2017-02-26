@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/02/26 01:07:54 by vfour            ###   ########.fr       */
+/*   Updated: 2017/02/26 17:13:43 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,18 @@
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
 # define BIG_DIST 1e42
+# define INITIAL_RAY 0
+# define OCCLUSION_RAY 1
+# define SPHERE 0
 
 struct						s_ray
 {
 	FLOAT3					pos;
 	FLOAT3					dir;
+	FLOAT3					n;
 	FLOAT					t;
+	INT						type;
+	INT						collided;
 	FLOAT3					hit;
 	FLOAT3					color;
 };
@@ -58,6 +64,7 @@ struct						s_obj
 	FLOAT3					dir;
 	FLOAT					param;
 	INT						type;
+	INT						id;
 	//the following should live in a material struct
 	FLOAT3					color;
 	FLOAT					kspec;
