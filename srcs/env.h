@@ -6,13 +6,12 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/02/26 00:55:08 by vfour            ###   ########.fr       */
+/*   Updated: 2017/02/26 01:07:54 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef ENV_H
 # define ENV_H
-# include <math.h>
 
 # ifdef __APPLE__
 #  define FLOAT3 cl_float3
