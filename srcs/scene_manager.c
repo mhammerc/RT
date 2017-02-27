@@ -1,5 +1,6 @@
 #include "rt.h"
 #include "env.h"
+#include <math.h>
 
 // DEBUG
 #include <stdio.h>
@@ -21,12 +22,59 @@ t_scene_manager	*opencl_get()
 	return (&manager);
 }
 
+float			light_find_max(int w, int h, FLOAT3 *light)
+{
+	float		max;
+	int			i;
+	int			len;
+	
+	len = w * h;
+	max = 0.;
+	i = -1;
+	while (++i < len)
+	{
+		max = fmax(max, light[i].x);
+		max = fmax(max, light[i].y);
+		max = fmax(max, light[i].z);
+	}
+	return (max);
+}
+
+int				colorcomp_to_rgb(int r, int g, int b)
+{
+	r = r < 0 ? 0 : (r & 0xff);
+	g = g < 0 ? 0 : (g & 0xff);
+	b = b < 0 ? 0 : (b & 0xff);
+	return ((r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
+}
+
+void			light_to_pixel(FLOAT3 *light, int *px, int w, int h)
+{
+	float		invmax;
+	int			i;
+	int			len;
+
+	len = w * h;
+	invmax = 255. / light_find_max(w, h, light);
+	i = -1;
+	while (++i < len)
+	{
+		px[i] = colorcomp_to_rgb(light[i].x * invmax,
+									light[i].y * invmax,
+									light[i].z * invmax);
+	}
+	return ;
+}
+
 int				*opencl_compute_image()
 {
 	t_scene_manager		*manager;
 	int					*pixels;
 	cl_int				error;
 	cl_kernel			kernel;
+
+	//TODO: move light reduction into the kernel maybe
+	FLOAT3				*light;
 
 	//TODO: read these from interface
 	t_cl_scene			*scene;
@@ -79,13 +127,16 @@ int				*opencl_compute_image()
 	pixels = (int*)malloc(sizeof(int) * scene->cam.w * scene->cam.h);
 	bzero(pixels, sizeof(int) * scene->cam.w * scene->cam.h);
 
+	light = (FLOAT3*)malloc(sizeof(FLOAT3) * scene->cam.w * scene->cam.h);
+	bzero(light, sizeof(FLOAT3) * scene->cam.w * scene->cam.h);
+
 	manager = opencl_get();
 	error = CL_SUCCESS;
 
-	cl_mem	pixel_buffer = clCreateBuffer(manager->context,
+	cl_mem	light_buffer = clCreateBuffer(manager->context,
 			CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
-			sizeof(int) * scene->cam.w * scene->cam.h,
-			pixels, &error);
+			sizeof(FLOAT3) * scene->cam.w * scene->cam.h,
+			light, &error);
 	opencl_check_error(error);
 
 	cl_mem	scene_buffer = clCreateBuffer(manager->context,
@@ -107,15 +158,16 @@ int				*opencl_compute_image()
 	opencl_check_error(error);
 
 	kernel = clCreateKernel(manager->program, "compute_color", NULL);
-	clSetKernelArg(kernel, 0, sizeof(cl_mem), (void*)&pixel_buffer);
+	clSetKernelArg(kernel, 0, sizeof(cl_mem), (void*)&light_buffer);
 	clSetKernelArg(kernel, 1, sizeof(cl_mem), (void*)&scene_buffer);
 	clSetKernelArg(kernel, 2, sizeof(cl_mem), (void*)&obj_buffer);
 	clSetKernelArg(kernel, 3, sizeof(cl_mem), (void*)&spot_buffer);
 	const size_t global_work_size[] = { scene->cam.w * scene->cam.h, 0, 0 };
 	opencl_check_error(clEnqueueNDRangeKernel(manager->queue, kernel, 1, NULL,
 				global_work_size, NULL, 0, NULL, NULL));
-	opencl_check_error(clEnqueueReadBuffer(manager->queue, pixel_buffer,
-				CL_TRUE, 0, sizeof(int) * scene->cam.w * scene->cam.h, pixels, 0, NULL, NULL));
+	opencl_check_error(clEnqueueReadBuffer(manager->queue, light_buffer,
+				CL_TRUE, 0, sizeof(FLOAT3) * scene->cam.w * scene->cam.h, light, 0, NULL, NULL));
+	light_to_pixel(light, pixels, scene->cam.w, scene->cam.h);
 	interface_print_scene(pixels);
 	return (pixels);
 }

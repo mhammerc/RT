@@ -1,21 +1,23 @@
 #include <env.h>
 /*
-int		compute_shaded_color(t_app *app, int color, double shade)
-{
-	int		shaded_color;
-	double	l;
+   int		compute_shaded_color(t_app *app, int color, double shade)
+   {
+   int		shaded_color;
+   double	l;
 
-	l = app->config.ambiant_light;
-	shaded_color = (int)((double)(color & 0x0000FF)
-						 			* (l + (1 - l) * shade)) & 0x0000FF;
-	shaded_color += (int)((double)(color & 0x00FF00)
-						  			* (l + (1 - l) * shade)) & 0x00FF00;
-	shaded_color += (int)((double)(color & 0xFF0000)
-						  			* (l + (1 - l) * shade)) & 0xFF0000;
-	return (shaded_color);
-}
-*/
-int	ft_solve(float a, float b, float c, float *t)
+   l = app->config.ambiant_light;
+   shaded_color = (int)((double)(color & 0x0000FF)
+ * (l + (1 - l) * shade)) & 0x0000FF;
+ shaded_color += (int)((double)(color & 0x00FF00)
+ * (l + (1 - l) * shade)) & 0x00FF00;
+ shaded_color += (int)((double)(color & 0xFF0000)
+ * (l + (1 - l) * shade)) & 0xFF0000;
+ return (shaded_color);
+ }
+ */
+
+/*
+int			ft_solve(float a, float b, float c, float *t)
 {
 	float	delta;
 	float	q;
@@ -33,12 +35,13 @@ int	ft_solve(float a, float b, float c, float *t)
 		*t = t1;
 	else
 		*t = t0;
-	if(*t < 0)
+	if (*t < 0)
 		return (0);
 	return (1);
 }
+*/
 
-int			norm_quad_solve(float b, float c, float *t)
+int norm_quad_solve(float b, float c, float *t)
 {
 	float	d;
 	float	x1;
@@ -65,11 +68,11 @@ int			norm_quad_solve(float b, float c, float *t)
 	return (res);
 }
 
-INT			sphere_intersect(t_obj *self, t_ray *ray)
+int			sphere_intersect(t_obj *self, t_ray *ray)
 {
-	FLOAT	b;
-	FLOAT	c;
-	FLOAT3	ray_sphere;
+	float	b;
+	float	c;
+	float3	ray_sphere;
 
 	ray_sphere = ray->pos - self->pos;
 	b = dot(ray_sphere, ray->dir);
@@ -83,12 +86,12 @@ INT			sphere_intersect(t_obj *self, t_ray *ray)
 	return (0);
 }
 
-FLOAT3		sphere_normal(t_obj *self, FLOAT3 pos)
+float3		sphere_normal(t_obj *self, float3 pos)
 {
 	return (normalize( pos - self->pos));
 }
 
-INT			obj_intersect(t_obj *self, t_ray *ray)
+int			obj_intersect(t_obj *self, t_ray *ray)
 {
 	if (self->type == SPHERE)
 		return (sphere_intersect(self, ray));
@@ -97,9 +100,9 @@ INT			obj_intersect(t_obj *self, t_ray *ray)
 		return (0);
 }
 
-FLOAT3		obj_normal(t_obj *self, FLOAT3 pos)
+float3		obj_normal(t_obj *self, float3 pos)
 {
-	FLOAT3	dummy;
+	float3	dummy;
 
 	dummy = {0, 0, 0}
 	if (self->type == SPHERE)
@@ -109,10 +112,15 @@ FLOAT3		obj_normal(t_obj *self, FLOAT3 pos)
 		return (dummy);
 }
 
-INT			rt_object(t_obj *obj, INT nb_obj, t_ray *ray)
+/*
+** Intersect ray with all objects in scene
+** @return 1 if collision, 0 otherwise. ray is updated if collision
+*/
+
+int			rt_object(t_obj *obj, int nb_obj, t_ray *ray)
 {
-	INT		collision;
-	INT		i;
+	int		collision;
+	int		i;
 
 	i = 0;
 	collision = 0;
@@ -125,125 +133,136 @@ INT			rt_object(t_obj *obj, INT nb_obj, t_ray *ray)
 	if (ray->type == INITIAL_RAY && collision)
 	{
 		ray->hit = ray->pos + (ray->d - EPS) * ray->dir;
-		ray->n = obj_normal(obj + ray->id, ray->hit);
+		ray->n = obj_normal(obj + ray->collided, ray->hit);
 	}
 	return (collision);
 }
 
-void		color_add_ambiant(float3 *c, float3 obj_color, t_spot ambiant)
+float3		color_add_ambiant(float3 obj_color, t_spot ambiant)
 {
-	c->x += ambiant.color.x * obj_color.x * ambiant.intensity;
-	c->y += ambiant.color.y * obj_color.y * ambiant.intensity;
-	c->z += ambiant.color.z * obj_color.z * ambiant.intensity;
+	return (ambiant.color * obj_color * ambiant.intensity);
+	/*
+	return ((float3){ambiant.color.x * obj_color.x * ambiant.intensity,
+					ambiant.color.y * obj_color.y * ambiant.intensity,
+					ambiant.color.z * obj_color.z * ambiant.intensity});
+					*/
 }
 
-void		color_add_light(t_ray *ray, t_obj obj, t_spot l, float3 obj_cam)
+float3		color_add_light(t_ray ray, t_obj obj, t_spot l, float3 obj_cam)
 {
 	float	diff;
 	float3	h;
+	float3	light;
 
-	if ((diff = fmax(dot(ray->dir, ray.n), 0)) > 0)
+	light = 0.0;
+	if ((diff = fmax(dot(ray.dir, ray.n), 0)) > 0)
 	{
-		diff *= obj.kdiff * l->intensity;
-		ray->color.x += l.color.x * obj.color.x * diff;
-		ray->color.y += l.color.y * obj.color.y * diff;
-		ray->color.z += l.color.z * obj.color.z * diff;
+		diff *= obj.kdiff * l.intensity;
+		light = l.color * obj.color * diff;
+		/*
+		light.x += l.color.x * obj.color.x * diff;
+		light.y += l.color.y * obj.color.y * diff;
+		light.z += l.color.z * obj.color.z * diff;
+		*/
 	}
 	h = normalize(obj_cam + ray.dir);
-	if ((diff = fmax(pow(dot(ray->n, h), obj.kp), 0)) > 0)
+	if ((diff = fmax(pow(dot(ray.n, h), obj.kp), 0)) > 0)
 	{
-		diff *= obj.kspec * l->intensity;
-		ray->color.x += l.color.x * obj.color.x * diff;
-		ray->color.y += l.color.y * obj.color.y * diff;
-		ray->color.z += l.color.z * obj.color.z * diff;
+		diff *= obj.kspec * l.intensity;
+		light += l.color * obj.color * diff;
+		/*
+		light.x += l.color.x * obj.color.x * diff;
+		light.y += l.color.y * obj.color.y * diff;
+		light.z += l.color.z * obj.color.z * diff;
+		*/
 	}
+	return (light);
 }
 
-void		rt_light(t_obj *obj,
-					int nb_obj,
-					t_spot *spot,
-					int nb_spot,
+/*
+** Cast a ray to all lights in scene, add in light contribution
+** @return light contribution
+*/
+
+float3		rt_light(t_obj *obj, int nb_obj,
+					t_spot *spot, int nb_spot,
 					t_spot ambiant,
-					t_ray *ray)
+					t_ray ray)
 {
 	float3	obj_cam;
+	float3	light;
 	int		i;
 
 	i = 0;
-	obj_cam = -1.0 * ray.dir;
-	color_add_ambiant(&(ray->color), obj[ray.collided].color, ambiant);
+	obj_cam = -ray.dir;
+	light = color_add_ambiant(obj[ray.collided].color, ambiant);
 	ray.type = OCCLUSION_RAY;
 	while (i < nb_spot)
 	{
 		ray.dir = normalize(spot[i].pos - ray.pos);
 		if (!rt_object(obj, nb_obj, &ray))
-			color_add_light(ray, obj[ray->collided], spot[i], obj_cam);
+			light += color_add_light(ray, obj[ray.collided], spot[i], obj_cam);
 		++i;
 	}
+	return (light);
 }
 
-__kernel void compute_color(__global int* pixels,
-							__global t_cl_scene *sce,
-							__global t_obj *obj,
-							__global t_spot *spot)
+__kernel void	compute_color(__global float3* light,
+								__global t_cl_scene *sce,
+								__global t_obj *obj,
+								__global t_spot *spot)
 {
-	int		pos;
+	int			pos;
+	t_ray		ray;
+	int			i;
+	int			j;
 
-//ce qu il faudra passer en parametre
+	pos = get_global_id(0);
+	j = pos % sce->cam.w;
+	i = pos / sce->cam.w;
+	ray.pos = sce->cam.pos;
+	ray.dir = sce->cam.top_left - i * sce->cam.vy + j * sce->cam.vx - ray.pos;
+	ray.n = 0.0;
+	ray.t = BIG_DIST + 1;
+	ray.type = INITIAL_RAY;
+	ray.collided = -1;
+	ray.hit = 0.0;
+	ray.color = 0.0;
+
+	if (rt_object(obj, sce->nb_obj, t_ray *ray))
+		light[pos] = rt_light(obj, sce->nb_obj, spot, sce->nb_spot, sce->ambiant, ray);
 
 	/*
-	t_obj	sphere;
-	sphere.origine.xy=0;
-	sphere.origine.z=-20;
-	sphere.size=4;
-	sphere.col=150;
-
-	t_spot spot;
-	spot.origine.xyz=0;
-	*/
-
-    pos = get_global_id(0);
-
-//init ray
-	t_ray	ray;
-	int	i;
-	int	j;
-
-	j = pos % sce.cam.w;
-	i = pos / sce.cam.w;
-	ray.pos = sce.cam.pos;
-	ray.dir = sce.cam.top_left - i * scene.cam.vy + j * scene.cam.vx - ray.pos;
-	ray.t = BIG_DIST;
-
-//test intersectio
+	//test intersectio
 	float		t;
 	float3		o_c;
 
-		t = 0.;
-		o_c = ray.origine - sphere.origine;
-		if(ft_solve(dot(ray.dir, ray.dir), 2 * dot((ray).dir, o_c), dot(o_c, o_c) - sphere.size * sphere.size, &t))
+	t = 0.;
+	o_c = ray.origine - sphere.origine;
+	if(ft_solve(dot(ray.dir, ray.dir), 2 * dot((ray).dir, o_c), dot(o_c, o_c) - sphere.size * sphere.size, &t))
+	{
+		if (t < ray.t)
 		{
-			if (t < ray.t)
-				{
-					ray.t = t;
-					ray.hit = ray.origine +  t * ray.dir;
+			ray.t = t;
+			ray.hit = ray.origine +  t * ray.dir;
 
 
-//determine couleur
-					int	cache;
-					float3	normal;
-					float3	L;
-					float3	H;
+			//determine couleur
+			int	cache;
+			float3	normal;
+			float3	L;
+			float3	H;
 
-					normal = ray.hit -  sphere.origine;
-					normal = normal / length(normal);
-					L = spot.origine -  ray.hit;
-					L = L / length(L);
-					H = 0.72f * ( L - (ray.dir / length(ray.dir)));
-					cache = 1;
-					pixels[pos] = 0xff000000 + ((int)(150.f * cache * dot(normal, L) + dot(normal, H)) & 0xff); 
-				}
-				else
-					pixels[pos] = 0xffff0000; 
+			normal = ray.hit -  sphere.origine;
+			normal = normal / length(normal);
+			L = spot.origine -  ray.hit;
+			L = L / length(L);
+			H = 0.72f * ( L - (ray.dir / length(ray.dir)));
+			cache = 1;
+			pixels[pos] = 0xff000000 + ((int)(150.f * cache * dot(normal, L) + dot(normal, H)) & 0xff);
 		}
+		else
+			pixels[pos] = 0xffff0000;
+	}
+	*/
 }

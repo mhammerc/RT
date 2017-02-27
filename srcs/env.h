@@ -26,9 +26,13 @@
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
 # define BIG_DIST 1e42
+# define EPS 1e-4
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 # define SPHERE 0
+# define R_BITSHIFT 16
+# define G_BITSHIFT 8
+# define B_BITSHIFT 0
 
 struct						s_ray
 {
