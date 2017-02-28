@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/02/26 17:13:43 by vfour            ###   ########.fr       */
+/*   Updated: 2017/02/28 18:54:17 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,15 +63,17 @@ struct						s_obj
 {
 	FLOAT3					pos;
 	FLOAT3					dir;
+	FLOAT3					color;
 	FLOAT					param;
 	INT						type;
 	INT						id;
-	//the following should live in a material struct
-	FLOAT3					color;
 	FLOAT					kspec;
 	FLOAT					kdiff;
 	FLOAT					kp;
+	INT						padding;
 };
+//6 * 4 bytes + 3 * 12 bytes = 24 + 36 = 60 bytes
+//4 bytes of padding => 64 bytes
 typedef struct s_obj		t_obj;
 
 struct						s_spot
@@ -79,7 +81,10 @@ struct						s_spot
 	FLOAT3					pos;
 	FLOAT3					color;
 	FLOAT					intensity;
+	INT						padding;
 };
+//2 * 12 bytes + 4 bytes = 24 + 4 = 28 bytes
+//4 bytes of padding => 32 bytes
 typedef struct s_spot		t_spot;
 
 struct						s_scene
@@ -106,4 +111,17 @@ struct						s_cl_scene
 };
 typedef struct s_cl_scene	t_cl_scene;
 
+/*
+INT							norm_quad_solve(FLOAT b, FLOAT c, FLOAT *t);
+
+FLOAT3						color_add_ambiant(FLOAT3 obj_color, t_spot ambiant);
+FLOAT3						color_add_light(t_ray ray, t_obj obj, t_spot l, FLOAT3 obj_cam);
+
+INT							obj_intersect(t_obj *self, t_ray *ray);
+FLOAT3						obj_normal(t_obj *self, FLOAT3 pos);
+
+INT							sphere_intersect(t_obj *self, t_ray *ray);
+FLOAT3						sphere_normal(t_obj *self, FLOAT3 pos);
+
+*/
 #endif
