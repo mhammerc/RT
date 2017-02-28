@@ -86,9 +86,10 @@ int				*opencl_compute_image()
 	scene->cam.h = 600;
 	scene->nb_obj = 1;
 	scene->nb_spot = 1;
-	scene->ambiant.x = 0.1;
-	scene->ambiant.y = 0.1;
-	scene->ambiant.z = 0.1;
+	scene->ambiant.intensity = 0.1;
+	scene->ambiant.color.x = 1;
+	scene->ambiant.color.y = 1;
+	scene->ambiant.color.z = 1;
 	scene->cam.pos.x = 0;
 	scene->cam.pos.y = 0;
 	scene->cam.pos.z = -10;

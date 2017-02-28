@@ -25,14 +25,11 @@
 
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
-# define BIG_DIST 1e42
+# define BIG_DIST 1e24
 # define EPS 1e-4
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 # define SPHERE 0
-# define R_BITSHIFT 16
-# define G_BITSHIFT 8
-# define B_BITSHIFT 0
 
 struct						s_ray
 {
@@ -102,26 +99,11 @@ struct						s_cl_scene
 {
 	INT						nb_obj;
 	INT						nb_spot;
-	FLOAT3					ambiant;
+	t_spot					ambiant;
 	t_cam					cam;
 	INT						s_x;
 	INT						s_y;
 };
 typedef struct s_cl_scene	t_cl_scene;
-
-/*
-** Vectors
-*/
-FLOAT						vec3_norm(FLOAT3 v);
-void						vec3_normalize(FLOAT3 *v);
-FLOAT3						vec3_get_normalized(FLOAT3 v);
-FLOAT						vec3_norm2(FLOAT3 v);
-FLOAT3						vec3_add(FLOAT3 a, FLOAT3 b);
-FLOAT3						vec3_cross(FLOAT3 u, FLOAT3 v);
-FLOAT						vec3_dot(FLOAT3 a, FLOAT3 b);
-FLOAT3						vec3_mult(FLOAT m, FLOAT3 x);
-FLOAT3						vec3_sub(FLOAT3 a, FLOAT3 b);
-
-t_cam						camera_set(t_cam cam);
 
 #endif

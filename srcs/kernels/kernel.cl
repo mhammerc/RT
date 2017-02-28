@@ -68,7 +68,7 @@ int norm_quad_solve(float b, float c, float *t)
 	return (res);
 }
 
-int			sphere_intersect(t_obj *self, t_ray *ray)
+int			sphere_intersect(__global t_obj *self, t_ray *ray)
 {
 	float	b;
 	float	c;
@@ -86,12 +86,12 @@ int			sphere_intersect(t_obj *self, t_ray *ray)
 	return (0);
 }
 
-float3		sphere_normal(t_obj *self, float3 pos)
+float3		sphere_normal(__global t_obj *self, float3 pos)
 {
 	return (normalize( pos - self->pos));
 }
 
-int			obj_intersect(t_obj *self, t_ray *ray)
+int			obj_intersect(__global t_obj *self, t_ray *ray)
 {
 	if (self->type == SPHERE)
 		return (sphere_intersect(self, ray));
@@ -100,11 +100,11 @@ int			obj_intersect(t_obj *self, t_ray *ray)
 		return (0);
 }
 
-float3		obj_normal(t_obj *self, float3 pos)
+float3		obj_normal(__global t_obj *self, float3 pos)
 {
 	float3	dummy;
 
-	dummy = {0, 0, 0}
+	dummy = (float3)(0, 0, 0);
 	if (self->type == SPHERE)
 		return (sphere_normal(self, pos));
 	//calls for normal of other types of object go here
@@ -117,7 +117,7 @@ float3		obj_normal(t_obj *self, float3 pos)
 ** @return 1 if collision, 0 otherwise. ray is updated if collision
 */
 
-int			rt_object(t_obj *obj, int nb_obj, t_ray *ray)
+int			rt_object(__global t_obj *obj, int nb_obj, t_ray *ray)
 {
 	int		collision;
 	int		i;
@@ -126,13 +126,13 @@ int			rt_object(t_obj *obj, int nb_obj, t_ray *ray)
 	collision = 0;
 	while (i < nb_obj)
 	{
-		if (obj_intersect(obj + i), ray)
+		if (obj_intersect((obj + i), ray))
 			collision = 1;
 		++i;
 	}
 	if (ray->type == INITIAL_RAY && collision)
 	{
-		ray->hit = ray->pos + (ray->d - EPS) * ray->dir;
+		ray->hit = ray->pos + (ray->t - (float)EPS) * ray->dir;
 		ray->n = obj_normal(obj + ray->collided, ray->hit);
 	}
 	return (collision);
@@ -184,8 +184,8 @@ float3		color_add_light(t_ray ray, t_obj obj, t_spot l, float3 obj_cam)
 ** @return light contribution
 */
 
-float3		rt_light(t_obj *obj, int nb_obj,
-					t_spot *spot, int nb_spot,
+float3		rt_light(__global t_obj *obj, int nb_obj,
+					__global t_spot *spot, int nb_spot,
 					t_spot ambiant,
 					t_ray ray)
 {
@@ -223,13 +223,13 @@ __kernel void	compute_color(__global float3* light,
 	ray.pos = sce->cam.pos;
 	ray.dir = sce->cam.top_left - i * sce->cam.vy + j * sce->cam.vx - ray.pos;
 	ray.n = 0.0;
-	ray.t = BIG_DIST + 1;
+	ray.t = (float)BIG_DIST + 1;
 	ray.type = INITIAL_RAY;
 	ray.collided = -1;
 	ray.hit = 0.0;
 	ray.color = 0.0;
 
-	if (rt_object(obj, sce->nb_obj, t_ray *ray))
+	if (rt_object(obj, sce->nb_obj, &ray))
 		light[pos] = rt_light(obj, sce->nb_obj, spot, sce->nb_spot, sce->ambiant, ray);
 
 	/*
