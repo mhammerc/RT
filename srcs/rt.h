@@ -6,9 +6,10 @@
 # include "scene_manager.h"
 # include "interface.h"
 # include "env.h"
-# define R_BITSHIFT 16
+# define ALPHA_BITSHIFT 24
+# define R_BITSHIFT 0
 # define G_BITSHIFT 8
-# define B_BITSHIFT 0
+# define B_BITSHIFT 16
 
 /*
 ** Vectors

@@ -37,6 +37,7 @@ float			light_find_max(int w, int h, FLOAT3 *light)
 		max = fmax(max, light[i].y);
 		max = fmax(max, light[i].z);
 	}
+	printf("max:%f\n", max);
 	return (max);
 }
 
@@ -45,7 +46,7 @@ int				colorcomp_to_rgb(int r, int g, int b)
 	r = r < 0 ? 0 : (r & 0xff);
 	g = g < 0 ? 0 : (g & 0xff);
 	b = b < 0 ? 0 : (b & 0xff);
-	return ((r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
+	return ((0xff << ALPHA_BITSHIFT) + (r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
 }
 
 void			light_to_pixel(FLOAT3 *light, int *px, int w, int h)
@@ -65,6 +66,20 @@ void			light_to_pixel(FLOAT3 *light, int *px, int w, int h)
 	}
 	return ;
 }
+
+/*
+static void		print_light(FLOAT3 *light, int w, int h)
+{
+	int 		i;
+	
+	i = 0;
+	while (i < h * w)
+	{
+		printf("%f, %f, %f\n", light[i].x, light[i].y, light[i].z);
+		++i;
+	}
+}
+*/
 
 int				*opencl_compute_image()
 {
@@ -86,21 +101,21 @@ int				*opencl_compute_image()
 	scene->cam.h = 600;
 	scene->nb_obj = 1;
 	scene->nb_spot = 1;
-	scene->ambiant.intensity = 0.1;
+	scene->ambiant.intensity = 0.042;
 	scene->ambiant.color.x = 1;
 	scene->ambiant.color.y = 1;
 	scene->ambiant.color.z = 1;
-	scene->cam.pos.x = 0;
-	scene->cam.pos.y = 0;
-	scene->cam.pos.z = -10;
-	scene->cam.dir.x = 0;
-	scene->cam.dir.y = 0;
-	scene->cam.dir.z = 0;
-	scene->cam.up.x = 0;
-	scene->cam.up.y = 1;
-	scene->cam.up.z = 0;
-	scene->cam.fov = 45;
-	scene->cam.ratio = 1;
+	scene->cam.pos.x = 0.0;
+	scene->cam.pos.y = 0.0;
+	scene->cam.pos.z = 6.0;
+	scene->cam.dir.x = 0.0;
+	scene->cam.dir.y = 0.0;
+	scene->cam.dir.z = 0.0;
+	scene->cam.up.x = 0.0;
+	scene->cam.up.y = 1.0;
+	scene->cam.up.z = 0.0;
+	scene->cam.fov = 45.0;
+	scene->cam.ratio = 1.0;
 	scene->cam = camera_set(scene->cam);
 
 	obj = (t_obj*)malloc(sizeof(t_obj));
@@ -108,12 +123,25 @@ int				*opencl_compute_image()
 	obj[0].pos.y = 0;
 	obj[0].pos.z = 0;
 	obj[0].param = 1;
-	obj[0].color.x = 0.42;
-	obj[0].color.y = 0.42;
+	obj[0].color.x = 1;
+	obj[0].color.y = 0;
 	obj[0].color.z = 0;
 	obj[0].kspec = 1;
 	obj[0].kdiff = 1;
-	obj[0].kp = 256;
+	obj[0].kp = 256.0;
+
+	/*
+	obj[1].pos.x = 2;
+	obj[1].pos.y = 0;
+	obj[1].pos.z = 0;
+	obj[1].param = 1;
+	obj[1].color.x = 1;
+	obj[1].color.y = 1;
+	obj[1].color.z = 0;
+	obj[1].kspec = 1;
+	obj[1].kdiff = 1;
+	obj[1].kp = 256;
+	*/
 
 	spot = (t_spot*)malloc(sizeof(t_spot));
 	spot[0].pos.x = 1;
@@ -168,8 +196,10 @@ int				*opencl_compute_image()
 				global_work_size, NULL, 0, NULL, NULL));
 	opencl_check_error(clEnqueueReadBuffer(manager->queue, light_buffer,
 				CL_TRUE, 0, sizeof(FLOAT3) * scene->cam.w * scene->cam.h, light, 0, NULL, NULL));
+	//print_light(light, scene->cam.w, scene->cam.h);
 	light_to_pixel(light, pixels, scene->cam.w, scene->cam.h);
 	interface_print_scene(pixels);
+	printf("truc\n");
 	return (pixels);
 }
 
@@ -220,7 +250,7 @@ void			opencl_init()
 	{
 		size_t	log_size;
 		clGetProgramBuildInfo(manager->program, manager->device_id,
-				CL_PROGRAM_BUILD_LOG, 0, NULL, &log_size);
+				CL_PROGRAM_BUILD_LOG, 1, NULL, &log_size);
 		char	*log = (char*)calloc(sizeof(char) * log_size, 0);
 		clGetProgramBuildInfo(manager->program, manager->device_id,
 				CL_PROGRAM_BUILD_LOG, log_size, log, NULL);

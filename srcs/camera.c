@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 23:44:23 by vfour             #+#    #+#             */
-/*   Updated: 2017/02/26 01:00:15 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/01 16:50:08 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,5 +29,8 @@ t_cam			camera_set(t_cam cam)
 	cam.top_left = vec3_add(cam.pos, vec3_mult(screen_dist, lookat));
 	cam.top_left = vec3_add(cam.top_left, vec3_mult(0.5 * cam.h, cam.vy));
 	cam.top_left = vec3_sub(cam.top_left, vec3_mult(0.5 * cam.w, cam.vx));
+	printf("top_left:%f, %f, %f\n", cam.top_left.x, cam.top_left.y, cam.top_left.z);
+	printf("vx:%f, %f, %f\n", cam.vx.x, cam.vx.y, cam.vx.z);
+	printf("vy:%f, %f, %f\n", cam.vy.x, cam.vy.y, cam.vy.z);
 	return (cam);
 }
