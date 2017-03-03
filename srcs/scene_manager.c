@@ -254,7 +254,7 @@ void			opencl_init()
 		char	*log = (char*)calloc(sizeof(char) * log_size, 0);
 		clGetProgramBuildInfo(manager->program, manager->device_id,
 				CL_PROGRAM_BUILD_LOG, log_size, log, NULL);
-		printf("%s\n", log);
+		printf("lol:%s\n", log);
 		exit(0);
 	}
 	opencl_check_error(error);
