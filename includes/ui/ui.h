@@ -59,7 +59,10 @@ typedef struct			s_display_panel
 {
 	GtkWidget			*dp_box;
 	GtkWidget			*image;
+	GdkPixbuf			*pixbuf;
 }						t_display_panel;
+
+void					ui_print_scene(int *pixels);
 
 /*
 ** t_interface : main structure, holding the entire window and

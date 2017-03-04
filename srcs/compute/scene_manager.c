@@ -27,7 +27,7 @@ float			light_find_max(int w, int h, FLOAT3 *light)
 	float		max;
 	int			i;
 	int			len;
-	
+
 	len = w * h;
 	max = 0.;
 	i = -1;
@@ -71,7 +71,7 @@ void			light_to_pixel(FLOAT3 *light, int *px, int w, int h)
 static void		print_light(FLOAT3 *light, int w, int h)
 {
 	int 		i;
-	
+
 	i = 0;
 	while (i < h * w)
 	{
@@ -108,7 +108,7 @@ int				*opencl_compute_image(t_scene *sce)
 	if (NULL == (scene = scene_converter(sce)))
 		return (NULL);
 	obj = sce->obj;
-	spot = sce->spot;
+	spot = sce->light;
 
 	pixels = (int*)malloc(sizeof(int) * scene->cam.w * scene->cam.h);
 	bzero(pixels, sizeof(int) * scene->cam.w * scene->cam.h);
