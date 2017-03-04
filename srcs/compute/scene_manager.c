@@ -208,7 +208,7 @@ int				*opencl_compute_image()
 				CL_TRUE, 0, sizeof(FLOAT3) * scene->cam.w * scene->cam.h, light, 1, &e, NULL));
 	//print_light(light, scene->cam.w, scene->cam.h);
 	light_to_pixel(light, pixels, scene->cam.w, scene->cam.h);
-	interface_print_scene(pixels);
+	//ui_print_scene(pixels);
 	return (pixels);
 }
 

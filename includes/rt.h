@@ -4,7 +4,7 @@
 # include <libft.h>
 
 # include "scene_manager.h"
-# include "interface.h"
+# include "view.h"
 # include "env.h"
 # define ALPHA_BITSHIFT 24
 # define R_BITSHIFT 0

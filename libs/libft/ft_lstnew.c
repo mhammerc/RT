@@ -6,7 +6,7 @@
 /*   By: mhammerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/03 10:36:47 by mhammerc          #+#    #+#             */
-/*   Updated: 2016/11/03 10:36:48 by mhammerc         ###   ########.fr       */
+/*   Updated: 2017/03/01 13:44:23 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_list	*ft_lstnew(void const *content, size_t content_size)
 	if (!list)
 		return (NULL);
 	list->next = NULL;
+	list->children = NULL;
 	if (!content)
 	{
 		list->content = NULL;

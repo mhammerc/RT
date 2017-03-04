@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/04 15:09:48 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/04 18:33:59 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 # define ENV_H
 
 # ifdef __APPLE__
+#  include <OpenCL/OpenCL.h>
 #  define FLOAT3 cl_float3
 #  define FLOAT cl_float
 #  define INT cl_int
@@ -29,7 +30,17 @@
 # define EPS 1e-4
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
-# define SPHERE 0
+
+enum e_object_type
+{
+	SPHERE,
+	PLANE,
+	CONE,
+	CYLINDER,
+	EMPTY,
+	LIGHT,
+	OBJECT_TYPE_COUNT
+};
 
 struct						s_ray
 {
@@ -65,7 +76,7 @@ struct						s_obj
 	FLOAT3					dir;
 	FLOAT3					color;
 	FLOAT					param;
-	INT						type;
+	enum e_object_type		type;
 	INT						id;
 	FLOAT					kspec;
 	FLOAT					kdiff;
