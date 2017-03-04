@@ -129,6 +129,7 @@ int				*opencl_compute_image()
 	obj[0].kspec = 1;
 	obj[0].kdiff = 1;
 	obj[0].kp = 256.0;
+	obj[0].type = 0; // ICI OMG
 
 	/*
 	obj[1].pos.x = 2;
@@ -163,9 +164,9 @@ int				*opencl_compute_image()
 	error = CL_SUCCESS;
 
 	cl_mem	light_buffer = clCreateBuffer(manager->context,
-			CL_MEM_WRITE_ONLY | CL_MEM_COPY_HOST_PTR,
+			CL_MEM_READ_WRITE,
 			sizeof(FLOAT3) * scene->cam.w * scene->cam.h,
-			light, &error);
+			NULL, &error);
 	opencl_check_error(error);
 
 	cl_mem	scene_buffer = clCreateBuffer(manager->context,
@@ -192,14 +193,14 @@ int				*opencl_compute_image()
 	clSetKernelArg(kernel, 2, sizeof(cl_mem), (void*)&obj_buffer);
 	clSetKernelArg(kernel, 3, sizeof(cl_mem), (void*)&spot_buffer);
 	const size_t global_work_size[] = { scene->cam.w * scene->cam.h, 0, 0 };
+	cl_event e;
 	opencl_check_error(clEnqueueNDRangeKernel(manager->queue, kernel, 1, NULL,
-				global_work_size, NULL, 0, NULL, NULL));
+				global_work_size, NULL, 0, NULL, &e));
 	opencl_check_error(clEnqueueReadBuffer(manager->queue, light_buffer,
-				CL_TRUE, 0, sizeof(FLOAT3) * scene->cam.w * scene->cam.h, light, 0, NULL, NULL));
+				CL_TRUE, 0, sizeof(FLOAT3) * scene->cam.w * scene->cam.h, light, 1, &e, NULL));
 	//print_light(light, scene->cam.w, scene->cam.h);
 	light_to_pixel(light, pixels, scene->cam.w, scene->cam.h);
 	interface_print_scene(pixels);
-	printf("truc\n");
 	return (pixels);
 }
 
@@ -245,7 +246,7 @@ void			opencl_init()
 ** Print kernel's compilations errors
 */
 	if ((error = clBuildProgram(manager->program, manager->devices_count,
-					manager->device_ids, "-Iresources", NULL, NULL))
+					manager->device_ids, "-Werror -Iresources", NULL, NULL))
 			== CL_BUILD_PROGRAM_FAILURE)
 	{
 		size_t	log_size;
