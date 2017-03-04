@@ -9,6 +9,12 @@ void		init_cam(t_ui *ui)
 	if(!cam)
 		exit(EXIT_FAILURE);
 	ft_bzero(cam, sizeof(t_cam));
+	cam->pos.x = 0;
+	cam->pos.y = 0;
+	cam->pos.z = 7;
+	cam->dir.x = 0;
+	cam->dir.y = 0;
+	cam->dir.z = 0;
 	ui->cam = cam;
 }
 

@@ -35,7 +35,7 @@ GTK_CLIBS = $(shell pkg-config --libs gtk+-3.0)
 
 CC = gcc
 
-CFLAGS = -Ilibs/libft -Iincludes -Iincludes/ui -Iincludes/compute
+CFLAGS = -g -Ilibs/libft -Iincludes -Iincludes/ui -Iincludes/compute
 CFLAGS += $(GTK_CFLAGS)
 
 CLIBS = -framework OpenCL -Llibs/libft -lft
