@@ -54,7 +54,6 @@ static int		obj_intersect(__constant t_obj *self, t_ray *ray)
 {
 	if (self->type == SPHERE)
 		return (sphere_intersect(self, ray));
-	//calls for intersection of other types of object go here
 	else
 		return (0);
 }
@@ -66,15 +65,9 @@ static float3	obj_normal(__constant t_obj *self, float3 pos)
 	dummy = (float3)(0, 0, 0);
 	if (self->type == SPHERE)
 		return (sphere_normal(self, pos));
-	//calls for normal of other types of object go here
 	else
 		return (dummy);
 }
-
-/*
-** Intersect ray with all objects in scene
-** @return 1 if collision, 0 otherwise. ray is updated if collision
-*/
 
 static int		rt_object(__constant t_obj *obj, int nb_obj, t_ray *ray)
 {
@@ -94,10 +87,54 @@ static int		rt_object(__constant t_obj *obj, int nb_obj, t_ray *ray)
 	return (collision);
 }
 
+static float3	rt_light(__constant t_obj *obj,
+						__constant t_spot *spot,
+						__constant t_cl_scene *sce,
+						t_ray ray)
+{
+	float3		light;
+	float		diff;
+	float3		h;
+	float3		obj_cam;
+
+	light.x = sce->ambiant.color.x * obj[ray.collided].color.x * sce->ambiant.intensity;
+	light.y = sce->ambiant.color.y * obj[ray.collided].color.y * sce->ambiant.intensity;
+	light.z = sce->ambiant.color.z * obj[ray.collided].color.z * sce->ambiant.intensity;
+	obj_cam = -ray.dir;
+	ray.type = OCCLUSION_RAY;
+	for(int i = 0; i < sce->nb_spot; ++i)
+	{
+		ray.dir = normalize(spot[i].pos - ray.pos);
+		if (!rt_object(obj, sce->nb_obj, &ray))
+		{
+			diff = dot(ray.dir, ray.n);
+			diff = diff > 0.0 ? diff : 0.0;
+			if (diff > 0.0)
+			{
+				diff *= obj[ray.collided].kdiff * spot[i].intensity;
+				light.x += spot[i].color.x * obj[ray.collided].color.x * diff;
+				light.y += spot[i].color.y * obj[ray.collided].color.y * diff;
+				light.z += spot[i].color.z * obj[ray.collided].color.z * diff;
+			}
+			h = normalize(obj_cam + ray.dir);
+			diff = pow(dot(ray.n, h), obj[ray.collided].kp);
+			diff = diff > 0.0 ? diff : 0.0;
+			if (diff > 0.0)
+			{
+				diff *= obj[ray.collided].kspec * spot[i].intensity;
+				light.x += spot[i].color.x * obj[ray.collided].color.x * diff;
+				light.y += spot[i].color.y * obj[ray.collided].color.y * diff;
+				light.z += spot[i].color.z * obj[ray.collided].color.z * diff;
+			}
+		}
+	}
+	return (light);
+}
+
 __kernel void	compute_color(__global float3* light,
-								__constant t_cl_scene *sce,
-								__constant t_obj *obj,
-								__constant t_spot *spot)
+		__constant t_cl_scene *sce,
+		__constant t_obj *obj,
+		__constant t_spot *spot)
 {
 	int			pos;
 	t_ray		ray;
@@ -111,23 +148,12 @@ __kernel void	compute_color(__global float3* light,
 	ray.dir = normalize(sce->cam.top_left - (float)i * sce->cam.vy + (float)j * sce->cam.vx - ray.pos);
 	ray.n = 0.0;
 	ray.t = BIG_DIST + 1;
-	//ray.type = INITIAL_RAY;
-	ray.type = OCCLUSION_RAY;
+	ray.type = INITIAL_RAY;
 	ray.collided = 0;
 	ray.hit = 0.0;
 	ray.color = 0.0;
 
-	/*
-	light[pos].x = ray.dir.x;
-	light[pos].y = ray.dir.y;
-	light[pos].z = ray.dir.z;
-	*/
 	if (rt_object(obj, sce->nb_obj, &ray))
-	{
-		//light[pos] = rt_light(obj, sce->nb_obj, spot, sce->nb_spot, sce->ambiant, ray);
-		light[pos].x = 1.0 / ray.t;
-		light[pos].y = 1.0 / ray.t;
-		light[pos].z = 1.0 / ray.t;
-	}
+		light[pos] = rt_light(obj, spot, sce, ray);
 }
 
