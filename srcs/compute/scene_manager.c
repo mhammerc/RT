@@ -81,86 +81,34 @@ static void		print_light(FLOAT3 *light, int w, int h)
 }
 */
 
-int				*opencl_compute_image()
+static t_cl_scene	*scene_converter(t_scene *sce)
+{
+	t_cl_scene		*cl_sce;
+
+	if (NULL == (cl_sce = (t_cl_scene*)malloc(sizeof(t_cl_scene))))
+		return (NULL);
+	cl_sce->nb_obj = sce->nb_obj;
+	cl_sce->nb_spot = sce->nb_spot;
+	cl_sce->ambiant = sce->ambiant;
+	cl_sce->cam = sce->cam;
+	return (cl_sce);
+}
+
+int				*opencl_compute_image(t_scene *sce)
 {
 	t_scene_manager		*manager;
 	int					*pixels;
 	cl_int				error;
 	cl_kernel			kernel;
-
-	//TODO: move light reduction into the kernel maybe
 	FLOAT3				*light;
-
-	//TODO: read these from interface
 	t_cl_scene			*scene;
 	t_obj				*obj;
 	t_spot				*spot;
 
-	scene = (t_cl_scene*)malloc(sizeof(t_cl_scene));
-	scene->cam.w = 800;
-	scene->cam.h = 600;
-	scene->nb_obj = 2;
-	scene->nb_spot = 2;
-	scene->ambiant.intensity = 0.42;
-	scene->ambiant.color.x = 1.0;
-	scene->ambiant.color.y = 1.0;
-	scene->ambiant.color.z = 1.0;
-	scene->cam.pos.x = 0.0;
-	scene->cam.pos.y = 0.0;
-	scene->cam.pos.z = 6.0;
-	scene->cam.dir.x = 0.0;
-	scene->cam.dir.y = 0.0;
-	scene->cam.dir.z = 0.0;
-	scene->cam.up.x = 0.0;
-	scene->cam.up.y = 1.0;
-	scene->cam.up.z = 0.0;
-	scene->cam.fov = 45.0;
-	scene->cam.ratio = 1.0;
-	scene->cam = camera_set(scene->cam);
-
-	obj = (t_obj*)malloc(scene->nb_obj * sizeof(t_obj));
-	obj[0].pos.x = -1.5;
-	obj[0].pos.y = 0;
-	obj[0].pos.z = 0;
-	obj[0].color.x = 1;
-	obj[0].color.y = 0;
-	obj[0].color.z = 0;
-	obj[0].param = 1;
-	obj[0].type = SPHERE; // ICI OMG
-	obj[0].id = 0;
-	obj[0].kspec = 1;
-	obj[0].kdiff = 1;
-	obj[0].kp = 256.0;
-
-	obj[1].pos.x = 1.5;
-	obj[1].pos.y = 0;
-	obj[1].pos.z = 0;
-	obj[1].color.x = 1;
-	obj[1].color.y = 1;
-	obj[1].color.z = 0;
-	obj[1].param = 1;
-	obj[1].type = SPHERE; // ICI OMG
-	obj[1].id = 1;
-	obj[1].kspec = 1;
-	obj[1].kdiff = 1;
-	obj[1].kp = 256;
-
-	spot = (t_spot*)malloc(scene->nb_spot * sizeof(t_spot));
-	spot[0].pos.x = 1;
-	spot[0].pos.y = 4;
-	spot[0].pos.z = 4;
-	spot[0].color.x = 1;
-	spot[0].color.y = 1;
-	spot[0].color.z = 1;
-	spot[0].intensity = 1;
-	spot[1].pos.x = -1;
-	spot[1].pos.y = 4;
-	spot[1].pos.z = 4;
-	spot[1].color.x = 1;
-	spot[1].color.y = 1;
-	spot[1].color.z = 1;
-	spot[1].intensity = 1;
-	//--
+	if (NULL == (scene = scene_converter(sce)))
+		return (NULL);
+	obj = sce->obj;
+	spot = sce->spot;
 
 	pixels = (int*)malloc(sizeof(int) * scene->cam.w * scene->cam.h);
 	bzero(pixels, sizeof(int) * scene->cam.w * scene->cam.h);
@@ -208,7 +156,8 @@ int				*opencl_compute_image()
 				CL_TRUE, 0, sizeof(FLOAT3) * scene->cam.w * scene->cam.h, light, 1, &e, NULL));
 	//print_light(light, scene->cam.w, scene->cam.h);
 	light_to_pixel(light, pixels, scene->cam.w, scene->cam.h);
-	//ui_print_scene(pixels);
+	ui_print_scene(pixels);
+	free(scene);
 	return (pixels);
 }
 

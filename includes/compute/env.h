@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/04 18:33:59 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/04 19:02:16 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,8 +106,6 @@ struct						s_scene
 	INT						nb_spot;
 	t_spot					ambiant;
 	t_cam					cam;
-	INT						s_x;
-	INT						s_y;
 };
 typedef struct s_scene		t_scene;
 
@@ -117,22 +115,7 @@ struct						s_cl_scene
 	INT						nb_spot;
 	t_spot					ambiant;
 	t_cam					cam;
-	INT						s_x;
-	INT						s_y;
 };
 typedef struct s_cl_scene	t_cl_scene;
 
-/*
-INT							norm_quad_solve(FLOAT b, FLOAT c, FLOAT *t);
-
-FLOAT3						color_add_ambiant(FLOAT3 obj_color, t_spot ambiant);
-FLOAT3						color_add_light(t_ray ray, t_obj obj, t_spot l, FLOAT3 obj_cam);
-
-INT							obj_intersect(t_obj *self, t_ray *ray);
-FLOAT3						obj_normal(t_obj *self, FLOAT3 pos);
-
-INT							sphere_intersect(t_obj *self, t_ray *ray);
-FLOAT3						sphere_normal(t_obj *self, FLOAT3 pos);
-
-*/
 #endif
