@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 /*
 ** refresh left panel (obj_tree)

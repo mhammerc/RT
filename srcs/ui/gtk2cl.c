@@ -1,7 +1,7 @@
 //#include "env.h"
 
 # include <OpenCL/opencl.h>
-#include "view.h"
+#include "ui.h"
 
 int		gtk_objects2nb_obj(t_list *objects)
 {

@@ -22,7 +22,7 @@ SRCS = srcs/main.c			\
 	   srcs/ui/widgets/scale_entry.c        	\
 	   srcs/ui/widgets/text_entry.c        	\
 	   srcs/ui/widgets/vector3_entry.c        	\
-	   srcs/ui/window.c       
+	   srcs/ui/window.c
 
 RESOURCES = srcs/compute/kernels/kernel.cl	\
 			includes/compute/env.h

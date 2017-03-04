@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 void		init_scene(t_ui *ui)
 {

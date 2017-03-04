@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 /*
 ** dtoa (double to alphanumeric) isn't in any standard. So we just trick and

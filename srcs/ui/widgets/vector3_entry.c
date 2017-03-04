@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 GtkWidget	*create_vector3_entry(gchar *name, t_vector3d value, t_vector3w *ref, void *signal)
 {

@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 /*
 ** By refresh I mean... delete everything

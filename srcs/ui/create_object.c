@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 /*
 ** Add the object `object` to the scene.

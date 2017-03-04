@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 GtkWidget	*create_float3_entry(gchar *name, cl_float3 value, t_vector3w *ref, void *signal);
 
@@ -36,8 +36,8 @@ void		edit_cam_properties(gpointer data)
 	view = (t_ui*)data;
 
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), gtk_label_new_with_mnemonic("_Camera"));
-	GtkWidget	*pos = create_float3_entry("pos			", view->cam->pos, &view->rp->cam_gtk.pos, cam_edited);
-	GtkWidget	*lkat = create_float3_entry("LookAt		", view->cam->dir, &view->rp->cam_gtk.lkat, cam_edited);
+	GtkWidget	*pos = create_float3_entry("pos		", view->cam->pos, &view->rp->cam_gtk.pos, cam_edited);
+	GtkWidget	*lkat = create_float3_entry("LookAt	", view->cam->dir, &view->rp->cam_gtk.lkat, cam_edited);
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), lkat);
 

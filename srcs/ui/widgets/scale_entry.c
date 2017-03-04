@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 static gboolean		scale_entry_scale_edited(GtkRange *range, GtkScrollType scroll, gdouble value, gpointer data)
 {

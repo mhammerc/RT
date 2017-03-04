@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 static void	test(GtkWidget *emitter, gchar *new_text, gpointer data)
 {

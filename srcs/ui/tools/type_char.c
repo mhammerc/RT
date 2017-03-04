@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 char			*get_el_type_char(t_object *object)
 {

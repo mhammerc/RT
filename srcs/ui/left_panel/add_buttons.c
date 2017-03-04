@@ -1,4 +1,4 @@
-#include "view.h"
+# include "ui.h"
 
 void		add_obj_btn(GtkButton *button, gpointer view)
 {

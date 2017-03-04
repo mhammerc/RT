@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 static void		inserted_text(GtkEntryBuffer *buffer, guint position, gchar *chars, guint n_chars, gpointer widget)
 {

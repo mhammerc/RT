@@ -1,5 +1,5 @@
-#ifndef VIEW_H
-# define VIEW_H
+#ifndef UI_H
+# define UI_H
 
 # include <gtk/gtk.h>
 # include <locale.h>

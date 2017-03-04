@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 static int		is_numerical(const gchar c)
 {

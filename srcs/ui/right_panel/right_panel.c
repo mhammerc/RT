@@ -1,4 +1,4 @@
-#include "view.h"
+#include "ui.h"
 
 void		right_panel(t_ui *ui, t_right_panel *rp)
 {
