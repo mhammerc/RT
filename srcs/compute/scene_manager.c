@@ -81,6 +81,47 @@ static void		print_light(FLOAT3 *light, int w, int h)
 }
 */
 
+/*
+static void			print_camera(t_cam cam)
+{
+	printf("camera\n");
+	printf("pos:%f, %f, %f\n", cam.pos.x, cam.pos.y, cam.pos.z);
+	printf("dir:%f, %f, %f\n", cam.dir.x, cam.dir.y, cam.dir.z);
+	printf("up:%f, %f, %f\n", cam.up.x, cam.up.y, cam.up.z);
+	printf("vx:%f, %f, %f\n", cam.vx.x, cam.vx.y, cam.vx.z);
+	printf("vy:%f, %f, %f\n", cam.vy.x, cam.vy.y, cam.vy.z);
+	printf("top_left:%f, %f, %f\n", cam.top_left.x, cam.top_left.y, cam.top_left.z);
+	printf("fov:%f\n", cam.fov);
+	printf("ratio:%f\n", cam.ratio);
+	printf("w:%d\n", cam.w);
+	printf("h:%d\n", cam.h);
+	printf("-------------\n");
+}
+
+static void			print_obj(t_obj obj)
+{
+	printf("object\n");
+	printf("pos:%f, %f, %f\n", obj.pos.x, obj.pos.y, obj.pos.z);
+	printf("dir:%f, %f, %f\n", obj.dir.x, obj.dir.y, obj.dir.z);
+	printf("color:%f, %f, %f\n", obj.color.x, obj.color.y, obj.color.z);
+	printf("param:%f\n", obj.param);
+	printf("type:%d\n", obj.type);
+	printf("kspec:%f\n", obj.kspec);
+	printf("kdiff:%f\n", obj.kdiff);
+	printf("kp:%f\n", obj.kp);
+	printf("-------------\n");
+}
+
+static void			print_spot(t_spot spot)
+{
+	printf("spot\n");
+	printf("pos:%f, %f, %f\n", spot.pos.x, spot.pos.y, spot.pos.z);
+	printf("color:%f, %f, %f\n", spot.color.x, spot.color.y, spot.color.z);
+	printf("intensity:%f\n", spot.intensity);
+	printf("-------------\n");
+}
+*/
+
 static t_cl_scene	*scene_converter(t_scene *sce)
 {
 	t_cl_scene		*cl_sce;
@@ -91,6 +132,13 @@ static t_cl_scene	*scene_converter(t_scene *sce)
 	cl_sce->nb_spot = sce->nb_spot;
 	cl_sce->ambiant = sce->ambiant;
 	cl_sce->cam = sce->cam;
+	/*
+	print_camera(cl_sce->cam);
+	for (int i = 0; i < sce->nb_obj; ++i)
+		print_obj(sce->obj[i]);
+	for (int i = 0; i < sce->nb_spot; ++i)
+		print_spot(sce->light[i]);
+		*/
 	return (cl_sce);
 }
 
@@ -105,6 +153,7 @@ int				*opencl_compute_image(t_scene *sce)
 	t_obj				*obj;
 	t_spot				*spot;
 
+	sce->cam = camera_set(sce->cam);
 	if (NULL == (scene = scene_converter(sce)))
 		return (NULL);
 	obj = sce->obj;
