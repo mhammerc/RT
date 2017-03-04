@@ -38,19 +38,28 @@ CC = gcc
 CFLAGS = -g -Ilibs/libft -Iincludes -Iincludes/ui -Iincludes/compute
 CFLAGS += $(GTK_CFLAGS)
 
-CLIBS = -framework OpenCL -Llibs/libft -lft
+CLIBS = -lm -Llibs/libft -lft
 CLIBS += $(GTK_CLIBS)
+
+UNAME := $(shell uname)
+
+ifeq ($(UNAME),Darwin)
+	CLIBS += -framework OpenCL
+endif
+
+ifeq ($(UNAME),Linux)
+	CLIBS += -lOpenCL
+endif
 
 all: $(NAME)
 
 $(NAME): copy_resources $(OBJS)
 	make -C libs/libft
-	gcc -o $(NAME) $(CLIBS) $(OBJS)
+	gcc -o $(NAME) $(OBJS) $(CLIBS)
 
 copy_resources:
 	-mkdir resources
 	cp $(RESOURCES) resources
-
 
 clean:
 	rm -rf $(OBJS)

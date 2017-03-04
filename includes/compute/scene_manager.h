@@ -1,7 +1,11 @@
 #ifndef SCENE_MANAGER_H
 # define SCENE_MANAGER_H
 
-# include <OpenCL/opencl.h>
+# ifdef __APPLE__
+#  include <OpenCL/opencl.h>
+# elif __linux__
+#  include <CL/cl.h>
+# endif
 
 typedef struct			s_scene_manager
 {

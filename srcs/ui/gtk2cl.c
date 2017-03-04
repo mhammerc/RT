@@ -1,6 +1,11 @@
 //#include "env.h"
 
+#ifdef __APPLE__
 # include <OpenCL/opencl.h>
+#elif __linux__
+# include <CL/cl.h>
+#endif
+
 #include "ui.h"
 
 int				*opencl_compute_image(t_scene *sce);

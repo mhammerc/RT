@@ -6,6 +6,7 @@
 # include "scene_manager.h"
 # include "ui.h"
 # include "env.h"
+
 # define ALPHA_BITSHIFT 24
 # define R_BITSHIFT 0
 # define G_BITSHIFT 8

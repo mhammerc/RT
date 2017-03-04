@@ -18,6 +18,11 @@
 #  define FLOAT3 cl_float3
 #  define FLOAT cl_float
 #  define INT cl_int
+# elif __linux__
+#  include <CL/cl.h>
+#  define FLOAT3 cl_float3
+#  define FLOAT cl_float
+#  define INT cl_int
 # else
 #  define FLOAT3 float3
 #  define FLOAT float
