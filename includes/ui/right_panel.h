@@ -50,7 +50,7 @@ typedef struct			s_scene_gtk
 typedef struct			s_element_properties
 {
 	t_vector3w			pos;
-	t_vector3w			lkat;
+	t_vector3w			rot;
 	GtkWidget			*radius;
 	GtkWidget			*length;
 }						t_elem_properties;

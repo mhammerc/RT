@@ -24,9 +24,9 @@ static void		element_edited()
 	obj->pos.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.y)));
 	obj->pos.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.z)));
 
-	obj->lkat.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.lkat.x)));
-	obj->lkat.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.lkat.y)));
-	obj->lkat.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.lkat.z)));
+	obj->rot.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.x)));
+	obj->rot.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.y)));
+	obj->rot.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.z)));
 
 	obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius)));
 	obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length)));
@@ -62,10 +62,10 @@ void		 edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTre
 	GtkWidget	*name = create_text_entry("Name	", view->selected_obj.object->name);
 	g_signal_connect(G_OBJECT(name), "rt-entry-edited", G_CALLBACK(test), (gpointer)view);
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos, &view->rp->el_prop.pos, element_edited);
-	GtkWidget	*lkat = create_vector3_entry("lkat		", view->selected_obj.object->lkat, &view->rp->el_prop.lkat, element_edited);
+	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot, &view->rp->el_prop.rot, element_edited);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), lkat);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Radius	", view->selected_obj.object->radius, &view->rp->el_prop.radius, element_edited));
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Length	", view->selected_obj.object->length, &view->rp->el_prop.length, element_edited));

@@ -37,7 +37,7 @@ typedef struct			s_object
 {
 	enum e_object_type	type;
 	t_vector3d			pos;
-	t_vector3d			lkat;
+	t_vector3d			rot;
 	double				length;
 	double				radius;
 	char				name[80];
