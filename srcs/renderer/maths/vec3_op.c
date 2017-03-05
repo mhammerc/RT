@@ -10,13 +10,13 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "rt.h"
-#include "env.h"
+#include "renderer.h"
+#include "shared.h"
 
 FLOAT3		vec3_add(FLOAT3 a, FLOAT3 b)
 {
 	FLOAT3	res;
-	
+
 	res.x = a.x + b.x;
 	res.y = a.y + b.y;
 	res.z = a.z + b.z;
@@ -41,7 +41,7 @@ FLOAT		vec3_dot(FLOAT3 a, FLOAT3 b)
 FLOAT3		vec3_mult(FLOAT m, FLOAT3 x)
 {
 	FLOAT3	res;
-	
+
 	res.x = x.x * m;
 	res.y = x.y * m;
 	res.z = x.z * m;

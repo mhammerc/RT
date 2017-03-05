@@ -3,7 +3,8 @@
 
 # include <libft.h>
 
-# include "scene_manager.h"
-# include "interface.h"
+# include "renderer.h"
+# include "ui.h"
+
 
 #endif

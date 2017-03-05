@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include <math.h>
-#include "rt.h"
-#include "env.h"
+
+#include "renderer.h"
+#include "shared.h"
 
 void		vec3_normalize(FLOAT3 *v)
 {

@@ -6,13 +6,14 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/25 23:44:23 by vfour             #+#    #+#             */
-/*   Updated: 2017/02/26 01:00:15 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/04 17:10:58 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
-#include "rt.h"
-#include "env.h"
+
+#include "renderer.h"
+#include "shared.h"
 
 t_cam			camera_set(t_cam cam)
 {
