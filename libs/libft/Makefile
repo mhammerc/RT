@@ -67,6 +67,7 @@ SRC = ft_atoi.c \
 	  ft_lstmap.c \
 	  ft_lstcount.c \
 	  ft_lstat.c \
+	  ft_lstat_child.c \
 	  ft_putbinary.c \
 	  ft_pow.c \
 	  ft_sqrt.c \

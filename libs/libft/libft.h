@@ -6,7 +6,7 @@
 /*   By: mhammerc <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/02 18:13:57 by mhammerc          #+#    #+#             */
-/*   Updated: 2017/01/11 13:06:19 by mhammerc         ###   ########.fr       */
+/*   Updated: 2017/03/01 16:54:43 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,6 @@
 # include <fcntl.h>
 # include <unistd.h>
 # include <stdlib.h>
-
-# define TRUE 1
-# define FALSE 0
 
 # define IFNSET(p) if (!p) return
 # define IFNSETN(p) if (!p) return (NULL)
@@ -117,6 +114,7 @@ typedef struct			s_list
 	void				*content;
 	size_t				content_size;
 	struct s_list		*next;
+	struct s_list		*children;
 }						t_list;
 
 t_list					*ft_lstnew(void const *content, size_t content_size);
@@ -130,6 +128,8 @@ void					ft_lstiter(t_list *lst, void (*f)(t_list *elem));
 t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int						ft_lstcount(t_list *list);
 t_list					*ft_lstat(t_list *list, size_t index);
+t_list					*ft_lstat_child(t_list *list, int *index, int depth);
+t_list					*ft_lstat_child_before(t_list *list, int *index, int depth);
 
 /*
 ** Mathematics computing
