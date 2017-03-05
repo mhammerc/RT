@@ -58,7 +58,7 @@ void			opencl_init()
 	manager->queue = clCreateCommandQueue(manager->context, manager->device_id, 0, &error);
 	opencl_check_error(error);
 
-	opencl_create_program(manager, (const char*[]){"./resources/kernel.cl"}, 1);
+	opencl_create_program(manager, (const char*[]){"./resources/kernel.cl", "./resources/sphere.cl", "./resources/objects.cl", "./resources/quadratic_equations.cl"}, 4);
 	printf("Program created.\n");
 
 /*

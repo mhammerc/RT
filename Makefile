@@ -29,6 +29,10 @@ SRCS = srcs/main.c			\
 	   srcs/converter/gtk2cl.c
 
 RESOURCES = srcs/renderer/kernels/kernel.cl	\
+			srcs/renderer/kernels/sphere.cl \
+			srcs/renderer/kernels/quadratic_equations.cl \
+			srcs/renderer/kernels/objects.cl \
+			srcs/renderer/kernels/raytracer.h \
 			includes/renderer/shared.h
 
 OBJS = $(SRCS:.c=.o)
