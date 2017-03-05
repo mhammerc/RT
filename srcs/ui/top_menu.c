@@ -1,4 +1,4 @@
-#include "top_menu.h"
+#include "widget.h"
 
 static	t_menu_file		*create_file_menu(void)
 {

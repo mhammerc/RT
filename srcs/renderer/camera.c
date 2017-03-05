@@ -11,8 +11,9 @@
 /* ************************************************************************** */
 
 #include <math.h>
-#include "rt.h"
-#include "env.h"
+
+#include "renderer.h"
+#include "shared.h"
 
 t_cam			camera_set(t_cam cam)
 {

@@ -12,7 +12,7 @@ typedef struct			s_tree
 	GtkTreeStore		*store;
 	GtkTreeViewColumn	*col_el;
 	GtkTreeViewColumn	*col_type;
-	GtkCellRenderer		*renderer;	
+	GtkCellRenderer		*renderer;
 }						t_tree;
 
 typedef struct			s_lp_btns
@@ -27,7 +27,6 @@ typedef struct			s_lp_btns
 /*
 ** Left panel & dependancies
 */
-
 typedef struct			s_left_panel
 {
 	GtkWidget			*lp_box;

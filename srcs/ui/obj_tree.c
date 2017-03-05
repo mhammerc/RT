@@ -1,10 +1,9 @@
 #include "ui.h"
+#include "converter.h"
 
 /*
 ** refresh left panel (obj_tree)
 */
-void	init_gtk2cl(t_ui *ui);
-
 static void		refresh_obj_tree_aux(t_ui *ui, t_list *objects, GtkTreeIter *father)
 {
 	GtkTreeIter		elem;
@@ -25,7 +24,7 @@ void		refresh_obj_tree(t_ui *ui)
 	if (ui->objs)
 		refresh_obj_tree_aux(ui, ui->objs, NULL);
 	ui->selected_obj.object = NULL;
-	init_gtk2cl(ui);
+	ask_for_new_image(ui);
 	// FIXME Object unselected but properties are still shown on the right.
 	// That may cause a segfault.
 }

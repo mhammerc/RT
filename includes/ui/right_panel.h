@@ -2,7 +2,7 @@
 # define RIGHT_PANEL_H
 
 # include "libft.h"
-# include "env.h"
+# include "shared.h"
 
 
 /*

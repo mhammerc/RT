@@ -1,4 +1,4 @@
-#include <env.h>
+#include <shared.h>
 
 static int		norm_quad_solve(float b, float c, float *t)
 {
@@ -156,4 +156,3 @@ __kernel void	compute_color(__global float3* light,
 	if (rt_object(obj, sce->nb_obj, &ray))
 		light[pos] = rt_light(obj, spot, sce, ray);
 }
-

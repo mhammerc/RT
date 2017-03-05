@@ -4,12 +4,12 @@
 # include <gtk/gtk.h>
 # include <locale.h>
 
-# include "env.h"
+// TODO: ui.h isn't supposed to include shared.h
+# include "shared.h"
 
 # include "libft.h"
 # include "left_panel.h"
 # include "right_panel.h"
-# include "top_menu.h"
 # include "widget.h"
 
 /*
@@ -68,7 +68,6 @@ void					ui_print_scene(int *pixels);
 ** t_interface : main structure, holding the entire window and
 ** everything related.
 */
-
 struct					s_ui
 {
 	GtkWidget			*window;
@@ -101,14 +100,6 @@ void					create_cone();
 void					create_cylinder();
 void					create_empty();
 void					create_light();
-
-/*
-** Homemade widgets
-*/
-GtkWidget				*create_text_entry(gchar *name, gchar *default_value);
-GtkWidget				*create_numeric_entry(char *placeholder, double value, GtkWidget **ref, void *text_edited);
-GtkWidget				*create_vector3_entry(gchar *name, t_vector3d value, t_vector3w *ref, void *signal);
-GtkWidget				*create_scale_entry(gchar *name, double value, GtkWidget **ref, void *signal);
 
 /*
 ** Homemade tools that can't live in libft

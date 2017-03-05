@@ -1,13 +1,15 @@
 NAME = rt
 
 SRCS = srcs/main.c			\
-	   srcs/compute/scene_manager.c	\
-	   srcs/compute/camera.c		\
-	   srcs/compute/vec3_norm.c		\
-	   srcs/compute/vec3_op.c		\
+	   srcs/renderer/compute_image.c	\
+	   srcs/renderer/camera.c		\
+	   srcs/renderer/maths/vec3_norm.c		\
+	   srcs/renderer/maths/vec3_op.c		\
+	   srcs/renderer/init.c \
+	   srcs/renderer/singleton.c \
+	   srcs/renderer/opencl_tools.c \
 	   srcs/ui/create_object.c	\
 	   srcs/ui/display_panel.c	\
-	   srcs/ui/gtk2cl.c       	\
 	   srcs/ui/left_panel/add_buttons.c     	\
 	   srcs/ui/left_panel/left_panel.c     	\
 	   srcs/ui/obj_tree.c     	\
@@ -23,10 +25,11 @@ SRCS = srcs/main.c			\
 	   srcs/ui/widgets/text_entry.c        	\
 	   srcs/ui/widgets/vector3_entry.c        	\
 	   srcs/ui/window.c						\
-	   srcs/ui/ui_print_scene.c
+	   srcs/ui/ui_print_scene.c \
+	   srcs/converter/gtk2cl.c
 
-RESOURCES = srcs/compute/kernels/kernel.cl	\
-			includes/compute/env.h
+RESOURCES = srcs/renderer/kernels/kernel.cl	\
+			includes/renderer/shared.h
 
 OBJS = $(SRCS:.c=.o)
 
@@ -35,7 +38,7 @@ GTK_CLIBS = $(shell pkg-config --libs gtk+-3.0)
 
 CC = gcc
 
-CFLAGS = -g -Ilibs/libft -Iincludes -Iincludes/ui -Iincludes/compute
+CFLAGS = -g -Ilibs/libft -Iincludes -Iincludes/ui -Iincludes/renderer -Iincludes/converter
 CFLAGS += $(GTK_CFLAGS)
 
 CLIBS = -lm -Llibs/libft -lft

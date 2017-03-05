@@ -15,8 +15,33 @@
 
 # include <stdlib.h>
 # include <gtk/gtk.h>
-# include "top_menu.h"
 
-GtkWidget	*create_top_menu(void);
+# include "ui.h"
+
+/*
+** top menu (file, open, save, ..)
+*/
+typedef struct		s_menu_file
+{
+	GtkWidget		*menu;
+	GtkWidget		*file;
+	GtkWidget		*open;
+	GtkWidget		*save;
+	GtkWidget		*export;
+	GtkWidget		*quit;
+}					t_menu_file;
+
+GtkWidget				*create_top_menu(void);
+
+/*
+** HOMEMADE WIDGETS
+*/
+GtkWidget				*create_text_entry(gchar *name, gchar *default_value);
+GtkWidget				*create_numeric_entry(char *placeholder, double value,
+		GtkWidget **ref, void *text_edited);
+GtkWidget				*create_vector3_entry(gchar *name, t_vector3d value,
+		t_vector3w *ref, void *signal);
+GtkWidget				*create_scale_entry(gchar *name, double value,
+		GtkWidget **ref, void *signal);
 
 #endif

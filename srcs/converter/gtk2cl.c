@@ -1,5 +1,3 @@
-//#include "env.h"
-
 #ifdef __APPLE__
 # include <OpenCL/opencl.h>
 #elif __linux__
@@ -7,8 +5,8 @@
 #endif
 
 #include "ui.h"
+#include "renderer.h"
 
-int				*opencl_compute_image(t_scene *sce);
 int		gtk_objects2nb_obj(t_list *objects)
 {
 	//TODO ne pas compter les obj empty
@@ -50,7 +48,7 @@ void	fill_obj(t_list *objects, t_obj *obj)
 //		fill_obj(objects->children, ++obj);
 }
 
-void	init_gtk2cl(t_ui *ui)
+void	ask_for_new_image(t_ui *ui)
 {
 	t_obj	*obj;
 	t_spot	spot;
@@ -93,6 +91,5 @@ void	init_gtk2cl(t_ui *ui)
 	ui->scene.nb_spot = 1;
 	ui->scene.obj = obj;
 	ui->scene.light = &spot;
-	opencl_compute_image((&(ui->scene)));
-
+	ui_print_scene(renderer_compute_image((&(ui->scene))));
 }
