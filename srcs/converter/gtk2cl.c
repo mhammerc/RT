@@ -31,42 +31,75 @@ FLOAT3	vector3d_to_float3(t_vector3d v)
 	v2.z = v.z;
 	return (v2);
 }
-
-void	obj_c_2_cl(t_obj *obj, t_object object)
+//pur vector3d flot3 operato in other file
+t_vector3d	less(t_vector3d a, t_vector3d b)
 {
-	vect3d_2_float3(&((*obj).pos), object.pos);
-	//vect3d_2_float3(&((*obj).dir), object.rot);
-	//add other parameters to modify
+	a.x -= b.x;
+	a.y -= b.y;
+	a.z -= b.z;
+	return (a);
 }
-void	fill_obj(t_list *objects, t_obj *obj)
+
+t_vector3d	add(t_vector3d a, t_vector3d b)
 {
+	a.x += b.x;
+	a.y += b.y;
+	a.z += b.z;
+	return (a);
+}
 
-	int	i;
-	t_object *ui_obj;
+FLOAT3	add_cl(FLOAT3 a, FLOAT3 b)
+{
+	a.x += b.x;
+	a.y += b.y;
+	a.z += b.z;
+	return (a);
+}
 
-	i = 0;
-	while (objects)
+void	obj_c_2_cl(t_obj *obj, t_list *objs, t_obj *parent)
+{
+	t_object	objects;
+	t_object	objects_parent;
+
+	objects = *((t_object*)(objs->content));
+	vect3d_2_float3(&((*obj).pos), objects.pos);
+	if (parent)
+		((*obj).pos) = add_cl((*obj).pos, (*parent).pos);
+}
+void	fill_obj(t_list *objects, t_obj *obj, int *id, int	*parent)
+{
+	int	tmp;
+
+	tmp = *id;
+	if (objects)
 	{
-		ui_obj = (t_object*)objects->content;
-		obj_c_2_cl(obj + i, *((t_object*)(objects->content)));
-		obj->radius = ui_obj->radius;
-		obj->length = ui_obj->length;
-		obj[i].color.x = 1;
-		obj[i].color.y = 1;
-		obj[i].color.z = 0;
-		obj[i].param = 1;
-		obj[i].type = ui_obj->type;
-		obj[i].id = i;
-		obj[i].kspec = 1;
-		obj[i].kdiff = 1;
-		obj[i].kp = 256;
-		objects = objects->next;
-		++i;
+		if (*parent != -1)
+			obj_c_2_cl(&(obj[*id]), objects, &(obj[*parent]));
+		else
+			obj_c_2_cl(&(obj[*id]), objects, 0);
+		//need to optimise this triple if !
+		obj[*id].color.x = 1;
+		obj[*id].color.y = 1;
+		obj[*id].color.z = 0;
+		obj[*id].param = 1;
+		obj[*id].type = SPHERE; // ICI OMG
+		obj[*id].id = *id;
+		obj[*id].kspec = 1;
+		obj[*id].kdiff = 1;
+		obj[*id].kp = 256;
+	}
+	if (objects->next)
+	{
+		(*id)++;
+		fill_obj(objects->next, obj, id, parent);
+	}
+	if (objects->children)
+	{
+		*parent = tmp;
+		(*id)++;
+		fill_obj(objects->children, obj, id, parent);
 	}
 	//TODO for children is necessary to ajust the value with scale
-	//	if (objects->children)
-	//		fill_obj(objects->children, ++obj);
-
 }
 
 void	ask_for_new_image(t_ui *ui)
@@ -74,18 +107,17 @@ void	ask_for_new_image(t_ui *ui)
 	t_obj	*obj;
 	t_spot	spot;
 	int		nb_obj;
+	int		id;
+	int		parent;
 
 	//sera modifier dynamiquement par la suite
-	spot.pos.x = 1;
-	spot.pos.y = 4;
-	spot.pos.z = 4;
 	spot.color.x = 1;
 	spot.color.y = 1;
 	spot.color.z = 1;
 	spot.intensity = 1;
-	spot.pos.x = -1;
-	spot.pos.y = 4;
-	spot.pos.z = 4;
+	spot.pos.x = 0;
+	spot.pos.y = 1;
+	spot.pos.z = 7;
 	spot.color.x = 1;
 	spot.color.y = 1;
 	spot.color.z = 1;
@@ -95,7 +127,9 @@ void	ask_for_new_image(t_ui *ui)
 	obj = (t_obj*)malloc(sizeof(t_obj) * nb_obj);
 	if(!obj)
 		exit(EXIT_FAILURE);
-	fill_obj(ui->objs, obj);
+	id = 0;
+	parent = -1;
+	fill_obj(ui->objs, obj, &id, &parent);
 	ui->scene.nb_obj = nb_obj;
 	//ui->scene.cam = *(ui->cam);
 	ui->scene.cam.dir = vector3d_to_float3(ui->cam->dir);
