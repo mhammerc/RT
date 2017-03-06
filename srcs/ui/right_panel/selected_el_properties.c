@@ -32,7 +32,7 @@ void		element_edited()
 	obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius)));
 	obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length)));
 	ask_for_new_image(ui);
-	ui->lock = 0;
+	--ui->lock;
 }
 
 void		 edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
