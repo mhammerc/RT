@@ -39,23 +39,27 @@ void	obj_c_2_cl(t_obj *obj, t_object object)
 }
 void	fill_obj(t_list *objects, t_obj *obj)
 {
-	if(!objects)
-		return;
-	obj_c_2_cl(obj, *((t_object*)(objects->content)));
-	(*obj).color.x = 1;
-	(*obj).color.y = 1;
-	(*obj).color.z = 0;
-	(*obj).param = 1;
-	(*obj).type = SPHERE; // ICI OMG
-	(*obj).id = 0;
-	(*obj).kspec = 1;
-	(*obj).kdiff = 1;
-	(*obj).kp = 256;
-	if (objects->next)
-		fill_obj(objects->next, obj + 1);
-//TODO for children is necessary to ajust the value with scale
-//	if (objects->children)
-//		fill_obj(objects->children, ++obj);
+	int	i;
+
+	i = 0;
+	while (objects)
+	{
+		obj_c_2_cl(obj + i, *((t_object*)(objects->content)));
+		obj[i].color.x = 1;
+		obj[i].color.y = 1;
+		obj[i].color.z = 0;
+		obj[i].param = 1;
+		obj[i].type = SPHERE; // ICI OMG
+		obj[i].id = i;
+		obj[i].kspec = 1;
+		obj[i].kdiff = 1;
+		obj[i].kp = 256;
+		objects = objects->next;
+		++i;
+	}	
+	//TODO for children is necessary to ajust the value with scale
+	//	if (objects->children)
+	//		fill_obj(objects->children, ++obj);
 }
 
 void	ask_for_new_image(t_ui *ui)
