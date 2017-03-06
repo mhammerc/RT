@@ -19,6 +19,7 @@ SRCS_NAME	=	main.c										\
 				ui/right_panel/cam_properties.c				\
 				ui/right_panel/right_panel.c				\
 				ui/right_panel/scene_properties.c			\
+				ui/right_panel/color_chooser.c			\
 				ui/tools/dtoa.c								\
 				ui/tools/type_char.c						\
 				ui/top_menu.c								\

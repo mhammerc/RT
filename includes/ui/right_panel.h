@@ -54,6 +54,7 @@ typedef struct			s_element_properties
 	GtkWidget			*radius;
 	GtkWidget			*length;
 }						t_elem_properties;
+;
 
 typedef struct			s_right_panel
 {
@@ -62,6 +63,7 @@ typedef struct			s_right_panel
 	GtkWidget			*el_prop_lst;
 	GtkWidget			*cam_prop;
 	GtkWidget			*scene_prop;
+	GtkWidget			*color_chooser;
 	t_elem_properties	el_prop;
 	t_cam_gtk			cam_gtk;
 	t_scene_gtk			scene_gtk;
@@ -75,5 +77,5 @@ void		edit_cam_properties(gpointer data);
 
 void		edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path,
 									GtkTreeViewColumn *column, gpointer data);
-
+void		edit_color(gpointer data);
 #endif
