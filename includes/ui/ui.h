@@ -12,8 +12,8 @@
 # include "right_panel.h"
 # include "widget.h"
 
-# define RENDER_SIZE_W 1920
-# define RENDER_SIZE_H 1080
+# define RENDER_SIZE_W 1366
+# define RENDER_SIZE_H 768
 
 /*
 ** Interface singleton (just in case, will be removed
