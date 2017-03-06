@@ -20,7 +20,6 @@ float			light_find_max(int w, int h, FLOAT3 *light)
 		max = fmax(max, light[i].y);
 		max = fmax(max, light[i].z);
 	}
-	printf("max:%f\n", max);
 	return (max);
 }
 
@@ -134,5 +133,6 @@ int				*renderer_compute_image(t_scene *sce)
 	//print_light(light, scene->cam.w, scene->cam.h);
 	light_to_pixel(light, pixels, scene->cam.w, scene->cam.h);
 	free(scene);
+	printf("New image rendered.\n");
 	return (pixels);
 }

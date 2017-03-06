@@ -81,6 +81,8 @@ struct						s_obj
 	FLOAT3					dir;
 	FLOAT3					color;
 	FLOAT					param;
+	FLOAT					radius;
+	FLOAT					length;
 	enum e_object_type		type;
 	INT						id;
 	FLOAT					kspec;

@@ -35,18 +35,24 @@ FLOAT3	vector3d_to_float3(t_vector3d v)
 void	obj_c_2_cl(t_obj *obj, t_object object)
 {
 	vect3d_2_float3(&((*obj).pos), object.pos);
+	//vect3d_2_float3(&((*obj).dir), object.rot);
 	//add other parameters to modify
 }
 void	fill_obj(t_list *objects, t_obj *obj)
 {
+	t_object	*ui_obj;
+
 	if(!objects)
 		return;
+	ui_obj = ((t_object*)objects->content);
 	obj_c_2_cl(obj, *((t_object*)(objects->content)));
+	obj->radius = ui_obj->radius;
+	obj->length = ui_obj->length;
 	(*obj).color.x = 1;
 	(*obj).color.y = 1;
 	(*obj).color.z = 0;
 	(*obj).param = 1;
-	(*obj).type = SPHERE; // ICI OMG
+	(*obj).type = ui_obj->type;
 	(*obj).id = 0;
 	(*obj).kspec = 1;
 	(*obj).kdiff = 1;
