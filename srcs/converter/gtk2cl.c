@@ -22,6 +22,16 @@ void	vect3d_2_float3(FLOAT3 *vect_cl, t_vector3d vect_c)
 	(*vect_cl).z = vect_c.z;
 }
 
+FLOAT3	vector3d_to_float3(t_vector3d v)
+{
+	FLOAT3	v2;
+
+	v2.x = v.x;
+	v2.y = v.y;
+	v2.z = v.z;
+	return (v2);
+}
+
 void	obj_c_2_cl(t_obj *obj, t_object object)
 {
 	vect3d_2_float3(&((*obj).pos), object.pos);
@@ -76,9 +86,11 @@ void	ask_for_new_image(t_ui *ui)
 		exit(EXIT_FAILURE);
 	fill_obj(ui->objs, obj);
 	ui->scene.nb_obj = nb_obj;
-	ui->scene.cam = *(ui->cam);
-	ui->scene.cam.w = 800;
-	ui->scene.cam.h = 600;
+	//ui->scene.cam = *(ui->cam);
+	ui->scene.cam.dir = vector3d_to_float3(ui->cam->dir);
+	ui->scene.cam.pos = vector3d_to_float3(ui->cam->pos);
+	ui->scene.cam.w = RENDER_SIZE_W;
+	ui->scene.cam.h = RENDER_SIZE_H;
 	ui->scene.ambiant.intensity = 0.42;
 	ui->scene.ambiant.color.x = 1.0;
 	ui->scene.ambiant.color.y = 1.0;

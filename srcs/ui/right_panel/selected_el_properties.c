@@ -1,6 +1,7 @@
 #include "ui.h"
+#include "converter.h"
 
-static void	test(GtkWidget *emitter, gchar *new_text, gpointer data)
+static void	object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer data)
 {
 	t_object	*obj;
 	t_ui	*ui;
@@ -13,7 +14,7 @@ static void	test(GtkWidget *emitter, gchar *new_text, gpointer data)
 	gtk_tree_store_set(GTK_TREE_STORE(ui->lp->tree.store), &ui->selected_obj.iter, 0, obj->name, -1);
 }
 
-static void		element_edited()
+void		element_edited()
 {
 	t_object	*obj;
 	t_ui	*ui;
@@ -30,6 +31,8 @@ static void		element_edited()
 
 	obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius)));
 	obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length)));
+	ask_for_new_image(ui);
+	ui->lock = 0;
 }
 
 void		 edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
@@ -60,7 +63,7 @@ void		 edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTre
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new_with_mnemonic("_Element Properties"));
 	GtkWidget	*name = create_text_entry("Name	", view->selected_obj.object->name);
-	g_signal_connect(G_OBJECT(name), "rt-entry-edited", G_CALLBACK(test), (gpointer)view);
+	g_signal_connect(G_OBJECT(name), "rt-entry-edited", G_CALLBACK(object_name_edited), (gpointer)view);
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos, &view->rp->el_prop.pos, element_edited);
 	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot, &view->rp->el_prop.rot, element_edited);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);

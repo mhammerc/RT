@@ -14,6 +14,6 @@ void			ui_print_scene(int *pixels)
 
 	ui = get_interface();
 	image = gdk_pixbuf_get_pixels (ui->dp->pixbuf);
-	ft_memcpy(image, pixels, sizeof(int) * 800 * 600);
+	ft_memcpy(image, pixels, sizeof(int) * RENDER_SIZE_W * RENDER_SIZE_H);
 	gtk_image_set_from_pixbuf(GTK_IMAGE(ui->dp->image), ui->dp->pixbuf);
 }

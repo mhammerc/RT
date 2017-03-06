@@ -1,11 +1,13 @@
 #include "ui.h"
+#include "converter.h"
 
 GtkWidget	*create_float3_entry(gchar *name, cl_float3 value, t_vector3w *ref, void *signal);
 
 void		init_cam(t_ui *ui)
 {
-	t_cam *cam;
-	cam = (t_cam*)malloc(sizeof(t_cam));
+	t_ui_cam	*cam;
+
+	cam = (t_ui_cam*)malloc(sizeof(t_cam));
 	if(!cam)
 		exit(EXIT_FAILURE);
 	ft_bzero(cam, sizeof(t_cam));
@@ -20,8 +22,8 @@ void		init_cam(t_ui *ui)
 
 static void		cam_edited()
 {
-	t_cam	*cam;
-	t_ui	*ui;
+	t_ui_cam	*cam;
+	t_ui		*ui;
 
 	ui = get_interface();
 	cam = ui->cam;
@@ -32,6 +34,8 @@ static void		cam_edited()
 	cam->dir.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->cam_gtk.lkat.x)));
 	cam->dir.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->cam_gtk.lkat.y)));
 	cam->dir.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->cam_gtk.lkat.z)));
+	ask_for_new_image(ui);
+	ui->lock = 0;
 }
 
 void		edit_cam_properties(gpointer data)
@@ -42,8 +46,8 @@ void		edit_cam_properties(gpointer data)
 	view = (t_ui*)data;
 
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), gtk_label_new_with_mnemonic("_Camera"));
-	GtkWidget	*pos = create_float3_entry("pos		", view->cam->pos, &view->rp->cam_gtk.pos, cam_edited);
-	GtkWidget	*lkat = create_float3_entry("LookAt	", view->cam->dir, &view->rp->cam_gtk.lkat, cam_edited);
+	GtkWidget	*pos = create_vector3_entry("pos		", view->cam->pos, &view->rp->cam_gtk.pos, cam_edited);
+	GtkWidget	*lkat = create_vector3_entry("LookAt	", view->cam->dir, &view->rp->cam_gtk.lkat, cam_edited);
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), lkat);
 

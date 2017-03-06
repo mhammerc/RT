@@ -12,6 +12,9 @@
 # include "right_panel.h"
 # include "widget.h"
 
+# define RENDER_SIZE_W 1920
+# define RENDER_SIZE_H 1080
+
 /*
 ** Interface singleton (just in case, will be removed
 */
@@ -51,10 +54,24 @@ typedef struct			s_selected_obj
 	GtkTreeIter			iter;
 }						t_selected_obj;
 
+struct						s_ui_cam
+{
+	t_vector3d				pos;
+	t_vector3d				dir;
+	/* FLOAT3					up;
+	FLOAT3					vx;
+	FLOAT3					vy;
+	FLOAT3					top_left;
+	FLOAT					fov;
+	FLOAT					ratio;
+	INT						w;
+	INT						h;*/
+};
+typedef struct s_ui_cam		t_ui_cam;
+
 /*
 ** Render panel & dependancies
 */
-
 typedef struct			s_display_panel
 {
 	GtkWidget			*dp_box;
@@ -76,13 +93,15 @@ struct					s_ui
 	GtkWidget			*workspace;
 
 	t_list				*objs;
-	t_cam				*cam;
+	t_ui_cam			*cam;
 	t_scene				scene;
 	t_selected_obj		selected_obj;
 
 	t_left_panel		*lp;
 	t_display_panel		*dp;
 	t_right_panel		*rp;
+
+	int					lock;
 };
 
 void					build_interface(GtkApplication *app, gpointer user_data);
