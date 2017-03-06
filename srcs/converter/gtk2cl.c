@@ -42,13 +42,15 @@ void	fill_obj(t_list *objects, t_obj *obj)
 {
 
 	int	i;
+	t_object *ui_obj;
 
 	i = 0;
 	while (objects)
 	{
+		ui_obj = (t_object*)objects->content;
 		obj_c_2_cl(obj + i, *((t_object*)(objects->content)));
-    obj->radius = ui_obj->radius;
-	  obj->length = ui_obj->length;
+		obj->radius = ui_obj->radius;
+		obj->length = ui_obj->length;
 		obj[i].color.x = 1;
 		obj[i].color.y = 1;
 		obj[i].color.z = 0;
@@ -60,7 +62,7 @@ void	fill_obj(t_list *objects, t_obj *obj)
 		obj[i].kp = 256;
 		objects = objects->next;
 		++i;
-	}	
+	}
 	//TODO for children is necessary to ajust the value with scale
 	//	if (objects->children)
 	//		fill_obj(objects->children, ++obj);
