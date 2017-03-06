@@ -6,12 +6,17 @@ static int		is_numerical(const gchar c)
 }
 
 static void		numeric_entry_text_inserted(GtkEntryBuffer *buffer, guint position, gchar *chars, guint n_chars, gpointer text_edited_function)
+//static void		numeric_entry_text_changed(GtkEditable *entry, gpointer text_edited_function)
 {
-	if (get_interface()->lock)
+	if (get_interface()->lock > 0)
+	{
+		--get_interface()->lock;
 		return ;
-	get_interface()->lock = 1;
+	}
+	get_interface()->lock = 2;
 
 	void(*f)();
+	//GtkEntryBuffer *buffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
 	const gchar	*text = gtk_entry_buffer_get_text(buffer);
 	const gint	length = gtk_entry_buffer_get_length(buffer);
 	gchar		*new_text;
@@ -37,8 +42,11 @@ static void		numeric_entry_text_deleted(GtkEntryBuffer *buffer, guint position, 
 {
 	void(*f)();
 
-	if (get_interface()->lock)
+	if (get_interface()->lock > 0)
+	{
+		--get_interface()->lock;
 		return ;
+	}
 	get_interface()->lock = 1;
 	f = user_data;
 	f();
@@ -59,8 +67,8 @@ GtkWidget		*create_numeric_entry(char *placeholder, double value, GtkWidget  **r
 	gtk_entry_set_max_length(GTK_ENTRY(entry), 6);
 	free(value_string);
 	entry_buffer = gtk_entry_get_buffer(GTK_ENTRY(entry));
-	g_signal_connect(entry_buffer, "inserted-text", G_CALLBACK(numeric_entry_text_inserted), text_edited);
-	g_signal_connect(entry_buffer, "deleted-text", G_CALLBACK(numeric_entry_text_deleted), text_edited);
+	g_signal_connect_after(entry_buffer, "inserted-text", G_CALLBACK(numeric_entry_text_inserted), text_edited);
+	g_signal_connect_after(entry_buffer, "deleted-text", G_CALLBACK(numeric_entry_text_deleted), text_edited);
 	if (ref)
 		*ref = entry;
 	return (entry);

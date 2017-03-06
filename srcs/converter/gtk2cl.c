@@ -35,21 +35,25 @@ FLOAT3	vector3d_to_float3(t_vector3d v)
 void	obj_c_2_cl(t_obj *obj, t_object object)
 {
 	vect3d_2_float3(&((*obj).pos), object.pos);
+	//vect3d_2_float3(&((*obj).dir), object.rot);
 	//add other parameters to modify
 }
 void	fill_obj(t_list *objects, t_obj *obj)
 {
+
 	int	i;
 
 	i = 0;
 	while (objects)
 	{
 		obj_c_2_cl(obj + i, *((t_object*)(objects->content)));
+    obj->radius = ui_obj->radius;
+	  obj->length = ui_obj->length;
 		obj[i].color.x = 1;
 		obj[i].color.y = 1;
 		obj[i].color.z = 0;
 		obj[i].param = 1;
-		obj[i].type = SPHERE; // ICI OMG
+		obj[i].type = ui_obj->type;
 		obj[i].id = i;
 		obj[i].kspec = 1;
 		obj[i].kdiff = 1;
@@ -60,6 +64,7 @@ void	fill_obj(t_list *objects, t_obj *obj)
 	//TODO for children is necessary to ajust the value with scale
 	//	if (objects->children)
 	//		fill_obj(objects->children, ++obj);
+
 }
 
 void	ask_for_new_image(t_ui *ui)
