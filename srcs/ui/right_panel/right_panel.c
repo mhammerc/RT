@@ -12,7 +12,6 @@ void		right_panel(t_ui *ui, t_right_panel *rp)
 
 	gtk_container_add(GTK_CONTAINER(rp->right_panel), rp->el_prop_lst);
 	gtk_tree_view_set_activate_on_single_click(GTK_TREE_VIEW(ui->lp->tree.tree), TRUE);
-	g_signal_connect(ui->lp->tree.tree, "row-activated", G_CALLBACK(edit_element_properties), ui);
 
 	rp->cam_prop = gtk_list_box_new();
 	gtk_widget_set_size_request(rp->cam_prop, 280, 200);
