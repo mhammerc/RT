@@ -7,30 +7,42 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 
 	ui = (t_ui*)view;
 	popover = gtk_popover_menu_new();
-	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add);
+	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_obj);
 	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
+	GtkWidget *empty = gtk_button_new_with_label("Empty");
 	GtkWidget *sphere = gtk_button_new_with_label("Sphere");
 	GtkWidget *plane = gtk_button_new_with_label("Plane");
 	GtkWidget *cylinder = gtk_button_new_with_label("Cylinder");
-	GtkWidget *empty = gtk_button_new_with_label("Empty");
 	GtkWidget *cone = gtk_button_new_with_label("Cone");
-	GtkWidget *light = gtk_button_new_with_label("Light");
 	g_signal_connect(sphere, "clicked", G_CALLBACK(create_sphere), NULL);
 	g_signal_connect(plane, "clicked", G_CALLBACK(create_plane), NULL);
 	g_signal_connect(cylinder, "clicked", G_CALLBACK(create_cylinder), NULL);
 	g_signal_connect(cone, "clicked", G_CALLBACK(create_cone), NULL);
 	g_signal_connect(empty, "clicked", G_CALLBACK(create_empty), NULL);
-	g_signal_connect(light, "clicked", G_CALLBACK(create_light), NULL);
 	gtk_container_add(GTK_CONTAINER(submenu), sphere);
 	gtk_container_add(GTK_CONTAINER(submenu), empty);
 	gtk_container_add(GTK_CONTAINER(submenu), plane);
 	gtk_container_add(GTK_CONTAINER(submenu), cylinder);
 	gtk_container_add(GTK_CONTAINER(submenu), cone);
-	gtk_container_add(GTK_CONTAINER(submenu), light);
 	gtk_container_add(GTK_CONTAINER(popover), submenu);
 	gtk_widget_show_all(popover);
 }
 
+void		add_light_btn(GtkButton *button, gpointer view)
+{
+	t_ui		*ui;
+	GtkWidget		*popover;
+
+	ui = (t_ui*)view;
+	popover = gtk_popover_menu_new();
+	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_light);
+	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
+	GtkWidget *light = gtk_button_new_with_label("Diffuse");
+	g_signal_connect(light, "clicked", G_CALLBACK(create_light), NULL);
+	gtk_container_add(GTK_CONTAINER(submenu), light);
+	gtk_container_add(GTK_CONTAINER(popover), submenu);
+	gtk_widget_show_all(popover);
+}
 
 void		ft_lst_cpy(t_list **new, t_list *original)
 {
