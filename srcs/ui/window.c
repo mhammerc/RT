@@ -16,6 +16,7 @@ static GtkWidget		*create_app_window(GtkApplication *app, int width, int height,
 static void			default_scene(t_ui *ui)
 {
 	create_sphere();
+	create_light();
 }
 
 t_ui	*get_interface()
