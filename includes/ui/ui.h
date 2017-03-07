@@ -127,6 +127,6 @@ void					create_light();
 char					*dtoa(double value);
 char					*get_el_type_char(t_object *object);
 
-void					export_png(void);
+void					open_dialog_save(void);
 
 #endif

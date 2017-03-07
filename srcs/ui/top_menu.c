@@ -11,7 +11,8 @@ static	t_menu_file		*create_file_menu(void)
 	file_menu->save = gtk_menu_item_new_with_label("Save scene");
 	file_menu->export = gtk_menu_item_new_with_label("Export as PNG");
 	file_menu->quit = gtk_menu_item_new_with_label("Quit");
-	g_signal_connect (file_menu->export, "activate", G_CALLBACK (export_png), NULL);
+	g_signal_connect (file_menu->export, "activate",
+		G_CALLBACK (open_dialog_save), NULL);
 	return (file_menu);
 }
 
