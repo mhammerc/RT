@@ -41,6 +41,7 @@ typedef struct			s_object
 	enum e_object_type	type;
 	t_vector3d			pos;
 	t_vector3d			rot;
+	t_vector3d			color;
 	double				length;
 	double				radius;
 	char				name[80];

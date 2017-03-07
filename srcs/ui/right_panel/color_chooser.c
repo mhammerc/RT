@@ -1,21 +1,34 @@
 #include "ui.h"
+#include "converter.h"
 
-void		edit_color(gpointer data)
+static void	color_edited(GtkColorButton *button,
+		gpointer user_data)
 {
-	t_ui		*view;
+	t_ui	*ui;
+	GdkRGBA color;
+
+	gtk_color_chooser_get_rgba(GTK_COLOR_CHOOSER(button), &color);
+	ui = (t_ui*)user_data;
+	ui->selected_obj.object->color.x = (double)color.red;
+	ui->selected_obj.object->color.y = (double)color.green;
+	ui->selected_obj.object->color.z = (double)color.blue;
+	ask_for_new_image(ui);
+}
+
+void		create_color_chooser(t_ui *ui, t_vector3d color)
+{
 	GtkWidget	*color_chooser;
-//	t_scene		*scene;
+	GdkRGBA		gtk_color;
 
-	view = (t_ui*)data;
-	gtk_container_add(GTK_CONTAINER(view->rp->color_chooser), gtk_label_new_with_mnemonic("_Color Picker"));
-	color_chooser = gtk_color_chooser_widget_new();
-	//GTK_COLOR_CHOOSER_WIDGET(color_chooser)->show_editor = TRUE;
-	GValue value;
-	ft_bzero(&value, sizeof(GValue));
-	g_value_init(&value, G_TYPE_BOOLEAN);
-	g_value_set_boolean(&value, TRUE);
-	g_object_set_property(G_OBJECT(color_chooser), "show-editor", &value);
-	gtk_container_add(GTK_CONTAINER(view->rp->color_chooser), color_chooser);
-
-	gtk_widget_show_all(view->window);
+	gtk_color.red = color.x;
+	gtk_color.green = color.y;
+	gtk_color.blue = color.z;
+	gtk_color.alpha = 1;
+	gtk_container_add(GTK_CONTAINER(ui->rp->el_prop_lst), gtk_label_new_with_mnemonic("_Color Picker"));
+	color_chooser = gtk_color_button_new();
+	ui->rp->color_chooser = color_chooser;
+	g_signal_connect(G_OBJECT(color_chooser), "color-set",
+			G_CALLBACK(color_edited), ui);
+	gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(color_chooser), &gtk_color);
+	gtk_container_add(GTK_CONTAINER(ui->rp->el_prop_lst), color_chooser);
 }
