@@ -151,7 +151,7 @@ void	fill_spot(t_list *objects, t_spot *spot, int *id, int *parent)
 			spot_c_2_cl(&(spot[*id]), objects, 0);
 		spot[*id].color.x = 1;
 		spot[*id].color.y = 1;
-		spot[*id].color.z = 0;
+		spot[*id].color.z = 1;
 		spot[*id].intensity = 1;
 		//spot[*id].id = *id; besoin d'un id?
 	}

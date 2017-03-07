@@ -1,10 +1,31 @@
 #include "ui.h"
 
-/*
-** By refresh I mean... delete everything
-** then add every known elements to the tree.
-** That's the easy way to keep the tree synchronized with the scene.
-*/
+//FIXME: don't use global
+static int lock = 0;
+
+static void		make_lock()
+{
+	lock = 1;
+}
+
+static void		button_relase(GtkWidget *widget, GdkEvent *event,
+		gpointer user_data)
+{
+	t_ui		*ui;
+
+	if (lock)
+	{
+		--lock;
+		return ;
+	}
+	ui = (t_ui*)user_data;
+	gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)));
+	clear_properties_list(ui);
+	ui->selected_obj.object = NULL;
+	//*ui->selected_obj.index = 0;
+	//ui->selected_obj.depth = 0;
+	//ft_bzero(&ui->selected_obj.iter, sizeof(GtkTreeIter));
+}
 
 void			left_panel(t_ui *ui, t_left_panel *lp)
 {
@@ -22,10 +43,15 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 	lp->tree.col_el = gtk_tree_view_column_new_with_attributes("Element", lp->tree.renderer, "text", 0, NULL);
 	lp->tree.col_type = gtk_tree_view_column_new_with_attributes("Type", lp->tree.renderer, "text", 1, NULL);
 
+	g_signal_connect(ui->lp->tree.tree, "row-activated", G_CALLBACK(edit_element_properties), ui);
+	g_signal_connect(ui->lp->tree.tree, "cursor-changed", G_CALLBACK(make_lock), ui);
+	g_signal_connect(GTK_SCROLLABLE(lp->tree.tree), "button-release-event", G_CALLBACK(button_relase), ui);
+
 	gtk_widget_set_size_request(lp->lp_btns.add_obj, 100, 0);
 	gtk_widget_set_size_request(lp->lp_btns.add_light, 100, 0);
 	gtk_widget_set_size_request(lp->lp_btns.remove, 10, 0);
 	gtk_widget_set_size_request(lp->tree.tree, 280, 768);
+ 
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree), lp->tree.col_el);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree), lp->tree.col_type);
 

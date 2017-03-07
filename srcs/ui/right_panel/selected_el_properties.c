@@ -35,12 +35,28 @@ static void		element_edited()
 	--ui->lock;
 }
 
+void			clear_properties_list(t_ui *ui)
+{
+	GList	*children;
+	GList	*iter;
+
+	children = gtk_container_get_children(GTK_CONTAINER(ui->rp->el_prop_lst));
+	iter = children;
+	while (iter != NULL)
+	{
+		gtk_widget_destroy(GTK_WIDGET(iter->data));
+		iter = g_list_next(iter);
+	}
+	g_list_free(children);
+}
+
 void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
 {
 	t_ui		*view;
 	t_list		*obj_lst;
 	int			*tmp;
 
+	printf("HERE\n");
 	view = (t_ui*)data;
 	tmp = gtk_tree_path_get_indices_with_depth(path, &(view->selected_obj.depth));
 	ft_memcpy(view->selected_obj.index, tmp , 4 * (view->selected_obj.depth));
@@ -55,11 +71,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	view->selected_obj.object = (t_object*)obj_lst->content;
 	gtk_tree_model_get_iter(GTK_TREE_MODEL(view->lp->tree.store), &view->selected_obj.iter, path);
 
-	GList	*children, *iter;
-	children = gtk_container_get_children(GTK_CONTAINER(view->rp->el_prop_lst));
-	for (iter = children; iter != NULL; iter = g_list_next(iter))
-		gtk_widget_destroy(GTK_WIDGET(iter->data));
-	g_list_free(children);
+	clear_properties_list(view);
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new_with_mnemonic("_Element Properties"));
 	GtkWidget	*name = create_text_entry("Name	", view->selected_obj.object->name);

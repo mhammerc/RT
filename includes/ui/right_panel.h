@@ -75,6 +75,8 @@ void		edit_scene_properties(gpointer data);
 void		init_cam(t_ui *ui);
 void		edit_cam_properties(gpointer data);
 
+void		clear_properties_list(t_ui *ui);
+
 void		edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path,
 									GtkTreeViewColumn *column, gpointer data);
 void		create_color_chooser(t_ui *ui, t_vector3d color);
