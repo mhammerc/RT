@@ -1,7 +1,7 @@
 #include "ui.h"
 #include "converter.h"
 
-static void	object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer data)
+static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer data)
 {
 	t_object	*obj;
 	t_ui	*ui;
@@ -14,7 +14,7 @@ static void	object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer dat
 	gtk_tree_store_set(GTK_TREE_STORE(ui->lp->tree.store), &ui->selected_obj.iter, 0, obj->name, -1);
 }
 
-void		element_edited()
+static void		element_edited()
 {
 	t_object	*obj;
 	t_ui	*ui;
@@ -35,7 +35,7 @@ void		element_edited()
 	--ui->lock;
 }
 
-void		 edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
+void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
 {
 	t_ui		*view;
 	t_list		*obj_lst;
@@ -72,5 +72,6 @@ void		 edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTre
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Radius	", view->selected_obj.object->radius, &view->rp->el_prop.radius, element_edited));
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Length	", view->selected_obj.object->length, &view->rp->el_prop.length, element_edited));
+	create_color_chooser(view, view->selected_obj.object->color);
 	gtk_widget_show_all(view->window);
 }

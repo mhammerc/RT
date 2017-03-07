@@ -63,6 +63,7 @@ void	obj_c_2_cl(t_obj *obj, t_list *objs, t_obj *parent)
 
 	objects = *((t_object*)(objs->content));
 	vect3d_2_float3(&((*obj).pos), objects.pos);
+	vect3d_2_float3(&((*obj).color), objects.color);
 	if (parent)
 		((*obj).pos) = add_cl((*obj).pos, (*parent).pos);
 }
@@ -78,9 +79,6 @@ void	fill_obj(t_list *objects, t_obj *obj, int *id, int	*parent)
 		else
 			obj_c_2_cl(&(obj[*id]), objects, 0);
 		//need to optimise this triple if !
-		obj[*id].color.x = 1;
-		obj[*id].color.y = 1;
-		obj[*id].color.z = 0;
 		obj[*id].param = 1;
 		obj[*id].type = SPHERE; // ICI OMG
 		obj[*id].id = *id;

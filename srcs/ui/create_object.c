@@ -48,6 +48,7 @@ void		create_sphere()
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = SPHERE;
+	object.color.z = 1;
 	ft_strcpy(object.name, "Sphere");
 	add_object(object);
 }
@@ -58,6 +59,7 @@ void		create_plane()
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = PLANE;
+	object.color.z = 1;
 	ft_strcpy(object.name, "Plane");
 	add_object(object);
 }
@@ -68,6 +70,7 @@ void		create_cone()
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = CONE;
+	object.color.z = 1;
 	ft_strcpy(object.name, "Cone");
 	add_object(object);
 }
@@ -78,6 +81,7 @@ void		create_cylinder()
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = CYLINDER;
+	object.color.z = 1;
 	ft_strcpy(object.name, "Cylinder");
 	add_object(object);
 }

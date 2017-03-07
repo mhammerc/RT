@@ -25,10 +25,10 @@ void		right_panel(t_ui *ui, t_right_panel *rp)
 
 	gtk_container_add(GTK_CONTAINER(rp->right_panel), rp->scene_prop);
 
-	rp->color_chooser = gtk_list_box_new();
+	/*rp->color_chooser = gtk_list_box_new();
 	gtk_widget_set_size_request(rp->color_chooser, 280, 200);
 
 	gtk_container_add(GTK_CONTAINER(rp->right_panel), rp->color_chooser);
-	edit_color(ui);
+	edit_color(ui);*/
 	edit_scene_properties(ui);
 }
