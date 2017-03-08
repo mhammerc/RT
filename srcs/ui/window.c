@@ -55,6 +55,9 @@ void			build_interface(GtkApplication *app, gpointer user_data)
 	ui->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	ui->top_menu = create_top_menu();
 	ui->workspace = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+
+	event_handler(ui);
+
 	gtk_container_add(GTK_CONTAINER(ui->window), ui->main_box);
 	gtk_container_add(GTK_CONTAINER(ui->main_box), ui->top_menu);
 	gtk_container_add(GTK_CONTAINER(ui->main_box), ui->workspace);
