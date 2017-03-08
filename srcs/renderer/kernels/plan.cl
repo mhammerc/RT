@@ -1,5 +1,5 @@
 #include <raytracer.h>
-
+/*
 int		    plan_intersect(__constant t_obj *self, t_ray *ray)
 {
 	float		t;
@@ -24,3 +24,4 @@ float3	    plan_normal(__constant t_obj *self)
 {
 	return (normalize(self->dir));
 }
+*/
