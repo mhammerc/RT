@@ -1,8 +1,6 @@
 #include "ui.h"
 #include "converter.h"
 
-GtkWidget	*create_float3_entry(gchar *name, cl_float3 value, t_vector3w *ref, void *signal);
-
 void		init_cam(t_ui *ui)
 {
 	t_ui_cam	*cam;

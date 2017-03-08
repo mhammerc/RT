@@ -5,7 +5,7 @@
 #include "renderer.h"
 #include "shared.h"
 
-float			light_find_max(int w, int h, FLOAT3 *light)
+float			light_find_max(int w, int h, t_vec3 *light)
 {
 	float		max;
 	int			i;
@@ -31,7 +31,7 @@ int				colorcomp_to_rgb(int r, int g, int b)
 	return ((0xff << ALPHA_BITSHIFT) + (r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
 }
 
-void			light_to_pixel(FLOAT3 *light, int *px, int w, int h)
+void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
 {
 	float		invmax;
 	int			i;
@@ -49,90 +49,59 @@ void			light_to_pixel(FLOAT3 *light, int *px, int w, int h)
 	return ;
 }
 
-static t_cl_scene	*scene_converter(t_scene *sce)
-{
-	t_cl_scene		*cl_sce;
+/*
+** Ray constructor
+** @return a new ray
+*/
 
-	if (NULL == (cl_sce = (t_cl_scene*)malloc(sizeof(t_cl_scene))))
-		return (NULL);
-	cl_sce->nb_obj = sce->nb_obj;
-	cl_sce->nb_spot = sce->nb_spot;
-	cl_sce->ambiant = sce->ambiant;
-	cl_sce->cam = sce->cam;
-	/*
-	print_camera(cl_sce->cam);
-	for (int i = 0; i < sce->nb_obj; ++i)
-		print_obj(sce->obj[i]);
-	for (int i = 0; i < sce->nb_spot; ++i)
-		print_spot(sce->light[i]);
-		*/
-	return (cl_sce);
+t_ray		ray_new_aim(t_vec3 pos, t_vec3 aim)
+{
+	t_vec3	dir;
+	t_vec3	n;
+
+	n = (t_vec3){0, 0, 0};
+	dir = vec3_get_normalized(vec3_sub(aim, pos));
+	return ((t_ray){pos, dir, n, BIG_DIST + 1,  INITIAL_RAY, NULL, n, n});
 }
 
 int				*renderer_compute_image(t_scene *sce)
 {
-	t_scene_manager		*manager;
 	int					*pixels;
-	cl_int				error;
-	cl_kernel			kernel;
-	FLOAT3				*light;
-	t_cl_scene			*scene;
-	t_obj				*obj;
-	t_spot				*spot;
+	t_vec3				*light;
+	int					i;
+	int					j;
+	t_ray				r;
+	t_vec3				aim;
+	t_vec3				start;
 
 	sce->cam = camera_set(sce->cam);
-	if (NULL == (scene = scene_converter(sce)))
-		return (NULL);
 	obj = sce->obj;
 	spot = sce->light;
 
-	pixels = (int*)malloc(sizeof(int) * scene->cam.w * scene->cam.h);
-	bzero(pixels, sizeof(int) * scene->cam.w * scene->cam.h);
+	pixels = (int*)ft_memalloc(sizeof(int) * scene->cam.w * scene->cam.h);
+	light = (t_vec3*)ft_memalloc(sizeof(t_vec3) * scene->cam.w * scene->cam.h);
+	if (NULL == pixels || NULL == light)
+		exit(EXIT_FAILURE);
 
-	light = (FLOAT3*)malloc(sizeof(FLOAT3) * scene->cam.w * scene->cam.h);
-	bzero(light, sizeof(FLOAT3) * scene->cam.w * scene->cam.h);
-
-	manager = opencl_get();
-	error = CL_SUCCESS;
-
-	cl_mem	light_buffer = clCreateBuffer(manager->context,
-			CL_MEM_READ_WRITE,
-			sizeof(FLOAT3) * scene->cam.w * scene->cam.h,
-			NULL, &error);
-	opencl_check_error(error);
-
-	cl_mem	scene_buffer = clCreateBuffer(manager->context,
-			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-			sizeof(t_cl_scene),
-			scene, &error);
-	opencl_check_error(error);
-
-	cl_mem	obj_buffer = clCreateBuffer(manager->context,
-			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-			sizeof(t_obj) * scene->nb_obj,
-			obj, &error);
-	opencl_check_error(error);
-
-	cl_mem	spot_buffer = clCreateBuffer(manager->context,
-			CL_MEM_READ_ONLY | CL_MEM_COPY_HOST_PTR,
-			sizeof(t_spot) * scene->nb_spot,
-			spot, &error);
-	opencl_check_error(error);
-
-	kernel = clCreateKernel(manager->program, "compute_color", NULL);
-	clSetKernelArg(kernel, 0, sizeof(cl_mem), (void*)&light_buffer);
-	clSetKernelArg(kernel, 1, sizeof(cl_mem), (void*)&scene_buffer);
-	clSetKernelArg(kernel, 2, sizeof(cl_mem), (void*)&obj_buffer);
-	clSetKernelArg(kernel, 3, sizeof(cl_mem), (void*)&spot_buffer);
-	const size_t global_work_size[] = { scene->cam.w * scene->cam.h, 0, 0 };
-	cl_event e;
-	opencl_check_error(clEnqueueNDRangeKernel(manager->queue, kernel, 1, NULL,
-				global_work_size, NULL, 0, NULL, &e));
-	opencl_check_error(clEnqueueReadBuffer(manager->queue, light_buffer,
-				CL_TRUE, 0, sizeof(FLOAT3) * scene->cam.w * scene->cam.h, light, 1, &e, NULL));
-	//print_light(light, scene->cam.w, scene->cam.h);
-	light_to_pixel(light, pixels, scene->cam.w, scene->cam.h);
-	free(scene);
+	//lance le kernel
+	aim = sce->cam->top_left;
+	r = ray_new_aim(sce->cam->pos, aim, light);
+	i = -1;
+	while (++i < e->h)
+	{
+		start = aim;
+		j = -1;
+		while (++j < e->w)
+		{
+			if (rt_object(sce, &r))
+				rt_light(sce, r);
+			aim = vec3_add(aim, sce->cam->vx);
+			r = ray_new_aim(sce->cam->pos, aim, r.light + 1);
+		}
+		aim = vec3_sub(start, e->sce->cam->vy);
+		r = ray_new_aim(sce->cam->pos, aim, r.light);
+	}
+	light_to_pixel(light, pixels, sce->cam.w, sce->cam.h);
 	printf("New image rendered.\n");
 	return (pixels);
 }

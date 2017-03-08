@@ -1,12 +1,6 @@
 #ifndef SCENE_MANAGER_H
 # define SCENE_MANAGER_H
 
-# ifdef __APPLE__
-#  include <OpenCL/opencl.h>
-# elif __linux__
-#  include <CL/cl.h>
-# endif
-
 # include <libft.h>
 # include "shared.h"
 
@@ -15,44 +9,29 @@
 # define G_BITSHIFT 8
 # define B_BITSHIFT 16
 
-typedef struct			s_scene_manager
-{
-	cl_uint					platforms_count;
-	cl_platform_id			platform_id;
+int			*renderer_compute_image();
 
-	cl_uint					devices_count;
-	cl_device_id			device_id;
-	cl_device_id			*device_ids;
-
-	cl_context_properties	context_properties[4];
-	cl_context				context;
-
-	cl_command_queue		queue;
-
-	cl_program				program;
-}						t_scene_manager;
-
-t_scene_manager			*opencl_get();
-void					opencl_init();
-int						*renderer_compute_image();
-
-void					redraw_scene();
-
-void					opencl_check_error(cl_int error);
+void		redraw_scene();
 
 /*
 ** Vectors
 */
-FLOAT						vec3_norm(FLOAT3 v);
-void						vec3_normalize(FLOAT3 *v);
-FLOAT3						vec3_get_normalized(FLOAT3 v);
-FLOAT						vec3_norm2(FLOAT3 v);
-FLOAT3						vec3_add(FLOAT3 a, FLOAT3 b);
-FLOAT3						vec3_cross(FLOAT3 u, FLOAT3 v);
-FLOAT						vec3_dot(FLOAT3 a, FLOAT3 b);
-FLOAT3						vec3_mult(FLOAT m, FLOAT3 x);
-FLOAT3						vec3_sub(FLOAT3 a, FLOAT3 b);
+double		vec3_norm(t_vec3 v);
+void		vec3_normalize(t_vec3 *v);
+t_vec3		vec3_get_normalized(t_vec3 v);
+double		vec3_norm2(t_vec3 v);
+t_vec3		vec3_add(t_vec3 a, t_vec3 b);
+t_vec3		vec3_cross(t_vec3 u, t_vec3 v);
+double		vec3_dot(t_vec3 a, t_vec3 b);
+t_vec3		vec3_mult(double m, t_vec3 x);
+t_vec3		vec3_sub(t_vec3 a, t_vec3 b);
 
-t_cam						camera_set(t_cam cam);
+t_cam		camera_set(t_cam cam);
+
+int			sphere_intersect(t_obj *self, t_ray *ray)
+t_vec3		sphere_normal(t_obj *self, t_vec3 pos)
+
+int(*) (struct obj*, t_ray*)	get_obj_intersection(enum e_object_type);
+t_vec3(*) (struct obj*, t_vec3)	get_obj_normal(enum e_object_type);
 
 #endif

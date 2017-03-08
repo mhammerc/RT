@@ -11,17 +11,6 @@
 typedef struct s_ui				t_ui;
 
 /*
-** Maths definitions
-*/
-
-typedef struct			s_vector3d
-{
-	double				x;
-	double				y;
-	double				z;
-}						t_vector3d;
-
-/*
 ** Object properties
 */
 typedef struct			s_vector3w
@@ -79,5 +68,5 @@ void		clear_properties_list(t_ui *ui);
 
 void		edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path,
 									GtkTreeViewColumn *column, gpointer data);
-void		create_color_chooser(t_ui *ui, t_vector3d color);
+void		create_color_chooser(t_ui *ui, t_vec3 color);
 #endif

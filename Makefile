@@ -10,6 +10,8 @@ SRCS_NAME	=	main.c										\
 				renderer/init.c								\
 				renderer/singleton.c						\
 				renderer/opencl_tools.c						\
+				renderer/objects/sphere.c					\
+				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
 				ui/display_panel.c							\
 				ui/left_panel/add_buttons.c					\

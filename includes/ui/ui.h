@@ -4,7 +4,6 @@
 # include <gtk/gtk.h>
 # include <locale.h>
 
-// TODO: ui.h isn't supposed to include shared.h
 # include "shared.h"
 
 # include "libft.h"
@@ -39,9 +38,9 @@ t_ui			*get_interface();
 typedef struct			s_object
 {
 	enum e_object_type	type;
-	t_vector3d			pos;
-	t_vector3d			rot;
-	t_vector3d			color;
+	t_vec3				pos;
+	t_vec3				rot;
+	t_vec3				color;
 	double				length;
 	double				radius;
 	char				name[80];
@@ -55,10 +54,10 @@ typedef struct			s_selected_obj
 	GtkTreeIter			iter;
 }						t_selected_obj;
 
-struct						s_ui_cam
+struct					s_ui_cam
 {
-	t_vector3d				pos;
-	t_vector3d				dir;
+	t_vec3				pos;
+	t_vec3				dir;
 	/* FLOAT3					up;
 	FLOAT3					vx;
 	FLOAT3					vy;

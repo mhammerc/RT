@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 17:09:47 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/03 16:08:22 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/08 16:22:03 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 # include <gtk/gtk.h>
 
 # include "ui.h"
+# include "shared.h"
 
 /*
 ** top menu (file, open, save, ..)
@@ -39,7 +40,7 @@ GtkWidget				*create_top_menu(void);
 GtkWidget				*create_text_entry(gchar *name, gchar *default_value);
 GtkWidget				*create_numeric_entry(char *placeholder, double value,
 		GtkWidget **ref, void *text_edited);
-GtkWidget				*create_vector3_entry(gchar *name, t_vector3d value,
+GtkWidget				*create_vector3_entry(gchar *name, t_vec3 value,
 		t_vector3w *ref, void *signal);
 GtkWidget				*create_scale_entry(gchar *name, double value,
 		GtkWidget **ref, void *signal);

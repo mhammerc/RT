@@ -15,7 +15,7 @@ static void	color_edited(GtkColorButton *button,
 	ask_for_new_image(ui);
 }
 
-void		create_color_chooser(t_ui *ui, t_vector3d color)
+void		create_color_chooser(t_ui *ui, t_vec3 color)
 {
 	GtkWidget	*color_chooser;
 	GdkRGBA		gtk_color;
