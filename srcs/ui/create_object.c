@@ -6,7 +6,7 @@
 ** This is why it use get_interface().
 */
 
-static void		add_object(t_object object)
+static void		add_object(t_object object, gboolean render_new)
 {
 	t_ui		*ui;
 	t_list		*lst;
@@ -19,7 +19,8 @@ static void		add_object(t_object object)
 	if (!ui->selected_obj.object)
 	{
 		ft_lstpushback(&ui->objs, ft_lstnew(&object, sizeof(t_object)));
-		refresh_obj_tree(ui);
+		if (render_new)
+			refresh_obj_tree(ui);
 	}
 	else
 	{
@@ -42,7 +43,7 @@ static void		add_object(t_object object)
 ** Automatically add it to the interface.
 */
 
-void		create_sphere()
+void		create_sphere(gboolean render_new)
 {
 	t_object	object;
 
@@ -50,10 +51,10 @@ void		create_sphere()
 	object.type = SPHERE;
 	object.color.z = 1;
 	ft_strcpy(object.name, "Sphere");
-	add_object(object);
+	add_object(object, render_new);
 }
 
-void		create_plane()
+void		create_plane(gboolean render_new)
 {
 	t_object	object;
 
@@ -61,10 +62,10 @@ void		create_plane()
 	object.type = PLANE;
 	object.color.z = 1;
 	ft_strcpy(object.name, "Plane");
-	add_object(object);
+	add_object(object, render_new);
 }
 
-void		create_cone()
+void		create_cone(gboolean render_new)
 {
 	t_object	object;
 
@@ -72,10 +73,10 @@ void		create_cone()
 	object.type = CONE;
 	object.color.z = 1;
 	ft_strcpy(object.name, "Cone");
-	add_object(object);
+	add_object(object, render_new);
 }
 
-void		create_cylinder()
+void		create_cylinder(gboolean render_new)
 {
 	t_object	object;
 
@@ -83,25 +84,25 @@ void		create_cylinder()
 	object.type = CYLINDER;
 	object.color.z = 1;
 	ft_strcpy(object.name, "Cylinder");
-	add_object(object);
+	add_object(object, render_new);
 }
 
-void		create_empty()
+void		create_empty(gboolean render_new)
 {
 	t_object	object;
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = EMPTY;
 	ft_strcpy(object.name, "Empty");
-	add_object(object);
+	add_object(object, render_new);
 }
 
-void		create_light()
+void		create_light(gboolean render_new)
 {
 	t_object	object;
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = LIGHT;
 	ft_strcpy(object.name, "Light");
-	add_object(object);
+	add_object(object, render_new);
 }

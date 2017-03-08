@@ -6,6 +6,9 @@
 int			sphere_intersect(__constant t_obj *self, t_ray *ray);
 float3		sphere_normal(__constant t_obj *self, float3 pos);
 
+int			plan_intersect(__constant t_obj *self, t_ray *ray);
+float3		plan_normal(__constant t_obj *self);
+
 float3		obj_normal(__constant t_obj *self, float3 pos);
 int			obj_intersect(__constant t_obj *self, t_ray *ray);
 

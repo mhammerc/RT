@@ -7,8 +7,6 @@
 #include "ui.h"
 #include "renderer.h"
 
-
-
 //TODO CHOOSE LIGHT OR SPOT
 int		is_obj(t_list	*objects)
 {
@@ -90,8 +88,15 @@ void	obj_c_2_cl(t_obj *obj, t_list *objs, t_obj *parent)
 	objects = *((t_object*)(objs->content));
 	vect3d_2_float3(&((*obj).pos), objects.pos);
 	vect3d_2_float3(&((*obj).color), objects.color);
+	vect3d_2_float3(&((*obj).dir), objects.rot);
+	(*obj).radius =  objects.radius;
+	(*obj).length = objects.length;
+	(*obj).param = objects.length / 1000;
 	if (parent)
-		((*obj).pos) = add_cl((*obj).pos, (*parent).pos);
+	{
+		(*obj).pos = add_cl((*obj).pos, (*parent).pos);
+		(*obj).param *= (*parent).param;
+	}
 }
 void	spot_c_2_cl(t_spot *spot, t_list *objs, t_spot *parent)
 {
@@ -115,24 +120,24 @@ void	fill_obj(t_list *objects, t_obj *obj, int *id, int	*parent)
 			obj_c_2_cl(&(obj[*id]), objects, &(obj[*parent]));
 		else
 			obj_c_2_cl(&(obj[*id]), objects, 0);
-		obj[*id].param = 1;
-		obj[*id].type = SPHERE; // ICI OMG
+		//obj[*id].param = 1;
+		obj[*id].type = ((t_object*)(objects->content))->type;
 		obj[*id].id = *id;
 		obj[*id].kspec = 1;
 		obj[*id].kdiff = 1;
 		obj[*id].kp = 256;
+		obj[*id].dir.x = 0;
+		obj[*id].dir.y = 1;
+		obj[*id].dir.x = 0;
+		(*id)++;
 	}
 	if (objects->next)
 	{
-		if(is_obj(objects))
-			(*id)++;
 		fill_obj(objects->next, obj, id, parent);
 	}
 	if (objects->children)
 	{
 		*parent = tmp;
-		if(is_obj(objects))
-			(*id)++;
 		fill_obj(objects->children, obj, id, parent);
 	}
 	//TODO for children is necessary to ajust the value with scale
@@ -153,19 +158,16 @@ void	fill_spot(t_list *objects, t_spot *spot, int *id, int *parent)
 		spot[*id].color.y = 1;
 		spot[*id].color.z = 1;
 		spot[*id].intensity = 1;
+		(*id)++;
 		//spot[*id].id = *id; besoin d'un id?
 	}
 	if (objects->next)
 	{
-		if(is_light(objects))
-			(*id)++;
 		fill_spot(objects->next, spot, id, parent);
 	}
 	if (objects->children)
 	{
 		*parent = tmp;
-		if(is_light(objects))
-			(*id)++;
 		fill_spot(objects->children, spot, id, parent);
 	}
 }
@@ -183,9 +185,10 @@ void	ask_for_new_image(t_ui *ui)
 	nb_obj = 0;
 	nb_light = 0;
 	gtk_objects2nb_obj(ui->objs, &nb_obj, &nb_light);
+	printf("nb_obj %d\n", nb_obj);
 
 	obj = (t_obj*)malloc(sizeof(t_obj) * nb_obj);
-	spot = (t_spot*)malloc(sizeof(t_spot) * (nb_light + 1));
+	spot = (t_spot*)malloc(sizeof(t_spot) * (nb_light));
 	if(!obj || !spot)
 		exit(EXIT_FAILURE);
 
