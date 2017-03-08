@@ -129,4 +129,10 @@ void					create_light();
 char					*dtoa(double value);
 char					*get_el_type_char(t_object *object);
 
+/*
+** gtk2cl.c
+*/
+
+void					ask_for_new_image(t_ui *ui);
+
 #endif

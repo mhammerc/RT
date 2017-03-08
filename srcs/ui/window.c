@@ -9,7 +9,7 @@ static GtkWidget		*create_app_window(GtkApplication *app, int width, int height,
 	win = gtk_application_window_new(app);
 	gtk_window_set_title(GTK_WINDOW(win), title);
 	gtk_window_set_default_size(GTK_WINDOW(win), width, height);
-	gtk_window_set_resizable (GTK_WINDOW(win), FALSE);
+	gtk_window_set_resizable(GTK_WINDOW(win), FALSE);
 	return (win);
 }
 
