@@ -34,6 +34,7 @@ SRCS_NAME	=	main.c										\
 
 RESOURCES	=	srcs/renderer/kernels/kernel.cl					\
 				srcs/renderer/kernels/sphere.cl					\
+				srcs/renderer/kernels/plan.cl					\
 				srcs/renderer/kernels/quadratic_equations.cl	\
 				srcs/renderer/kernels/objects.cl				\
 				srcs/renderer/kernels/raytracer.h				\

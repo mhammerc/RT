@@ -121,11 +121,14 @@ void	fill_obj(t_list *objects, t_obj *obj, int *id, int	*parent)
 		else
 			obj_c_2_cl(&(obj[*id]), objects, 0);
 		//obj[*id].param = 1;
-		obj[*id].type = SPHERE; // ICI OMG
+		obj[*id].type = ((t_object*)(objects->content))->type;
 		obj[*id].id = *id;
 		obj[*id].kspec = 1;
 		obj[*id].kdiff = 1;
 		obj[*id].kp = 256;
+		obj[*id].dir.x = 0;
+		obj[*id].dir.y = 1;
+		obj[*id].dir.x = 0;
 		(*id)++;
 	}
 	if (objects->next)
