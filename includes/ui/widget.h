@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/01 17:09:47 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/03 16:08:22 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/08 13:52:25 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 # include <stdlib.h>
 # include <gtk/gtk.h>
-
-# include "ui.h"
 
 /*
 ** top menu (file, open, save, ..)
@@ -31,7 +29,13 @@ typedef struct		s_menu_file
 	GtkWidget		*quit;
 }					t_menu_file;
 
+/*
+** Top menu
+*/
 GtkWidget				*create_top_menu(void);
+void					open_dialog_open(void);
+void					open_dialog_save(void);
+void					open_dialog_export(void);
 
 /*
 ** HOMEMADE WIDGETS

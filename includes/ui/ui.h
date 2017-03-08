@@ -11,6 +11,7 @@
 # include "left_panel.h"
 # include "right_panel.h"
 # include "widget.h"
+# include "keys.h"
 
 # define RENDER_SIZE_W 1366
 # define RENDER_SIZE_H 768
@@ -102,6 +103,7 @@ struct					s_ui
 	t_display_panel		*dp;
 	t_right_panel		*rp;
 
+	t_menu_file			*file_menu;
 	int					lock;
 };
 
@@ -126,7 +128,5 @@ void					create_light();
 */
 char					*dtoa(double value);
 char					*get_el_type_char(t_object *object);
-
-void					open_dialog_save(void);
 
 #endif

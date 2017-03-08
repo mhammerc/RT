@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhammerc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: mhammerc <mhammerc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/02 18:13:57 by mhammerc          #+#    #+#             */
-/*   Updated: 2017/03/01 16:54:43 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/08 13:31:32 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,5 +156,11 @@ int						ft_get_next_line(int const fd, char **line);
 int						ft_printf(char const *format, ...);
 int						ft_sprintf(char **str, char const *format, ...);
 int						ft_dprintf(int fd, char const *format, ...);
+
+/*
+** RT ADD
+*/
+
+void					ft_exit_fd(const char *message, int fd);
 
 #endif

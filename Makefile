@@ -23,13 +23,13 @@ SRCS_NAME	=	main.c										\
 				ui/tools/dtoa.c								\
 				ui/tools/type_char.c						\
 				ui/top_menu.c								\
+				ui/keymapping.c								\
 				ui/widgets/numeric_entry.c					\
 				ui/widgets/scale_entry.c					\
 				ui/widgets/text_entry.c						\
 				ui/widgets/vector3_entry.c					\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
-				ui/export_png.c								\
 				converter/gtk2cl.c							\
 
 RESOURCES	=	srcs/renderer/kernels/kernel.cl					\
