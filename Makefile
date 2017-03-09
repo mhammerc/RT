@@ -7,11 +7,11 @@ SRCS_NAME	=	main.c										\
 				renderer/camera.c							\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
-				renderer/init.c								\
-				renderer/singleton.c						\
-				renderer/opencl_tools.c						\
+				renderer/maths/solve.c						\
 				renderer/objects/sphere.c					\
 				renderer/objects/object_selection.c			\
+				renderer/ray.c								\
+				renderer/ray_trace.c						\
 				ui/create_object.c							\
 				ui/display_panel.c							\
 				ui/left_panel/add_buttons.c					\
@@ -33,14 +33,6 @@ SRCS_NAME	=	main.c										\
 				ui/ui_print_scene.c							\
 				ui/export_png.c								\
 				converter/gtk2cl.c							\
-
-RESOURCES	=	srcs/renderer/kernels/kernel.cl					\
-				srcs/renderer/kernels/sphere.cl					\
-				srcs/renderer/kernels/plan.cl					\
-				srcs/renderer/kernels/quadratic_equations.cl	\
-				srcs/renderer/kernels/objects.cl				\
-				srcs/renderer/kernels/raytracer.h				\
-				includes/renderer/shared.h
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
 
@@ -74,7 +66,7 @@ endif
 
 all: $(NAME)
 
-$(NAME): 		create_objs_dir copy_resources $(OBJS)
+$(NAME): 		create_objs_dir $(OBJS)
 				make -C $(LFT_PATH)
 				gcc $(OBJS) -o $@ $(CLIBS)
 
@@ -86,16 +78,12 @@ create_objs_dir:
 				@mkdir $(OBJS_PATH)/converter 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/renderer 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/renderer/maths 2> /dev/null || true
-				@mkdir $(OBJS_PATH)/renderer/kernels 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/renderer/objects 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/left_panel 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/right_panel 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/tools 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
-
-copy_resources:
-				@mkdir resources 2> /dev/null || true
-				cp $(RESOURCES) resources
 
 clean:
 				rm -rf $(OBJS)
@@ -106,7 +94,6 @@ fclean:
 				rm -rf $(OBJS)
 				rm -rf $(NAME)
 				@rm -rf $(OBJS_PATH) 2> /dev/null || true
-				rm -rf resources
 				make -C $(LFT_PATH) fclean
 
 re: 			fclean all

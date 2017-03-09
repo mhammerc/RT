@@ -1,4 +1,5 @@
 #include <stdlib.h>
+#include <libft.h>
 #include "ui.h"
 #include "renderer.h"
 
@@ -77,10 +78,11 @@ void	fill_obj(t_list *objects, t_list **objs)
 		obj->kdiff = 1;
 		obj->kp = 256;
 		obj->dir = (t_vec3){0, 1, 0};
-		obj->intersection = get_obj_intersection(obj->type);
+		obj->intersect = get_obj_intersection(obj->type);
 		obj->normal = get_obj_normal(obj->type);
-		ft_lstpostadd(objs, obj);
+		ft_lstpushback(objs, ft_lstnew((void*)obj, sizeof(t_obj)));
 	}
+	free(obj);
 	if (objects->next)
 		fill_obj(objects->next, objs);
 	/*
@@ -104,7 +106,7 @@ void	fill_spot(t_list *objects, t_list **spots)
 		spot_c_2_cl(spot, objects, 0);
 		spot->color = (t_vec3){1, 1, 1};
 		spot->intensity = 1;
-		ft_lstpostadd(spots, spot);
+		ft_lstpushback(spots, ft_lstnew(spot, sizeof(t_spot)));
 	}
 	if (objects->next)
 		fill_spot(objects->next, spots);
@@ -160,9 +162,9 @@ void	ask_for_new_image(t_ui *ui)
 	parent = -1;
 	*/
 	del_list(&(ui->scene.obj));
-	del_list(&(ui->scene.light));
+	del_list(&(ui->scene.spot));
 	fill_obj(ui->objs, &(ui->scene.obj));
-	fill_spot(ui->objs, &(ui->scene.light));
+	fill_spot(ui->objs, &(ui->scene.spot));
 
 	//sera modifier dynamiquement par la suite
 	//ui->scene.cam = *(ui->cam);

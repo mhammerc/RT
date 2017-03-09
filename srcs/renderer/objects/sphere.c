@@ -12,7 +12,7 @@
 
 #include <stdlib.h>
 #include <libft.h>
-#include "rtv1.h"
+#include "renderer.h"
 
 /*
 ** Intersection between ray and sphere
@@ -22,14 +22,14 @@
 
 int				sphere_intersect(t_obj *self, t_ray *ray)
 {
-	t_f			b;
-	t_f			c;
+	double		b;
+	double		c;
 	t_vec3		ray_sphere;
 
 	ray_sphere = vec3_sub(ray->pos, self->pos);
 	b = vec3_dot(ray_sphere, ray->dir);
 	c = vec3_norm2(ray_sphere) - self->param;
-	if (normalized_quad_solve(b, c, &(ray->d)))
+	if (norm_quad_solve(b, c, &(ray->t)))
 	{
 		if (ray->type == INITIAL_RAY)
 			ray->collided = self;

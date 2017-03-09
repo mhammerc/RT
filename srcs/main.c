@@ -6,7 +6,7 @@ int			main(int argc, char **argv)
 	GtkApplication	*app;
 	int				status;
 
-	opencl_init();
+	//opencl_init();
 
 	app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
 	g_signal_connect(app, "activate", G_CALLBACK(build_interface), NULL);

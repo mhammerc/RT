@@ -1,6 +1,6 @@
-#include "shared.h"
+#include "renderer.h"
 
-int(*) (struct obj*, t_ray*)	get_obj_intersection(enum e_object_type obj_type)
+int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 {
 	if (obj_type == SPHERE)
 		return (&sphere_intersect);
@@ -8,7 +8,7 @@ int(*) (struct obj*, t_ray*)	get_obj_intersection(enum e_object_type obj_type)
 		return (NULL);
 }
 
-t_vec3(*) (struct obj*, t_vec3)	get_obj_normal(enum e_object_type obj_type)
+t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 {
 	if (obj_type == SPHERE)
 		return (&sphere_normal);

@@ -12,6 +12,7 @@
 
 #ifndef ENV_H
 # define ENV_H
+# include <libft.h>
 
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
@@ -40,18 +41,6 @@ struct						s_vec3
 };
 typedef struct s_vec3		t_vec3;
 
-struct						s_ray
-{
-	t_vec3					pos;
-	t_vec3					dir;
-	t_vec3					n;
-	double					t;
-	int						type;
-	int						collided;
-	t_vec3					hit;
-	t_vec3					light;
-};
-typedef struct s_ray		t_ray;
 
 struct						s_cam
 {
@@ -68,6 +57,7 @@ struct						s_cam
 };
 typedef struct s_cam		t_cam;
 
+typedef struct s_ray		t_ray;
 struct						s_obj
 {
 	t_vec3					pos;
@@ -81,10 +71,22 @@ struct						s_obj
 	double					kspec;
 	double					kdiff;
 	double					kp;
-	int						(*intersect)(struct obj *self, t_ray *ray);
-	t_vec3					(*normal)(struct obj *self, t_vec3 *pos);
+	int						(*intersect)(struct s_obj *self, t_ray *ray);
+	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 };
 typedef struct s_obj		t_obj;
+
+struct						s_ray
+{
+	t_vec3					pos;
+	t_vec3					dir;
+	t_vec3					n;
+	double					t;
+	int						type;
+	t_obj					*collided;
+	t_vec3					hit;
+	t_vec3					light;
+};
 
 struct						s_spot
 {
