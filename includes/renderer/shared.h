@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/08 19:13:37 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/09 10:12:47 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,13 @@ struct						s_obj
 	double					kspec;
 	double					kdiff;
 	double					kp;
+	struct s_obj			*left;
+	struct s_obj			*right;
+	char					csg;
 	int						(*intersect)(struct s_obj *self, t_ray *ray);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
+	int						nb_sommet;//pour les polygones (triangles, carre, ....) il faudra allouer un tableau de vecteur contenant les sommets
+	t_vec3					*sommet;
 };
 typedef struct s_obj		t_obj;
 
