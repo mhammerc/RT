@@ -24,9 +24,9 @@
 int				disk_intersect(t_obj *self, t_ray *ray)
 {
 	t_vec3		x;
-	t_f			a;
-	t_f			b;
-	t_f			d;
+	double		a;
+	double		b;
+	double		d;
 	t_vec3		pos;
 
 	b = vec3_dot(ray->dir, self->dir);

@@ -23,7 +23,7 @@
 
 int				cone_intersect(t_obj *self, t_ray *ray)
 {
-	t_f			a[6];
+	double		a[6];
 	t_vec3		vmvva;
 	t_vec3		dpmva;
 	t_vec3		dp;
@@ -54,7 +54,7 @@ int				cone_intersect(t_obj *self, t_ray *ray)
 
 t_vec3			cone_normal(t_obj *self, t_vec3 pos)
 {
-	t_f			m;
+	double		m;
 	t_vec3		c_pos;
 	t_vec3		apex_to_pos;
 
