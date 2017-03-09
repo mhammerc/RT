@@ -38,7 +38,6 @@ void	gtk_objects2nb_obj(t_list *objects, int	*nb_obj, int *nb_light)
 void	obj_c_2_cl(t_obj *obj, t_list *objs, t_obj *parent)
 {
 	t_object	objects;
-	t_object	objects_parent;
 
 	objects = *((t_object*)(objs->content));
 	(*obj).pos = objects.pos;
@@ -56,7 +55,6 @@ void	obj_c_2_cl(t_obj *obj, t_list *objs, t_obj *parent)
 void	spot_c_2_cl(t_spot *spot, t_list *objs, t_spot *parent)
 {
 	t_object	objects;
-	t_object	objects_parent;
 
 	objects = *((t_object*)(objs->content));
 	spot->pos = objects.pos;
@@ -81,8 +79,9 @@ void	fill_obj(t_list *objects, t_list **objs)
 		obj->intersect = get_obj_intersection(obj->type);
 		obj->normal = get_obj_normal(obj->type);
 		ft_lstpushback(objs, ft_lstnew((void*)obj, sizeof(t_obj)));
-	}
 	free(obj);
+	}
+
 	if (objects->next)
 		fill_obj(objects->next, objs);
 	/*

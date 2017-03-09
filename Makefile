@@ -10,8 +10,6 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/solve.c						\
 				renderer/objects/sphere.c					\
 				renderer/objects/object_selection.c			\
-				renderer/ray.c								\
-				renderer/ray_trace.c						\
 				ui/create_object.c							\
 				ui/display_panel.c							\
 				ui/left_panel/add_buttons.c					\
@@ -45,7 +43,7 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc
 
-CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter
+CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
 
 CLIBS		=	-lm -L$(LFT_PATH) -lft
