@@ -10,8 +10,6 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/solve.c						\
 				renderer/objects/sphere.c					\
 				renderer/objects/object_selection.c			\
-				renderer/ray.c								\
-				renderer/ray_trace.c						\
 				ui/create_object.c							\
 				ui/display_panel.c							\
 				ui/left_panel/add_buttons.c					\
