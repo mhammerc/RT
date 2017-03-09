@@ -11,8 +11,8 @@
 # include "right_panel.h"
 # include "widget.h"
 
-# define RENDER_SIZE_W 1366
-# define RENDER_SIZE_H 768
+# define RENDER_SIZE_W 1280
+# define RENDER_SIZE_H 720
 
 /*
 ** Interface singleton (just in case, will be removed
@@ -21,7 +21,7 @@ t_ui			*get_interface();
 
 /*
 ** Objects definitions
-** See env.h
+** See shared.h
 */
 /*enum e_object_type
 {
@@ -44,6 +44,7 @@ typedef struct			s_object
 	double				length;
 	double				radius;
 	char				name[80];
+	char				operation;
 }						t_object;
 
 typedef struct			s_selected_obj

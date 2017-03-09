@@ -50,6 +50,7 @@ void		create_sphere(gboolean render_new)
 	ft_bzero(&object, sizeof(t_object));
 	object.type = SPHERE;
 	object.color.z = 1;
+	object.operation = '0';
 	ft_strcpy(object.name, "Sphere");
 	add_object(object, render_new);
 }
@@ -61,6 +62,7 @@ void		create_plane(gboolean render_new)
 	ft_bzero(&object, sizeof(t_object));
 	object.type = PLANE;
 	object.color.z = 1;
+	object.operation = '0';
 	ft_strcpy(object.name, "Plane");
 	add_object(object, render_new);
 }
@@ -72,6 +74,7 @@ void		create_cone(gboolean render_new)
 	ft_bzero(&object, sizeof(t_object));
 	object.type = CONE;
 	object.color.z = 1;
+	object.operation = '0';
 	ft_strcpy(object.name, "Cone");
 	add_object(object, render_new);
 }
@@ -83,6 +86,7 @@ void		create_cylinder(gboolean render_new)
 	ft_bzero(&object, sizeof(t_object));
 	object.type = CYLINDER;
 	object.color.z = 1;
+	object.operation = '0';
 	ft_strcpy(object.name, "Cylinder");
 	add_object(object, render_new);
 }
@@ -93,6 +97,7 @@ void		create_empty(gboolean render_new)
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = EMPTY;
+	object.operation = '0';
 	ft_strcpy(object.name, "Empty");
 	add_object(object, render_new);
 }
@@ -103,6 +108,7 @@ void		create_light(gboolean render_new)
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = LIGHT;
+	object.operation = '0';
 	ft_strcpy(object.name, "Light");
 	add_object(object, render_new);
 }

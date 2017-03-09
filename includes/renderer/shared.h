@@ -71,6 +71,9 @@ struct						s_obj
 	double					kspec;
 	double					kdiff;
 	double					kp;
+	struct s_obj			*left;
+	struct s_obj			*right;
+	char					csg;
 	int						(*intersect)(struct s_obj *self, t_ray *ray);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 };
