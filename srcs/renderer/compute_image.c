@@ -2,6 +2,7 @@
 #include <strings.h>
 #include <math.h>
 
+#include "ui.h"
 #include "renderer.h"
 #include "shared.h"
 
@@ -207,7 +208,7 @@ static void		*thread_compute_image(void *thread_data)
 	return (NULL);
 }
 
-int				*renderer_compute_image(t_scene *sce)
+void			renderer_compute_image(t_scene *sce)
 {
 	pthread_t			threads[CORE_COUNT];
 	t_renderer_thread	threads_data[CORE_COUNT];
@@ -243,6 +244,6 @@ int				*renderer_compute_image(t_scene *sce)
 		}
 		++i;
 	}
-	printf("New image rendered.\n");
-	return (pixels);
+	ui_print_scene(pixels);
+	free(pixels);
 }

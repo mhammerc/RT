@@ -177,5 +177,5 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.cam.fov = 45.0;
 	ui->scene.cam.ratio = 1.0;
 
-	ui_print_scene(renderer_compute_image((&(ui->scene))));
+	renderer_compute_image((&(ui->scene)));
 }
