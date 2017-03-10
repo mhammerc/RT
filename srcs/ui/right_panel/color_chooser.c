@@ -12,7 +12,8 @@ static void	color_edited(GtkColorButton *button,
 	ui->selected_obj.object->color.x = (double)color.red;
 	ui->selected_obj.object->color.y = (double)color.green;
 	ui->selected_obj.object->color.z = (double)color.blue;
-	ask_for_new_image(ui);
+	if (ui->render_on_change)
+		ask_for_new_image(ui);
 }
 
 void		create_color_chooser(t_ui *ui, t_vec3 color)

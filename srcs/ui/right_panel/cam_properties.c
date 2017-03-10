@@ -32,7 +32,8 @@ static void		cam_edited()
 	cam->dir.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->cam_gtk.lkat.x)));
 	cam->dir.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->cam_gtk.lkat.y)));
 	cam->dir.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->cam_gtk.lkat.z)));
-	ask_for_new_image(ui);
+	if (ui->render_on_change)
+		ask_for_new_image(ui);
 	ui->lock = 0;
 }
 

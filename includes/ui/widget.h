@@ -30,6 +30,8 @@ typedef struct		s_menu_file
 	GtkWidget		*save;
 	GtkWidget		*export;
 	GtkWidget		*quit;
+	GtkWidget		*render_on_change;
+	GtkWidget		*start_render;
 }					t_menu_file;
 
 GtkWidget				*create_top_menu(void);

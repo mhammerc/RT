@@ -101,6 +101,7 @@ struct					s_ui
 	t_display_panel		*dp;
 	t_right_panel		*rp;
 
+	int					render_on_change;
 	int					lock;
 };
 
