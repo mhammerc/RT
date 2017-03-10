@@ -9,6 +9,7 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\
 				renderer/objects/sphere.c					\
+				renderer/objects/csg.c					\
 				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
 				ui/display_panel.c							\
@@ -30,7 +31,7 @@ SRCS_NAME	=	main.c										\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
 				ui/export_png.c								\
-				converter/gtk2cl.c							\
+				converter/converter.c						\
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
 
@@ -51,16 +52,6 @@ CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
 OBJS		=	$(addprefix $(OBJS_PATH)/,$(OBJS_NAME))
-
-UNAME		:=	$(shell uname)
-
-ifeq ($(UNAME),Darwin)
-	CLIBS	+=	-framework OpenCL
-endif
-
-ifeq ($(UNAME),Linux)
-	CLIBS	+=	-lOpenCL
-endif
 
 all: $(NAME)
 

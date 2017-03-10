@@ -5,6 +5,7 @@
 # include <pthread.h>
 
 # include "shared.h"
+# include "csg.h"
 
 # define CORE_COUNT 4
 
