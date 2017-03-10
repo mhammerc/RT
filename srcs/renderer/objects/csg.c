@@ -100,7 +100,7 @@ int	minus_case(t_interval *left, t_interval *right, t_interval *interval)
 	}
 	else if (right->nb_hit == 0)
 	{
-		interval = left;
+		*interval = *left;
 		return (0);
 	}
 	return (1);
@@ -187,28 +187,37 @@ void	minus(t_interval *left, t_interval *right, t_interval *interval)
 	int	r;
 	int	i;
 
-	if (!minus_case(left, right, interval))	
+	if (!(minus_case(left, right, interval)))	
 		return;
 	l = 0;
 	i = 0;
 	while (l < left->nb_hit)
 	{
+			//	printf("what0 l %d\n",l);
 		interval->min[i] = left->min[l];
 		interval->max[i] = left->max[l];
 		r = 0;
 		while (r < right->nb_hit)
 		{
+			//	printf("boucle right\n");
 			if (is_disjoint(interval, right, i, r))
 			{
+			//	printf("disjoint i %d\n", i);
 				r++;
-				continue;
 			}
-			if (minus_test1(interval, right, i, r))
-				modify_by_minus1(interval, right, i, &r);
 			else if (minus_test0(interval, right, i, r))
+			{
+			//	printf("ecrasement\n");
 				break;
+			}
+			else if (minus_test1(interval, right, i, r))
+			{
+			//	printf("chevauchement\n");
+				modify_by_minus1(interval, right, i, &r);
+			}
 			else
 			{
+			//	printf("decoupage\n");
 				modify_by_minus2(interval, right, i, &r);
 				modify_by_minus3(interval, left, i + 1);
 			}
@@ -216,6 +225,7 @@ void	minus(t_interval *left, t_interval *right, t_interval *interval)
 		if  (r == right->nb_hit)
 			i++;
 		l++;
+				//printf("i %d\n", i);
 	}
 	interval->nb_hit = i;
 }
@@ -273,20 +283,27 @@ int	minimal_positiv(t_interval *interval, t_obj *obj, double *d)
 
 	if (interval->nb_hit == 0)
 		return (0);
-	i = 1;
-	*d = interval->min[0].dist; 
-	obj->csg_ref = interval->min[0].ref;
-	obj->csg_normal = interval->min[0].normal;
-	printf("hit %d\n", interval->nb_hit);
+//	printf("interval %p hit %d\n", interval, interval->nb_hit);
+	i = 0;
+	*d = 10000000;//TODO max double
 	while (i < interval->nb_hit)
 	{
-		if (*d > interval->min[i].dist)
+		if (*d > interval->min[i].dist && interval->min[i].dist > 0)
 		{
 			*d = interval->min[i].dist;
 			obj->csg_ref = interval->min[i].ref;
+			obj->csg_normal = interval->min[i].normal;
+		}
+		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
+		{
+			*d = interval->max[i].dist;
+			obj->csg_ref = interval->max[i].ref;
+			obj->csg_normal = interval->max[i].normal;
 		}
 		i++;
 	}
+	if (*d == 10000000)// TODO max double
+		return (0);
 	return (1);
 }
 /*
@@ -325,7 +342,7 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 	self->right->param = 1;
 	self->left->param = 1;
 	//
-	//*/
+	*/
 	test_csg(self, ray, &interval);
 	if (minimal_positiv(&interval, self, &d))
 	{
