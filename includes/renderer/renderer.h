@@ -13,6 +13,7 @@
 # define R_BITSHIFT 0
 # define G_BITSHIFT 8
 # define B_BITSHIFT 16
+# define MAX_REC_DEPTH 42
 
 typedef struct		s_renderer_thread
 {
