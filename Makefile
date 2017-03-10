@@ -9,6 +9,7 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\
 				renderer/objects/sphere.c					\
+				renderer/objects/csg.c					\
 				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
 				ui/display_panel.c							\
