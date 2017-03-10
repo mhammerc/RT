@@ -6,20 +6,20 @@
 #include "renderer.h"
 #include "shared.h"
 
-float			light_find_max(t_renderer_thread *data)
+float			light_find_max(t_vec3 *light, int w, int h)
 {
 	float		max;
 	int			i;
 	int			len;
 
-	len = data->sce->cam.w * data->y_begin + data->sce->cam.w * data->y_range;
+	len = w * h;
 	max = 0.;
-	i = data->sce->cam.w * data->y_begin - 1;
+	i = -1;
 	while (++i < len)
 	{
-		max = fmax(max, data->light[i].x);
-		max = fmax(max, data->light[i].y);
-		max = fmax(max, data->light[i].z);
+		max = fmax(max, light[i].x);
+		max = fmax(max, light[i].y);
+		max = fmax(max, light[i].z);
 	}
 	return (max);
 }
@@ -32,21 +32,21 @@ int				colorcomp_to_rgb(int r, int g, int b)
 	return ((0xff << ALPHA_BITSHIFT) + (r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
 }
 
-//void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
-void			light_to_pixel(t_renderer_thread *data)
+void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
+//void			light_to_pixel(t_renderer_thread *data)
 {
 	float		invmax;
 	int			i;
 	int			len;
 
-	len = data->sce->cam.w * data->y_begin + data->sce->cam.w * data->y_range;
-	invmax = 255. / light_find_max(data);
-	i = data->sce->cam.w * data->y_begin - 1;
+	len = w * h;
+	invmax = 255. / light_find_max(light, w, h);
+	i = -1;
 	while (++i < len)
 	{
-		data->pixels[i] = colorcomp_to_rgb(data->light[i].x * invmax,
-									data->light[i].y * invmax,
-									data->light[i].z * invmax);
+		px[i] = colorcomp_to_rgb(light[i].x * invmax,
+									light[i].y * invmax,
+									light[i].z * invmax);
 	}
 }
 
@@ -204,7 +204,6 @@ static void		*thread_compute_image(void *thread_data)
 		aim = vec3_sub(start, sce->cam.vy);
 		r = ray_new_aim(sce->cam.pos, aim);
 	}
-	light_to_pixel(data);
 	return (NULL);
 }
 
@@ -244,6 +243,7 @@ void			renderer_compute_image(t_scene *sce)
 		}
 		++i;
 	}
+	light_to_pixel(light, pixels, sce->cam.w, sce->cam.h);
 	ui_print_scene(pixels);
 	free(pixels);
 	free(light);
