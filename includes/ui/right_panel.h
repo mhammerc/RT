@@ -32,8 +32,8 @@ typedef struct			s_cam_gtk
 
 typedef struct			s_scene_gtk
 {
-	GtkWidget			*nb_obj;
-	GtkWidget			*nb_spot;
+	int					fxaa;
+	GtkWidget			*fxaa_scale_entry;
 }						t_scene_gtk;
 
 typedef struct			s_element_properties
