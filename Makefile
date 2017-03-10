@@ -9,6 +9,7 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\
 				renderer/objects/sphere.c					\
+				renderer/objects/csg.c					\
 				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
 				ui/display_panel.c							\
@@ -53,14 +54,6 @@ SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
 OBJS		=	$(addprefix $(OBJS_PATH)/,$(OBJS_NAME))
 
 UNAME		:=	$(shell uname)
-
-ifeq ($(UNAME),Darwin)
-	CLIBS	+=	-framework OpenCL
-endif
-
-ifeq ($(UNAME),Linux)
-	CLIBS	+=	-lOpenCL
-endif
 
 all: $(NAME)
 

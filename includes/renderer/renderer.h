@@ -3,6 +3,7 @@
 
 # include <libft.h>
 # include "shared.h"
+# include "csg.h"
 
 # define ALPHA_BITSHIFT 24
 # define R_BITSHIFT 0

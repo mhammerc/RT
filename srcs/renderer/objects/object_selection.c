@@ -3,7 +3,7 @@
 int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 {
 	if (obj_type == SPHERE)
-		return (&sphere_intersect);
+		return (&csg_intersect);//TODO remodifier
 	else
 		return (NULL);
 }
@@ -11,7 +11,7 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 {
 	if (obj_type == SPHERE)
-		return (&sphere_normal);
+		return (&csg_normal);
 	else
 		return (NULL);
 }
