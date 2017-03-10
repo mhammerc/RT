@@ -24,7 +24,8 @@ void		refresh_obj_tree(t_ui *ui)
 	if (ui->objs)
 		refresh_obj_tree_aux(ui, ui->objs, NULL);
 	ui->selected_obj.object = NULL;
-	ask_for_new_image(ui);
+	if (ui->render_on_change)
+		ask_for_new_image(ui);
 	// FIXME Object unselected but properties are still shown on the right.
 	// That may cause a segfault.
 }

@@ -31,7 +31,8 @@ static void		element_edited()
 
 	obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius)));
 	obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length)));
-	ask_for_new_image(ui);
+	if (ui->render_on_change)
+		ask_for_new_image(ui);
 	--ui->lock;
 }
 
@@ -87,17 +88,9 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	t_list		*obj_lst;
 	int			*tmp;
 
-	printf("HERE\n");
 	view = (t_ui*)data;
 	tmp = gtk_tree_path_get_indices_with_depth(path, &(view->selected_obj.depth));
 	ft_memcpy(view->selected_obj.index, tmp , 4 * (view->selected_obj.depth));
-	int i = 0;
-	while (i < view->selected_obj.depth)
-	{
-		printf("depth %d index %d\n", view->selected_obj.depth, *(view->selected_obj.index + i));
-		i++;
-	}
-	printf("\n");
 	obj_lst = ft_lstat_child(view->objs, view->selected_obj.index, view->selected_obj.depth);
 	view->selected_obj.object = (t_object*)obj_lst->content;
 	gtk_tree_model_get_iter(GTK_TREE_MODEL(view->lp->tree.store), &view->selected_obj.iter, path);

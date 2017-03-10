@@ -2,20 +2,34 @@
 # define SCENE_MANAGER_H
 
 # include <libft.h>
+# include <pthread.h>
+
 # include "shared.h"
 # include "csg.h"
+
+# define CORE_COUNT 4
 
 # define ALPHA_BITSHIFT 24
 # define R_BITSHIFT 0
 # define G_BITSHIFT 8
 # define B_BITSHIFT 16
 
+typedef struct		s_renderer_thread
+{
+	t_scene			*sce;
+	t_vec3			*light;
+	int				*pixels;
+	int				y_begin;
+	int				y_end;
+	int				y_range;
+}					t_renderer_thread;
+
 /*
 typedef int (*intersection_fun)(t_obj*, t_ray*);
 typedef t_vec3 (*normal_fun)(t_obj*, t_vec3);
 */
 
-int			*renderer_compute_image();
+void		renderer_compute_image();
 
 void		redraw_scene();
 
