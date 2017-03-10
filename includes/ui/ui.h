@@ -117,6 +117,7 @@ void					refresh_obj_tree(t_ui *ui);
 void					create_sphere();
 void					create_plane();
 void					create_cone();
+void					create_cgs();
 void					create_cylinder();
 void					create_empty();
 void					create_light();

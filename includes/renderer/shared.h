@@ -28,6 +28,7 @@ enum e_object_type
 	PLANE,
 	CONE,
 	CYLINDER,
+	CSG,
 	EMPTY,
 	LIGHT,
 	OBJECT_TYPE_COUNT
