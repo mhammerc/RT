@@ -7,7 +7,7 @@ struct				s_csg
 {
 	double	dist;
 	int	normal;
-	t_obj	*ref_normal;
+	t_obj	*ref;
 	//typeobj
 	//couleur
 	//normal
