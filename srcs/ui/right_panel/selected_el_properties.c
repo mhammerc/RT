@@ -38,7 +38,7 @@ static void		element_edited()
 static char		get_operation_code_from_id(int id)
 {
 	if (id == 1)
-		return ('+');
+		return ('I');
 	if (id == 2)
 		return ('U');
 	if (id == 3)
@@ -48,7 +48,7 @@ static char		get_operation_code_from_id(int id)
 
 static int		get_operation_id_from_code(char code)
 {
-	if (code == '+')
+	if (code == 'I')
 		return (1);
 	if (code == 'U')
 		return (2);

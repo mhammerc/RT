@@ -299,7 +299,7 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 	t_interval	interval;
 	double	d;
 	//TODO A REMPLIR DYNAMIQUEMENT
-	t_obj	left;
+	/*t_obj	left;
 //	t_obj	left_left;
 //	t_obj	left_right;
 	t_obj	right;
@@ -307,7 +307,7 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 	right = *self;
 	left.pos.x=-1;
 	right.pos.x=0;
-	self->csg = '-';
+	self->csg = 'I';
 	self->left = &left;
 	self->right = &right;
 	self->left->csg = '0';
@@ -324,6 +324,7 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 	self->right->param = 1;
 	self->left->param = 1;
 	//
+	//*/
 	test_csg(self, ray, &interval);
 	if (minimal_positiv(&interval, self, &d))
 	{
