@@ -22,7 +22,6 @@ SRCS_NAME	=	main.c										\
 				ui/right_panel/color_chooser.c				\
 				ui/tools/dtoa.c								\
 				ui/tools/type_char.c						\
-				ui/top_menu.c								\
 				ui/keymapping.c								\
 				ui/widgets/numeric_entry.c					\
 				ui/widgets/scale_entry.c					\
@@ -30,6 +29,18 @@ SRCS_NAME	=	main.c										\
 				ui/widgets/vector3_entry.c					\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
+				ui/top_menu/top_menu.c						\
+				ui/top_menu/file_loader/file_loader.c		\
+				ui/top_menu/file_loader/parser.c			\
+				ui/top_menu/file_loader/fill_env.c			\
+				ui/top_menu/file_loader/fill_group.c		\
+				ui/top_menu/file_loader/checker.c			\
+				ui/top_menu/file_loader/scene.c				\
+				ui/top_menu/file_loader/camera.c			\
+				ui/top_menu/file_loader/object.c			\
+				ui/top_menu/file_loader/light.c				\
+				ui/top_menu/file_loader/lists.c				\
+				ui/top_menu/file_loader/tools.c				\
 				converter/gtk2cl.c							\
 
 RESOURCES	=	srcs/renderer/kernels/kernel.cl					\
@@ -51,7 +62,7 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc
 
-CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter
+CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter
 CFLAGS		+=	$(GTK_CFLAGS)
 
 CLIBS		=	-lm -L$(LFT_PATH) -lft
@@ -90,6 +101,8 @@ create_objs_dir:
 				@mkdir $(OBJS_PATH)/ui/right_panel 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/tools 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/top_menu 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/top_menu/file_loader 2> /dev/null || true
 
 copy_resources:
 				@mkdir resources 2> /dev/null || true

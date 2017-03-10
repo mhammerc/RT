@@ -25,22 +25,22 @@ void			open_dialog_open(void)
 	GtkFileChooserAction	action;
 	gint					res;
 	char 					*filename;
-	// t_ui					*ui;
-	//
-	// ui = get_interface();
-	// action = GTK_FILE_CHOOSER_ACTION_OPEN;
-	// dialog = gtk_file_chooser_dialog_new("Open File", GTK_WINDOW(ui->window),
-	// 	action, "_Cancel", GTK_RESPONSE_CANCEL, "_Open", GTK_RESPONSE_ACCEPT,
-	// 	NULL);
-	// chooser = GTK_FILE_CHOOSER(dialog);
-	// res = gtk_dialog_run(GTK_DIALOG(dialog));
-	// if (res == GTK_RESPONSE_ACCEPT)
-	// {
-	// 	filename = gtk_file_chooser_get_filename(chooser);
-		ft_printf("Can't open yet, parser coming soon(ish)!\n");
-	// 	g_free (filename);
-	// }
-	// gtk_widget_destroy (dialog);
+	t_ui					*ui;
+
+	ui = get_interface();
+	action = GTK_FILE_CHOOSER_ACTION_OPEN;
+	dialog = gtk_file_chooser_dialog_new("Open File", GTK_WINDOW(ui->window),
+		action, "_Cancel", GTK_RESPONSE_CANCEL, "_Open", GTK_RESPONSE_ACCEPT,
+		NULL);
+	chooser = GTK_FILE_CHOOSER(dialog);
+	res = gtk_dialog_run(GTK_DIALOG(dialog));
+	if (res == GTK_RESPONSE_ACCEPT)
+	{
+		filename = gtk_file_chooser_get_filename(chooser);
+		load_file(filename);
+		g_free (filename);
+	}
+	gtk_widget_destroy (dialog);
 }
 
 void			open_dialog_save(void)

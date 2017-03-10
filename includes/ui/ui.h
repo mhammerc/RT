@@ -12,6 +12,7 @@
 # include "right_panel.h"
 # include "widget.h"
 # include "keys.h"
+# include "parser.h"
 
 # define RENDER_SIZE_W 1366
 # define RENDER_SIZE_H 768
@@ -56,20 +57,11 @@ typedef struct			s_selected_obj
 	GtkTreeIter			iter;
 }						t_selected_obj;
 
-struct						s_ui_cam
+typedef struct			s_ui_cam
 {
-	t_vector3d				pos;
-	t_vector3d				dir;
-	/* FLOAT3					up;
-	FLOAT3					vx;
-	FLOAT3					vy;
-	FLOAT3					top_left;
-	FLOAT					fov;
-	FLOAT					ratio;
-	INT						w;
-	INT						h;*/
-};
-typedef struct s_ui_cam		t_ui_cam;
+	t_vector3d			pos;
+	t_vector3d			dir;
+}						t_ui_cam;
 
 /*
 ** Render panel & dependancies
@@ -94,16 +86,17 @@ struct					s_ui
 	GtkWidget			*top_menu;
 	GtkWidget			*workspace;
 
-	t_list				*objs;
-	t_ui_cam			*cam;
-	t_scene				scene;
-	t_selected_obj		selected_obj;
-
 	t_left_panel		*lp;
 	t_display_panel		*dp;
 	t_right_panel		*rp;
 
 	t_menu_file			*file_menu;
+
+	t_list				*objs;
+	t_ui_cam			*cam;
+	t_scene				scene;
+	t_selected_obj		selected_obj;
+
 	int					lock;
 };
 
@@ -134,5 +127,8 @@ char					*get_el_type_char(t_object *object);
 */
 
 void					ask_for_new_image(t_ui *ui);
+
+void			load_file(char *filename);
+void			hook_up_obj_lst(t_entity_lst *lst, t_list *objs);
 
 #endif

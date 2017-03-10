@@ -1,0 +1,89 @@
+scene:
+	size: 800; 600
+	name: test
+
+camera:
+	position: 0.0; 0.0; -5.0
+	direction: 0.0; 0.0; 0.0
+
+object:
+	type: SPHERE
+	position: 0.0; 0.0; 50.0
+	rotation: 0.0; 0,0; 0.0
+	radius: 1.0
+	length: 0.0
+	name: sphere_test
+
+object:
+	type: LIGHT
+	position: 0.0; 20.0; 25.0
+	rotation: 0.0; 0,0; 0.0
+	radius: 1.0
+	length: 0.0
+	name: light
+
+object:
+	type: LIGHT
+	position: 0.0; 0.0; 50.0
+	rotation: 0.0; 0,0; 0.0
+	radius: 1.0
+	length: 0.0
+	name: light
+
+object:
+	type: SPHERE
+	position: 0.0; 0.0; 50.0
+	rotation: 0.0; 0,0; 0.0
+	radius: 1.0
+	length: 0.0
+	name: sphere_test
+
+group:
+	object:
+		type: CYLINDER
+		position: -10.0; 0.0; 50.0
+		rotation: 0.0; 0,0; 0.0
+		radius: 1.0
+		length: 50.0
+		name: left_cylinder
+
+	object:
+		type: CYLINDER
+		position: 10.0; 0.0; 50.0
+		rotation: 0.0; 0,0; 0.0
+		radius: 1.0
+		length: 50.0
+		name: right_cylinder
+
+	object:
+		type: LIGHT
+		position: 0.0; 30.0; 0.0
+		rotation: 0.0; 0,0; 0.0
+		radius: 1.0
+		length: 0.0
+		name: light
+
+object:
+	type: LIGHT
+	position: 0.0; -30.0; 75.0
+	rotation: 0.0; 0,0; 0.0
+	radius: 1.0
+	length: 0.0
+	name: light
+
+group:
+	object:
+		type: CONE
+		position: 0.0; -5.0; 80.0
+		rotation: 0.0; 0.0; 1.0
+		radius: 1.0;
+		length: 30.0;
+		name: cone_test
+
+	object:
+		type: LIGHT
+		position: 0.0; 0.0; 100.0
+		rotation: 0.0; 0,0; 0.0
+		radius: 1.0
+		length: 0.0
+		name: light

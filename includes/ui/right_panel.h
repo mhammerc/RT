@@ -1,10 +1,6 @@
 #ifndef RIGHT_PANEL_H
 # define RIGHT_PANEL_H
 
-# include "libft.h"
-# include "shared.h"
-
-
 /*
 ** Constants
 */
