@@ -41,12 +41,12 @@ LFT_PATH	=	./libs/libft
 GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
 GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
-CC			=	gcc
+CC			=	gcc -fdiagnostics-color=auto
 
 CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
 
-CLIBS		=	-lm -L$(LFT_PATH) -lft
+CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft
 CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))

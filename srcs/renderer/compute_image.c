@@ -5,20 +5,20 @@
 #include "renderer.h"
 #include "shared.h"
 
-float			light_find_max(int w, int h, t_vec3 *light)
+float			light_find_max(t_renderer_thread *data)
 {
 	float		max;
 	int			i;
 	int			len;
 
-	len = w * h;
+	len = data->sce->cam.w * data->y_begin + data->sce->cam.w * data->y_range;
 	max = 0.;
-	i = -1;
+	i = data->sce->cam.w * data->y_begin - 1;
 	while (++i < len)
 	{
-		max = fmax(max, light[i].x);
-		max = fmax(max, light[i].y);
-		max = fmax(max, light[i].z);
+		max = fmax(max, data->light[i].x);
+		max = fmax(max, data->light[i].y);
+		max = fmax(max, data->light[i].z);
 	}
 	return (max);
 }
@@ -31,22 +31,22 @@ int				colorcomp_to_rgb(int r, int g, int b)
 	return ((0xff << ALPHA_BITSHIFT) + (r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
 }
 
-void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
+//void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
+void			light_to_pixel(t_renderer_thread *data)
 {
 	float		invmax;
 	int			i;
 	int			len;
 
-	len = w * h;
-	invmax = 255. / light_find_max(w, h, light);
-	i = -1;
+	len = data->sce->cam.w * data->y_begin + data->sce->cam.w * data->y_range;
+	invmax = 255. / light_find_max(data);
+	i = data->sce->cam.w * data->y_begin - 1;
 	while (++i < len)
 	{
-		px[i] = colorcomp_to_rgb(light[i].x * invmax,
-									light[i].y * invmax,
-									light[i].z * invmax);
+		data->pixels[i] = colorcomp_to_rgb(data->light[i].x * invmax,
+									data->light[i].y * invmax,
+									data->light[i].z * invmax);
 	}
-	return ;
 }
 
 /*
@@ -173,39 +173,76 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray)
 	return (light);
 }
 
-int				*renderer_compute_image(t_scene *sce)
+static void		*thread_compute_image(void *thread_data)
 {
-	int					*pixels;
-	t_vec3				*light;
 	int					i;
 	int					j;
 	t_ray				r;
 	t_vec3				aim;
 	t_vec3				start;
+	t_renderer_thread	*data;
+	t_scene				*sce;
 
+	data = (t_renderer_thread*)thread_data;
+	sce = data->sce;
 	sce->cam = camera_set(sce->cam);
-	pixels = (int*)ft_memalloc(sizeof(int) * sce->cam.w * sce->cam.h);
-	light = (t_vec3*)ft_memalloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
-	if (NULL == pixels || NULL == light)
-		exit(EXIT_FAILURE);
 	aim = sce->cam.top_left;
+	aim = vec3_sub(aim, vec3_mult(data->y_begin, sce->cam.vy));
 	r = ray_new_aim(sce->cam.pos, aim);
-	i = -1;
-	while (++i < sce->cam.h)
+	i = data->y_begin - 1;
+	while (++i < data->y_end)
 	{
 		start = aim;
 		j = -1;
 		while (++j < sce->cam.w)
 		{
-			light[i * sce->cam.w + j] = ray_trace(sce, r);
+			data->light[i * sce->cam.w + j] = ray_trace(sce, r);
 			aim = vec3_add(aim, sce->cam.vx);
 			r = ray_new_aim(sce->cam.pos, aim);
 		}
 		aim = vec3_sub(start, sce->cam.vy);
 		r = ray_new_aim(sce->cam.pos, aim);
 	}
-	light_to_pixel(light, pixels, sce->cam.w, sce->cam.h);
-	free(light);
+	light_to_pixel(data);
+	return (NULL);
+}
+
+int				*renderer_compute_image(t_scene *sce)
+{
+	pthread_t			threads[CORE_COUNT];
+	t_renderer_thread	threads_data[CORE_COUNT];
+	int					i;
+	int					*pixels;
+	t_vec3				*light;
+
+	pixels = (int*)ft_memalloc(sizeof(int) * sce->cam.w * sce->cam.h);
+	light = (t_vec3*)ft_memalloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
+	i = 0;
+	while (i < CORE_COUNT)
+	{
+		threads_data[i].sce = sce;
+		threads_data[i].pixels = pixels;
+		threads_data[i].light = light;
+		threads_data[i].y_begin = sce->cam.h / CORE_COUNT * i;
+		threads_data[i].y_end = sce->cam.h / CORE_COUNT * (i + 1);
+		threads_data[i].y_range = threads_data[i].y_end - threads_data[i].y_begin;
+		if (pthread_create(&(threads[i]), NULL, thread_compute_image, &(threads_data[i])))
+		{
+			perror("renderer: can not create threads");
+			exit(0);
+		}
+		++i;
+	}
+	i = 0;
+	while (i < CORE_COUNT)
+	{
+		if (pthread_join(threads[i], NULL))
+		{
+			perror("renderer: can not wait for threads");
+			exit(0);
+		}
+		++i;
+	}
 	printf("New image rendered.\n");
 	return (pixels);
 }
