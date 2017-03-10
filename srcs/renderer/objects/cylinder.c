@@ -22,8 +22,8 @@
 
 int				cylinder_intersect(t_obj *self, t_ray *ray)
 {
-	t_f			b;
-	t_f			c;
+	double		b;
+	double		c;
 	t_vec3		vmvva;
 	t_vec3		dpmva;
 
@@ -49,7 +49,7 @@ int				cylinder_intersect(t_obj *self, t_ray *ray)
 
 t_vec3			cylinder_normal(t_obj *self, t_vec3 pos)
 {
-	t_f			m;
+	double		m;
 	t_vec3		cy_pos;
 
 	m = vec3_dot(self->dir, vec3_sub(pos, self->pos));

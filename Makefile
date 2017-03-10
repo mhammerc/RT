@@ -31,7 +31,7 @@ SRCS_NAME	=	main.c										\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
 				ui/export_png.c								\
-				converter/gtk2cl.c							\
+				converter/converter.c						\
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
 
@@ -42,7 +42,7 @@ LFT_PATH	=	./libs/libft
 GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
 GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
-CC			=	gcc
+CC			=	gcc -fdiagnostics-color=auto
 
 CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
@@ -52,8 +52,6 @@ CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
 OBJS		=	$(addprefix $(OBJS_PATH)/,$(OBJS_NAME))
-
-UNAME		:=	$(shell uname)
 
 all: $(NAME)
 

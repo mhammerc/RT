@@ -35,6 +35,37 @@ static void		element_edited()
 	--ui->lock;
 }
 
+static char		get_operation_code_from_id(int id)
+{
+	if (id == 1)
+		return ('+');
+	if (id == 2)
+		return ('U');
+	if (id == 3)
+		return ('-');
+	return ('0');
+}
+
+static int		get_operation_id_from_code(char code)
+{
+	if (code == '+')
+		return (1);
+	if (code == 'U')
+		return (2);
+	if (code == '-')
+		return (3);
+	return (0);
+}
+
+static void		bounding_edited(GtkComboBox *widget, gpointer user_data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)user_data;
+	ui->selected_obj.object->operation = get_operation_code_from_id(gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
+	ask_for_new_image(ui);
+}
+
 void			clear_properties_list(t_ui *ui)
 {
 	GList	*children;
@@ -78,9 +109,22 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	g_signal_connect(G_OBJECT(name), "rt-entry-edited", G_CALLBACK(object_name_edited), (gpointer)view);
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos, &view->rp->el_prop.pos, element_edited);
 	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot, &view->rp->el_prop.rot, element_edited);
+
+	/* BOUNDING TYPE START  */
+	GtkWidget	*bounding_list = gtk_combo_box_text_new();
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "None");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Intersection");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Union");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Substraction");
+	gtk_combo_box_set_active(GTK_COMBO_BOX(bounding_list), get_operation_id_from_code(view->selected_obj.object->operation));
+	g_signal_connect(bounding_list, "changed", G_CALLBACK(bounding_edited), view);
+
+	/* BOUNDING TYPE END */
+
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Radius	", view->selected_obj.object->radius, &view->rp->el_prop.radius, element_edited));
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Length	", view->selected_obj.object->length, &view->rp->el_prop.length, element_edited));
