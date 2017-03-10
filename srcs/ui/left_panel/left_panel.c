@@ -32,10 +32,10 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 	lp->lp_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 2);
 
 	lp->lp_btns.button = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 2);
-	lp->lp_btns.add_obj = GTK_WIDGET(gtk_button_new_with_label("OBJ"));
-	lp->lp_btns.add_light = GTK_WIDGET(gtk_button_new_with_label("LIGHT"));
-	lp->lp_btns.cpy = GTK_WIDGET(gtk_button_new_with_label("COPY"));
-	lp->lp_btns.remove = GTK_WIDGET(gtk_button_new_with_label("DEL"));
+	lp->lp_btns.add_obj = gtk_button_new_with_label("OBJ");
+	lp->lp_btns.add_light = gtk_button_new_with_label("LIGHT");
+	lp->lp_btns.cpy = gtk_button_new_with_label("COPY");
+	lp->lp_btns.remove = gtk_button_new_with_label("DEL");
 
 	lp->tree.store = gtk_tree_store_new(2, G_TYPE_STRING, G_TYPE_STRING);
 	lp->tree.tree = gtk_tree_view_new_with_model(GTK_TREE_MODEL(lp->tree.store));

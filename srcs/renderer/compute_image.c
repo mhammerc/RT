@@ -246,4 +246,5 @@ void			renderer_compute_image(t_scene *sce)
 	}
 	ui_print_scene(pixels);
 	free(pixels);
+	free(light);
 }

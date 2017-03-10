@@ -36,7 +36,7 @@ void		edit_scene_properties(gpointer data)
 //	view->scene->nb_obj = 3; //a actualiser en continue
 
 	gtk_container_add(GTK_CONTAINER(view->rp->scene_prop), gtk_label_new_with_mnemonic("_Scene"));
-	GtkWidget	*nb_obj = gtk_label_new(ft_itoa(17));//penser a free
+	GtkWidget	*nb_obj = gtk_label_new("17");
 //	gtk_label_set_text (GTK_LABEL(nb_obj), "nb_obj");
 //	GtkWidget	*nb_obj =create_numeric_entry("nb_obj", view->scene->nb_obj, &(view->rp->scene_gtk.nb_obj), scene_edited);
 //	GtkWidget	*lkat = create_vector3_entry("LookAt", view->scene->lkat, &view->rp->scene_gtk.lkat, scene_edited);
