@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/09 10:12:47 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/10 17:37:47 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ struct						s_obj
 	struct s_obj			*right;
 	char					csg;
 	int					csg_normal;
-	struct s_obj					*csg_normal_ref;
+	struct s_obj					*csg_ref;
 	int						(*intersect)(struct s_obj *self, t_ray *ray);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 	int						nb_sommet;//pour les polygones (triangles, carre, ....) il faudra allouer un tableau de vecteur contenant les sommets

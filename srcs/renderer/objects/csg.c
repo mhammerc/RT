@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/09 12:48:43 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/10 17:39:48 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -119,7 +119,7 @@ int	minus_test1(t_interval *a_i, t_interval *a_j, int i, int j)
 	min1 = a_i->min[i].dist;
 	max1 = a_i->max[i].dist;
 	min2 = a_j->min[j].dist;
-	max2 = a_j->min[j].dist;
+	max2 = a_j->max[j].dist;
 	if (min1 < min2 && max1 < min2)
 		return (0);
 	if (min2 < min1 && max2 < min1)
@@ -140,10 +140,10 @@ int	minus_test0(t_interval *a_i, t_interval *a_j, int i, int j)
 	min1 = a_i->min[i].dist;
 	max1 = a_i->max[i].dist;
 	min2 = a_j->min[j].dist;
-	max2 = a_j->min[j].dist;
+	max2 = a_j->max[j].dist;
 	if (min1 > min2 && max1 < max2)
-		return (0);
-	return (1);
+		return (1);
+	return (0);
 }
 /*
 **
@@ -243,8 +243,8 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 			c = vec3_norm2(ray_sphere) - obj->param;
 			if((interval->nb_hit = norm_quad_solve2(b, c, interval)))
 			{
-				interval->min[0].ref_normal = obj;
-				interval->max[0].ref_normal = obj;
+				interval->min[0].ref = obj;
+				interval->max[0].ref = obj;
 			}
 			
 		}
@@ -262,7 +262,7 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 }
 
 /*
-** fill distance minimal positive and ref_normal_obj
+** fill distance minimal positive and ref_obj
 ** @return 0 if no distance 1 else
 ** 
 */
@@ -275,14 +275,15 @@ int	minimal_positiv(t_interval *interval, t_obj *obj, double *d)
 		return (0);
 	i = 1;
 	*d = interval->min[0].dist; 
-	obj->csg_normal_ref = interval->min[0].ref_normal;
+	obj->csg_ref = interval->min[0].ref;
 	obj->csg_normal = interval->min[0].normal;
+	printf("hit %d\n", interval->nb_hit);
 	while (i < interval->nb_hit)
 	{
 		if (*d > interval->min[i].dist)
 		{
 			*d = interval->min[i].dist;
-			obj->csg_normal_ref = interval->min[i].ref_normal;
+			obj->csg_ref = interval->min[i].ref;
 		}
 		i++;
 	}
@@ -330,7 +331,7 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 	{
 		ray->t = d;
 		if (ray->type == INITIAL_RAY)
-			ray->collided = self;
+			ray->collided = self->csg_ref;
 		return (1);
 	}
 	return (0);
@@ -345,14 +346,13 @@ t_vec3			csg_normal(t_obj *self, t_vec3 pos)
 {
 	t_obj *obj;
 
-	obj = self->csg_normal_ref;
+	obj = self->csg_ref;
 	if(!self->csg_normal)
 	{
-	return (vec3_get_normalized(vec3_sub(pos, obj->pos)));
+		return (vec3_get_normalized(vec3_sub(pos, obj->pos)));
 	}
 	else
 	{
-		printf("test2");
-	return (vec3_get_normalized(vec3_sub(obj->pos, pos)));
+		return (vec3_get_normalized(vec3_sub(obj->pos, pos)));
 	}
 }
