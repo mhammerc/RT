@@ -28,3 +28,17 @@ void		refresh_obj_tree(t_ui *ui)
 	// FIXME Object unselected but properties are still shown on the right.
 	// That may cause a segfault.
 }
+
+void		free_obj_tree(t_ui *ui)
+{
+	t_list	*to_del;
+
+	ft_bzero(&(ui->selected_obj), sizeof(ui->selected_obj));
+	while (ui->objs)
+	{
+		to_del = ui->objs;
+		ui->objs = ui->objs->next;
+		free(to_del);
+	}
+	ui->objs = NULL;
+}

@@ -73,11 +73,11 @@ static void		cam_pos_rot_key(t_ui *ui, int mod, GdkEventKey *event)
 		ui->cam->dir.z += 0.1;
 }
 
-static void		other_obj_relative_keys(t_ui *ui, int mod, GdkEventKey *event)
-{
-	if (event->keyval == GDK_KEY_u)
-		// ui->selected_obj.object; A DESELECTIONER
-}
+// static void		other_obj_relative_keys(t_ui *ui, int mod, GdkEventKey *event)
+// {
+// 	if (event->keyval == GDK_KEY_u)
+// 		// ui->selected_obj.object; A DESELECTIONER
+// }
 
 static int		on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_data)
 {
@@ -90,8 +90,10 @@ static int		on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_da
 	if (ui->selected_obj.object)
 		obj_pos_rot_key(ui, mod, event);
 	else if (!ui->selected_obj.object)
+	{
 		cam_pos_rot_key(ui, mod, event);
-	other_obj_relative_keys(ui, mod, event);
+	}
+	// other_obj_relative_keys(ui, mod, event);
 	ask_for_new_image(ui);
 	return (FALSE);
 }
