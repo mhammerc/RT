@@ -87,6 +87,12 @@ static int	start_parsing(t_object *object, char *filename)
 			tmp.x = atof(split[1]);
 			tmp.y = atof(split[2]);
 			tmp.z = atof(split[3]);
+			if (object->radius < tmp.x)
+				object->radius = tmp.x;
+			if (object->radius < tmp.y)
+				object->radius = tmp.y;
+			if (object->radius < tmp.z)
+				object->radius = tmp.z;
 			components.sommets[components.n_sommets++] = tmp;
 		}
 		else if (ft_strcmp(split[0], "vt") == 0)
