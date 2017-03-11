@@ -38,7 +38,6 @@ SRCS_NAME	=	main.c										\
 				ui/top_menu/file_loader/scene.c				\
 				ui/top_menu/file_loader/camera.c			\
 				ui/top_menu/file_loader/object.c			\
-				ui/top_menu/file_loader/light.c				\
 				ui/top_menu/file_loader/lists.c				\
 				ui/top_menu/file_loader/tools.c				\
 				converter/gtk2cl.c							\

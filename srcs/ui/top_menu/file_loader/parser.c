@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.c                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lmarques <lmarques@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/28 14:40:33 by lmarques          #+#    #+#             */
-/*   Updated: 2017/03/10 18:28:35 by gpoblon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ui.h"
 
 int		ft_count_tabs(const char *s)
@@ -98,7 +86,7 @@ void	ft_read_file(char *name, t_env *env)
 
 	ln = NULL;
 	fd = open(name, O_RDONLY);
-	while ((ret = get_next_line(fd, &ln)))
+	while ((ret = ft_get_next_line(fd, &ln)))
 	{
 		env->line_count++;
 		if (ret == -1)

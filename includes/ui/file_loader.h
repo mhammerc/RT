@@ -1,18 +1,7 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lmarques <lmarques@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/25 01:19:41 by lmarques          #+#    #+#             */
-/*   Updated: 2017/03/10 18:25:31 by gpoblon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef PARSER_H
 # define PARSER_H
 
+# include "shared.h"
 # define MAX_INDEX_SCENE 2
 # define MAX_INDEX_CAMERA 2
 # define MAX_INDEX_OBJECT 6
@@ -55,6 +44,7 @@ typedef struct			s_parser_cam
 
 typedef struct			s_entity
 {
+	enum e_env			env_type;
 	enum e_object_type	type;
 	t_vector3d			pos;
 	t_vector3d			rot;
@@ -110,7 +100,7 @@ void					ft_fill_camera_position(t_env *env, char **tab);
 void					ft_fill_camera_direction(t_env *env, char **tab);
 void					ft_fill_camera_rotation(t_env *env, char **tab);
 void					ft_fill_object_color(t_env *env, char **tab,
-							t_entity *obj);
+							t_entity *entity);
 void					ft_fill_object_type(t_env *env, char **tab,
 							t_entity *entity);
 void					ft_fill_object_size(t_env *env, char **tab,

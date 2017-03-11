@@ -12,7 +12,8 @@
 # include "right_panel.h"
 # include "widget.h"
 # include "keys.h"
-# include "parser.h"
+# include "file_loader.h"
+# include "file_saver.h"
 
 # define RENDER_SIZE_W 1366
 # define RENDER_SIZE_H 768
@@ -21,22 +22,6 @@
 ** Interface singleton (just in case, will be removed
 */
 t_ui			*get_interface();
-
-/*
-** Objects definitions
-** See env.h
-*/
-/*enum e_object_type
-{
-	SPHERE,
-	PLANE,
-	CONE,
-	CYLINDER,
-	EMPTY,
-	LIGHT,
-	OBJECT_TYPE_COUNT
-};
-*/
 
 typedef struct			s_object
 {
@@ -109,6 +94,7 @@ void					right_panel(t_ui *ui, t_right_panel *lp);
 ** Object and scene manipulation
 */
 void					refresh_obj_tree(t_ui *ui);
+void					add_object(t_object object, gboolean render_new);
 void					create_sphere();
 void					create_plane();
 void					create_cone();
@@ -128,7 +114,9 @@ char					*get_el_type_char(t_object *object);
 
 void					ask_for_new_image(t_ui *ui);
 
-void			load_file(char *filename);
-void			hook_up_obj_lst(t_entity_lst *lst, t_list *objs);
+void					load_file(char *filename);
+void					hook_up_obj_lst(t_ui *ui, t_env *env);
+
+void					free_obj_tree(t_ui *ui);
 
 #endif

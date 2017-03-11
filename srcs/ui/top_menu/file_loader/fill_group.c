@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fill_group.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lmarques <lmarques@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/06 11:50:32 by lmarques          #+#    #+#             */
-/*   Updated: 2017/03/10 18:28:19 by gpoblon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ui.h"
 
 void	ft_fill_object_group(t_env *env, char *ln)
@@ -32,6 +20,8 @@ void	ft_fill_object_group(t_env *env, char *ln)
 		ft_fill_object_radius(env, tmp, &entity);
 	else if (!ft_strcmp(tmp2, "length"))
 		ft_fill_object_length(env, tmp, &entity);
+	else if (!ft_strcmp(tmp2, "color"))
+		ft_fill_object_color(env, tmp, &entity);
 	else if (!ft_strcmp(tmp2, "name"))
 		ft_fill_object_name(env, tmp, &entity);
 	else

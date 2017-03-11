@@ -38,7 +38,7 @@ void			open_dialog_open(void)
 	{
 		filename = gtk_file_chooser_get_filename(chooser);
 		load_file(filename);
-		g_free (filename);
+		g_free(filename);
 	}
 	gtk_widget_destroy (dialog);
 }

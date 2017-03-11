@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   file_loader.c                                      :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lmarques <lmarques@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/09 01:48:29 by lmarques          #+#    #+#             */
-/*   Updated: 2017/03/10 18:22:45 by gpoblon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 # include "ui.h"
 
 void			load_file(char *filename)
@@ -24,26 +12,33 @@ void			load_file(char *filename)
 	env.group_tmp = NULL;
 	ft_init_tabs(&env);
 	ft_read_file(filename, &env);
-	hook_up_obj_lst(env.entity_lst, ui->objs);
+	free_obj_tree(ui);
+	hook_up_obj_lst(ui, &env);
+	refresh_obj_tree(ui);
+	ask_for_new_image(ui);
 	// g_assert_no_error (error);
 }
 
-void			hook_up_obj_lst(t_entity_lst *lst, t_list *objs)
+void			hook_up_obj_lst(t_ui *ui, t_env *env)
 {
-	t_object	*cur_obj;
+	t_object	cur_obj;
+	t_list		*bgn_lst;
 
-	while (lst)
+	bgn_lst = ui->objs;
+	ui->cam->pos = env->camera.pos;
+	ui->cam->dir = env->camera.dir;
+	while (env->entity_lst)
 	{
-		cur_obj = ((t_object*)objs->content);
-		cur_obj->type = lst->entity.type;
-		ft_strcpy(cur_obj->name, lst->entity.name);
-		cur_obj->pos = lst->entity.pos;
-		cur_obj->rot = lst->entity.rot;
-		cur_obj->length = lst->entity.length;
-		cur_obj->radius = lst->entity.radius;
-		cur_obj->color = lst->entity.color;
-		ft_lstpushback(&objs, ft_lstnew(&cur_obj, sizeof(t_object)));
-		lst = lst->next;
-		objs = objs->next;
+		cur_obj.type = env->entity_lst->entity.type;
+		ft_strcpy(cur_obj.name, env->entity_lst->entity.name);
+		cur_obj.pos = env->entity_lst->entity.pos;
+		cur_obj.rot = env->entity_lst->entity.rot;
+		cur_obj.length = env->entity_lst->entity.length;
+		cur_obj.radius = env->entity_lst->entity.radius;
+		cur_obj.color = env->entity_lst->entity.color;
+		add_object(cur_obj, FALSE);
+		env->entity_lst = env->entity_lst->next;
+		ui->objs = ui->objs->next;
 	}
+	ui->objs = bgn_lst;
 }

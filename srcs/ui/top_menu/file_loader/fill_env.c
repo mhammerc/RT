@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   fill_env.c                                         :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: lmarques <lmarques@student.42.fr>          +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/28 21:43:29 by lmarques          #+#    #+#             */
-/*   Updated: 2017/03/10 18:28:15 by gpoblon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "ui.h"
 
 void	ft_fill_camera(t_env *env, char *ln)
@@ -51,6 +39,8 @@ void	ft_fill_object(t_env *env, char *ln)
 		ft_fill_object_radius(env, tmp, &entity);
 	else if (!ft_strcmp(tmp2, "length"))
 		ft_fill_object_length(env, tmp, &entity);
+	else if (!ft_strcmp(tmp2, "color"))
+		ft_fill_object_color(env, tmp, &entity);
 	else if (!ft_strcmp(tmp2, "name"))
 		ft_fill_object_name(env, tmp, &entity);
 	else
