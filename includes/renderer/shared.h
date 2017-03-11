@@ -82,7 +82,8 @@ struct						s_obj
 	int						(*intersect_csg)(struct s_obj *self, t_ray *ray, void *interval);
 	t_vec3					(*normal_csg)(struct s_obj *self, t_vec3 pos);
 	int						nb_sommet;//pour les polygones (triangles, carre, ....) il faudra allouer un tableau de vecteur contenant les sommets
-	t_vec3					*sommet;
+	t_vec3					sommet[10];//TODO et pourquoi pas 100!
+	double					aire;
 };
 typedef struct s_obj		t_obj;
 
