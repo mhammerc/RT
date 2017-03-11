@@ -361,19 +361,7 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 		//TODO faire une generique dist_obj(obj, ray) qui remplit interval;
 		//pour l'instant uniquement cas sphere :
 		{
-			double		b;
-			double		c;
-			t_vec3		ray_sphere;
-
-			ray_sphere = vec3_sub(ray->pos, obj->pos);
-			b = vec3_dot(ray_sphere, ray->dir);
-			c = vec3_norm2(ray_sphere) - obj->param;
-			if((interval->nb_hit = norm_quad_solve2(b, c, interval)))
-			{
-				interval->min[0].ref = obj;
-				interval->max[0].ref = obj;
-			}
-			
+			obj->intersect_csg(obj, ray, interval);
 		}
 	else
 	{
@@ -409,13 +397,13 @@ int	minimal_positiv(t_interval *interval, t_obj *obj, double *d)
 		{
 			*d = interval->min[i].dist;
 			obj->csg_ref = interval->min[i].ref;
-			obj->csg_normal = interval->min[i].normal;
+			obj->csg_ref->csg_normal = interval->min[i].normal;
 		}
 		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
 		{
 			*d = interval->max[i].dist;
 			obj->csg_ref = interval->max[i].ref;
-			obj->csg_normal = interval->max[i].normal;
+			obj->csg_ref->csg_normal = interval->max[i].normal;
 		}
 		i++;
 	}
@@ -433,33 +421,7 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 {
 	t_interval	interval;
 	double	d;
-	//TODO A REMPLIR DYNAMIQUEMENT
-	/*t_obj	left;
-//	t_obj	left_left;
-//	t_obj	left_right;
-	t_obj	right;
-	left = *self;
-	right = *self;
-	left.pos.x=-1;
-	right.pos.x=0;
-	self->csg = 'I';
-	self->left = &left;
-	self->right = &right;
-	self->left->csg = '0';
-//	left_right = left;
-//	left_left = left;
-//	left_left.pos.x=0.5;
-//	self->left->left = &left_left;
-//	self->left->right = &left_right;
-//	self->left->left->param = 1;
-//	self->left->right->param = 1;
-//	self->left->left->csg = '0';
-//	self->left->right->csg = '0';
-	self->right->csg = '0';
-	self->right->param = 1;
-	self->left->param = 1;
-	//
-	*/
+
 	test_csg(self, ray, &interval);
 	if (minimal_positiv(&interval, self, &d))
 	{
@@ -481,12 +443,5 @@ t_vec3			csg_normal(t_obj *self, t_vec3 pos)
 	t_obj *obj;
 
 	obj = self->csg_ref;
-	if(!self->csg_normal)
-	{
-		return (vec3_get_normalized(vec3_sub(pos, obj->pos)));
-	}
-	else
-	{
-		return (vec3_get_normalized(vec3_sub(obj->pos, pos)));
-	}
+	return(obj->normal_csg(obj, pos));
 }

@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include <stdlib.h>
 #include <libft.h>
-#include "rtv1.h"
+#include "renderer.h"
 
 /*
 ** Intersection between ray and cone
@@ -38,7 +37,7 @@ int				cone_intersect(t_obj *self, t_ray *ray)
 	a[2] = a[0] * vec3_norm2(dpmva) - a[3] * a[5] * a[5];
 	a[1] = 2 * (a[0] * vec3_dot(vmvva, dpmva) - a[3] * a[4] * a[5]);
 	a[0] = a[0] * vec3_norm2(vmvva) - a[3] * a[4] * a[4];
-	if (quad_solve(a[0], a[1], a[2], &(ray->d)))
+	if (quad_solve(a[0], a[1], a[2], &(ray->t)))
 	{
 		if (ray->type == INITIAL_RAY)
 			ray->collided = self;

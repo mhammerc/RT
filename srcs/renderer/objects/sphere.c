@@ -46,3 +46,42 @@ t_vec3			sphere_normal(t_obj *self, t_vec3 pos)
 {
 	return (vec3_get_normalized(vec3_sub(pos, self->pos)));
 }
+
+/*
+** intersect intervall between ray and sphere, interval->hit is 0 if no intersection 1 else
+** @return 1
+**
+*/
+
+int				sphere_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
+{
+	double		b;
+	double		c;
+	t_vec3		ray_sphere;
+
+	ray_sphere = vec3_sub(ray->pos, obj->pos);
+	b = vec3_dot(ray_sphere, ray->dir);
+	c = vec3_norm2(ray_sphere) - obj->param;
+	if((interval->nb_hit = norm_quad_solve2(b, c, interval)))
+	{
+		interval->min[0].ref = obj;
+		interval->max[0].ref = obj;
+	}
+	return (1);
+}
+
+/*
+** Normal vector at given point
+*/
+
+t_vec3			sphere_normal_csg(t_obj *obj, t_vec3 pos)
+{
+	if(!obj->csg_normal)
+	{
+		return (vec3_get_normalized(vec3_sub(pos, obj->pos)));
+	}
+	else
+	{
+		return (vec3_get_normalized(vec3_sub(obj->pos, pos)));
+	}
+}
