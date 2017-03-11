@@ -1,5 +1,25 @@
 #include "obj_parser.h"
 
+/*
+ * Attend d'etre teste avant la mise a la norme.
+ * Revoir la securite du bouzin (si un malloc fail ou un truc)
+ * a priori on prend pas les normales, mais on aura surement besoin des textures.
+ * Aussi regarder si line doit etre free une fois sortie de la boucle de getline.
+ */
+
+static void free_strsplit(char **split)
+{
+	size_t	i;
+
+	i = 0;
+	while (split[i])
+	{
+		free(split[i]);
+		++i;
+	}
+	free(split);
+}
+
 static int	start_parsing(t_object *object, char *filename)
 {
 	char				*line;
@@ -24,6 +44,7 @@ static int	start_parsing(t_object *object, char *filename)
 		{
 			free(line);
 			line = NULL;
+			free_strsplit(split);
 			continue;
 		}
 		if (ft_strcmp(split[0], "v") == 0)
@@ -36,6 +57,7 @@ static int	start_parsing(t_object *object, char *filename)
 			++components.n_faces;
 		free(line);
 		line = NULL;
+		free_strsplit(split);
 	}
 	fclose(fp);
 
@@ -57,6 +79,7 @@ static int	start_parsing(t_object *object, char *filename)
 		{
 			free(line);
 			line = NULL;
+			free_strsplit(split);
 			continue;
 		}
 		if (ft_strcmp(split[0], "v") == 0)
@@ -81,6 +104,7 @@ static int	start_parsing(t_object *object, char *filename)
 		}
 		free(line);
 		line = NULL;
+		free_strsplit(split);
 	}
 	fclose(fp);
 
@@ -118,7 +142,12 @@ static int	start_parsing(t_object *object, char *filename)
 			object->faces[components.n_faces] = face;
 			++components.n_faces;
 		}
+		free_strsplit(split);
 	}
+
+	free(components.sommets);
+	free(components.textures);
+	free(components.normales);
 	return (TRUE);
 }
 
