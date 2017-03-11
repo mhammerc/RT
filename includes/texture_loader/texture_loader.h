@@ -18,5 +18,6 @@ typedef struct		s_texture
 }					t_texture;
 
 t_texture			load_texture(char const *filename);
+void				free_texture(t_texture texture);
 
 #endif

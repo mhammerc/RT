@@ -17,3 +17,8 @@ t_texture	load_texture(char const *filename)
 	texture.has_alpha = gdk_pixbuf_get_has_alpha(texture._pixbuf);
 	return (texture);
 }
+
+void		free_texture(t_texture texture)
+{
+	g_object_unref(texture._pixbuf);
+}
