@@ -133,6 +133,8 @@ static	t_menu_file		*create_file_menu(void)
 		G_CALLBACK (open_dialog_export), NULL);
 	g_signal_connect(ui->file_menu->quit, "activate",
 		G_CALLBACK (exit_rt), NULL);
+	g_signal_connect(ui->file_menu->render_on_change, "activate", G_CALLBACK(toggle_render_on_change), NULL);
+	g_signal_connect(ui->file_menu->start_render, "activate", G_CALLBACK(render_new_image), NULL);
 	return (ui->file_menu);
 }
 

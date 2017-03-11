@@ -7,17 +7,6 @@
 typedef struct s_ui				t_ui;
 
 /*
-** Maths definitions
-*/
-
-typedef struct			s_vec3d
-{
-	double				x;
-	double				y;
-	double				z;
-}						t_vec3;
-
-/*
 ** Object properties
 */
 typedef struct			s_vector3w
@@ -39,8 +28,8 @@ typedef struct			s_cam_gtk
 
 typedef struct			s_scene_gtk
 {
-	GtkWidget			*nb_obj;
-	GtkWidget			*nb_spot;
+	int					fxaa;
+	GtkWidget			*fxaa_scale_entry;
 }						t_scene_gtk;
 
 typedef struct			s_element_properties
@@ -50,7 +39,6 @@ typedef struct			s_element_properties
 	GtkWidget			*radius;
 	GtkWidget			*length;
 }						t_elem_properties;
-;
 
 typedef struct			s_right_panel
 {

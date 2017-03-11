@@ -46,9 +46,9 @@ typedef struct			s_entity
 {
 	enum e_env			env_type;
 	enum e_object_type	type;
-	t_vec3			pos;
-	t_vec3			rot;
-	t_vec3			color;
+	t_vec3				pos;
+	t_vec3				rot;
+	t_vec3				color;
 	double				length;
 	double				radius;
 	char				name[80];

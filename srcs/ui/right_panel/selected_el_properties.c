@@ -31,8 +31,40 @@ static void		element_edited()
 
 	obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius)));
 	obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length)));
-	ask_for_new_image(ui);
+	if (ui->render_on_change)
+		ask_for_new_image(ui);
 	--ui->lock;
+}
+
+static char		get_operation_code_from_id(int id)
+{
+	if (id == 1)
+		return ('I');
+	if (id == 2)
+		return ('U');
+	if (id == 3)
+		return ('-');
+	return ('0');
+}
+
+static int		get_operation_id_from_code(char code)
+{
+	if (code == 'I')
+		return (1);
+	if (code == 'U')
+		return (2);
+	if (code == '-')
+		return (3);
+	return (0);
+}
+
+static void		bounding_edited(GtkComboBox *widget, gpointer user_data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)user_data;
+	ui->selected_obj.object->operation = get_operation_code_from_id(gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
+	ask_for_new_image(ui);
 }
 
 void			clear_properties_list(t_ui *ui)
@@ -56,17 +88,9 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	t_list		*obj_lst;
 	int			*tmp;
 
-	printf("HERE\n");
 	view = (t_ui*)data;
 	tmp = gtk_tree_path_get_indices_with_depth(path, &(view->selected_obj.depth));
 	ft_memcpy(view->selected_obj.index, tmp , 4 * (view->selected_obj.depth));
-	int i = 0;
-	while (i < view->selected_obj.depth)
-	{
-		printf("depth %d index %d\n", view->selected_obj.depth, *(view->selected_obj.index + i));
-		i++;
-	}
-	printf("\n");
 	obj_lst = ft_lstat_child(view->objs, view->selected_obj.index, view->selected_obj.depth);
 	view->selected_obj.object = (t_object*)obj_lst->content;
 	gtk_tree_model_get_iter(GTK_TREE_MODEL(view->lp->tree.store), &view->selected_obj.iter, path);
@@ -78,9 +102,23 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	g_signal_connect(G_OBJECT(name), "rt-entry-edited", G_CALLBACK(object_name_edited), (gpointer)view);
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos, &view->rp->el_prop.pos, element_edited);
 	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot, &view->rp->el_prop.rot, element_edited);
+
+	/* BOUNDING TYPE START  */
+	GtkWidget	*bounding_list = gtk_combo_box_text_new();
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "None");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Intersection");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Union");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Substraction");
+	gtk_combo_box_set_active(GTK_COMBO_BOX(bounding_list), get_operation_id_from_code(view->selected_obj.object->operation));
+	g_signal_connect(bounding_list, "changed", G_CALLBACK(bounding_edited), view);
+
+	/* BOUNDING TYPE END */
+
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
+
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Radius	", view->selected_obj.object->radius, &view->rp->el_prop.radius, element_edited));
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Length	", view->selected_obj.object->length, &view->rp->el_prop.length, element_edited));
 	create_color_chooser(view, view->selected_obj.object->color);

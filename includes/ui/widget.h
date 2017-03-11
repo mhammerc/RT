@@ -1,20 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   widget.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/01 17:09:47 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/11 15:43:53 by gpoblon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef WIDGET_H
 # define WIDGET_H
 
 # include <stdlib.h>
 # include <gtk/gtk.h>
+
+# include "ui.h"
+# include "shared.h"
 
 /*
 ** top menu (file, open, save, ..)

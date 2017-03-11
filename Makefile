@@ -57,7 +57,7 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc -fdiagnostics-color=auto
 
-CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter
+CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
 
 CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft
@@ -65,16 +65,6 @@ CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
 OBJS		=	$(addprefix $(OBJS_PATH)/,$(OBJS_NAME))
-
-UNAME		:=	$(shell uname)
-
-ifeq ($(UNAME),Darwin)
-	CLIBS	+=	-framework OpenCL
-endif
-
-ifeq ($(UNAME),Linux)
-	CLIBS	+=	-lOpenCL
-endif
 
 all: $(NAME)
 

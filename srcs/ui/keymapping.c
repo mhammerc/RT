@@ -94,7 +94,7 @@ static int		on_key_press(GtkWidget *widget, GdkEventKey *event, gpointer user_da
 		cam_pos_rot_key(ui, mod, event);
 	}
 	// other_obj_relative_keys(ui, mod, event);
-	ask_for_new_image(ui);
+	// ask_for_new_image(ui); FIXME double render
 	return (FALSE);
 }
 

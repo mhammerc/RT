@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 11:48:57 by vfour             #+#    #+#             */
-/*   Updated: 2017/02/26 01:04:47 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/08 16:20:36 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,9 @@
 #include "renderer.h"
 #include "shared.h"
 
-void		vec3_normalize(FLOAT3 *v)
+void		vec3_normalize(t_vec3 *v)
 {
-	FLOAT	invnorm;
+	double	invnorm;
 
 	invnorm = 1.0 / vec3_norm(*v);
 	v->x *= invnorm;
@@ -25,10 +25,10 @@ void		vec3_normalize(FLOAT3 *v)
 	v->z *= invnorm;
 }
 
-FLOAT3		vec3_get_normalized(FLOAT3 v)
+t_vec3		vec3_get_normalized(t_vec3 v)
 {
-	FLOAT	invnorm;
-	FLOAT3	res;
+	double	invnorm;
+	t_vec3	res;
 
 	invnorm = 1.0 / vec3_norm(v);
 	res.x = v.x * invnorm;
@@ -37,12 +37,12 @@ FLOAT3		vec3_get_normalized(FLOAT3 v)
 	return (res);
 }
 
-FLOAT		vec3_norm2(FLOAT3 v)
+double		vec3_norm2(t_vec3 v)
 {
 	return (v.x * v.x + v.y * v.y + v.z * v.z);
 }
 
-FLOAT		vec3_norm(FLOAT3 v)
+double		vec3_norm(t_vec3 v)
 {
-	return ((FLOAT)sqrt(v.x * v.x + v.y * v.y + v.z * v.z));
+	return ((double)sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
 }

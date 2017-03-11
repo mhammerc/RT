@@ -14,16 +14,19 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	GtkWidget *plane = gtk_button_new_with_label("Plane");
 	GtkWidget *cylinder = gtk_button_new_with_label("Cylinder");
 	GtkWidget *cone = gtk_button_new_with_label("Cone");
+	GtkWidget *csg = gtk_button_new_with_label("CSG");
 	g_signal_connect(sphere, "clicked", G_CALLBACK(create_sphere), NULL);
 	g_signal_connect(plane, "clicked", G_CALLBACK(create_plane), NULL);
 	g_signal_connect(cylinder, "clicked", G_CALLBACK(create_cylinder), NULL);
 	g_signal_connect(cone, "clicked", G_CALLBACK(create_cone), NULL);
+	g_signal_connect(csg, "clicked", G_CALLBACK(create_cgs), NULL);
 	g_signal_connect(empty, "clicked", G_CALLBACK(create_empty), NULL);
 	gtk_container_add(GTK_CONTAINER(submenu), sphere);
 	gtk_container_add(GTK_CONTAINER(submenu), empty);
 	gtk_container_add(GTK_CONTAINER(submenu), plane);
 	gtk_container_add(GTK_CONTAINER(submenu), cylinder);
 	gtk_container_add(GTK_CONTAINER(submenu), cone);
+	gtk_container_add(GTK_CONTAINER(submenu), csg);
 	gtk_container_add(GTK_CONTAINER(popover), submenu);
 	gtk_widget_show_all(popover);
 }
