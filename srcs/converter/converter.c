@@ -14,6 +14,13 @@ static int	is_light(t_object *object)
 	return (object->type == LIGHT);
 }
 
+static void	apply_parent_relative(t_obj *parent, t_obj *child)
+{
+	if (!parent)
+		return ;
+	child->pos = vec3_add(child->pos, parent->pos);
+}
+
 static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 {
 	obj->pos = object->pos;
@@ -34,24 +41,10 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->left = NULL;
 	obj->right = NULL;
 	obj->csg = '0';
-	if (parent)
-	{
-		obj->pos = vec3_add(obj->pos, parent->pos);
-		obj->param *= parent->param;
-	}
-	/*if (object->operation != '0' && objects->children)
-	{
-		left = (t_obj*)malloc(sizeof(t_obj));
-		right = (t_obj*)malloc(sizeof(t_obj));
-		*left = *obj;
-		convert_object(right, objects->children, 0);
-		obj->csg = object->operation;
-		obj->left = left;
-		obj->right = right;
-	}*/
+	apply_parent_relative(parent, obj);
 }
 
-static int		convert_csg(t_obj *renderer_obj, t_list *objects)
+static int		convert_csg(t_obj *renderer_obj, t_list *objects, t_obj *parent)
 {
 	t_object	*ui_root;
 	t_object	*ui_son1;
@@ -70,25 +63,33 @@ static int		convert_csg(t_obj *renderer_obj, t_list *objects)
 	renderer_obj->left = (t_obj*)malloc(sizeof(t_obj));
 	renderer_obj->right = (t_obj*)malloc(sizeof(t_obj));
 	renderer_obj->csg = ui_root->operation;
-	renderer_obj->color.x = 0xff;
+
+	renderer_obj->pos = ui_root->pos;
+	renderer_obj->color = ui_root->color;
+	renderer_obj->dir = ui_root->rot;
+	renderer_obj->radius =  ui_root->radius;
+	renderer_obj->length = ui_root->length;
+	renderer_obj->param = ui_root->length / 1000;
+	apply_parent_relative(parent, renderer_obj);
+
 	if (ui_son1->type != CSG)
-		convert_object(renderer_obj->left, ui_son1, 0);
+		convert_object(renderer_obj->left, ui_son1, renderer_obj);
 	else
 	{
-		if (!convert_csg(renderer_obj->left, objects->children))
+		if (!convert_csg(renderer_obj->left, objects->children, renderer_obj))
 			return (FALSE);
 	}
 	if (ui_son2->type != CSG)
-		convert_object(renderer_obj->right, ui_son2, 0);
+		convert_object(renderer_obj->right, ui_son2, renderer_obj);
 	else
 	{
-		if (!convert_csg(renderer_obj->right, objects->children->next))
+		if (!convert_csg(renderer_obj->right, objects->children->next, renderer_obj))
 			return (FALSE);
 	}
 	return (TRUE);
 }
 
-static void		fill_obj(t_list *objects, t_list **objs)
+static void		fill_obj(t_list *objects, t_list **objs, t_obj *parent)
 {
 	t_obj		obj;
 	t_object	*object;
@@ -101,18 +102,20 @@ static void		fill_obj(t_list *objects, t_list **objs)
 	{
 		if (object->type != CSG)
 		{
-			convert_object(&obj, object, 0);
+			convert_object(&obj, object, parent);
 			ft_lstpushback(objs, ft_lstnew(&obj, sizeof(t_obj)));
 		}
 
 		if (object->type == CSG)
 		{
-			if (convert_csg(&obj, objects))
+			if (convert_csg(&obj, objects, parent))
 				ft_lstpushback(objs, ft_lstnew(&obj, sizeof(t_obj)));
 		}
 	}
+	if (objects->children && object->type != CSG)
+		fill_obj(objects->children, objs, &obj);
 	if (objects->next)
-		fill_obj(objects->next, objs);
+		fill_obj(objects->next, objs, parent);
 }
 
 //TODO for now, just one spot is effective and hierarchy spot obj doesn't work
@@ -157,11 +160,9 @@ void	ask_for_new_image(t_ui *ui)
 {
 	del_list(&ui->scene.obj);
 	del_list(&ui->scene.spot);
-	fill_obj(ui->objs, &(ui->scene.obj));
+	fill_obj(ui->objs, &(ui->scene.obj), NULL);
 	fill_spot(ui->objs, &(ui->scene.spot));
 
-	//sera modifier dynamiquement par la suite
-	//ui->scene.cam = *(ui->cam);
 	ui->scene.cam.dir = ui->cam->dir;
 	ui->scene.cam.pos = ui->cam->pos;
 	ui->scene.cam.w = RENDER_SIZE_W;
