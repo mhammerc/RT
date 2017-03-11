@@ -32,6 +32,7 @@ typedef struct			s_object
 	double				radius;
 	char				name[80];
 	char				operation;
+	char				*filename;
 	size_t				nb_faces;
 	t_face				*faces;
 }						t_object;
@@ -102,6 +103,7 @@ void					create_sphere();
 void					create_plane();
 void					create_cone();
 void					create_cgs();
+void					create_polygons();
 void					create_cylinder();
 void					create_empty();
 void					create_light();

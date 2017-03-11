@@ -22,9 +22,6 @@ static void		button_relase(GtkWidget *widget, GdkEvent *event,
 	gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)));
 	clear_properties_list(ui);
 	ui->selected_obj.object = NULL;
-	//*ui->selected_obj.index = 0;
-	//ui->selected_obj.depth = 0;
-	//ft_bzero(&ui->selected_obj.iter, sizeof(GtkTreeIter));
 }
 
 void			left_panel(t_ui *ui, t_left_panel *lp)
@@ -51,7 +48,7 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 	gtk_widget_set_size_request(lp->lp_btns.add_light, 100, 0);
 	gtk_widget_set_size_request(lp->lp_btns.remove, 10, 0);
 	gtk_widget_set_size_request(lp->tree.tree, 280, 768);
- 
+
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree), lp->tree.col_el);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree), lp->tree.col_type);
 

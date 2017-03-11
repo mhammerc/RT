@@ -102,6 +102,17 @@ void		create_cgs(gboolean render_new)
 	add_object(object, render_new);
 }
 
+void		create_polygons(gboolean render_new)
+{
+	t_object	object;
+
+	ft_bzero(&object, sizeof(t_object));
+	object.type = POLYGONS;
+	object.operation = '0';
+	ft_strcpy(object.name, "Polygons");
+	add_object(object, render_new);
+}
+
 void		create_empty(gboolean render_new)
 {
 	t_object	object;

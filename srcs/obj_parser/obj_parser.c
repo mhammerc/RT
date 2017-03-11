@@ -12,6 +12,8 @@ static void free_strsplit(char **split)
 	size_t	i;
 
 	i = 0;
+	if (!split)
+		return ;
 	while (split[i])
 	{
 		free(split[i]);
@@ -35,12 +37,16 @@ static int	start_parsing(t_object *object, char *filename)
 
 	/* First, count elements. */
 	fp = fopen(filename, "r");
+	if (!fp)
+		return (0);
 	line = NULL;
 	while ((ret = getline(&line, &n, fp)) != -1)
 	{
 		line[ret - 1] = 0;
 		split = ft_strsplit(line, ' ');
-		if (split[0] && split[0][0] == '#')
+		if (!split)
+			return (0);
+		if ((split[0] && split[0][0] == '#') || !split[0])
 		{
 			free(line);
 			line = NULL;
@@ -65,17 +71,21 @@ static int	start_parsing(t_object *object, char *filename)
 	components.sommets = (t_vec3*)malloc(sizeof(t_vec3) * components.n_sommets);
 	components.textures = (t_vec2*)malloc(sizeof(t_vec2) * components.n_textures);
 	components.normales = (t_vec3*)malloc(sizeof(t_vec3) * components.n_normales);
+	if (!components.normales || !components.textures || !components.sommets)
+		return (0);
 	components.n_sommets = 0;
 	components.n_textures = 0;
 	components.n_normales = 0;
 
 	fp = fopen(filename, "r");
+	if (!fp)
+		return (0);
 	line = NULL;
 	while ((ret = getline(&line, &n, fp)) != -1)
 	{
 		line[ret - 1] = 0;
 		split = ft_strsplit(line, ' ');
-		if (split[0] && split[0][0] == '#')
+		if ((split[0] && split[0][0] == '#') || !split[0])
 		{
 			free(line);
 			line = NULL;
@@ -117,10 +127,14 @@ static int	start_parsing(t_object *object, char *filename)
 	/* Last pass: we can create faces. */
 	t_face	face;
 	object->faces = (t_face*)malloc(sizeof(t_face) * components.n_faces);
+	if (!object->faces)
+		return (0);
 	object->nb_faces = components.n_faces;
 	ft_bzero(object->faces, sizeof(t_face) * components.n_faces);
 	components.n_faces = 0;
 	fp = fopen(filename, "r");
+	if (!fp)
+		return (0);
 	line = NULL;
 	while ((ret = getline(&line, &n, fp)) != -1)
 	{
@@ -136,14 +150,14 @@ static int	start_parsing(t_object *object, char *filename)
 			face.sommets = (t_vec3*)malloc(sizeof(t_vec3) * face.nb);
 			face.normales = (t_vec3*)malloc(sizeof(t_vec3) * face.nb);
 			face.textures = (t_vec2*)malloc(sizeof(t_vec2) * face.nb);
+			if (!face.sommets || !face.normales || !face.textures)
+				return (0);
 			i = 1;
 			while (i <= face.nb)
 			{
 				tmp = components.sommets[atoi(split[i]) - 1];
 				face.sommets[i - 1] = tmp;
 				++i;
-				//todo: uniquement les sommets pour le moment.
-				//mettre les textures et normales + la norme
 			}
 			object->faces[components.n_faces] = face;
 			++components.n_faces;
@@ -159,7 +173,7 @@ static int	start_parsing(t_object *object, char *filename)
 
 t_object	*parse_wavefront_file(char *filename)
 {
-	t_object	object;
+	static t_object	object;
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = POLYGONS;
@@ -167,5 +181,5 @@ t_object	*parse_wavefront_file(char *filename)
 	object.operation = '0';
 	if (!start_parsing(&object, filename))
 		return (FALSE);
-	return (FALSE);
+	return (&object);
 }
