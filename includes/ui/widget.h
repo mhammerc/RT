@@ -1,15 +1,3 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   widget.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/01 17:09:47 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/08 16:22:03 by vfour            ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef WIDGET_H
 # define WIDGET_H
 
@@ -34,7 +22,13 @@ typedef struct		s_menu_file
 	GtkWidget		*start_render;
 }					t_menu_file;
 
+/*
+** Top menu
+*/
 GtkWidget				*create_top_menu(void);
+void					open_dialog_open(void);
+void					open_dialog_save(void);
+void					open_dialog_export(void);
 
 /*
 ** HOMEMADE WIDGETS

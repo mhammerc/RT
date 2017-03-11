@@ -1,10 +1,6 @@
 #ifndef RIGHT_PANEL_H
 # define RIGHT_PANEL_H
 
-# include "libft.h"
-# include "shared.h"
-
-
 /*
 ** Constants
 */
@@ -43,7 +39,6 @@ typedef struct			s_element_properties
 	GtkWidget			*radius;
 	GtkWidget			*length;
 }						t_elem_properties;
-;
 
 typedef struct			s_right_panel
 {

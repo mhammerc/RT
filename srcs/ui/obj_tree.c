@@ -22,10 +22,26 @@ void		refresh_obj_tree(t_ui *ui)
 {
 	gtk_tree_store_clear(ui->lp->tree.store);
 	if (ui->objs)
+	{
 		refresh_obj_tree_aux(ui, ui->objs, NULL);
+	}
 	ui->selected_obj.object = NULL;
 	if (ui->render_on_change)
 		ask_for_new_image(ui);
 	// FIXME Object unselected but properties are still shown on the right.
 	// That may cause a segfault.
+}
+
+void		free_obj_tree(t_ui *ui)
+{
+	t_list	*to_del;
+
+	ft_bzero(&(ui->selected_obj), sizeof(ui->selected_obj));
+	while (ui->objs)
+	{
+		to_del = ui->objs;
+		ui->objs = ui->objs->next;
+		free(to_del);
+	}
+	ui->objs = NULL;
 }

@@ -86,7 +86,8 @@ SRC = ft_atoi.c \
 	  ft_printf/conversions/printf_print_octal.c \
 	  ft_printf/conversions/printf_print_percentage.c \
 	  ft_printf/conversions/printf_print_pointer.c \
-	  ft_printf/conversions/printf_print_string.c
+	  ft_printf/conversions/printf_print_string.c \
+	  ft_exit_fd.c
 
 OBJECTS = $(SRC:.c=.o)
 

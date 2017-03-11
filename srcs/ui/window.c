@@ -9,7 +9,7 @@ static GtkWidget		*create_app_window(GtkApplication *app, int width, int height,
 	win = gtk_application_window_new(app);
 	gtk_window_set_title(GTK_WINDOW(win), title);
 	gtk_window_set_default_size(GTK_WINDOW(win), width, height);
-	gtk_window_set_resizable (GTK_WINDOW(win), FALSE);
+	gtk_window_set_resizable(GTK_WINDOW(win), FALSE);
 	return (win);
 }
 
@@ -57,6 +57,9 @@ void			build_interface(GtkApplication *app, gpointer user_data)
 	ui->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	ui->top_menu = create_top_menu();
 	ui->workspace = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+
+	event_handler(ui);
+
 	gtk_container_add(GTK_CONTAINER(ui->window), ui->main_box);
 	gtk_container_add(GTK_CONTAINER(ui->main_box), ui->top_menu);
 	gtk_container_add(GTK_CONTAINER(ui->main_box), ui->workspace);

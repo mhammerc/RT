@@ -6,7 +6,7 @@
 ** This is why it use get_interface().
 */
 
-static void		add_object(t_object object, gboolean render_new)
+void		add_object(t_object object, gboolean render_new)
 {
 	t_ui		*ui;
 	t_list		*lst;

@@ -3,10 +3,10 @@
 
 static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer data)
 {
-	t_object	*obj;
-	t_ui	*ui;
-	GtkTreePath *path;
-	GtkTreeViewColumn *focus_column;
+	t_object			*obj;
+	t_ui				*ui;
+	GtkTreePath			*path;
+	GtkTreeViewColumn	*focus_column;
 
 	ui = get_interface();
 	obj = ui->selected_obj.object;
@@ -16,8 +16,8 @@ static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer da
 
 static void		element_edited()
 {
-	t_object	*obj;
-	t_ui	*ui;
+	t_object			*obj;
+	t_ui				*ui;
 
 	ui = get_interface();
 	obj = ui->selected_obj.object;

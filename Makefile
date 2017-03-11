@@ -10,9 +10,9 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/solve.c						\
 				renderer/objects/sphere.c					\
 				renderer/objects/cylinder.c					\
-				renderer/objects/cone.c					\
+				renderer/objects/cone.c						\
 				renderer/objects/plane.c					\
-				renderer/objects/csg.c					\
+				renderer/objects/csg.c						\
 				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
 				ui/display_panel.c							\
@@ -26,14 +26,24 @@ SRCS_NAME	=	main.c										\
 				ui/right_panel/color_chooser.c				\
 				ui/tools/dtoa.c								\
 				ui/tools/type_char.c						\
-				ui/top_menu.c								\
+				ui/keymapping.c								\
 				ui/widgets/numeric_entry.c					\
 				ui/widgets/scale_entry.c					\
 				ui/widgets/text_entry.c						\
 				ui/widgets/vector3_entry.c					\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
-				ui/export_png.c								\
+				ui/top_menu/top_menu.c						\
+				ui/top_menu/file_loader/file_loader.c		\
+				ui/top_menu/file_loader/parser.c			\
+				ui/top_menu/file_loader/fill_env.c			\
+				ui/top_menu/file_loader/fill_group.c		\
+				ui/top_menu/file_loader/checker.c			\
+				ui/top_menu/file_loader/scene.c				\
+				ui/top_menu/file_loader/camera.c			\
+				ui/top_menu/file_loader/object.c			\
+				ui/top_menu/file_loader/lists.c				\
+				ui/top_menu/file_loader/tools.c				\
 				converter/converter.c						\
 				obj_parser/obj_parser.c						\
 				texture_loader/texture_loader.c				\
@@ -78,6 +88,8 @@ create_objs_dir:
 				@mkdir $(OBJS_PATH)/ui/right_panel 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/tools 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/top_menu 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/top_menu/file_loader 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/obj_parser 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/texture_loader 2> /dev/null || true
 
