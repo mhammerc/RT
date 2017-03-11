@@ -10,10 +10,9 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <math.h>
 #include <stdlib.h>
 #include <libft.h>
-#include "rtv1.h"
+#include "renderer.h"
 
 /*
 ** Intersection between ray and plane
@@ -34,9 +33,9 @@ int				plane_intersect(t_obj *self, t_ray *ray)
 	x = vec3_sub(self->pos, ray->pos);
 	a = vec3_dot(x, self->dir);
 	d = a / b;
-	if (d < ray->d && d > 0)
+	if (d < ray->t && d > 0)
 	{
-		ray->d = d;
+		ray->t = d;
 		if (ray->type == INITIAL_RAY)
 			ray->collided = self;
 		return (1);
