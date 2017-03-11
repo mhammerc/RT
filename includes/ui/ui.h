@@ -45,6 +45,8 @@ typedef struct			s_object
 	double				radius;
 	char				name[80];
 	char				operation;
+	size_t				nb_faces;
+	t_face				*faces;
 }						t_object;
 
 typedef struct			s_selected_obj

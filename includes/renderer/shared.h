@@ -29,6 +29,7 @@ enum e_object_type
 	CONE,
 	CYLINDER,
 	CSG,
+	POLYGONS,
 	EMPTY,
 	LIGHT,
 	OBJECT_TYPE_COUNT
@@ -41,6 +42,12 @@ struct						s_vec3
 	double					z;
 };
 typedef struct s_vec3		t_vec3;
+
+typedef struct				s_vec2
+{
+	double					x;
+	double					y;
+}							t_vec2;
 
 
 struct						s_cam
@@ -57,6 +64,14 @@ struct						s_cam
 	int						h;
 };
 typedef struct s_cam		t_cam;
+
+typedef struct				s_face
+{
+	t_vec3					*sommets;
+	t_vec3					*normales;
+	t_vec2					*textures;
+	size_t					nb;
+}							t_face;
 
 typedef struct s_ray		t_ray;
 struct						s_obj
@@ -75,14 +90,14 @@ struct						s_obj
 	struct s_obj			*left;
 	struct s_obj			*right;
 	char					csg;
-	int					csg_normal;
-	struct s_obj					*csg_ref;
+	int						csg_normal;
+	struct s_obj			*csg_ref;
 	int						(*intersect)(struct s_obj *self, t_ray *ray);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 	int						(*intersect_csg)(struct s_obj *self, t_ray *ray, void *interval);
 	t_vec3					(*normal_csg)(struct s_obj *self, t_vec3 pos);
-	int						nb_sommet;//pour les polygones (triangles, carre, ....) il faudra allouer un tableau de vecteur contenant les sommets
-	t_vec3					*sommet;
+	size_t					nb_faces;
+	t_face					*faces;
 };
 typedef struct s_obj		t_obj;
 

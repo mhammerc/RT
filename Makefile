@@ -35,6 +35,7 @@ SRCS_NAME	=	main.c										\
 				ui/ui_print_scene.c							\
 				ui/export_png.c								\
 				converter/converter.c						\
+				obj_parser/obj_parser.c						\
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
 
@@ -47,7 +48,7 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc -fdiagnostics-color=auto
 
-CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -Wall -Wextra
+CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/obj_parser -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
 
 CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft
@@ -76,6 +77,7 @@ create_objs_dir:
 				@mkdir $(OBJS_PATH)/ui/right_panel 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/tools 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/obj_parser 2> /dev/null || true
 
 clean:
 				rm -rf $(OBJS)
