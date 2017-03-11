@@ -1,5 +1,21 @@
 #include "ui.h"
 
+static void				toggle_render_on_change(GtkCheckMenuItem *checkmenuitem, gpointer user_data)
+{
+	t_ui	*ui;
+
+	ui = get_interface();
+	ui->render_on_change = gtk_check_menu_item_get_active(checkmenuitem);
+}
+
+static void				render_new_image()
+{
+	t_ui	*ui;
+
+	ui = get_interface();
+	ask_for_new_image(ui);
+}
+
 static void				exit_rt(void)
 {
 	ft_exit_fd("Closing RT.", 1);
@@ -106,6 +122,9 @@ static	t_menu_file		*create_file_menu(void)
 	ui->file_menu->save = gtk_menu_item_new_with_label("Save scene (F2)");
 	ui->file_menu->export = gtk_menu_item_new_with_label("Export as PNG (F3)");
 	ui->file_menu->quit = gtk_menu_item_new_with_label("Quit (ESC)");
+	ui->file_menu->render_on_change = gtk_check_menu_item_new_with_label("Render scene on every change");
+	gtk_check_menu_item_set_active(GTK_CHECK_MENU_ITEM(ui->file_menu->render_on_change), TRUE);
+	ui->file_menu->start_render = gtk_menu_item_new_with_label("Render the scene");
 	g_signal_connect(ui->file_menu->open, "activate",
 		G_CALLBACK (open_dialog_open), NULL);
 	g_signal_connect(ui->file_menu->save, "activate",
@@ -129,6 +148,8 @@ GtkWidget				*create_top_menu(void)
 	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->save);
 	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->export);
 	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->quit);
+	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->render_on_change);
+	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->start_render);
 	box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_box_pack_start(GTK_BOX(box), top_menu, FALSE, FALSE, 0);
 	return (box);
