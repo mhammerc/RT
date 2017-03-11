@@ -70,20 +70,17 @@ int				cylinder_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	t_vec3		vmvva;
 	t_vec3		dpmva;
 
-	//printf("test0\n");
 	vmvva = vec3_mult(vec3_dot(ray->dir, obj->dir), obj->dir);
 	vmvva = vec3_sub(ray->dir, vmvva);
 	dpmva = vec3_sub(ray->pos, obj->pos);
 	dpmva = vec3_sub(dpmva, vec3_mult(vec3_dot(dpmva, obj->dir), obj->dir));
 	b = 2 * vec3_dot(vmvva, dpmva);
-	//printf("test1\n");
 	c = vec3_dot(dpmva, dpmva) - obj->param;
 	if ((interval->nb_hit = quad_solve2(vec3_dot(vmvva, vmvva), b, c, interval)))
 	{
 		interval->min[0].ref = obj;
 		interval->max[0].ref = obj;
 	}
-	//printf("test2\n");
 	return (1);
 }
 
