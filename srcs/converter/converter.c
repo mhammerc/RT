@@ -6,7 +6,7 @@
 
 static int	is_obj(t_object *object)
 {
-	return (object->type < 5);
+	return (object->type < 6);
 }
 
 static int	is_light(t_object *object)
@@ -41,6 +41,8 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->left = NULL;
 	obj->right = NULL;
 	obj->csg = '0';
+	obj->nb_faces = object->nb_faces;
+	obj->faces = object->faces;
 	apply_parent_relative(parent, obj);
 }
 
