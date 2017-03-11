@@ -7,17 +7,6 @@
 typedef struct s_ui				t_ui;
 
 /*
-** Maths definitions
-*/
-
-typedef struct			s_vector3d
-{
-	double				x;
-	double				y;
-	double				z;
-}						t_vector3d;
-
-/*
 ** Object properties
 */
 typedef struct			s_vector3w
@@ -39,8 +28,8 @@ typedef struct			s_cam_gtk
 
 typedef struct			s_scene_gtk
 {
-	GtkWidget			*nb_obj;
-	GtkWidget			*nb_spot;
+	int					fxaa;
+	GtkWidget			*fxaa_scale_entry;
 }						t_scene_gtk;
 
 typedef struct			s_element_properties
@@ -50,7 +39,6 @@ typedef struct			s_element_properties
 	GtkWidget			*radius;
 	GtkWidget			*length;
 }						t_elem_properties;
-;
 
 typedef struct			s_right_panel
 {
@@ -75,5 +63,5 @@ void		clear_properties_list(t_ui *ui);
 
 void		edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path,
 									GtkTreeViewColumn *column, gpointer data);
-void		create_color_chooser(t_ui *ui, t_vector3d color);
+void		create_color_chooser(t_ui *ui, t_vec3 color);
 #endif

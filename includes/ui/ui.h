@@ -4,7 +4,6 @@
 # include <gtk/gtk.h>
 # include <locale.h>
 
-// TODO: ui.h isn't supposed to include shared.h
 # include "shared.h"
 
 # include "libft.h"
@@ -15,8 +14,8 @@
 # include "file_loader.h"
 # include "file_saver.h"
 
-# define RENDER_SIZE_W 1366
-# define RENDER_SIZE_H 768
+# define RENDER_SIZE_W 1280
+# define RENDER_SIZE_H 720
 
 /*
 ** Interface singleton (just in case, will be removed
@@ -26,12 +25,15 @@ t_ui			*get_interface();
 typedef struct			s_object
 {
 	enum e_object_type	type;
-	t_vector3d			pos;
-	t_vector3d			rot;
-	t_vector3d			color;
+	t_vec3				pos;
+	t_vec3				rot;
+	t_vec3				color;
 	double				length;
 	double				radius;
 	char				name[80];
+	char				operation;
+	size_t				nb_faces;
+	t_face				*faces;
 }						t_object;
 
 typedef struct			s_selected_obj
@@ -44,8 +46,8 @@ typedef struct			s_selected_obj
 
 typedef struct			s_ui_cam
 {
-	t_vector3d			pos;
-	t_vector3d			dir;
+	t_vec3				pos;
+	t_vec3				dir;
 }						t_ui_cam;
 
 /*
@@ -82,6 +84,7 @@ struct					s_ui
 	t_scene				scene;
 	t_selected_obj		selected_obj;
 
+	int					render_on_change;
 	int					lock;
 };
 
@@ -98,6 +101,7 @@ void					add_object(t_object object, gboolean render_new);
 void					create_sphere();
 void					create_plane();
 void					create_cone();
+void					create_cgs();
 void					create_cylinder();
 void					create_empty();
 void					create_light();

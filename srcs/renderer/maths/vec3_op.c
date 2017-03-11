@@ -6,16 +6,16 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 14:01:37 by vfour             #+#    #+#             */
-/*   Updated: 2017/02/26 01:04:45 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/08 16:20:11 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "renderer.h"
 #include "shared.h"
 
-FLOAT3		vec3_add(FLOAT3 a, FLOAT3 b)
+t_vec3		vec3_add(t_vec3 a, t_vec3 b)
 {
-	FLOAT3	res;
+	t_vec3	res;
 
 	res.x = a.x + b.x;
 	res.y = a.y + b.y;
@@ -23,9 +23,9 @@ FLOAT3		vec3_add(FLOAT3 a, FLOAT3 b)
 	return (res);
 }
 
-FLOAT3		vec3_cross(FLOAT3 u, FLOAT3 v)
+t_vec3		vec3_cross(t_vec3 u, t_vec3 v)
 {
-	FLOAT3	res;
+	t_vec3	res;
 
 	res.x = u.y * v.z - u.z * v.y;
 	res.y = u.z * v.x - u.x * v.z;
@@ -33,14 +33,14 @@ FLOAT3		vec3_cross(FLOAT3 u, FLOAT3 v)
 	return (res);
 }
 
-FLOAT		vec3_dot(FLOAT3 a, FLOAT3 b)
+double		vec3_dot(t_vec3 a, t_vec3 b)
 {
 	return (a.x * b.x + a.y * b.y + a.z * b.z);
 }
 
-FLOAT3		vec3_mult(FLOAT m, FLOAT3 x)
+t_vec3		vec3_mult(double m, t_vec3 x)
 {
-	FLOAT3	res;
+	t_vec3	res;
 
 	res.x = x.x * m;
 	res.y = x.y * m;
@@ -48,9 +48,9 @@ FLOAT3		vec3_mult(FLOAT m, FLOAT3 x)
 	return (res);
 }
 
-FLOAT3		vec3_sub(FLOAT3 a, FLOAT3 b)
+t_vec3		vec3_sub(t_vec3 a, t_vec3 b)
 {
-	FLOAT3	res;
+	t_vec3	res;
 
 	res.x = a.x - b.x;
 	res.y = a.y - b.y;

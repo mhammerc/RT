@@ -1,20 +1,11 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   widget.h                                           :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/01 17:09:47 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/08 13:52:25 by gpoblon          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef WIDGET_H
 # define WIDGET_H
 
 # include <stdlib.h>
 # include <gtk/gtk.h>
+
+# include "ui.h"
+# include "shared.h"
 
 /*
 ** top menu (file, open, save, ..)
@@ -27,6 +18,8 @@ typedef struct		s_menu_file
 	GtkWidget		*save;
 	GtkWidget		*export;
 	GtkWidget		*quit;
+	GtkWidget		*render_on_change;
+	GtkWidget		*start_render;
 }					t_menu_file;
 
 /*
@@ -43,7 +36,7 @@ void					open_dialog_export(void);
 GtkWidget				*create_text_entry(gchar *name, gchar *default_value);
 GtkWidget				*create_numeric_entry(char *placeholder, double value,
 		GtkWidget **ref, void *text_edited);
-GtkWidget				*create_vector3_entry(gchar *name, t_vector3d value,
+GtkWidget				*create_vector3_entry(gchar *name, t_vec3 value,
 		t_vector3w *ref, void *signal);
 GtkWidget				*create_scale_entry(gchar *name, double value,
 		GtkWidget **ref, void *signal);

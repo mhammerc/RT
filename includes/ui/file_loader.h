@@ -38,17 +38,17 @@ typedef struct			s_parser_scene
 
 typedef struct			s_parser_cam
 {
-	t_vector3d			pos;
-	t_vector3d			dir;
+	t_vec3			pos;
+	t_vec3			dir;
 }						t_parser_cam;
 
 typedef struct			s_entity
 {
 	enum e_env			env_type;
 	enum e_object_type	type;
-	t_vector3d			pos;
-	t_vector3d			rot;
-	t_vector3d			color;
+	t_vec3				pos;
+	t_vec3				rot;
+	t_vec3				color;
 	double				length;
 	double				radius;
 	char				name[80];

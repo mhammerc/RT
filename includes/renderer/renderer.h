@@ -1,58 +1,70 @@
 #ifndef SCENE_MANAGER_H
 # define SCENE_MANAGER_H
 
-# ifdef __APPLE__
-#  include <OpenCL/opencl.h>
-# elif __linux__
-#  include <CL/cl.h>
-# endif
-
 # include <libft.h>
+# include <pthread.h>
+
 # include "shared.h"
+# include "csg.h"
+
+# define CORE_COUNT 4
 
 # define ALPHA_BITSHIFT 24
 # define R_BITSHIFT 0
 # define G_BITSHIFT 8
 # define B_BITSHIFT 16
+# define MAX_REC_DEPTH 42
 
-typedef struct			s_scene_manager
+typedef struct		s_renderer_thread
 {
-	cl_uint					platforms_count;
-	cl_platform_id			platform_id;
+	t_scene			*sce;
+	t_vec3			*light;
+	int				*pixels;
+	int				y_begin;
+	int				y_end;
+	int				y_range;
+}					t_renderer_thread;
 
-	cl_uint					devices_count;
-	cl_device_id			device_id;
-	cl_device_id			*device_ids;
+/*
+typedef int (*intersection_fun)(t_obj*, t_ray*);
+typedef t_vec3 (*normal_fun)(t_obj*, t_vec3);
+*/
 
-	cl_context_properties	context_properties[4];
-	cl_context				context;
+void		renderer_compute_image();
 
-	cl_command_queue		queue;
-
-	cl_program				program;
-}						t_scene_manager;
-
-t_scene_manager			*opencl_get();
-void					opencl_init();
-int						*renderer_compute_image();
-
-void					redraw_scene();
-
-void					opencl_check_error(cl_int error);
+void		redraw_scene();
 
 /*
 ** Vectors
 */
-FLOAT						vec3_norm(FLOAT3 v);
-void						vec3_normalize(FLOAT3 *v);
-FLOAT3						vec3_get_normalized(FLOAT3 v);
-FLOAT						vec3_norm2(FLOAT3 v);
-FLOAT3						vec3_add(FLOAT3 a, FLOAT3 b);
-FLOAT3						vec3_cross(FLOAT3 u, FLOAT3 v);
-FLOAT						vec3_dot(FLOAT3 a, FLOAT3 b);
-FLOAT3						vec3_mult(FLOAT m, FLOAT3 x);
-FLOAT3						vec3_sub(FLOAT3 a, FLOAT3 b);
+double		vec3_norm(t_vec3 v);
+void		vec3_normalize(t_vec3 *v);
+t_vec3		vec3_get_normalized(t_vec3 v);
+double		vec3_norm2(t_vec3 v);
+t_vec3		vec3_add(t_vec3 a, t_vec3 b);
+t_vec3		vec3_cross(t_vec3 u, t_vec3 v);
+double		vec3_dot(t_vec3 a, t_vec3 b);
+t_vec3		vec3_mult(double m, t_vec3 x);
+t_vec3		vec3_sub(t_vec3 a, t_vec3 b);
 
-t_cam						camera_set(t_cam cam);
+t_cam		camera_set(t_cam cam);
+
+int			sphere_intersect(t_obj *self, t_ray *ray);
+t_vec3		sphere_normal(t_obj *self, t_vec3 pos);
+int				cylinder_intersect(t_obj *self, t_ray *ray);
+t_vec3				cylinder_normal(t_obj *self, t_vec3 pos);
+int				cone_intersect(t_obj *self, t_ray *ray);
+t_vec3			cone_normal(t_obj *self, t_vec3 pos);
+int				plane_intersect(t_obj *self, t_ray *ray);
+t_vec3			plane_normal(t_obj *self, t_vec3 pos);
+
+int			quad_solve(double a, double b, double c, double *root);
+int			norm_quad_solve(double b, double c, double *root);
+
+
+int (*get_obj_intersection(enum e_object_type))(t_obj*, t_ray*);
+//get_obj_intersection(enum e_object_type);
+//normal_fun			get_obj_normal(enum e_object_type);
+t_vec3 (*get_obj_normal())(t_obj*, t_vec3);
 
 #endif

@@ -12,7 +12,7 @@ void			load_file(char *filename)
 	env.group_tmp = NULL;
 	ft_init_tabs(&env);
 	ft_read_file(filename, &env);
-	free_obj_tree(ui);
+	// free_obj_tree(ui);
 	hook_up_obj_lst(ui, &env);
 	refresh_obj_tree(ui);
 	ask_for_new_image(ui);
@@ -40,5 +40,6 @@ void			hook_up_obj_lst(t_ui *ui, t_env *env)
 		env->entity_lst = env->entity_lst->next;
 		ui->objs = ui->objs->next;
 	}
+	ui->objs = NULL;
 	ui->objs = bgn_lst;
 }

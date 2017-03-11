@@ -1,6 +1,6 @@
 #include "ui.h"
 
-GtkWidget	*create_vector3_entry(gchar *name, t_vector3d value, t_vector3w *ref, void *signal)
+GtkWidget	*create_vector3_entry(gchar *name, t_vec3 value, t_vector3w *ref, void *signal)
 {
 	GtkWidget		*box;
 
