@@ -50,6 +50,8 @@ t_vec3		vec3_sub(t_vec3 a, t_vec3 b);
 t_cam		camera_set(t_cam cam);
 
 int			sphere_intersect(t_obj *self, t_ray *ray);
+int				polygon_intersect(t_obj *self, t_ray *ray);
+t_vec3			polygon_normal(t_obj *self, t_vec3 pos);
 t_vec3		sphere_normal(t_obj *self, t_vec3 pos);
 int				cylinder_intersect(t_obj *self, t_ray *ray);
 t_vec3				cylinder_normal(t_obj *self, t_vec3 pos);
