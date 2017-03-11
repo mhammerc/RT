@@ -51,6 +51,12 @@ t_cam		camera_set(t_cam cam);
 
 int			sphere_intersect(t_obj *self, t_ray *ray);
 t_vec3		sphere_normal(t_obj *self, t_vec3 pos);
+int				cylinder_intersect(t_obj *self, t_ray *ray);
+t_vec3				cylinder_normal(t_obj *self, t_vec3 pos);
+int				cone_intersect(t_obj *self, t_ray *ray);
+t_vec3			cone_normal(t_obj *self, t_vec3 pos);
+int				plane_intersect(t_obj *self, t_ray *ray);
+t_vec3			plane_normal(t_obj *self, t_vec3 pos);
 
 int			quad_solve(double a, double b, double c, double *root);
 int			norm_quad_solve(double b, double c, double *root);
