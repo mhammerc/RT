@@ -70,6 +70,7 @@ typedef struct				s_face
 	t_vec3					*sommets;
 	t_vec3					*normales;
 	t_vec2					*textures;
+	double					aire;
 	size_t					nb;
 }							t_face;
 
@@ -98,6 +99,7 @@ struct						s_obj
 	t_vec3					(*normal_csg)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
 	t_face					*faces;
+	t_vec3				face_ref;
 };
 typedef struct s_obj		t_obj;
 

@@ -13,7 +13,7 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 	if (obj_type == PLANE)
 		return (&plane_intersect);
 	if (obj_type == POLYGONS)
-		return (&sphere_intersect);
+		return (&polygon_intersect);
 	else
 		return (NULL);
 }
@@ -31,7 +31,7 @@ t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 	if (obj_type == PLANE)
 		return (&plane_normal);
 	if (obj_type == POLYGONS)
-		return (&sphere_intersect);
+		return (&polygon_normal);
 	else
 		return (NULL);
 }
