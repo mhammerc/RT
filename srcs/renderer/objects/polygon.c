@@ -91,7 +91,6 @@ int				face_intersect(t_obj *self, t_ray *ray, t_face *face)
 	s1 = vec3_sub(face->sommets[nb - 1], face->sommets[1]);
 	face->aire = vec3_dot(face_normal(self, face->sommets[1], face), vec3_cross(s1, s2));
 	//
-	//printf("normal x%f y %f z %f\n", (*(face->normales)).x, (*(face->normales)).y, (*(face->normales)).z);
 	b = vec3_dot(ray->dir, *(face->normales));
 	if (fabs(b) < EPS)
 		return (0);
@@ -108,6 +107,9 @@ int				face_intersect(t_obj *self, t_ray *ray, t_face *face)
 			if (ray->type == INITIAL_RAY)
 			{
 				self->pos = *(face->sommets);
+	//TODO problem from here test with or with not printf
+	//printf("normal x%f y %f z %f\n", (*(face->normales)).x, (*(face->normales)).y, (*(face->normales)).z);
+				self->dir = *(face->normales);
 				ray->collided = self;
 			}
 			return (1);
@@ -195,6 +197,9 @@ int				polygon_intersect(t_obj *self, t_ray *ray)
 	int	i;
 	int	test;
 
+	self->kspec = 0;
+	self->kdiff = 1;
+	//self->kp;
 	i = 0;
 	test = 0;
 	while (i < self->nb_faces)
