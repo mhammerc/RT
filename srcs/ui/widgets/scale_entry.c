@@ -1,43 +1,49 @@
 #include "ui.h"
 
-static gboolean		scale_entry_scale_edited(GtkRange *range, GtkScrollType scroll, gdouble value, gpointer data)
+static gboolean		scale_edited(GtkRange *range, GtkScrollType scroll,
+		gdouble value, gpointer data)
 {
 	GtkEntryBuffer	*buffer;
-	static int		lock = 0;
+	GtkWidget		*box;
 
-	if (lock)
-	{
-		lock = 0;
-		return (0);
-	}
-	lock = 1;
 	(void)range;
 	(void)scroll;
-	buffer = (GtkEntryBuffer*)data;
+	box = (GtkWidget*)data;
+	GList	*childs;
+	childs = gtk_container_get_children(GTK_CONTAINER(box));
+	childs = childs->next;
+	childs = childs->next;
+	buffer = gtk_entry_get_buffer(GTK_ENTRY((GtkWidget*)childs->data));
 	gtk_entry_buffer_set_text(buffer, ft_itoa(value), -1);
+	g_signal_emit_by_name(box, "rt-scale-entry-edited", value);
 	return (0);
 }
 
-static void			scale_entry_number_edited(GtkEntryBuffer *buffer, guint position, gchar *chars, guint n_chars, gpointer data)
+//FIXME use correctly lists.
+static void			entry_edited(GtkWidget *entry, gpointer data)
 {
-	static int	lock = 0;
-	GtkWidget	*scale;
-	gchar		*content;
-	double		value;
+	GtkWidget		*box;
+	GtkEntryBuffer	*buffer;
+	GtkWidget		*scale;
+	gchar			*content;
+	double			value;
 
-	if (lock)
-	{
-		lock = 0;
-		return ;
-	}
-	lock = 1;
-	scale = (GtkWidget*)data;
+	box = (GtkWidget*)data;
+	GList	*childs;
+	childs = gtk_container_get_children(GTK_CONTAINER(box));
+	childs = childs->next;
+	scale = (GtkWidget*)childs->data;
+
+	childs = childs->next;
+	buffer = gtk_entry_get_buffer(GTK_ENTRY((GtkWidget*)childs->data));
+
 	content = (gchar*)gtk_entry_buffer_get_text(buffer);
-	value = strtod(content, NULL);
+	value = atof(content);
 	gtk_range_set_value(GTK_RANGE(scale), value);
+	g_signal_emit_by_name(box, "rt-scale-entry-edited", value);
 }
 
-GtkWidget			*create_scale_entry(gchar *name, double value, GtkWidget **ref, void* signal)
+GtkWidget			*create_scale_entry(gchar *name, gdouble value, gdouble min, gdouble max)
 {
 	GtkWidget		*box;
 	GtkWidget		*label;
@@ -46,14 +52,14 @@ GtkWidget			*create_scale_entry(gchar *name, double value, GtkWidget **ref, void
 
 	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	label = gtk_label_new_with_mnemonic(name);
-	scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, 0, 1000, 1);
+	scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, min, max, 1);
 	gtk_range_set_value(GTK_RANGE(scale), value);
-	entry = create_numeric_entry("0", value, ref, signal);
+	entry = create_numeric_entry(name, value);
 	gtk_widget_set_size_request(scale, 100, 0);
 	gtk_container_add(GTK_CONTAINER(box), label);
 	gtk_container_add(GTK_CONTAINER(box), scale);
 	gtk_container_add(GTK_CONTAINER(box), entry);
-	g_signal_connect(scale, "change-value", G_CALLBACK(scale_entry_scale_edited), gtk_entry_get_buffer(GTK_ENTRY(entry)));
-	g_signal_connect(gtk_entry_get_buffer(GTK_ENTRY(entry)), "inserted-text", G_CALLBACK(scale_entry_number_edited), scale);
+	g_signal_connect(scale, "change-value", G_CALLBACK(scale_edited), box);
+	g_signal_connect(entry, "rt-numeric-entry-edited", G_CALLBACK(entry_edited), box);
 	return (box);
 }

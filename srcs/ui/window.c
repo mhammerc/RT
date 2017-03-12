@@ -33,7 +33,22 @@ void			setup_custom_signals()
 			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
 			0, NULL, NULL,
 			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE, 1, G_TYPE_STRING, G_TYPE_POINTER);
+			G_TYPE_NONE, 1, G_TYPE_STRING);
+	g_signal_new("rt-scale-entry-edited",
+			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
+			0, NULL, NULL,
+			g_cclosure_marshal_VOID__DOUBLE,
+			G_TYPE_NONE, 1, G_TYPE_DOUBLE);
+	g_signal_new("rt-numeric-entry-edited",
+			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
+			0, NULL, NULL,
+			g_cclosure_marshal_VOID__DOUBLE,
+			G_TYPE_NONE, 1, G_TYPE_DOUBLE);
+	g_signal_new("rt-vector3-entry-edited",
+			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
+			0, NULL, NULL,
+			g_cclosure_marshal_VOID__POINTER,
+			G_TYPE_NONE, 1, G_TYPE_POINTER);
 }
 
 void			build_interface(GtkApplication *app, gpointer user_data)

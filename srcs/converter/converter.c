@@ -169,11 +169,13 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.cam.pos = ui->cam->pos;
 	ui->scene.cam.w = RENDER_SIZE_W;
 	ui->scene.cam.h = RENDER_SIZE_H;
-	ui->scene.ambiant.intensity = 0.42;
+	ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;
+	ui->scene.cam.fov = ui->rp->scene_gtk.fov;
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
-	ui->scene.cam.up = (t_vec3){0, 1, 0};
-	ui->scene.cam.fov = 45.0;
 	ui->scene.cam.ratio = 1.0;
+
+	//FIXME camera up ne doit pas etre en dur ?
+	ui->scene.cam.up = (t_vec3){0, 1, 0};
 
 	renderer_compute_image((&(ui->scene)));
 }

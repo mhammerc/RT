@@ -16,24 +16,11 @@ static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer da
 
 static void		element_edited()
 {
-	t_object			*obj;
 	t_ui				*ui;
 
 	ui = get_interface();
-	obj = ui->selected_obj.object;
-	obj->pos.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.x)));
-	obj->pos.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.y)));
-	obj->pos.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.z)));
-
-	obj->rot.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.x)));
-	obj->rot.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.y)));
-	obj->rot.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.z)));
-
-	obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius)));
-	obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length)));
 	if (ui->render_on_change)
 		ask_for_new_image(ui);
-	--ui->lock;
 }
 
 static char		get_operation_code_from_id(int id)
@@ -82,6 +69,44 @@ void			clear_properties_list(t_ui *ui)
 	g_list_free(children);
 }
 
+static void		pos_edited(GtkWidget *widget, t_vec3 *pos, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	ui->selected_obj.object->pos = *pos;
+	free(pos);
+	element_edited();
+}
+
+static void		rot_edited(GtkWidget *widget, t_vec3 *rot, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	ui->selected_obj.object->rot = *rot;
+	free(rot);
+	element_edited();
+}
+
+static void		radius_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	ui->selected_obj.object->radius = value;
+	element_edited();
+}
+
+static void		length_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	ui->selected_obj.object->length = value;
+	element_edited();
+}
+
 void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
 {
 	t_ui		*view;
@@ -100,8 +125,11 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new_with_mnemonic("_Element Properties"));
 	GtkWidget	*name = create_text_entry("Name	", view->selected_obj.object->name);
 	g_signal_connect(G_OBJECT(name), "rt-entry-edited", G_CALLBACK(object_name_edited), (gpointer)view);
-	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos, &view->rp->el_prop.pos, element_edited);
-	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot, &view->rp->el_prop.rot, element_edited);
+
+	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos);
+	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot);
+	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_edited), view);
+	g_signal_connect(rot, "rt-vector3-entry-edited", G_CALLBACK(rot_edited), view);
 
 	/* BOUNDING TYPE START  */
 	GtkWidget	*bounding_list = gtk_combo_box_text_new();
@@ -111,7 +139,6 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Substraction");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(bounding_list), get_operation_id_from_code(view->selected_obj.object->operation));
 	g_signal_connect(bounding_list, "changed", G_CALLBACK(bounding_edited), view);
-
 	/* BOUNDING TYPE END */
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
@@ -119,8 +146,17 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
 
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Radius	", view->selected_obj.object->radius, &view->rp->el_prop.radius, element_edited));
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Length	", view->selected_obj.object->length, &view->rp->el_prop.length, element_edited));
+	GtkWidget	*radius = create_scale_entry("Radius  ",
+			view->selected_obj.object->radius, 0, 1000);
+	GtkWidget	*length = create_scale_entry("Length  ",
+			view->selected_obj.object->length, 0, 1000);
+	g_signal_connect(radius, "rt-scale-entry-edited", G_CALLBACK(radius_edited),
+			view);
+	g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
+			view);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), radius);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
+
 	create_color_chooser(view, view->selected_obj.object->color);
 	gtk_widget_show_all(view->window);
 }
