@@ -11,9 +11,9 @@ typedef struct s_ui				t_ui;
 */
 typedef struct			s_vector3w
 {
-GtkWidget			*x;
-GtkWidget			*y;
-GtkWidget			*z;
+	GtkWidget			*x;
+	GtkWidget			*y;
+	GtkWidget			*z;
 }						t_vector3w;
 
 /*
@@ -29,7 +29,8 @@ typedef struct			s_cam_gtk
 typedef struct			s_scene_gtk
 {
 	int					fxaa;
-	GtkWidget			*fxaa_scale_entry;
+	double				ambiant_light;
+	int					fov;
 }						t_scene_gtk;
 
 typedef struct			s_element_properties
