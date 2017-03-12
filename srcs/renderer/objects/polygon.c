@@ -6,14 +6,14 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 09:11:10 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/09 10:10:40 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/11 18:16:58 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include <stdlib.h>
 #include <libft.h>
-#include "rtv1.h"
+#include "renderer.h"
 
 /*
 ** Intersection between ray and polygon
@@ -26,50 +26,31 @@ int				test_polygon_in(t_vec3 hit, t_vec3 normal, t_obj *self)
 	int			i;
 	t_vec3		s1;
 	t_vec3		s2;
-	double		aire;
+	int		nb_sommet;
 
-	s1 = vec3_sub(*((self->sommet) + nb_sommet - 1), hit);
-	s2 = vec3_sub(*(self->sommet), hit);
-	aire = vec3_dot(normal, vec3_cross(s1, s2));
+	nb_sommet = self->nb_sommet;
+
+	s1 = vec3_sub(self->sommet[nb_sommet - 1], hit);
+	s2 = vec3_sub(self->sommet[0], hit);
+	if(vec3_dot(normal, vec3_cross(s1, s2)) * self->aire < 0)
+		return (0);
+	
+//	printf("hit x%f y%f z%f\n", hit.x, hit.y, hit.z);
+//	printf("s2 x%f y%f z%f\n", s2.x, s2.y, s2.z);
+//	printf("nor x%f y%f z%f\n", normal.x, normal.y, normal.z);
+//	printf("aire %d\n\n", aire);
 	i = 0;
-	while (i < self->nb_sommet - 2)
+	while (i < self->nb_sommet - 1)
 	{
-		s1 = vec3_sub(*((self->sommet) + i), hit);
-		s2 = vec3_sub(*((self->sommet) + i + 1), hit);
-		if(vec3_dot(normal, vec3_dot(s1, s2)) * aire < 0)
+		s1 = vec3_sub(self->sommet[i], hit);
+		s2 = vec3_sub(self->sommet[i + 1], hit);
+		if(vec3_dot(normal, vec3_cross(s1, s2)) * self->aire < 0)
 			return (0);
+		i++;
 	}
 	return (1);
 }
 
-int				polygone_intersect(t_obj *self, t_ray *ray)
-{
-	t_vec3		x;
-	t_f			a;
-	t_f			b;
-	t_f			d;
-
-	if (self->nb_sommet < 3)
-		return (0);
-	b = vec3_dot(ray->dir, self->dir);
-	if (fabs(b) < EPS)
-		return (0);
-	x = vec3_sub(self->pos, ray->pos);
-	a = vec3_dot(x, self->dir);
-	d = a / b;
-	if (d < ray->d && d > 0)
-	{
-		x = vec2_add(ray->pos, vec3_mult(d, ray->dir));
-		if (test_polygon_in(x, polygon_norma(self, x), self))
-		{
-			ray->d = d;
-			if (ray->type == INITIAL_RAY)
-				ray->collided = self;
-			return (1);
-		}
-	}
-	return (0);
-}
 
 /*
 ** Normal vector at given point
@@ -81,4 +62,70 @@ t_vec3			polygon_normal(t_obj *self, t_vec3 pos)
 	if (vec3_dot(vec3_sub(pos, self->pos), self->dir) > 0)
 		return (self->dir);
 	return (vec3_mult(-1, self->dir));
+}
+
+int				polygon_intersect(t_obj *self, t_ray *ray)
+{
+	t_vec3		x;
+	double		a;
+	double		b;
+	double		d;
+
+	//TODO make dynamical
+	self->pos.x = 0;
+	self->pos.y = 0;
+	self->pos.z = 0;
+	self->sommet[0].x = -0.5;
+	self->sommet[0].y = 0;
+	self->sommet[0].z = 0;
+	self->sommet[1].x = 0.5;
+	self->sommet[1].y = 0;
+	self->sommet[1].z = 0;
+	self->sommet[2].x = 0.5;
+	self->sommet[2].y = 1;
+	self->sommet[2].z = 0;
+	self->sommet[3].x = -0.5;
+	self->sommet[3].y = 1;
+	self->sommet[3].z = 0;
+	self->dir.x = 0;
+	self->dir.y = 0;
+	self->dir.z = 1;
+	self->nb_sommet = 4;
+
+
+	if (self->nb_sommet < 3)
+		return (0);
+	//TODO make function for all case
+	t_vec3		s1;
+	t_vec3		s2;
+	t_vec3		normal;
+	int			nb_sommet;
+
+	normal.x = 0;
+	normal.y = 1;
+	normal.z = 0;
+
+	nb_sommet = self->nb_sommet;
+	s2 = vec3_sub(self->sommet[0], self->sommet[1]);
+	s1 = vec3_sub(self->sommet[nb_sommet - 1], self->sommet[1]);
+	self->aire = vec3_dot(polygon_normal(self, self->sommet[1]), vec3_cross(s1, s2));
+	//
+	b = vec3_dot(ray->dir, self->dir);
+	if (fabs(b) < EPS)
+		return (0);
+	x = vec3_sub(self->pos, ray->pos);
+	a = vec3_dot(x, self->dir);
+	d = a / b;
+	if (d < ray->t && d > 0)
+	{
+		x = vec3_add(ray->pos, vec3_mult(d, ray->dir));
+		if (test_polygon_in(x, polygon_normal(self, x), self))
+		{
+			ray->t = d;
+			if (ray->type == INITIAL_RAY)
+				ray->collided = self;
+			return (1);
+		}
+	}
+	return (0);
 }

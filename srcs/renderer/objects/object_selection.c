@@ -9,7 +9,7 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 	if (obj_type == CYLINDER)
 		return (&cylinder_intersect);
 	if (obj_type == CONE)
-		return (&cone_intersect);
+		return (&polygon_intersect);//TODO ADD POLYGON OBJ
 	if (obj_type == PLANE)
 		return (&plane_intersect);
 	if (obj_type == POLYGONS)
@@ -27,7 +27,7 @@ t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 	if (obj_type == CYLINDER)
 		return (&cylinder_normal);
 	if (obj_type == CONE)
-		return (&cone_normal);
+		return (&polygon_normal);
 	if (obj_type == PLANE)
 		return (&plane_normal);
 	if (obj_type == POLYGONS)
