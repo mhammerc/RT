@@ -157,6 +157,7 @@ static int	start_parsing(t_object *object, char *filename)
 			{
 				tmp = components.sommets[atoi(split[i]) - 1];
 				face.sommets[i - 1] = tmp;
+				face.normales[i - 1] = components.normales[atoi(ft_strrchr(split[i], '/') + 1) - 1];
 				++i;
 			}
 			object->faces[components.n_faces] = face;
