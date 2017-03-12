@@ -57,18 +57,18 @@ static void		element_edited()
 
 	ui = get_interface();
 	obj = ui->selected_obj.object;
-	obj->pos.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.x))) / 1000.;
-	obj->pos.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.y))) / 1000.;
-	obj->pos.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.z))) / 1000.;
+	obj->pos.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.x)));
+	obj->pos.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.y)));
+	obj->pos.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.pos.z)));
 
-	obj->rot.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.x))) / 1000.;
-	obj->rot.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.y))) / 1000.;
-	obj->rot.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.z))) / 1000.;
+	obj->rot.x = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.x)));
+	obj->rot.y = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.y)));
+	obj->rot.z = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.rot.z)));
 
 	if (ui->rp->el_prop.radius)
-		obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius))) / 1000.;
+		obj->radius = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.radius)));
 	if (ui->rp->el_prop.length)
-		obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length))) / 1000.;
+		obj->length = atof(gtk_entry_get_text(GTK_ENTRY(ui->rp->el_prop.length)));
 	if (ui->render_on_change)
 		ask_for_new_image(ui);
 	--ui->lock;
