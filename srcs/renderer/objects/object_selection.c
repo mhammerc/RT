@@ -12,6 +12,8 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 		return (&cone_intersect);
 	if (obj_type == PLANE)
 		return (&plane_intersect);
+	if (obj_type == TORUS)
+		return (&sphere_intersect);
 	else
 		return (NULL);
 }
@@ -28,6 +30,8 @@ t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 		return (&cone_normal);
 	if (obj_type == PLANE)
 		return (&plane_normal);
+	if (obj_type == TORUS)
+		return (&sphere_normal);
 	else
 		return (NULL);
 }

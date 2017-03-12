@@ -6,7 +6,7 @@
 
 static int	is_obj(t_object *object)
 {
-	return (object->type < 6);
+	return (object->type < 7);
 }
 
 static int	is_light(t_object *object)

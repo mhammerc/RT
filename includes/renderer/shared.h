@@ -28,6 +28,7 @@ enum e_object_type
 	PLANE,
 	CONE,
 	CYLINDER,
+	TORUS,
 	CSG,
 	POLYGONS,
 	EMPTY,
