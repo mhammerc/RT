@@ -202,7 +202,7 @@ static void		update_progress_bar(t_scene *scene)
 	{
 		last_percent = 0.;
 	}
-	else if (scene->percent - last_percent > 0.1)
+	else if (scene->percent - last_percent > 0.01)
 	{
 		last_percent = scene->percent;
 		scene->ui->percent = last_percent;

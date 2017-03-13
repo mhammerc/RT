@@ -170,6 +170,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos);
 	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot);
+	GtkWidget	*scale = create_scale_entry("Scale      ", 0, 0, 1000); // TODO make scale a truth
 	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_edited), view);
 	g_signal_connect(rot, "rt-vector3-entry-edited", G_CALLBACK(rot_edited), view);
 
@@ -186,7 +187,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Scale	", view->selected_obj.object->radius, &view->rp->el_prop.radius, element_edited));
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), scale);
 
 	if (type == CSG)
 	{
@@ -201,13 +202,24 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	}
 
 	if (type == SPHERE || type == CONE || type == CYLINDER)
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Radius	", view->selected_obj.object->radius, &view->rp->el_prop.radius, element_edited));
-	if (type == CONE || type == CYLINDER)
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), create_scale_entry("Length	", view->selected_obj.object->length, &view->rp->el_prop.length, element_edited));
+	{
+		GtkWidget	*radius = create_scale_entry("Radius  ",
+			view->selected_obj.object->radius, 0, 1000);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), radius);
+		g_signal_connect(radius, "rt-scale-entry-edited",
+				G_CALLBACK(radius_edited), view);
 
+	}
+	if (type == CONE || type == CYLINDER)
+	{
+		GtkWidget	*length = create_scale_entry("Length  ",
+			view->selected_obj.object->length, 0, 1000);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
+		g_signal_connect(length, "rt-scale-entry-edited",
+				G_CALLBACK(length_edited), view);
+	}
 	if (type != CSG && type != LIGHT)
 		create_color_chooser(view, view->selected_obj.object->color);
-
 	if (type == POLYGONS)
 	{
 		GtkWidget *file_chooser;
@@ -217,19 +229,5 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 		g_signal_connect(file_chooser, "file-set", G_CALLBACK(wavefront_file_set), view);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), file_chooser);
 	}
-
-	GtkWidget	*radius = create_scale_entry("Radius  ",
-			view->selected_obj.object->radius, 0, 1000);
-	GtkWidget	*length = create_scale_entry("Length  ",
-			view->selected_obj.object->length, 0, 1000);
-	g_signal_connect(radius, "rt-scale-entry-edited", G_CALLBACK(radius_edited),
-			view);
-	g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
-			view);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), radius);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
-
-	create_color_chooser(view, view->selected_obj.object->color);
-
 	gtk_widget_show_all(view->window);
 }

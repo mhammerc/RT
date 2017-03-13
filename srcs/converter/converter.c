@@ -26,7 +26,7 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->pos = object->pos;
 	obj->color = object->color;
 	obj->dir = object->rot;
-	obj->radius =  object->radius;
+	obj->radius =  object->radius / 1000;
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
