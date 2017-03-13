@@ -6,7 +6,7 @@
 
 static int	is_obj(t_object *object)
 {
-	return (object->type < 6);
+	return (object->type < 7);
 }
 
 static int	is_light(t_object *object)
@@ -26,7 +26,7 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->pos = object->pos;
 	obj->color = object->color;
 	obj->dir = object->rot;
-	obj->radius =  object->radius;
+	obj->radius =  object->radius / 1000;
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
@@ -160,6 +160,8 @@ static void		del_list(t_list **list)
 
 void	ask_for_new_image(t_ui *ui)
 {
+	if (ui->rendering == 1)
+		return ;
 	del_list(&ui->scene.obj);
 	del_list(&ui->scene.spot);
 	fill_obj(ui->objs, &(ui->scene.obj), NULL);
@@ -169,11 +171,15 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.cam.pos = ui->cam->pos;
 	ui->scene.cam.w = RENDER_SIZE_W;
 	ui->scene.cam.h = RENDER_SIZE_H;
-	ui->scene.ambiant.intensity = 0.42;
+	ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;
+	ui->scene.cam.fov = ui->rp->scene_gtk.fov;
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
-	ui->scene.cam.up = (t_vec3){0, 1, 0};
-	ui->scene.cam.fov = 45.0;
 	ui->scene.cam.ratio = 1.0;
+	ui->scene.ui = ui;
+	ui->scene.percent = 0.;
+
+	//FIXME camera up ne doit pas etre en dur ?
+	ui->scene.cam.up = (t_vec3){0, 1, 0};
 
 	renderer_compute_image((&(ui->scene)));
 }

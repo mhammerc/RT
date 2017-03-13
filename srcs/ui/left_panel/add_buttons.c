@@ -14,12 +14,14 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	GtkWidget *plane = gtk_button_new_with_label("Plane");
 	GtkWidget *cylinder = gtk_button_new_with_label("Cylinder");
 	GtkWidget *cone = gtk_button_new_with_label("Cone");
+	GtkWidget *torus = gtk_button_new_with_label("Torus");
 	GtkWidget *csg = gtk_button_new_with_label("CSG");
 	GtkWidget *polygons = gtk_button_new_with_label("Polygons");
 	g_signal_connect(sphere, "clicked", G_CALLBACK(create_sphere), NULL);
 	g_signal_connect(plane, "clicked", G_CALLBACK(create_plane), NULL);
 	g_signal_connect(cylinder, "clicked", G_CALLBACK(create_cylinder), NULL);
 	g_signal_connect(cone, "clicked", G_CALLBACK(create_cone), NULL);
+	g_signal_connect(torus, "clicked", G_CALLBACK(create_torus), NULL);
 	g_signal_connect(csg, "clicked", G_CALLBACK(create_cgs), NULL);
 	g_signal_connect(polygons, "clicked", G_CALLBACK(create_polygons), NULL);
 	g_signal_connect(empty, "clicked", G_CALLBACK(create_empty), NULL);
@@ -28,6 +30,7 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	gtk_container_add(GTK_CONTAINER(submenu), plane);
 	gtk_container_add(GTK_CONTAINER(submenu), cylinder);
 	gtk_container_add(GTK_CONTAINER(submenu), cone);
+	gtk_container_add(GTK_CONTAINER(submenu), torus);
 	gtk_container_add(GTK_CONTAINER(submenu), csg);
 	gtk_container_add(GTK_CONTAINER(submenu), polygons);
 	gtk_container_add(GTK_CONTAINER(popover), submenu);

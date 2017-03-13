@@ -91,6 +91,18 @@ void		create_cylinder(gboolean render_new)
 	add_object(object, render_new);
 }
 
+void		create_torus(gboolean render_new)
+{
+	t_object	object;
+
+	ft_bzero(&object, sizeof(t_object));
+	object.type = TORUS;
+	object.color.z = 1;
+	object.operation = '0';
+	ft_strcpy(object.name, "Torus");
+	add_object(object, render_new);
+}
+
 void		create_cgs(gboolean render_new)
 {
 	t_object	object;
