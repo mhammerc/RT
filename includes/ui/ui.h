@@ -30,6 +30,8 @@ typedef struct			s_object
 	t_vec3				color;
 	double				length;
 	double				radius;
+	double				kscale;
+	double				kspec;
 	char				name[80];
 	char				operation;
 	size_t				nb_faces;
@@ -55,7 +57,6 @@ typedef struct			s_ui_cam
 */
 typedef struct			s_display_panel
 {
-	GtkWidget			*dp_box;
 	GtkWidget			*image;
 	GdkPixbuf			*pixbuf;
 }						t_display_panel;

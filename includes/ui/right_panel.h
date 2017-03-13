@@ -39,6 +39,8 @@ typedef struct			s_element_properties
 	t_vector3w			rot;
 	GtkWidget			*radius;
 	GtkWidget			*length;
+	GtkWidget			*kscale;
+	GtkWidget			*kspec;
 }						t_elem_properties;
 
 typedef struct			s_right_panel
