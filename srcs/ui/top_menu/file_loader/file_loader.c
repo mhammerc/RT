@@ -25,6 +25,7 @@ void			hook_up_obj_lst(t_ui *ui, t_env *env)
 
 	ui->cam->pos = env->camera.pos;
 	ui->cam->dir = env->camera.dir;
+	ft_bzero(&cur_obj, sizeof(t_object));
 	while (env->entity_lst)
 	{
 		cur_obj.type = env->entity_lst->entity.type;

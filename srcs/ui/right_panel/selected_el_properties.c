@@ -232,30 +232,22 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	{
 		GtkWidget	*length = create_scale_entry("Length  ",
 			view->selected_obj.object->length, 0, 1000);
+		g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
+			view);
+	}
 
 	GtkWidget	*kscale = create_scale_entry("Kscale  ",
 			view->selected_obj.object->kscale, 0, 1000);
 	GtkWidget	*kspec  = create_scale_entry("Kspec  ",
 			view->selected_obj.object->kspec, 0, 1000);
-	g_signal_connect(radius, "rt-scale-entry-edited", G_CALLBACK(radius_edited),
+
+	g_signal_connect(kscale, "rt-scale-entry-edited", G_CALLBACK(kscale_edited),
 			view);
-	g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
+	g_signal_connect(kspec, "rt-scale-entry-edited", G_CALLBACK(kspec_edited),
 			view);
-	g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(kscale_edited),
-			view);
-	g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(kspec_edited),
-			view);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), radius);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kscale);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
 
-	create_color_chooser(view, view->selected_obj.object->color);
-
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
-		g_signal_connect(length, "rt-scale-entry-edited",
-				G_CALLBACK(length_edited), view);
-	}
 	if (type != CSG && type != LIGHT)
 		create_color_chooser(view, view->selected_obj.object->color);
 	if (type == POLYGONS)
