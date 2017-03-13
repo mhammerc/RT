@@ -21,6 +21,7 @@
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 
+typedef struct s_ui	t_ui;
 
 enum e_object_type
 {
@@ -128,6 +129,9 @@ struct						s_scene
 	t_list					*spot;
 	t_spot					ambiant;
 	t_cam					cam;
+	t_ui					*ui;
+	double					percent;
+	int						*pixels;
 };
 typedef struct s_scene		t_scene;
 

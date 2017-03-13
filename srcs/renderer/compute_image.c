@@ -188,24 +188,41 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 			refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
 			light = vec3_add(light, color_light_mix(ray.collided->color,
 													refl_light,
-													ray.collided->kspec)); 
+													ray.collided->kspec));
 		}
 	}
 	return (light);
 }
 
+static void		update_progress_bar(t_scene *scene)
+{
+	static double	last_percent = 0.;
+
+	if (scene->percent > 0.95)
+	{
+		last_percent = 0.;
+	}
+	else if (scene->percent - last_percent > 0.1)
+	{
+		last_percent = scene->percent;
+		scene->ui->percent = last_percent;
+	}
+}
+
 static void		*thread_compute_image(void *thread_data)
 {
-	int					i;
-	int					j;
-	t_ray				r;
-	t_vec3				aim;
-	t_vec3				start;
-	t_renderer_thread	*data;
-	t_scene				*sce;
+	int						i;
+	int						j;
+	t_ray					r;
+	t_vec3					aim;
+	t_vec3					start;
+	t_renderer_thread		*data;
+	t_scene					*sce;
+	double					percent_per_line;
 
 	data = (t_renderer_thread*)thread_data;
 	sce = data->sce;
+	percent_per_line = (double)sce->cam.w / ((double)sce->cam.w * (double)sce->cam.h);
 	sce->cam = camera_set(sce->cam);
 	aim = sce->cam.top_left;
 	aim = vec3_sub(aim, vec3_mult(data->y_begin, sce->cam.vy));
@@ -221,27 +238,34 @@ static void		*thread_compute_image(void *thread_data)
 			aim = vec3_add(aim, sce->cam.vx);
 			r = ray_new_aim(sce->cam.pos, aim);
 		}
+		int i = 0;
 		aim = vec3_sub(start, sce->cam.vy);
 		r = ray_new_aim(sce->cam.pos, aim);
+		pthread_mutex_lock(&sce->ui->mutex_stock);
+		sce->percent += percent_per_line;
+		update_progress_bar(sce);
+		pthread_mutex_unlock(&sce->ui->mutex_stock);
 	}
 	return (NULL);
 }
 
-void			renderer_compute_image(t_scene *sce)
+void			*renderer_compute_image2(void *sce2)
 {
 	pthread_t			threads[CORE_COUNT];
 	t_renderer_thread	threads_data[CORE_COUNT];
 	int					i;
-	int					*pixels;
+	//int					*pixels;
 	t_vec3				*light;
 
-	pixels = (int*)ft_memalloc(sizeof(int) * sce->cam.w * sce->cam.h);
-	light = (t_vec3*)ft_memalloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
+	t_scene *sce = (t_scene *)sce2;
+	sce->ui->percent = 0.;
+	sce->pixels = (int*)malloc(sizeof(int) * sce->cam.w * sce->cam.h);
+	light = (t_vec3*)malloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
 	i = 0;
 	while (i < CORE_COUNT)
 	{
 		threads_data[i].sce = sce;
-		threads_data[i].pixels = pixels;
+		threads_data[i].pixels = sce->pixels;
 		threads_data[i].light = light;
 		threads_data[i].y_begin = sce->cam.h / CORE_COUNT * i;
 		threads_data[i].y_end = sce->cam.h / CORE_COUNT * (i + 1);
@@ -263,8 +287,39 @@ void			renderer_compute_image(t_scene *sce)
 		}
 		++i;
 	}
-	light_to_pixel(light, pixels, sce->cam.w, sce->cam.h);
-	ui_print_scene(pixels);
-	free(pixels);
+	light_to_pixel(light, sce->pixels, sce->cam.w, sce->cam.h);
 	free(light);
+	sce->ui->percent = 1.;
+	//ui_print_scene(pixels);
+	//free(pixels);
+}
+
+int		test(void *data)
+{
+	t_scene	*scene;
+
+	scene = (t_scene*)data;
+	pthread_mutex_lock(&scene->ui->mutex_stock);
+	printf("%f\n", scene->ui->percent);
+	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(scene->ui->progress_bar),
+			scene->ui->percent);
+	if (scene->ui->percent == 1.)
+	{
+		ui_print_scene(scene->pixels);
+		free(scene->pixels);
+		pthread_mutex_unlock(&scene->ui->mutex_stock);
+		scene->ui->rendering = 0;
+		return (FALSE);
+	}
+	pthread_mutex_unlock(&scene->ui->mutex_stock);
+	return (TRUE);
+}
+
+void renderer_compute_image(t_scene *sce)
+{
+	pthread_t thread;
+
+	sce->ui->rendering = 1;
+	pthread_create(&thread, NULL, renderer_compute_image2, sce);
+	gdk_threads_add_timeout(100, test, sce);
 }

@@ -72,6 +72,7 @@ struct					s_ui
 	GtkWidget			*main_box;
 	GtkWidget			*top_menu;
 	GtkWidget			*workspace;
+	GtkWidget			*progress_bar;
 
 	t_left_panel		*lp;
 	t_display_panel		*dp;
@@ -86,6 +87,9 @@ struct					s_ui
 
 	int					render_on_change;
 	int					lock;
+	pthread_mutex_t		mutex_stock;
+	double				percent;
+	int					rendering;
 };
 
 void					build_interface(GtkApplication *app, gpointer user_data);
