@@ -27,7 +27,8 @@ SRCS_NAME	=	main.c										\
 				ui/right_panel/color_chooser.c				\
 				ui/tools/dtoa.c								\
 				ui/tools/type_char.c						\
-				ui/keymapping.c								\
+				ui/menu_keys.c								\
+				ui/realtime_keys.c							\
 				ui/widgets/numeric_entry.c					\
 				ui/widgets/scale_entry.c					\
 				ui/widgets/text_entry.c						\

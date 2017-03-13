@@ -76,8 +76,6 @@ void			build_interface(GtkApplication *app, gpointer user_data)
 	ui->progress_bar = gtk_progress_bar_new();
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(ui->progress_bar), 0.);
 
-	event_handler(ui);
-
 	gtk_container_add(GTK_CONTAINER(ui->window), ui->main_box);
 	gtk_container_add(GTK_CONTAINER(ui->main_box), ui->top_menu);
 	gtk_container_add(GTK_CONTAINER(ui->main_box), ui->workspace);
@@ -87,6 +85,9 @@ void			build_interface(GtkApplication *app, gpointer user_data)
 	display_panel(ui, ui->dp);
 	right_panel(ui, ui->rp);
 	default_scene(ui);
+
+	event_handler_window(ui);
+	event_handler_display(ui);
 
 	gtk_widget_show_all(ui->window);
 }
