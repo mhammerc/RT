@@ -22,9 +22,6 @@ static void		button_relase(GtkWidget *widget, GdkEvent *event,
 	gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(GTK_TREE_VIEW(widget)));
 	clear_properties_list(ui);
 	ui->selected_obj.object = NULL;
-	//*ui->selected_obj.index = 0;
-	//ui->selected_obj.depth = 0;
-	//ft_bzero(&ui->selected_obj.iter, sizeof(GtkTreeIter));
 }
 
 void			left_panel(t_ui *ui, t_left_panel *lp)

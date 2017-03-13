@@ -1,5 +1,41 @@
 #include "ui.h"
 #include "converter.h"
+#include "obj_parser.h"
+#include <errno.h>
+
+static void		wavefront_file_set(GtkFileChooserButton *widget, gpointer user_data)
+{
+	t_ui		*ui;
+	t_object	*object;
+	size_t		i;
+
+	ui = (t_ui*)user_data;
+	if (ui->selected_obj.object->filename)
+		g_free(ui->selected_obj.object->filename);
+	if (ui->selected_obj.object->faces)
+	{
+		i = 0;
+		while (i < ui->selected_obj.object->nb_faces)
+		{
+			free(ui->selected_obj.object->faces[i].sommets);
+			free(ui->selected_obj.object->faces[i].normales);
+			free(ui->selected_obj.object->faces[i].textures);
+			++i;
+		}
+		free(ui->selected_obj.object->faces);
+	}
+	ui->selected_obj.object->filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
+	object = parse_wavefront_file(ui->selected_obj.object->filename);
+	if (!object)
+	{
+		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "Can not load %s.\nAn error occured.\n%s", ui->selected_obj.object->filename, g_strerror(errno));
+		g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
+		gtk_dialog_run(GTK_DIALOG(dialog));
+		return ;
+	}
+	ui->selected_obj.object->nb_faces = object->nb_faces;
+	ui->selected_obj.object->faces = object->faces;
+}
 
 static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer data)
 {
@@ -67,6 +103,8 @@ void			clear_properties_list(t_ui *ui)
 		iter = g_list_next(iter);
 	}
 	g_list_free(children);
+	ui->rp->el_prop.length = NULL;
+	ui->rp->el_prop.radius = NULL;
 }
 
 static void		pos_edited(GtkWidget *widget, t_vec3 *pos, gpointer data)
@@ -127,11 +165,13 @@ static void		kspec_edited(GtkWidget *widget, gdouble value, gpointer data)
 
 void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
 {
-	t_ui		*view;
-	t_list		*obj_lst;
-	int			*tmp;
+	t_ui				*view;
+	t_list				*obj_lst;
+	int					*tmp;
+	enum e_object_type	type;
 
 	view = (t_ui*)data;
+
 	tmp = gtk_tree_path_get_indices_with_depth(path, &(view->selected_obj.depth));
 	ft_memcpy(view->selected_obj.index, tmp , 4 * (view->selected_obj.depth));
 	obj_lst = ft_lstat_child(view->objs, view->selected_obj.index, view->selected_obj.depth);
@@ -140,12 +180,15 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 
 	clear_properties_list(view);
 
+	type = view->selected_obj.object->type;
+
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new_with_mnemonic("_Element Properties"));
 	GtkWidget	*name = create_text_entry("Name	", view->selected_obj.object->name);
 	g_signal_connect(G_OBJECT(name), "rt-entry-edited", G_CALLBACK(object_name_edited), (gpointer)view);
 
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos);
 	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot);
+	GtkWidget	*scale = create_scale_entry("Scale      ", 0, 0, 1000); // TODO make scale a truth
 	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_edited), view);
 	g_signal_connect(rot, "rt-vector3-entry-edited", G_CALLBACK(rot_edited), view);
 
@@ -162,12 +205,34 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), scale);
 
-	GtkWidget	*radius = create_scale_entry("Radius  ",
+	if (type == CSG)
+	{
+		GtkWidget	*bounding_list = gtk_combo_box_text_new();
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "None");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Intersection");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Union");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Substraction");
+		gtk_combo_box_set_active(GTK_COMBO_BOX(bounding_list), get_operation_id_from_code(view->selected_obj.object->operation));
+		g_signal_connect(bounding_list, "changed", G_CALLBACK(bounding_edited), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
+	}
+
+	if (type == SPHERE || type == CONE || type == CYLINDER)
+	{
+		GtkWidget	*radius = create_scale_entry("Radius  ",
 			view->selected_obj.object->radius, 0, 1000);
-	GtkWidget	*length = create_scale_entry("Length  ",
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), radius);
+		g_signal_connect(radius, "rt-scale-entry-edited",
+				G_CALLBACK(radius_edited), view);
+
+	}
+	if (type == CONE || type == CYLINDER)
+	{
+		GtkWidget	*length = create_scale_entry("Length  ",
 			view->selected_obj.object->length, 0, 1000);
+
 	GtkWidget	*kscale = create_scale_entry("Kscale  ",
 			view->selected_obj.object->kscale, 0, 1000);
 	GtkWidget	*kspec  = create_scale_entry("Kspec  ",
@@ -186,5 +251,22 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
 
 	create_color_chooser(view, view->selected_obj.object->color);
+
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
+		g_signal_connect(length, "rt-scale-entry-edited",
+				G_CALLBACK(length_edited), view);
+	}
+	if (type != CSG && type != LIGHT)
+		create_color_chooser(view, view->selected_obj.object->color);
+	if (type == POLYGONS)
+	{
+		GtkWidget *file_chooser;
+		file_chooser = gtk_file_chooser_button_new(".obj Wavefront model file", GTK_FILE_CHOOSER_ACTION_OPEN);
+		if (view->selected_obj.object->filename)
+			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(file_chooser), view->selected_obj.object->filename);
+		g_signal_connect(file_chooser, "file-set", G_CALLBACK(wavefront_file_set), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), file_chooser);
+	}
+
 	gtk_widget_show_all(view->window);
 }
