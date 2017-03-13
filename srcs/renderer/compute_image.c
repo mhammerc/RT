@@ -202,7 +202,7 @@ static void		update_progress_bar(t_scene *scene)
 	{
 		last_percent = 0.;
 	}
-	else if (scene->percent - last_percent > 0.01)
+	else if (scene->percent - last_percent > 0.0001)
 	{
 		last_percent = scene->percent;
 		scene->ui->percent = last_percent;
@@ -238,7 +238,6 @@ static void		*thread_compute_image(void *thread_data)
 			aim = vec3_add(aim, sce->cam.vx);
 			r = ray_new_aim(sce->cam.pos, aim);
 		}
-		int i = 0;
 		aim = vec3_sub(start, sce->cam.vy);
 		r = ray_new_aim(sce->cam.pos, aim);
 		pthread_mutex_lock(&sce->ui->mutex_stock);
@@ -300,7 +299,6 @@ int		test(void *data)
 
 	scene = (t_scene*)data;
 	pthread_mutex_lock(&scene->ui->mutex_stock);
-	printf("%f\n", scene->ui->percent);
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(scene->ui->progress_bar),
 			scene->ui->percent);
 	if (scene->ui->percent == 1.)
