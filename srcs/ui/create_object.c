@@ -50,7 +50,10 @@ void		create_sphere(gboolean render_new)
 	ft_bzero(&object, sizeof(t_object));
 	object.type = SPHERE;
 	object.color.z = 1;
+	object.radius = 50;
 	object.operation = '0';
+	object.kdiff = 1.;
+	object.kspec = 1.;
 	ft_strcpy(object.name, "Sphere");
 	add_object(object, render_new);
 }
@@ -63,6 +66,8 @@ void		create_plane(gboolean render_new)
 	object.type = PLANE;
 	object.color.z = 1;
 	object.operation = '0';
+	object.kdiff = 1.;
+	object.kspec = 1.;
 	ft_strcpy(object.name, "Plane");
 	add_object(object, render_new);
 }
@@ -75,6 +80,8 @@ void		create_cone(gboolean render_new)
 	object.type = CONE;
 	object.color.z = 1;
 	object.operation = '0';
+	object.kdiff = 1.;
+	object.kspec = 1.;
 	ft_strcpy(object.name, "Cone");
 	add_object(object, render_new);
 }
@@ -87,6 +94,8 @@ void		create_cylinder(gboolean render_new)
 	object.type = CYLINDER;
 	object.color.z = 1;
 	object.operation = '0';
+	object.kdiff = 1.;
+	object.kspec = 1.;
 	ft_strcpy(object.name, "Cylinder");
 	add_object(object, render_new);
 }
@@ -99,6 +108,8 @@ void		create_torus(gboolean render_new)
 	object.type = TORUS;
 	object.color.z = 1;
 	object.operation = '0';
+	object.kdiff = 1.;
+	object.kspec = 1.;
 	ft_strcpy(object.name, "Torus");
 	add_object(object, render_new);
 }
@@ -120,7 +131,10 @@ void		create_polygons(gboolean render_new)
 
 	ft_bzero(&object, sizeof(t_object));
 	object.type = POLYGONS;
+	object.color.z = 1;
 	object.operation = '0';
+	object.kdiff = 1.;
+	object.kspec = 1.;
 	ft_strcpy(object.name, "Polygons");
 	add_object(object, render_new);
 }
@@ -143,6 +157,7 @@ void		create_light(gboolean render_new)
 	ft_bzero(&object, sizeof(t_object));
 	object.type = LIGHT;
 	object.operation = '0';
+	object.pos.z = 7.;
 	ft_strcpy(object.name, "Light");
 	add_object(object, render_new);
 }
