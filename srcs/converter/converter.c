@@ -30,8 +30,8 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
-	obj->kspec = 1;
-	obj->kdiff = 1;
+	obj->kspec = object->kspec;
+	obj->kdiff = object->kdiff;
 	obj->kp = 256;
 	obj->dir = (t_vec3){0, 1, 0};
 	obj->intersect = get_obj_intersection(obj->type);

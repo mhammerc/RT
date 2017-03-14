@@ -145,12 +145,12 @@ static void		length_edited(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
-static void		kscale_edited(GtkWidget *widget, gdouble value, gpointer data)
+static void		kdiff_edited(GtkWidget *widget, gdouble value, gpointer data)
 {
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
-	ui->selected_obj.object->kscale = value;
+	ui->selected_obj.object->kdiff = value;
 	element_edited();
 }
 
@@ -236,16 +236,16 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 			view);
 	}
 
-	GtkWidget	*kscale = create_scale_entry("Kscale  ",
-			view->selected_obj.object->kscale, 0, 1000);
+	GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
+			view->selected_obj.object->kdiff, 0, 1);
 	GtkWidget	*kspec  = create_scale_entry("Kspec  ",
-			view->selected_obj.object->kspec, 0, 1000);
+			view->selected_obj.object->kspec, 0, 1);
 
-	g_signal_connect(kscale, "rt-scale-entry-edited", G_CALLBACK(kscale_edited),
+	g_signal_connect(kdiff, "rt-scale-entry-edited", G_CALLBACK(kdiff_edited),
 			view);
 	g_signal_connect(kspec, "rt-scale-entry-edited", G_CALLBACK(kspec_edited),
 			view);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kscale);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
 
 	if (type != CSG && type != LIGHT)

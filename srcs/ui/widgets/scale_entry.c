@@ -52,7 +52,7 @@ GtkWidget			*create_scale_entry(gchar *name, gdouble value, gdouble min, gdouble
 
 	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	label = gtk_label_new_with_mnemonic(name);
-	scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, min, max, 1);
+	scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, min, max, (max - min) / 100.);
 	gtk_range_set_value(GTK_RANGE(scale), value);
 	entry = create_numeric_entry(name, value);
 	gtk_widget_set_size_request(scale, 100, 0);
