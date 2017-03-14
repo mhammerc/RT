@@ -8,8 +8,10 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\
+				renderer/maths/solve_quad.c						\
 				renderer/objects/sphere.c					\
 				renderer/objects/polygon.c					\
+				renderer/objects/torus.c					\
 				renderer/objects/cylinder.c					\
 				renderer/objects/cone.c						\
 				renderer/objects/plane.c					\
