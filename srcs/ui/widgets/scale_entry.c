@@ -28,6 +28,7 @@ static void			entry_edited(GtkWidget *entry, gpointer data)
 	gchar			*content;
 	double			value;
 
+	(void)entry;
 	box = (GtkWidget*)data;
 	GList	*childs;
 	childs = gtk_container_get_children(GTK_CONTAINER(box));

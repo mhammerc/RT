@@ -30,8 +30,11 @@ typedef struct			s_object
 	t_vec3				color;
 	double				length;
 	double				radius;
+	double				kscale;
+	double				kspec;
 	char				name[80];
 	char				operation;
+	char				*filename;
 	size_t				nb_faces;
 	t_face				*faces;
 }						t_object;
@@ -55,7 +58,6 @@ typedef struct			s_ui_cam
 */
 typedef struct			s_display_panel
 {
-	GtkWidget			*dp_box;
 	GtkWidget			*image;
 	GdkPixbuf			*pixbuf;
 }						t_display_panel;
@@ -72,6 +74,7 @@ struct					s_ui
 	GtkWidget			*main_box;
 	GtkWidget			*top_menu;
 	GtkWidget			*workspace;
+	GtkWidget			*progress_bar;
 
 	t_left_panel		*lp;
 	t_display_panel		*dp;
@@ -86,6 +89,9 @@ struct					s_ui
 
 	int					render_on_change;
 	int					lock;
+	pthread_mutex_t		mutex_stock;
+	double				percent;
+	int					rendering;
 };
 
 void					build_interface(GtkApplication *app, gpointer user_data);
@@ -103,6 +109,7 @@ void					create_plane();
 void					create_cone();
 void					create_torus(gboolean render_new);
 void					create_cgs();
+void					create_polygons();
 void					create_cylinder();
 void					create_empty();
 void					create_light();

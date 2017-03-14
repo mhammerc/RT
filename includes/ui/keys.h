@@ -173,6 +173,7 @@
 #define GDK_KEY_y 0x079
 #define GDK_KEY_z 0x07a
 
-void			event_handler(t_ui *ui);
+void			event_handler_display(t_ui *ui);
+void			event_handler_window(t_ui *ui);
 
 #endif

@@ -21,6 +21,7 @@
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 
+typedef struct s_ui	t_ui;
 
 enum e_object_type
 {
@@ -71,6 +72,7 @@ typedef struct				s_face
 	t_vec3					*sommets;
 	t_vec3					*normales;
 	t_vec2					*textures;
+	double					aire;
 	size_t					nb;
 }							t_face;
 
@@ -99,6 +101,7 @@ struct						s_obj
 	t_vec3					(*normal_csg)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
 	t_face					*faces;
+	t_vec3				face_ref;
 };
 typedef struct s_obj		t_obj;
 
@@ -128,6 +131,9 @@ struct						s_scene
 	t_list					*spot;
 	t_spot					ambiant;
 	t_cam					cam;
+	t_ui					*ui;
+	double					percent;
+	int						*pixels;
 };
 typedef struct s_scene		t_scene;
 

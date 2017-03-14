@@ -28,7 +28,7 @@ int				sphere_intersect(t_obj *self, t_ray *ray)
 
 	ray_sphere = vec3_sub(ray->pos, self->pos);
 	b = vec3_dot(ray_sphere, ray->dir);
-	c = vec3_norm2(ray_sphere) - self->param;
+	c = vec3_norm2(ray_sphere) - self->radius;
 	if (norm_quad_solve(b, c, &(ray->t)))
 	{
 		if (ray->type == INITIAL_RAY)
@@ -61,7 +61,7 @@ int				sphere_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 
 	ray_sphere = vec3_sub(ray->pos, obj->pos);
 	b = vec3_dot(ray_sphere, ray->dir);
-	c = vec3_norm2(ray_sphere) - obj->param;
+	c = vec3_norm2(ray_sphere) - obj->radius;
 	if((interval->nb_hit = norm_quad_solve2(b, c, interval)))
 	{
 		interval->min[0].ref = obj;

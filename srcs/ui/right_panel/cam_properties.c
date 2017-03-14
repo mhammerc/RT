@@ -52,10 +52,8 @@ static void		dir_edited(GtkWidget *widget, t_vec3 *dir, gpointer data)
 void		edit_cam_properties(gpointer data)
 {
 	t_ui		*view;
-	t_cam		*cam;
 
 	view = (t_ui*)data;
-
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), gtk_label_new_with_mnemonic("_Camera"));
 	GtkWidget	*pos = create_vector3_entry("pos		", view->cam->pos);
 	GtkWidget	*lkat = create_vector3_entry("LookAt	", view->cam->dir);

@@ -8,8 +8,8 @@ static int		is_numerical(const gchar c)
 static void		text_inserted(GtkEntryBuffer *buffer, guint position, gchar *chars, guint n_chars, gpointer data)
 {
 	t_ui		*ui;
-	char	*text;
-	int	length;
+	char		*text;
+	size_t		length;
 
 	ui = get_interface();
 	if (ui->lock > 0)
@@ -19,8 +19,11 @@ static void		text_inserted(GtkEntryBuffer *buffer, guint position, gchar *chars,
 	}
 	ui->lock = 2;
 
-	text = gtk_entry_buffer_get_text(buffer);
+	text = (char*)gtk_entry_buffer_get_text(buffer);
 	length = gtk_entry_buffer_get_length(buffer);
+	(void)position;
+	(void)chars;
+	(void)n_chars;
 	gchar		*new_text;
 	size_t		i;
 	size_t		j;
@@ -42,6 +45,10 @@ static void		text_inserted(GtkEntryBuffer *buffer, guint position, gchar *chars,
 
 static void		text_deleted(GtkEntryBuffer *buffer, guint position, guint n_chars, gpointer data)
 {
+	(void)buffer;
+	(void)position;
+	(void)n_chars;
+	(void)data;
 	if (get_interface()->lock > 0)
 	{
 		--get_interface()->lock;

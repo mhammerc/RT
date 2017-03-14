@@ -32,11 +32,11 @@ void		refresh_obj_tree(t_ui *ui)
 	// That may cause a segfault.
 }
 
-void		free_obj_tree(t_ui *ui)
+void	free_obj_tree(t_ui *ui)
 {
 	t_list	*to_del;
 
-	ft_bzero(&(ui->selected_obj), sizeof(ui->selected_obj));
+	ui->selected_obj.object = NULL;
 	while (ui->objs)
 	{
 		to_del = ui->objs;

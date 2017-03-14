@@ -5,6 +5,7 @@ static void				toggle_render_on_change(GtkCheckMenuItem *checkmenuitem, gpointer
 	t_ui	*ui;
 
 	ui = get_interface();
+	(void)user_data;
 	ui->render_on_change = gtk_check_menu_item_get_active(checkmenuitem);
 }
 
@@ -24,14 +25,12 @@ static void				exit_rt(void)
 static void		export_png(char *filename)
 {
 	GError		*error;
-	GdkPixbuf	*ref;
-	GdkPixbuf	*pixbuf;
 	t_ui		*ui;
 
 	error = NULL;
 	ui = get_interface();
-	gdk_pixbuf_save (ui->dp->pixbuf, filename, "png", &error, NULL);
-	g_assert_no_error (error);
+	gdk_pixbuf_save(ui->dp->pixbuf, filename, "png", &error, NULL);
+	g_assert_no_error(error);
 }
 
 void			open_dialog_open(void)
@@ -61,11 +60,11 @@ void			open_dialog_open(void)
 
 void			open_dialog_save(void)
 {
-	GtkWidget				*dialog;
-	GtkFileChooser 			*chooser;
-	GtkFileChooserAction	action;
-	gint					res;
-	char 					*filename;
+	// GtkWidget				*dialog;
+	// GtkFileChooser 			*chooser;
+	// GtkFileChooserAction	action;
+	// gint					res;
+	// char 					*filename;
 	// t_ui					*ui;
 	//
 	// ui = get_interface();

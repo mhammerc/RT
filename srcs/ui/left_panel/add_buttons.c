@@ -3,9 +3,10 @@
 void		add_obj_btn(GtkButton *button, gpointer view)
 {
 	t_ui		*ui;
-	GtkWidget		*popover;
+	GtkWidget	*popover;
 
 	ui = (t_ui*)view;
+	(void)button;
 	popover = gtk_popover_menu_new();
 	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_obj);
 	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
@@ -16,12 +17,14 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	GtkWidget *cone = gtk_button_new_with_label("Cone");
 	GtkWidget *torus = gtk_button_new_with_label("Torus");
 	GtkWidget *csg = gtk_button_new_with_label("CSG");
+	GtkWidget *polygons = gtk_button_new_with_label("Polygons");
 	g_signal_connect(sphere, "clicked", G_CALLBACK(create_sphere), NULL);
 	g_signal_connect(plane, "clicked", G_CALLBACK(create_plane), NULL);
 	g_signal_connect(cylinder, "clicked", G_CALLBACK(create_cylinder), NULL);
 	g_signal_connect(cone, "clicked", G_CALLBACK(create_cone), NULL);
 	g_signal_connect(torus, "clicked", G_CALLBACK(create_torus), NULL);
 	g_signal_connect(csg, "clicked", G_CALLBACK(create_cgs), NULL);
+	g_signal_connect(polygons, "clicked", G_CALLBACK(create_polygons), NULL);
 	g_signal_connect(empty, "clicked", G_CALLBACK(create_empty), NULL);
 	gtk_container_add(GTK_CONTAINER(submenu), sphere);
 	gtk_container_add(GTK_CONTAINER(submenu), empty);
@@ -30,6 +33,7 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	gtk_container_add(GTK_CONTAINER(submenu), cone);
 	gtk_container_add(GTK_CONTAINER(submenu), torus);
 	gtk_container_add(GTK_CONTAINER(submenu), csg);
+	gtk_container_add(GTK_CONTAINER(submenu), polygons);
 	gtk_container_add(GTK_CONTAINER(popover), submenu);
 	gtk_widget_show_all(popover);
 }
@@ -40,6 +44,7 @@ void		add_light_btn(GtkButton *button, gpointer view)
 	GtkWidget		*popover;
 
 	ui = (t_ui*)view;
+	(void)button;
 	popover = gtk_popover_menu_new();
 	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_light);
 	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
@@ -59,7 +64,6 @@ void		ft_lst_cpy(t_list **new, t_list *original)
 		ft_lst_cpy(&((*new)->next), original->next);
 }
 
-
 void		cpy_obj_btn(GtkButton *button, gpointer data)
 {
 	t_list			*tmp;
@@ -71,6 +75,7 @@ void		cpy_obj_btn(GtkButton *button, gpointer data)
 	t_object		*obj;
 
 	ui = (t_ui*)data;
+	(void)button;
 	index = ui->selected_obj.index;
 	depth = ui->selected_obj.depth;
 	new = NULL;
@@ -93,25 +98,48 @@ void		cpy_obj_btn(GtkButton *button, gpointer data)
 	}
 }
 
+static void	ui_free_object(t_object *object)
+{
+	size_t	i;
+
+	if (object->filename)
+		free(object->filename);
+	if (object->faces)
+	{
+		i = 0;
+		while (i < object->nb_faces)
+		{
+			free(object->faces[i].sommets);
+			free(object->faces[i].normales);
+			free(object->faces[i].textures);
+			++i;
+		}
+		free(object->faces);
+	}
+	free(object);
+}
+
 void		del_obj_btn(GtkButton *button, gpointer data)
 {
 	t_list			*tmp;
 	t_list			*tmp_clean;
-	t_ui		*ui;
+	t_ui			*ui;
 	int				*index;
 	int				depth;
 
 	ui = (t_ui*)data;
+	(void)button;
 	index = ui->selected_obj.index;
 	depth = ui->selected_obj.depth;
 	if (ui->selected_obj.object)
 	{
 		if (index[depth - 1] == 0)
 		{
-			if(depth == 1)
+			if (depth == 1)
 			{
 				tmp_clean = ui->objs;
 				ui->objs = ui->objs->next;
+				ui_free_object(tmp_clean->content);
 				free(tmp_clean); //FIXME free content
 			}
 			else
@@ -119,6 +147,7 @@ void		del_obj_btn(GtkButton *button, gpointer data)
 				tmp = ft_lstat_child(ui->objs, index, depth - 1);
 				tmp_clean = tmp->children;
 				tmp->children = tmp_clean->next;
+				ui_free_object(tmp_clean->content);
 				free(tmp_clean);//TODO free content et children
 			}
 		}
@@ -127,6 +156,7 @@ void		del_obj_btn(GtkButton *button, gpointer data)
 			tmp = ft_lstat_child_before(ui->objs, index, depth);
 			tmp_clean = tmp->next;
 			tmp->next = tmp_clean->next;
+			ui_free_object(tmp_clean->content);
 			free(tmp_clean);//TODO free content
 		}
 		refresh_obj_tree(ui);
