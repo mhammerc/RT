@@ -291,6 +291,7 @@ void			*renderer_compute_image2(void *sce2)
 	sce->ui->percent = 1.;
 	//ui_print_scene(pixels);
 	//free(pixels);
+	return(0);
 }
 
 int		test(void *data)

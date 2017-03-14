@@ -41,9 +41,9 @@ static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer da
 {
 	t_object			*obj;
 	t_ui				*ui;
-	GtkTreePath			*path;
-	GtkTreeViewColumn	*focus_column;
 
+	(void)emitter;
+	(void)data;
 	ui = get_interface();
 	obj = ui->selected_obj.object;
 	ft_strcpy(obj->name, new_text);
@@ -112,6 +112,7 @@ static void		pos_edited(GtkWidget *widget, t_vec3 *pos, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->pos = *pos;
 	free(pos);
 	element_edited();
@@ -122,6 +123,7 @@ static void		rot_edited(GtkWidget *widget, t_vec3 *rot, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->rot = *rot;
 	free(rot);
 	element_edited();
@@ -132,6 +134,7 @@ static void		radius_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->radius = value;
 	element_edited();
 }
@@ -141,6 +144,7 @@ static void		length_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->length = value;
 	element_edited();
 }
@@ -150,6 +154,7 @@ static void		kscale_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->kscale = value;
 	element_edited();
 }
@@ -159,6 +164,7 @@ static void		kspec_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->kspec = value;
 	element_edited();
 }
@@ -171,7 +177,8 @@ void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTr
 	enum e_object_type	type;
 
 	view = (t_ui*)data;
-
+	(void)tree_view;
+	(void)column;
 	tmp = gtk_tree_path_get_indices_with_depth(path, &(view->selected_obj.depth));
 	ft_memcpy(view->selected_obj.index, tmp , 4 * (view->selected_obj.depth));
 	obj_lst = ft_lstat_child(view->objs, view->selected_obj.index, view->selected_obj.depth);

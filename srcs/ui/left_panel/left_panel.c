@@ -9,10 +9,11 @@ static void		make_lock()
 }
 
 static void		button_relase(GtkWidget *widget, GdkEvent *event,
-		gpointer user_data)
+				gpointer user_data)
 {
 	t_ui		*ui;
 
+	(void)event;
 	if (lock)
 	{
 		--lock;

@@ -21,6 +21,7 @@ static void		fxaa_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->rp->scene_gtk.fxaa = value;
 	scene_edited();
 }
@@ -30,6 +31,7 @@ static void		ambiant_light_edited(GtkWidget *widget, gdouble value, gpointer dat
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->rp->scene_gtk.ambiant_light = value;
 	scene_edited();
 }
@@ -39,6 +41,7 @@ static void		fov_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->rp->scene_gtk.fov = value;
 	scene_edited();
 }

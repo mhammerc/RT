@@ -80,6 +80,8 @@ static int		on_key_press_display(GtkWidget *widget, GdkEventKey *event,
 	t_ui	*ui;
 
 	ui = get_interface();
+	(void)widget;
+	(void)user_data;
 	if (ui->selected_obj.object && event->keyval != GDK_KEY_Delete && event->keyval != GDK_KEY_Delete)
 		obj_pos_rot_key(ui, event);
 	else if (!ui->selected_obj.object)

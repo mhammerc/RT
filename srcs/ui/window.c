@@ -58,6 +58,7 @@ void			build_interface(GtkApplication *app, gpointer user_data)
 
 	setlocale(LC_ALL, "C");
 	ui = get_interface();
+	(void)user_data;
 	pthread_mutex_init(&ui->mutex_stock, NULL);
 	ui->lp = (t_left_panel*)malloc(sizeof(t_left_panel));
 	ui->dp = (t_display_panel*)malloc(sizeof(t_display_panel));

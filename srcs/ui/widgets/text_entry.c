@@ -2,11 +2,16 @@
 
 static void		inserted_text(GtkEntryBuffer *buffer, guint position, gchar *chars, guint n_chars, gpointer widget)
 {
+	(void)position;
+	(void)chars;
+	(void)n_chars;
 	g_signal_emit_by_name((GtkWidget*)(widget), "rt-entry-edited", gtk_entry_buffer_get_text(buffer));
 }
 
 static void		deleted_text(GtkEntryBuffer *buffer, guint position, guint n_chars, gpointer widget)
 {
+	(void)position;
+	(void)n_chars;
 	g_signal_emit_by_name((GtkWidget*)(widget), "rt-entry-edited", gtk_entry_buffer_get_text(buffer));
 }
 
