@@ -33,7 +33,6 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->kspec = object->kspec;
 	obj->kdiff = object->kdiff;
 	obj->kp = 256;
-	obj->dir = (t_vec3){0, 1, 0};
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
 	obj->intersect_csg = get_obj_intersection_csg(obj->type);
