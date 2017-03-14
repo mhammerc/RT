@@ -20,9 +20,12 @@ static void	vector3_edited(GtkWidget *widget, gdouble value, gpointer data)
 	//FIXME bien utiliser les listes
 
 	values = malloc(sizeof(t_vec3));
-	values->x = atof(gtk_entry_buffer_get_text(gtk_entry_get_buffer(GTK_ENTRY(group.x))));
-	values->y = atof(gtk_entry_buffer_get_text(gtk_entry_get_buffer(GTK_ENTRY(group.y))));
-	values->z = atof(gtk_entry_buffer_get_text(gtk_entry_get_buffer(GTK_ENTRY(group.z))));
+	values->x = atof(gtk_entry_buffer_get_text(
+									gtk_entry_get_buffer(GTK_ENTRY(group.x))));
+	values->y = atof(gtk_entry_buffer_get_text(
+									gtk_entry_get_buffer(GTK_ENTRY(group.y))));
+	values->z = atof(gtk_entry_buffer_get_text(
+									gtk_entry_get_buffer(GTK_ENTRY(group.z))));
 	g_signal_emit_by_name(box, "rt-vector3-entry-edited", values);
 }
 
@@ -42,8 +45,11 @@ GtkWidget	*create_vector3_entry(gchar *name, t_vec3 value)
 	gtk_container_add(GTK_CONTAINER(box), group.x);
 	gtk_container_add(GTK_CONTAINER(box), group.y);
 	gtk_container_add(GTK_CONTAINER(box), group.z);
-	g_signal_connect(group.x, "rt-numeric-entry-edited", G_CALLBACK(vector3_edited), box);
-	g_signal_connect(group.y, "rt-numeric-entry-edited", G_CALLBACK(vector3_edited), box);
-	g_signal_connect(group.z, "rt-numeric-entry-edited", G_CALLBACK(vector3_edited), box);
+	g_signal_connect(group.x, "rt-numeric-entry-edited",
+											G_CALLBACK(vector3_edited), box);
+	g_signal_connect(group.y, "rt-numeric-entry-edited",
+											G_CALLBACK(vector3_edited), box);
+	g_signal_connect(group.z, "rt-numeric-entry-edited",
+											G_CALLBACK(vector3_edited), box);
 	return (box);
 }

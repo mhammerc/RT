@@ -3,7 +3,8 @@
 #include "obj_parser.h"
 #include <errno.h>
 
-static void		wavefront_file_set(GtkFileChooserButton *widget, gpointer user_data)
+static void		wavefront_file_set(GtkFileChooserButton *widget,
+															gpointer user_data)
 {
 	t_ui		*ui;
 	t_object	*object;
@@ -24,12 +25,17 @@ static void		wavefront_file_set(GtkFileChooserButton *widget, gpointer user_data
 		}
 		free(ui->selected_obj.object->faces);
 	}
-	ui->selected_obj.object->filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(widget));
+	ui->selected_obj.object->filename = gtk_file_chooser_get_filename(
+													GTK_FILE_CHOOSER(widget));
 	object = parse_wavefront_file(ui->selected_obj.object->filename);
 	if (!object)
 	{
-		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window), GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "Can not load %s.\nAn error occured.\n%s", ui->selected_obj.object->filename, g_strerror(errno));
-		g_signal_connect_swapped(dialog, "response", G_CALLBACK(gtk_widget_destroy), dialog);
+		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window),
+			GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+			"Can not load %s.\nAn error occured.\n%s",
+			ui->selected_obj.object->filename, g_strerror(errno));
+		g_signal_connect_swapped(dialog, "response", G_CALLBACK(
+												gtk_widget_destroy), dialog);
 		gtk_dialog_run(GTK_DIALOG(dialog));
 		return ;
 	}
@@ -37,7 +43,8 @@ static void		wavefront_file_set(GtkFileChooserButton *widget, gpointer user_data
 	ui->selected_obj.object->faces = object->faces;
 }
 
-static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer data)
+static void		object_name_edited(GtkWidget *emitter, gchar *new_text,
+																gpointer data)
 {
 	t_object			*obj;
 	t_ui				*ui;
@@ -47,7 +54,8 @@ static void		object_name_edited(GtkWidget *emitter, gchar *new_text, gpointer da
 	ui = get_interface();
 	obj = ui->selected_obj.object;
 	ft_strcpy(obj->name, new_text);
-	gtk_tree_store_set(GTK_TREE_STORE(ui->lp->tree.store), &ui->selected_obj.iter, 0, obj->name, -1);
+	gtk_tree_store_set(GTK_TREE_STORE(ui->lp->tree.store),
+									&ui->selected_obj.iter, 0, obj->name, -1);
 }
 
 static void		element_edited()
@@ -86,7 +94,8 @@ static void		bounding_edited(GtkComboBox *widget, gpointer user_data)
 	t_ui	*ui;
 
 	ui = (t_ui*)user_data;
-	ui->selected_obj.object->operation = get_operation_code_from_id(gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
+	ui->selected_obj.object->operation = get_operation_code_from_id(
+							gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
 	ask_for_new_image(ui);
 }
 
@@ -169,7 +178,8 @@ static void		kspec_edited(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
-void		 	edit_element_properties(GtkTreeView *tree_view, GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
+void		 	edit_element_properties(GtkTreeView *tree_view,
+					GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
 {
 	t_ui				*view;
 	t_list				*obj_lst;

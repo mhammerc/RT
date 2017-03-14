@@ -1,8 +1,8 @@
 #include "ui.h"
 #include <locale.h>
 
-static GtkWidget		*create_app_window(GtkApplication *app, int width, int height,
-	char *title)
+static GtkWidget		*create_app_window(GtkApplication *app, int width,
+														int height, char *title)
 {
 	GtkWidget	*win;
 
