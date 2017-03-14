@@ -1,5 +1,7 @@
 #include "ui.h"
 
+static int lock = 0;
+
 static gboolean		scale_edited(GtkRange *range, GtkScrollType scroll,
 		gdouble value, gpointer data)
 {
@@ -8,13 +10,14 @@ static gboolean		scale_edited(GtkRange *range, GtkScrollType scroll,
 
 	(void)range;
 	(void)scroll;
+	++lock;
 	box = (GtkWidget*)data;
 	GList	*childs;
 	childs = gtk_container_get_children(GTK_CONTAINER(box));
 	childs = childs->next;
 	childs = childs->next;
 	buffer = gtk_entry_get_buffer(GTK_ENTRY((GtkWidget*)childs->data));
-	gtk_entry_buffer_set_text(buffer, ft_itoa(value), -1);
+	gtk_entry_buffer_set_text(buffer, dtoa(value), -1);
 	g_signal_emit_by_name(box, "rt-scale-entry-edited", value);
 	return (0);
 }
@@ -28,6 +31,11 @@ static void			entry_edited(GtkWidget *entry, gpointer data)
 	gchar			*content;
 	double			value;
 
+	if (lock)
+	{
+		--lock;
+		return ;
+	}
 	box = (GtkWidget*)data;
 	GList	*childs;
 	childs = gtk_container_get_children(GTK_CONTAINER(box));

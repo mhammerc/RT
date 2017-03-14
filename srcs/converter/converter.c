@@ -177,6 +177,7 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
 	ui->scene.percent = 0.;
+	ui->scene.aa = ui->rp->scene_gtk.aa;
 
 	//FIXME camera up ne doit pas etre en dur ?
 	ui->scene.cam.up = (t_vec3){0, 1, 0};
