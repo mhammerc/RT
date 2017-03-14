@@ -4,8 +4,8 @@ void		init_scene(t_ui *ui)
 {
 	ui->rp->scene_gtk.ambiant_light = 0.42;
 	ui->rp->scene_gtk.fov = 45;
+	ui->rp->scene_gtk.aa = 0;
 }
-
 
 static void		scene_edited()
 {
@@ -22,7 +22,6 @@ static void		aa_edited(GtkComboBox *widget, gpointer data)
 
 	ui = (t_ui*)data;
 	ui->rp->scene_gtk.aa = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
-	printf("%d\n", ui->rp->scene_gtk.aa);
 	scene_edited();
 }
 

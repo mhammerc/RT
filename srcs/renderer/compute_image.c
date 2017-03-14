@@ -93,8 +93,8 @@ t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam)
 
 t_ray		ray_new_aim(t_vec3 pos, t_vec3 aim)
 {
-	t_vec3	dir;
 	t_vec3	n;
+	t_vec3	dir;
 
 	n = (t_vec3){0, 0, 0};
 	dir = vec3_get_normalized(vec3_sub(aim, pos));
@@ -209,15 +209,42 @@ static void		update_progress_bar(t_scene *scene)
 	}
 }
 
+static t_vec3	color_average(t_vec3 *aa, int size)
+{
+	t_vec3	r;
+	int		i;
+
+	r.x = 0.;
+	r.y = 0.;
+	r.z = 0.;
+	i = 0;
+	while (i < size)
+	{
+		r.x += aa[i].x;
+		r.y += aa[i].y;
+		r.z += aa[i].z;
+		++i;
+	}
+	r.x /= (double)size;
+	r.y /= (double)size;
+	r.z /= (double)size;
+	return (r);
+}
+
 static void		*thread_compute_image(void *thread_data)
 {
 	int						i;
 	int						j;
+	int						k;
+	int						l;
 	t_ray					r;
 	t_vec3					aim;
 	t_vec3					start;
+	t_vec3					start2;
+	t_vec3					start3;
 	t_renderer_thread		*data;
 	t_scene					*sce;
+	t_vec3					aa[64];
 	double					percent_per_line;
 
 	data = (t_renderer_thread*)thread_data;
@@ -226,6 +253,8 @@ static void		*thread_compute_image(void *thread_data)
 	sce->cam = camera_set(sce->cam);
 	aim = sce->cam.top_left;
 	aim = vec3_sub(aim, vec3_mult(data->y_begin, sce->cam.vy));
+	aim = vec3_add(aim, vec3_mult(0.5, sce->cam.vy));
+	aim = vec3_sub(aim, vec3_mult(0.5, sce->cam.vx));
 	r = ray_new_aim(sce->cam.pos, aim);
 	i = data->y_begin - 1;
 	while (++i < data->y_end)
@@ -234,14 +263,35 @@ static void		*thread_compute_image(void *thread_data)
 		j = -1;
 		while (++j < sce->cam.w)
 		{
-			data->light[i * sce->cam.w + j] = ray_trace(sce, r, 0);
-			aim = vec3_add(aim, sce->cam.vx);
+			start2 = aim;
+			if (sce->aa != 0)
+			{
+				k = -1;
+				while (++k < sce->aa)
+				{
+					start3 = aim;
+					l = -1;
+					while (++l < sce->aa)
+					{
+						aa[k + l] = ray_trace(sce, r, 0);
+						aim = vec3_add(aim, vec3_mult(1. / (double)sce->aa, sce->cam.vx));
+						r = ray_new_aim(sce->cam.pos, aim);
+					}
+					aim = vec3_sub(start3, vec3_mult(1. / (double)sce->aa, sce->cam.vy));
+					r = ray_new_aim(sce->cam.pos, aim);
+				}
+				data->light[i * sce->cam.w + j] = color_average(aa, sce->aa * sce->aa);
+			}
+			else
+				data->light[i * sce->cam.w + j] = ray_trace(sce, r, 0);
+			aim = vec3_add(start2, sce->cam.vx);
 			r = ray_new_aim(sce->cam.pos, aim);
 		}
 		aim = vec3_sub(start, sce->cam.vy);
 		r = ray_new_aim(sce->cam.pos, aim);
+
 		pthread_mutex_lock(&sce->ui->mutex_stock);
-		sce->percent += percent_per_line;
+		sce->percent += percent_per_line; //FIXME
 		update_progress_bar(sce);
 		pthread_mutex_unlock(&sce->ui->mutex_stock);
 	}
