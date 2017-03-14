@@ -32,7 +32,7 @@ int				cylinder_intersect(t_obj *self, t_ray *ray)
 	dpmva = vec3_sub(ray->pos, self->pos);
 	dpmva = vec3_sub(dpmva, vec3_mult(vec3_dot(dpmva, self->dir), self->dir));
 	b = 2 * vec3_dot(vmvva, dpmva);
-	c = vec3_dot(dpmva, dpmva) - self->param;
+	c = vec3_dot(dpmva, dpmva) - self->radius;
 	if (quad_solve(vec3_dot(vmvva, vmvva), b, c, &(ray->t)))
 	{
 		if (ray->type == INITIAL_RAY)
@@ -75,7 +75,7 @@ int				cylinder_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	dpmva = vec3_sub(ray->pos, obj->pos);
 	dpmva = vec3_sub(dpmva, vec3_mult(vec3_dot(dpmva, obj->dir), obj->dir));
 	b = 2 * vec3_dot(vmvva, dpmva);
-	c = vec3_dot(dpmva, dpmva) - obj->param;
+	c = vec3_dot(dpmva, dpmva) - obj->radius;
 	if ((interval->nb_hit = quad_solve2(vec3_dot(vmvva, vmvva), b, c, interval)))
 	{
 		interval->min[0].ref = obj;

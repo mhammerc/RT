@@ -28,7 +28,7 @@ typedef struct			s_cam_gtk
 
 typedef struct			s_scene_gtk
 {
-	int					fxaa;
+	int					aa;
 	double				ambiant_light;
 	int					fov;
 }						t_scene_gtk;

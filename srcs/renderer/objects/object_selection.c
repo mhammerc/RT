@@ -11,7 +11,7 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 	if (obj_type == CYLINDER)
 		return (&cylinder_intersect);
 	if (obj_type == CONE)
-		return (&polygon_intersect);//TODO ADD POLYGON OBJ
+		return (&cone_intersect);
 	if (obj_type == PLANE)
 		return (&plane_intersect);
 	if (obj_type == TORUS)
