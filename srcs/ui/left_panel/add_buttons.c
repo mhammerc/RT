@@ -46,7 +46,8 @@ void		add_light_btn(GtkButton *button, gpointer view)
 	ui = (t_ui*)view;
 	(void)button;
 	popover = gtk_popover_menu_new();
-	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_light);
+	gtk_popover_set_relative_to(GTK_POPOVER(popover),
+													ui->lp->lp_btns.add_light);
 	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	GtkWidget *light = gtk_button_new_with_label("Diffuse");
 	g_signal_connect(light, "clicked", G_CALLBACK(create_light), NULL);

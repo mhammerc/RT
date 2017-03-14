@@ -19,7 +19,6 @@ static gboolean		scale_edited(GtkRange *range, GtkScrollType scroll,
 	return (0);
 }
 
-//FIXME use correctly lists.
 static void			entry_edited(GtkWidget *entry, gpointer data)
 {
 	GtkWidget		*box;
@@ -44,7 +43,8 @@ static void			entry_edited(GtkWidget *entry, gpointer data)
 	g_signal_emit_by_name(box, "rt-scale-entry-edited", value);
 }
 
-GtkWidget			*create_scale_entry(gchar *name, gdouble value, gdouble min, gdouble max)
+GtkWidget			*create_scale_entry(gchar *name, gdouble value, gdouble min,
+																	gdouble max)
 {
 	GtkWidget		*box;
 	GtkWidget		*label;
@@ -61,6 +61,7 @@ GtkWidget			*create_scale_entry(gchar *name, gdouble value, gdouble min, gdouble
 	gtk_container_add(GTK_CONTAINER(box), scale);
 	gtk_container_add(GTK_CONTAINER(box), entry);
 	g_signal_connect(scale, "change-value", G_CALLBACK(scale_edited), box);
-	g_signal_connect(entry, "rt-numeric-entry-edited", G_CALLBACK(entry_edited), box);
+	g_signal_connect(entry, "rt-numeric-entry-edited", G_CALLBACK(entry_edited),
+																		box);
 	return (box);
 }
