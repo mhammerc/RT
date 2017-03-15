@@ -32,13 +32,13 @@ int			quad_solve(double a, double b, double c, t_interval *interval)
 	interval->max[0].dist = x2;
 	if (x1 > 0)
 	{
-		interval->min[0].normal = 0;
-		interval->max[0].normal = 1;
+		interval->min[0].normal = OUTWARDS;
+		interval->max[0].normal = INWARDS;
 	}
 	else
 	{
-		interval->min[0].normal = 1;
-		interval->max[0].normal = 0;
+		interval->min[0].normal = INWARDS;
+		interval->max[0].normal = OUTWARDS;
 	}
 		return (1);
 }
@@ -75,13 +75,13 @@ int			norm_quad_solve(double b, double c, t_interval *interval)
 	interval->max[0].dist = x2;
 	if (x1 > 0)
 	{
-		interval->min[0].normal = 0;
-		interval->max[0].normal = 1;
+		interval->min[0].normal = OUTWARDS;
+		interval->max[0].normal = INWARDS;
 	}
 	else
 	{
-		interval->min[0].normal = 1;
-		interval->max[0].normal = 0;
+		interval->min[0].normal = INWARDS;
+		interval->max[0].normal = OUTWARDS;
 	}
 		return (1);
 }
