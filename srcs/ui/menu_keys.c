@@ -22,6 +22,8 @@ static int		on_key_press_window(GtkWidget *widget, GdkEventKey *event,
 	t_ui		*ui;
 
 	ui = get_interface();
+	(void)widget;
+	(void)user_data;
 	menu_keys(event);
 	return (FALSE);
 }

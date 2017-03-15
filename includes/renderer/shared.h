@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/10 17:37:47 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/14 18:54:41 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,26 @@ typedef struct				s_face
 	size_t					nb;
 }							t_face;
 
+typedef struct s_obj		t_obj;
+
+struct						s_csg
+{
+	double					dist;
+	int						normal;
+	t_obj					*ref;
+};
+typedef	struct s_csg		t_csg;
+
+struct						s_interval
+{
+	t_csg					min[10];//TODO protect if is more than 10
+	t_csg					max[10];
+	int						nb_hit;
+};
+
+typedef struct s_interval	t_interval;
 typedef struct s_ray		t_ray;
+
 struct						s_obj
 {
 	t_vec3					pos;
@@ -95,7 +114,7 @@ struct						s_obj
 	char					csg;
 	int						csg_normal;
 	struct s_obj			*csg_ref;
-	int						(*intersect)(struct s_obj *self, t_ray *ray);
+	int						(*intersect)(struct s_obj *self, t_ray *ray, t_interval*);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 	int						(*intersect_csg)(struct s_obj *self, t_ray *ray, void *interval);
 	t_vec3					(*normal_csg)(struct s_obj *self, t_vec3 pos);
@@ -103,7 +122,6 @@ struct						s_obj
 	t_face					*faces;
 	t_vec3				face_ref;
 };
-typedef struct s_obj		t_obj;
 
 struct						s_ray
 {

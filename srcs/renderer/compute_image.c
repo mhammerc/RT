@@ -102,6 +102,40 @@ t_ray		ray_new_aim(t_vec3 pos, t_vec3 aim)
 }
 
 /*
+** Intersect obj with ray
+** - Updates ray->t if smaller distance found
+** @return 0 if no collision, 1 if collision
+*/
+static int		ray_object(t_obj* obj, t_ray *ray)
+{
+	t_interval	interval;
+	int			res;
+	double		x1;
+	double		x2;
+	t_obj		*collided;
+
+	collided = NULL;
+	if ((res = obj->intersect(obj, ray, &interval)))
+	{
+		x1 = interval.min[0].dist;
+		x2 = interval.max[0].dist;
+		if (x1 > 0 && x1 < ray->t)
+		{
+			ray->t = x1;
+			collided = obj;
+		}
+		if (x2 > 0 && x2 < ray->t)
+		{
+			ray->t = x2;
+			collided = obj;
+		}
+		if (collided && ray->type == INITIAL_RAY)
+			ray->collided = collided;
+	}
+	return (res);
+}
+
+/*
 ** Intersect ray with all objects in scene
 ** @return 1 if collision, 0 otherwise. ray is updated if collision
 */
@@ -117,7 +151,8 @@ static int		rt_object(t_scene *sce, t_ray *ray)
 	while (l)
 	{
 		obj = (t_obj*)l->content;
-		if (obj->intersect(obj, ray))
+		//if (obj->intersect(obj, ray))
+		if (ray_object(obj, ray))
 			collision = 1;
 		l = l->next;
 	}
@@ -291,6 +326,7 @@ void			*renderer_compute_image2(void *sce2)
 	sce->ui->percent = 1.;
 	//ui_print_scene(pixels);
 	//free(pixels);
+	return(0);
 }
 
 int		test(void *data)

@@ -4,14 +4,16 @@
 /*
 ** refresh left panel (obj_tree)
 */
-static void		refresh_obj_tree_aux(t_ui *ui, t_list *objects, GtkTreeIter *father)
+static void		refresh_obj_tree_aux(t_ui *ui, t_list *objects,
+															GtkTreeIter *father)
 {
 	GtkTreeIter		elem;
 	t_object		*object;
 
 	object = objects->content;
 	gtk_tree_store_append(ui->lp->tree.store, &elem, father);
-	gtk_tree_store_set(ui->lp->tree.store, &elem, 0, object->name, 1, get_el_type_char(object), -1);
+	gtk_tree_store_set(ui->lp->tree.store, &elem, 0, object->name, 1,
+												get_el_type_char(object), -1);
 	if(objects->next)
 		refresh_obj_tree_aux(ui, objects->next, father);
 	if(objects->children)
@@ -28,8 +30,6 @@ void		refresh_obj_tree(t_ui *ui)
 	ui->selected_obj.object = NULL;
 	if (ui->render_on_change)
 		ask_for_new_image(ui);
-	// FIXME Object unselected but properties are still shown on the right.
-	// That may cause a segfault.
 }
 
 void	free_obj_tree(t_ui *ui)
