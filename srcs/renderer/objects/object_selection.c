@@ -1,5 +1,7 @@
 #include "renderer.h"
 
+int				torus_intersect(t_obj *self, t_ray *ray);
+t_vec3			torus_normal(t_obj *self, t_vec3 pos);
 int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 {
 	if (obj_type == CSG)
@@ -9,11 +11,11 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*)
 	if (obj_type == CYLINDER)
 		return (&cylinder_intersect);
 	if (obj_type == CONE)
-		return (&polygon_intersect);//TODO ADD POLYGON OBJ
+		return (&cone_intersect);
 	if (obj_type == PLANE)
 		return (&plane_intersect);
 	if (obj_type == TORUS)
-		return (&sphere_intersect);
+		return (&torus_intersect);
 	if (obj_type == POLYGONS)
 		return (&polygon_intersect);
 	else
@@ -33,7 +35,7 @@ t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 	if (obj_type == PLANE)
 		return (&plane_normal);
 	if (obj_type == TORUS)
-		return (&sphere_normal);
+		return (&torus_normal);
 	if (obj_type == POLYGONS)
 		return (&polygon_normal);
 	else

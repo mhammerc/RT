@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   object_cylinder.c                                  :+:      :+:    :+:   */
+/*   torus.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/01/21 17:47:41 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/08 15:28:09 by vfour            ###   ########.fr       */
+/*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
+/*   Updated: 2017/03/14 16:08:42 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,25 +15,43 @@
 #include "renderer.h"
 
 /*
-** Intersection between ray and cylinder
+** Intersection between ray and torus
 ** @return the distance between camera and object if there is collision
 ** or a negative value otherwise
 */
 
-int				cylinder_intersect(t_obj *self, t_ray *ray)
+int			quad4_solve(double a, double b, double c, double d, double e, double *root);
+int				torus_intersect(t_obj *self, t_ray *ray)
 {
-	double		b;
-	double		c;
-	t_vec3		vmvva;
-	t_vec3		dpmva;
 
-	vmvva = vec3_mult(vec3_dot(ray->dir, self->dir), self->dir);
-	vmvva = vec3_sub(ray->dir, vmvva);
-	dpmva = vec3_sub(ray->pos, self->pos);
-	dpmva = vec3_sub(dpmva, vec3_mult(vec3_dot(dpmva, self->dir), self->dir));
-	b = 2 * vec3_dot(vmvva, dpmva);
-	c = vec3_dot(dpmva, dpmva) - self->radius;
-	if (quad_solve(vec3_dot(vmvva, vmvva), b, c, &(ray->t)))
+	self->radius = 1;
+	self->length = 0.2;
+	self->dir.x = 0;
+	self->dir.y = 0;
+	self->dir.z = 1;
+	self->kdiff = 1;
+	self->kspec = 1;
+	ray->dir = vec3_get_normalized(ray->dir);
+
+	double	R = self->radius;
+	double	r = self->length;
+
+	t_vec3	Q = vec3_sub(ray->pos, self->pos);
+	double	u = vec3_dot(self->dir, Q);
+	double	v = vec3_dot(self->dir, ray->dir);
+
+	double	a = 1 - pow(v, 2);
+	double	b = 2 * (vec3_dot(Q, ray->dir) - u * v);
+	double	c = vec3_dot(Q, Q) - pow(u, 2);
+	double	d = vec3_dot(Q, Q) + pow(R, 2) - pow(r, 2);
+
+	double	A = 1;
+	double	B = 4 * vec3_dot(Q, ray->dir);
+	double	C = 2 * d + pow(B, 2) / 4. - 4 * pow(R, 2) * a;
+	double	D = B * d - 4 * pow(R, 2) * b;
+	double	E = pow(d, 2) - 4 * pow(R, 2) * c;
+
+	if (quad4_solve(A,B,C,D,E, &(ray->t)))
 	{
 		if (ray->type == INITIAL_RAY)
 			ray->collided = self;
@@ -47,14 +65,16 @@ int				cylinder_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			cylinder_normal(t_obj *self, t_vec3 pos)
+t_vec3			torus_normal(t_obj *self, t_vec3 pos)
 {
-	double		m;
-	t_vec3		cy_pos;
+	double		y;
+	t_vec3		D;
+	t_vec3		X;
 
-	m = vec3_dot(self->dir, vec3_sub(pos, self->pos));
-	cy_pos = vec3_add(self->pos, vec3_mult(m, self->dir));
-	return (vec3_get_normalized(vec3_sub(pos, cy_pos)));
+	y = vec3_dot(vec3_sub(pos, self->pos), self->dir);
+	D = vec3_sub(vec3_sub(pos, self->pos), vec3_mult(y, self->dir));
+	X = vec3_mult(self->radius / sqrt(vec3_dot(D, D)), D);
+	return (vec3_get_normalized(vec3_sub(pos, vec3_add(self->pos ,X))));
 }
 
 /*
@@ -62,7 +82,7 @@ t_vec3			cylinder_normal(t_obj *self, t_vec3 pos)
 ** @return 1
 **
 */
-
+/*
 int				cylinder_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 {
 	double		b;
@@ -75,7 +95,7 @@ int				cylinder_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	dpmva = vec3_sub(ray->pos, obj->pos);
 	dpmva = vec3_sub(dpmva, vec3_mult(vec3_dot(dpmva, obj->dir), obj->dir));
 	b = 2 * vec3_dot(vmvva, dpmva);
-	c = vec3_dot(dpmva, dpmva) - obj->radius;
+	c = vec3_dot(dpmva, dpmva) - obj->param;
 	if ((interval->nb_hit = quad_solve2(vec3_dot(vmvva, vmvva), b, c, interval)))
 	{
 		interval->min[0].ref = obj;
@@ -83,11 +103,11 @@ int				cylinder_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	}
 	return (1);
 }
-
+*/
 /*
 ** Normal vector at given point
 */
-
+/*
 t_vec3			cylinder_normal_csg(t_obj *obj, t_vec3 pos)
 {
 	double		m;
@@ -98,3 +118,4 @@ t_vec3			cylinder_normal_csg(t_obj *obj, t_vec3 pos)
 	cy_pos = vec3_add(obj->pos, vec3_mult(m, obj->dir));
 	return (vec3_get_normalized(vec3_sub(pos, cy_pos)));
 }
+*/
