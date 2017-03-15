@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:47:41 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/08 15:28:09 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 15:10:51 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@
 ** or a negative value otherwise
 */
 
-int				cylinder_intersect(t_obj *self, t_ray *ray)
+int				cylinder_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 	double		b;
 	double		c;
@@ -33,12 +33,20 @@ int				cylinder_intersect(t_obj *self, t_ray *ray)
 	dpmva = vec3_sub(dpmva, vec3_mult(vec3_dot(dpmva, self->dir), self->dir));
 	b = 2 * vec3_dot(vmvva, dpmva);
 	c = vec3_dot(dpmva, dpmva) - self->radius;
+	if ((interval->nb_hit = quad_solve2(vec3_dot(vmvva, vmvva), b, c, interval)))
+	{
+		interval->min[0].ref = self;
+		interval->max[0].ref = self;
+		return (1);
+	}
+	/*
 	if (quad_solve(vec3_dot(vmvva, vmvva), b, c, &(ray->t)))
 	{
 		if (ray->type == INITIAL_RAY)
 			ray->collided = self;
 		return (1);
 	}
+	*/
 	return (0);
 }
 

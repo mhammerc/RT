@@ -8,9 +8,9 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*, t_inter
 		return (&csg_intersect);
 	if (obj_type == SPHERE)
 		return (&sphere_intersect);
-	/*
 	if (obj_type == CYLINDER)
 		return (&cylinder_intersect);
+	/*
 	if (obj_type == CONE)
 		return (&cone_intersect);
 	if (obj_type == PLANE)
@@ -30,9 +30,9 @@ t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 		return (&csg_normal);
 	if (obj_type == SPHERE)
 		return (&sphere_normal);
-	/*
 	if (obj_type == CYLINDER)
 		return (&cylinder_normal);
+	/*
 	if (obj_type == CONE)
 		return (&polygon_normal);
 	if (obj_type == PLANE)

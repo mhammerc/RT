@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/14 18:54:41 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 15:15:32 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
 # define BIG_DIST 1e12
-# define EPS 1e-4
+# define EPS 1e-3
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 

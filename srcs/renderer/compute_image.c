@@ -158,9 +158,8 @@ static int		rt_object(t_scene *sce, t_ray *ray)
 	}
 	if (ray->type == INITIAL_RAY && collision)
 	{
-		ray->pos = vec3_add(ray->pos, vec3_mult(ray->t, ray->dir));
+		ray->pos = vec3_add(ray->pos, vec3_mult(ray->t - EPS, ray->dir));
 		ray->n = ray->collided->normal(ray->collided, ray->pos);
-		ray->pos = vec3_add(ray->pos, vec3_mult(EPS, ray->n));
 	}
 	return (collision);
 }

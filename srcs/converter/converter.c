@@ -25,7 +25,10 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 {
 	obj->pos = object->pos;
 	obj->color = object->color;
-	obj->dir = object->rot;
+	if (vec3_norm2(object->rot) > EPS)
+		obj->dir = vec3_get_normalized(object->rot);
+	else
+		obj->dir = object->rot;
 	obj->radius =  object->radius / 1000;
 	obj->length = object->length;
 	obj->param = object->length / 1000;

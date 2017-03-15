@@ -53,7 +53,7 @@ int			sphere_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 int			polygon_intersect(t_obj *self, t_ray *ray);
 t_vec3		polygon_normal(t_obj *self, t_vec3 pos);
 t_vec3		sphere_normal(t_obj *self, t_vec3 pos);
-int			cylinder_intersect(t_obj *self, t_ray *ray);
+int			cylinder_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		cylinder_normal(t_obj *self, t_vec3 pos);
 int			cone_intersect(t_obj *self, t_ray *ray);
 t_vec3		cone_normal(t_obj *self, t_vec3 pos);
