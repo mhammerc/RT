@@ -158,13 +158,12 @@ static void		length_edited(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
-static void		kscale_edited(GtkWidget *widget, gdouble value, gpointer data)
+static void		kdiff_edited(GtkWidget *widget, gdouble value, gpointer data)
 {
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
-	(void)widget;
-	ui->selected_obj.object->kscale = value;
+	ui->selected_obj.object->kdiff = value;
 	element_edited();
 }
 
@@ -209,16 +208,6 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_edited), view);
 	g_signal_connect(rot, "rt-vector3-entry-edited", G_CALLBACK(rot_edited), view);
 
-	/* BOUNDING TYPE START  */
-	GtkWidget	*bounding_list = gtk_combo_box_text_new();
-	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "None");
-	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Intersection");
-	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Union");
-	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bounding_list), 0, "Substraction");
-	gtk_combo_box_set_active(GTK_COMBO_BOX(bounding_list), get_operation_id_from_code(view->selected_obj.object->operation));
-	g_signal_connect(bounding_list, "changed", G_CALLBACK(bounding_edited), view);
-	/* BOUNDING TYPE END */
-
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
@@ -253,17 +242,20 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 			view);
 	}
 
-	GtkWidget	*kscale = create_scale_entry("Kscale  ",
-			view->selected_obj.object->kscale, 0, 1000);
-	GtkWidget	*kspec  = create_scale_entry("Kspec  ",
-			view->selected_obj.object->kspec, 0, 1000);
-
-	g_signal_connect(kscale, "rt-scale-entry-edited", G_CALLBACK(kscale_edited),
-			view);
-	g_signal_connect(kspec, "rt-scale-entry-edited", G_CALLBACK(kspec_edited),
-			view);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kscale);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
+	if (type == SPHERE || type == CYLINDER || type == CONE || type == PLANE
+			|| type == TORUS)
+	{
+		GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
+				view->selected_obj.object->kdiff, 0, 1);
+		GtkWidget	*kspec  = create_scale_entry("Kspec  ",
+				view->selected_obj.object->kspec, 0, 1);
+		g_signal_connect(kdiff, "rt-scale-entry-edited", G_CALLBACK(kdiff_edited),
+				view);
+		g_signal_connect(kspec, "rt-scale-entry-edited", G_CALLBACK(kspec_edited),
+				view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
+	}
 
 	if (type != CSG && type != LIGHT)
 		create_color_chooser(view, view->selected_obj.object->color);

@@ -30,7 +30,7 @@ typedef struct			s_object
 	t_vec3				color;
 	double				length;
 	double				radius;
-	double				kscale;
+	double				kdiff;
 	double				kspec;
 	char				name[80];
 	char				operation;

@@ -152,6 +152,7 @@ struct						s_scene
 	t_ui					*ui;
 	double					percent;
 	int						*pixels;
+	int						aa;
 };
 typedef struct s_scene		t_scene;
 

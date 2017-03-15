@@ -30,10 +30,9 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
-	obj->kspec = 1;
-	obj->kdiff = 1;
+	obj->kspec = object->kspec;
+	obj->kdiff = object->kdiff;
 	obj->kp = 256;
-	obj->dir = (t_vec3){0, 1, 0};
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
 	obj->intersect_csg = get_obj_intersection_csg(obj->type);
@@ -177,6 +176,7 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
 	ui->scene.percent = 0.;
+	ui->scene.aa = ui->rp->scene_gtk.aa;
 
 	//FIXME camera up ne doit pas etre en dur ?
 	ui->scene.cam.up = (t_vec3){0, 1, 0};
