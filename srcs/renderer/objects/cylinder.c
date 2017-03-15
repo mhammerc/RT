@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:47:41 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/15 18:35:12 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 19:25:44 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,5 +54,8 @@ t_vec3			cylinder_normal(t_obj *self, t_vec3 pos)
 
 	m = vec3_dot(self->dir, vec3_sub(pos, self->pos));
 	cy_pos = vec3_add(self->pos, vec3_mult(m, self->dir));
-	return (vec3_get_normalized(vec3_sub(pos, cy_pos)));
+	if (self->normal_dir == INWARDS)
+		return (vec3_get_normalized(vec3_sub(cy_pos, pos)));
+	else
+		return (vec3_get_normalized(vec3_sub(pos, cy_pos)));
 }

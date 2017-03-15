@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:35:22 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/15 18:35:27 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 19:23:33 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,5 +44,8 @@ int				sphere_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 
 t_vec3			sphere_normal(t_obj *self, t_vec3 pos)
 {
-	return (vec3_get_normalized(vec3_sub(pos, self->pos)));
+	if (self->normal_dir == OUTWARDS)
+		return (vec3_get_normalized(vec3_sub(pos, self->pos)));
+	else
+		return (vec3_get_normalized(vec3_sub(self->pos, pos)));
 }

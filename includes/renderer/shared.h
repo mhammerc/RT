@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 18:23:44 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 19:16:50 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ struct						s_obj
 	struct s_obj			*left;
 	struct s_obj			*right;
 	char					csg;
-	int						csg_normal;
+	int						normal_dir;
 	struct s_obj			*csg_ref;
 	int						(*intersect)(struct s_obj *self, t_ray *ray, t_interval*);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);

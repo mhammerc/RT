@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 18:24:08 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 19:17:38 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -398,7 +398,7 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 			*collided = interval->min[i].ref;
 			*d = interval->min[i].dist;
 			obj->csg_ref = interval->min[i].ref;
-			obj->csg_ref->csg_normal = interval->min[i].normal;
+			obj->csg_ref->normal_dir = interval->min[i].normal;
 			res = 1;
 		}
 		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
@@ -406,7 +406,7 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 			*collided = interval->max[i].ref;
 			*d = interval->max[i].dist;
 			obj->csg_ref = interval->max[i].ref;
-			obj->csg_ref->csg_normal = interval->max[i].normal;
+			obj->csg_ref->normal_dir = interval->max[i].normal;
 			res = 1;
 		}
 		i++;

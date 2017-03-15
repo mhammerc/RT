@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:48:05 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/15 18:40:09 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 19:24:43 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,5 +63,8 @@ t_vec3			cone_normal(t_obj *self, t_vec3 pos)
 	if (vec3_dot(self->dir, apex_to_pos) < 0)
 		m = -m;
 	c_pos = vec3_add(self->pos, vec3_mult(m, self->dir));
-	return (vec3_get_normalized(vec3_sub(pos, c_pos)));
+	if (self->normal_dir == INWARDS)
+		return (vec3_get_normalized(vec3_sub(c_pos, pos)));
+	else
+		return (vec3_get_normalized(vec3_sub(pos, c_pos)));
 }

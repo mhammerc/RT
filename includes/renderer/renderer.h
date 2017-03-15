@@ -15,6 +15,9 @@
 # define B_BITSHIFT 16
 # define MAX_REC_DEPTH 42
 
+# define OUTWARDS 0
+# define INWARDS 1
+
 typedef struct		s_renderer_thread
 {
 	t_scene			*sce;
