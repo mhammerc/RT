@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 15:15:32 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 16:43:23 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@
 # define EPS 1e-3
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
+# define REFL_ATTENUATION 0.2
 
 typedef struct s_ui	t_ui;
 

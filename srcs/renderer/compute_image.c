@@ -220,6 +220,7 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 		if (ray.collided->kspec > 0)
 		{
 			refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
+			refl_light = vec3_mult(REFL_ATTENUATION, refl_light);
 			light = vec3_add(light, color_light_mix(ray.collided->color,
 													refl_light,
 													ray.collided->kspec));

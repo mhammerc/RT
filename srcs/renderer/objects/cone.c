@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:48:05 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/08 15:27:53 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 15:37:17 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 ** or a negative value otherwise
 */
 
-int				cone_intersect(t_obj *self, t_ray *ray)
+int				cone_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 	double		a[6];
 	t_vec3		vmvva;
@@ -38,12 +38,20 @@ int				cone_intersect(t_obj *self, t_ray *ray)
 	a[2] = a[0] * vec3_norm2(dpmva) - a[3] * a[5] * a[5];
 	a[1] = 2 * (a[0] * vec3_dot(vmvva, dpmva) - a[3] * a[4] * a[5]);
 	a[0] = a[0] * vec3_norm2(vmvva) - a[3] * a[4] * a[4];
+	if ((interval->nb_hit = quad_solve2(a[0], a[1], a[2], interval)))
+	{
+		interval->min[0].ref = self;
+		interval->max[0].ref = self;
+		return (1);
+	}
+	/*
 	if (quad_solve(a[0], a[1], a[2], &(ray->t)))
 	{
 		if (ray->type == INITIAL_RAY)
 			ray->collided = self;
 		return (1);
 	}
+	*/
 	return (0);
 }
 

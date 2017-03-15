@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <libft.h>
+#include <math.h>
 
 #include "ui.h"
 #include "renderer.h"
@@ -29,7 +30,10 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 		obj->dir = vec3_get_normalized(object->rot);
 	else
 		obj->dir = object->rot;
-	obj->radius =  object->radius / 1000;
+	if (object->type == CONE)
+		obj->radius = cos((object->radius / 1000) * DEG_TO_RAD);
+	else
+		obj->radius =  object->radius / 1000;
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
