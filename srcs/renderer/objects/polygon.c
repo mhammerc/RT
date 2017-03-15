@@ -32,14 +32,14 @@ int				test_polygon_in(t_vec3 hit, t_vec3 normal, t_face *face)
 
 	s1 = vec3_sub(face->sommets[nb - 1], hit);
 	s2 = vec3_sub(face->sommets[0], hit);
-	if(vec3_dot(normal, vec3_cross(s1, s2)) * face->aire < 0)
+	if(vec3_dot(normal, vec3_cross(s1, s2)) * face->aire < 0.)
 		return (0);
 	i = 0;
 	while (i < face->nb - 1)
 	{
 		s1 = vec3_sub(face->sommets[i], hit);
 		s2 = vec3_sub(face->sommets[i + 1], hit);
-		if(vec3_dot(normal, vec3_cross(s1, s2)) * face->aire < 0)
+		if(vec3_dot(normal, vec3_cross(s1, s2)) * face->aire < 0.)
 			return (0);
 		i++;
 	}
@@ -54,7 +54,7 @@ int				test_polygon_in(t_vec3 hit, t_vec3 normal, t_face *face)
 
 t_vec3			polygon_normal(t_obj *self, t_ray ray)
 {
-	if (vec3_dot(vec3_sub(ray.pos, self->pos), self->face_ref) > 0)
+	if (vec3_dot(vec3_sub(ray.pos, self->pos), self->face_ref) > 0.)
 		return ((self->face_ref));
 	return (vec3_mult(-1, self->dir));
 }
@@ -86,7 +86,7 @@ int				face_intersect(t_obj *self, t_ray *ray, t_face *face)
 	x = vec3_sub(face->sommets[0], ray->pos);
 	a = vec3_dot(x, *(face->normales));
 	d = a / b;
-	if (d < ray->t && d > 0)
+	if (d < ray->t && d > 0.)
 	{
 		x = vec3_add(ray->pos, vec3_mult(d, ray->dir));
 		if (test_polygon_in(x, *face->normales, face))
