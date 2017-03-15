@@ -45,23 +45,3 @@ t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
 	else
 		return (NULL);
 }
-
-int	(*get_obj_intersection_csg(enum e_object_type obj_type))(t_obj*, t_ray*, t_interval*)
-{
-	if (obj_type == SPHERE)
-		return (&sphere_intersect_csg);
-	if (obj_type == CYLINDER)
-		return (&cylinder_intersect_csg);
-	else
-		return (NULL);
-}
-
-t_vec3	(*get_obj_normal_csg(enum e_object_type obj_type))(t_obj*, t_vec3)
-{
-	if (obj_type == SPHERE)
-		return (&sphere_normal_csg);
-	if (obj_type == CYLINDER)
-		return (&cylinder_normal_csg);
-	else
-		return (NULL);
-}

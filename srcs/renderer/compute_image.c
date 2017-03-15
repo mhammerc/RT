@@ -110,27 +110,17 @@ static int		ray_object(t_obj* obj, t_ray *ray)
 {
 	t_interval	interval;
 	int			res;
-	double		x1;
-	double		x2;
 	t_obj		*collided;
 
 	collided = NULL;
-	if ((res = obj->intersect(obj, ray, &interval)))
+	res = 0;
+	if (obj->intersect(obj, ray, &interval))
 	{
-		x1 = interval.min[0].dist;
-		x2 = interval.max[0].dist;
-		if (x1 > 0 && x1 < ray->t)
+		if ((res = minimal_positiv(&interval, obj, &(ray->t), &collided)))
 		{
-			ray->t = x1;
-			collided = obj;
+			if (ray->type == INITIAL_RAY)
+				ray->collided = collided;
 		}
-		if (x2 > 0 && x2 < ray->t)
-		{
-			ray->t = x2;
-			collided = obj;
-		}
-		if (collided && ray->type == INITIAL_RAY)
-			ray->collided = collided;
 	}
 	return (res);
 }
@@ -151,7 +141,6 @@ static int		rt_object(t_scene *sce, t_ray *ray)
 	while (l)
 	{
 		obj = (t_obj*)l->content;
-		//if (obj->intersect(obj, ray))
 		if (ray_object(obj, ray))
 			collision = 1;
 		l = l->next;

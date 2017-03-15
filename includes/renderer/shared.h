@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 16:43:23 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 18:23:44 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,6 @@ struct						s_obj
 	struct s_obj			*csg_ref;
 	int						(*intersect)(struct s_obj *self, t_ray *ray, t_interval*);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
-	int						(*intersect_csg)(struct s_obj *self, t_ray *ray, void *interval);
-	t_vec3					(*normal_csg)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
 	t_face					*faces;
 	t_vec3				face_ref;
@@ -156,5 +154,7 @@ struct						s_scene
 	int						aa;
 };
 typedef struct s_scene		t_scene;
+
+int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **collided);
 
 #endif
