@@ -113,7 +113,7 @@ static int		ray_object(t_obj* obj, t_ray *ray)
 	t_obj		*collided;
 
 	collided = NULL;
-	res = 0;
+	res = LOCATION_NONE;
 	if (obj->intersect(obj, ray, &interval))
 	{
 		if ((res = minimal_positiv(&interval, obj, &(ray->t), &collided)))
@@ -122,7 +122,7 @@ static int		ray_object(t_obj* obj, t_ray *ray)
 				ray->collided = collided;
 		}
 	}
-	return (res);
+	return (res == LOCATION_NONE ? 0 : 1);
 }
 
 /*

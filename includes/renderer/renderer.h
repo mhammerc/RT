@@ -18,6 +18,10 @@
 # define OUTWARDS 0
 # define INWARDS 1
 
+# define LOCATION_NONE 0
+# define LOCATION_INSIDE -1
+# define LOCATION_OUTSIDE 1
+
 typedef struct		s_renderer_thread
 {
 	t_scene			*sce;

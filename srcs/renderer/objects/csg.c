@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 19:17:38 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 19:53:11 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,21 +385,23 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **collided)
 {
 	int		i;
-	int		res;
+	int		hit;
+	int		location;
 
+	location = LOCATION_NONE;
 	if (interval->nb_hit == 0)
-		return (0);
-	res = 0;
+		return (LOCATION_NONE);
 	i = 0;
 	while (i < interval->nb_hit)
 	{
+		hit = 0;
 		if (*d > interval->min[i].dist && interval->min[i].dist > 0)
 		{
 			*collided = interval->min[i].ref;
 			*d = interval->min[i].dist;
 			obj->csg_ref = interval->min[i].ref;
 			obj->csg_ref->normal_dir = interval->min[i].normal;
-			res = 1;
+			hit = 1;
 		}
 		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
 		{
@@ -407,11 +409,18 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 			*d = interval->max[i].dist;
 			obj->csg_ref = interval->max[i].ref;
 			obj->csg_ref->normal_dir = interval->max[i].normal;
-			res = 1;
+			hit = 1;
+		}
+		if (hit)
+		{
+			if (0 > interval->min[i].dist && 0 < interval->max[i].dist)
+				location = LOCATION_INSIDE;
+			else
+				location = LOCATION_OUTSIDE;
 		}
 		i++;
 	}
-	return (res);
+	return (location);
 }
 /*
 ** Intersection between ray and csg_obj
