@@ -90,7 +90,7 @@ struct					s_ui
 	int					render_on_change;
 	int					lock;
 	pthread_mutex_t		mutex_stock;
-	double				percent;
+	double				*percent;
 	int					rendering;
 };
 

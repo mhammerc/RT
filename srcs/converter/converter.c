@@ -175,7 +175,6 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
-	ui->scene.percent = 0.;
 	/*
 	** aa = 1 = 2x2 = 1x2
 	** aa = 2 = 4x4 = 2x2

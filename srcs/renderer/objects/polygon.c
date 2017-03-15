@@ -122,30 +122,24 @@ int				face_intersect(t_obj *self, t_ray *ray, t_face *face)
 	return (0);
 }
 
-int				polygon_intersect(t_obj *self2, t_ray *ray)
+int				polygon_intersect(t_obj *self, t_ray *ray)
 {
-	t_obj	*self;
-	self = malloc(sizeof(t_obj));
-	memcpy(self, self2, sizeof(t_obj));
 	if (self->faces)
 	{
-	int	i;
-	int	test;
+		int	i;
+		int	test;
 
-	self->kspec = 1;
-	self->kdiff = 1;
-	//self->kp;
-	i = 0;
-	test = 0;
-	while (i < self->nb_faces)
-	{
-		if (test == 0)
-			test = face_intersect(self, ray, self->faces + i);
-		else
-			face_intersect(self, ray, self->faces + i);
-		i++;
-	}
-	return (test);
+		i = 0;
+		test = 0;
+		while (i < self->nb_faces)
+		{
+			if (test == 0)
+				test = face_intersect(self, ray, self->faces + i);
+			else
+				face_intersect(self, ray, self->faces + i);
+			i++;
+		}
+		return (test);
 	}
 	return (0);
 }
