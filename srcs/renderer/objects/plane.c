@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <libft.h>
+#include <math.h>
 #include "renderer.h"
 
 /*
@@ -48,9 +49,9 @@ int				plane_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			plane_normal(t_obj *self, t_vec3 pos)
+t_vec3			plane_normal(t_obj *self, t_ray ray)
 {
-	if (vec3_dot(vec3_sub(pos, self->pos), self->dir) > 0)
+	if (vec3_dot(vec3_sub(ray.pos, self->pos), self->dir) > 0)
 		return (self->dir);
 	return (vec3_mult(-1, self->dir));
 }

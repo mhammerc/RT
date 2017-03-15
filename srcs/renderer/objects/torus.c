@@ -65,16 +65,16 @@ int				torus_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			torus_normal(t_obj *self, t_vec3 pos)
+t_vec3			torus_normal(t_obj *self, t_ray ray)
 {
 	double		y;
 	t_vec3		D;
 	t_vec3		X;
 
-	y = vec3_dot(vec3_sub(pos, self->pos), self->dir);
-	D = vec3_sub(vec3_sub(pos, self->pos), vec3_mult(y, self->dir));
+	y = vec3_dot(vec3_sub(ray.pos, self->pos), self->dir);
+	D = vec3_sub(vec3_sub(ray.pos, self->pos), vec3_mult(y, self->dir));
 	X = vec3_mult(self->radius / sqrt(vec3_dot(D, D)), D);
-	return (vec3_get_normalized(vec3_sub(pos, vec3_add(self->pos ,X))));
+	return (vec3_get_normalized(vec3_sub(ray.pos, vec3_add(self->pos ,X))));
 }
 
 /*

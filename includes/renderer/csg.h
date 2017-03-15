@@ -18,7 +18,7 @@ struct				s_interval
 };
 typedef struct s_interval	t_interval;
 int				csg_intersect(t_obj *self, t_ray *ray);
-t_vec3				csg_normal(t_obj *self, t_vec3 pos);
+t_vec3				csg_normal(t_obj *self, t_ray ray);
 int				norm_quad_solve2(double b, double c, t_interval *interval);
 int				quad_solve2(double a, double b, double c, t_interval *interval);
 

@@ -52,18 +52,18 @@ int				cone_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			cone_normal(t_obj *self, t_vec3 pos)
+t_vec3			cone_normal(t_obj *self, t_ray ray)
 {
 	double		m;
 	t_vec3		c_pos;
 	t_vec3		apex_to_pos;
 
-	apex_to_pos = vec3_sub(pos, self->pos);
+	apex_to_pos = vec3_sub(ray.pos, self->pos);
 	m = vec3_norm(apex_to_pos) / sqrt(self->radius);
 	if (vec3_dot(self->dir, apex_to_pos) < 0)
 		m = -m;
 	c_pos = vec3_add(self->pos, vec3_mult(m, self->dir));
-	return (vec3_get_normalized(vec3_sub(pos, c_pos)));
+	return (vec3_get_normalized(vec3_sub(ray.pos, c_pos)));
 }
 
 /*

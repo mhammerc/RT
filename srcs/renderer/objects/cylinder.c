@@ -47,14 +47,14 @@ int				cylinder_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			cylinder_normal(t_obj *self, t_vec3 pos)
+t_vec3			cylinder_normal(t_obj *self, t_ray ray)
 {
 	double		m;
 	t_vec3		cy_pos;
 
-	m = vec3_dot(self->dir, vec3_sub(pos, self->pos));
+	m = vec3_dot(self->dir, vec3_sub(ray.pos, self->pos));
 	cy_pos = vec3_add(self->pos, vec3_mult(m, self->dir));
-	return (vec3_get_normalized(vec3_sub(pos, cy_pos)));
+	return (vec3_get_normalized(vec3_sub(ray.pos, cy_pos)));
 }
 
 /*

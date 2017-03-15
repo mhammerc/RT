@@ -60,15 +60,19 @@ int				test_polygon_in(t_vec3 hit, t_vec3 normal, t_obj *self, t_face *face)
 t_vec3			face_normal(t_obj *self, t_vec3 pos, t_face *face)
 {
 //	if (vec3_dot(vec3_sub(pos, face->sommets[1]), *(face->normales)) > 0)
-		return (*(face->normales));
+//		return (*(face->normales));
 //	return (vec3_mult(-1, *(face->normales)));
+	if (vec3_dot(vec3_sub(pos, face->sommets[1]), *(face->normales)) > 0)
+		return (*(face->normales));
+	return (vec3_mult(-1, *(face->normales)));
+
 }
 
-t_vec3			polygon_normal(t_obj *self, t_vec3 pos)
+t_vec3			polygon_normal(t_obj *self, t_ray ray)
 {
-	if (vec3_dot(vec3_sub(pos, self->pos), self->face_ref) > 0)
+//	if (vec3_dot(vec3_sub(ray.pos, self->pos), self->face_ref) > 0)
 		return ((self->face_ref));
-	return (vec3_mult(-1, self->dir));
+//	return (vec3_mult(-1, self->dir));
 }
 
 int				face_intersect(t_obj *self, t_ray *ray, t_face *face)
@@ -118,86 +122,17 @@ int				face_intersect(t_obj *self, t_ray *ray, t_face *face)
 	return (0);
 }
 
-int				polygon_intersect(t_obj *self, t_ray *ray)
+int				polygon_intersect(t_obj *self2, t_ray *ray)
 {
+	t_obj	*self;
+	self = malloc(sizeof(t_obj));
+	memcpy(self, self2, sizeof(t_obj));
 	if (self->faces)
 	{
-	
-	//TODO make dynamical
-	/*
-	t_vec3	normal;
-	//normal = (t_vec3*)malloc(sizeof(t_vec3));
-	normal.x = 0;
-	normal.y = 0;
-	normal.z = -1;
-	self->pos.x = 0;
-	self->pos.y = 0;
-	self->pos.z = 0;
-	//t_face *face;
-	//face = (t_face*)malloc(sizeof(t_face) * 2);
-	//self->faces = face;
-	//t_vec3 *sommets;
-	//sommets = (t_vec3*)malloc(sizeof(t_vec3) * 4);
-	//face[0].sommets = sommets;
-	self->faces[0].sommets[0].x = -0.5;
-	self->faces[0].sommets[0].y = 0;
-	self->faces[0].sommets[0].z = -2;
-	self->faces[0].sommets[1].x = 0.5;
-	self->faces[0].sommets[1].y = 0;
-	self->faces[0].sommets[1].z = -2;
-	self->faces[0].sommets[2].x = 0.5;
-	self->faces[0].sommets[2].y = 1;
-	self->faces[0].sommets[2].z = -2;
-	self->faces[0].sommets[3].x = -0.5;
-	self->faces[0].sommets[3].y = 1;
-	self->faces[0].sommets[3].z = -2;
-	*(self->faces[0].normales) = normal;
-	self->dir.x = 0;
-	self->dir.y = 0;
-	self->dir.z = 1;
-	self->nb_faces = 1;
-	self->faces->nb = 4;
-	//
-	*/
-
-	//test
-	/*
-	t_vec3	vn1; 
-	t_vec3	vn2; 
-	t_vec3	vn3; 
-	t_vec3	vn4; 
-	t_vec3	vn5; 
-	t_vec3	vn6; 
-	vn1.x = 0;
-	vn1.y = -1;
-	vn1.z = 0;
-	vn2.x = 0;
-	vn2.y = 1;
-	vn2.z = 0;
-	vn3.x = 1;
-	vn3.y = 0;
-	vn3.z = 0;
-	vn4.x = 0;
-	vn4.y = 0;
-	vn4.z = 1;
-	vn5.x = -1;
-	vn5.y = 0;
-	vn5.z = 0;
-	vn6.x = 0;
-	vn6.y = 0;
-	vn6.z = -1;
-	//printf("nombre de faces %d\n", self->nb_faces);
-	*(self->faces->normales) = vn1;
-	*((*(self->faces + 1)).normales) = vn2;
-	*((*(self->faces + 2)).normales) = vn3;
-	*((*(self->faces + 3)).normales) = vn4;
-	*((*(self->faces + 4)).normales) = vn5;
-	*((*(self->faces + 5)).normales) = vn6;
-	*/
 	int	i;
 	int	test;
 
-	self->kspec = 0;
+	self->kspec = 1;
 	self->kdiff = 1;
 	//self->kp;
 	i = 0;

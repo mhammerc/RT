@@ -438,10 +438,10 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			csg_normal(t_obj *self, t_vec3 pos)
+t_vec3			csg_normal(t_obj *self, t_ray ray)
 {
 	t_obj *obj;
 
 	obj = self->csg_ref;
-	return(obj->normal_csg(obj, pos));
+	return(obj->normal_csg(obj, ray.pos));
 }

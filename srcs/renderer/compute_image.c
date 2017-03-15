@@ -21,6 +21,7 @@ float			light_find_max(t_vec3 *light, int w, int h)
 		max = fmax(max, light[i].y);
 		max = fmax(max, light[i].z);
 	}
+	printf("%f\n", max);
 	return (max);
 }
 
@@ -123,9 +124,9 @@ static int		rt_object(t_scene *sce, t_ray *ray)
 	}
 	if (ray->type == INITIAL_RAY && collision)
 	{
-		ray->pos = vec3_add(ray->pos, vec3_mult(ray->t, ray->dir));
-		ray->n = ray->collided->normal(ray->collided, ray->pos);
-		ray->pos = vec3_add(ray->pos, vec3_mult(EPS, ray->n));
+		ray->pos = vec3_add(ray->pos, vec3_mult(ray->t - EPS, ray->dir));
+		ray->n = ray->collided->normal(ray->collided, *ray);
+		//ray->pos = vec3_add(ray->pos, vec3_mult(EPS, ray->n));
 	}
 	return (collision);
 }
@@ -186,6 +187,7 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 		if (ray.collided->kspec > 0)
 		{
 			refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
+			refl_light = vec3_mult(0.2, refl_light);
 			light = vec3_add(light, color_light_mix(ray.collided->color,
 													refl_light,
 													ray.collided->kspec));
@@ -194,10 +196,11 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 	return (light);
 }
 
-static void		update_progress_bar(t_scene *scene)
+static void		update_progress_bar(t_scene *scene, double percent_per_line)
 {
 	static double	last_percent = 0.;
 
+	scene->percent += percent_per_line;
 	if (scene->percent > 0.95)
 	{
 		last_percent = 0.;
@@ -273,7 +276,7 @@ static void		*thread_compute_image(void *thread_data)
 					l = -1;
 					while (++l < sce->aa)
 					{
-						aa[k + l] = ray_trace(sce, r, 0);
+						aa[k * sce->aa + l] = ray_trace(sce, r, 0);
 						aim = vec3_add(aim, vec3_mult(1. / (double)sce->aa, sce->cam.vx));
 						r = ray_new_aim(sce->cam.pos, aim);
 					}
@@ -291,8 +294,7 @@ static void		*thread_compute_image(void *thread_data)
 		r = ray_new_aim(sce->cam.pos, aim);
 
 		pthread_mutex_lock(&sce->ui->mutex_stock);
-		sce->percent += percent_per_line; //FIXME
-		update_progress_bar(sce);
+			update_progress_bar(sce, percent_per_line);
 		pthread_mutex_unlock(&sce->ui->mutex_stock);
 	}
 	return (NULL);
@@ -338,9 +340,8 @@ void			*renderer_compute_image2(void *sce2)
 	}
 	light_to_pixel(light, sce->pixels, sce->cam.w, sce->cam.h);
 	free(light);
-	sce->ui->percent = 1.;
-	//ui_print_scene(pixels);
-	//free(pixels);
+	sce->ui->percent = 1.1;
+	return (NULL);
 }
 
 int		test(void *data)
@@ -351,7 +352,7 @@ int		test(void *data)
 	pthread_mutex_lock(&scene->ui->mutex_stock);
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(scene->ui->progress_bar),
 			scene->ui->percent);
-	if (scene->ui->percent == 1.)
+	if (scene->ui->percent == 1.1)
 	{
 		ui_print_scene(scene->pixels);
 		free(scene->pixels);

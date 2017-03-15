@@ -17,7 +17,7 @@
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
 # define BIG_DIST 1e12
-# define EPS 1e-4
+# define EPS 1e-3
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 
@@ -96,7 +96,7 @@ struct						s_obj
 	int						csg_normal;
 	struct s_obj			*csg_ref;
 	int						(*intersect)(struct s_obj *self, t_ray *ray);
-	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
+	t_vec3					(*normal)(struct s_obj *self, t_ray ray);
 	int						(*intersect_csg)(struct s_obj *self, t_ray *ray, void *interval);
 	t_vec3					(*normal_csg)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
