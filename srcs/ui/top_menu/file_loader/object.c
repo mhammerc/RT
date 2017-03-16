@@ -124,3 +124,25 @@ void	ft_fill_object_color(t_env *env, char **tab, t_entity *entity)
 	ft_free_split(tmp);
 	env->object_filled[1] = 1;
 }
+
+void	ft_fill_object_kdiff(t_env *env, char **tab, t_entity *entity)
+{
+	char	*tmp;
+
+	entity->env_type = OBJECT;
+	tmp = ft_strtrim(tab[1]);
+	entity->kdiff = atof(tmp);
+	free(tmp);
+	env->object_filled[3] = 1;
+}
+
+void	ft_fill_object_kspec(t_env *env, char **tab, t_entity *entity)
+{
+	char	*tmp;
+
+	entity->env_type = OBJECT;
+	tmp = ft_strtrim(tab[1]);
+	entity->kspec = atof(tmp);
+	free(tmp);
+	env->object_filled[3] = 1;
+}

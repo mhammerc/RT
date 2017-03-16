@@ -10,6 +10,8 @@ t_entity_lst	*ft_new_entity(t_entity entity)
 	tmp->entity.type = entity.type;
 	tmp->entity.radius = entity.radius;
 	tmp->entity.length = entity.length;
+	tmp->entity.kspec = entity.kspec;
+	tmp->entity.kdiff = entity.kdiff;
 	tmp->entity.pos = entity.pos;
 	tmp->entity.rot = entity.rot;
 	tmp->entity.color = entity.color;

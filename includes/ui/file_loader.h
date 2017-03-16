@@ -51,6 +51,8 @@ typedef struct			s_entity
 	t_vec3				color;
 	double				length;
 	double				radius;
+	double				kdiff;
+	double				kspec;
 	char				name[80];
 }						t_entity;
 
@@ -80,6 +82,7 @@ typedef struct			s_env
 	char				scene_filled[MAX_INDEX_SCENE];
 	char				camera_filled[MAX_INDEX_CAMERA];
 	char				object_filled[MAX_INDEX_OBJECT];
+	char				error_text[80];
 }						t_env;
 
 int						ft_exit(void);
@@ -108,6 +111,10 @@ void					ft_fill_object_size(t_env *env, char **tab,
 void					ft_fill_object_radius(t_env *env, char **tab,
 							t_entity *entity);
 void					ft_fill_object_length(t_env *env, char **tab,
+							t_entity *entity);
+void					ft_fill_object_kspec(t_env *env, char **tab,
+							t_entity *entity);
+void					ft_fill_object_kdiff(t_env *env, char **tab,
 							t_entity *entity);
 void					ft_fill_object_name(t_env *env, char **tab,
 							t_entity *entity);
