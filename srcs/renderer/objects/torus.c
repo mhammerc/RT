@@ -6,12 +6,13 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/14 16:08:42 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/16 18:13:56 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <libft.h>
+#include <math.h>
 #include "renderer.h"
 
 /*

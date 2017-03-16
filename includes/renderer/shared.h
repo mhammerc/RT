@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 19:16:50 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/16 17:58:06 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 # define REFL_ATTENUATION 0.2
+# define MAX_REC_DEPTH 42
 
 typedef struct s_ui	t_ui;
 
@@ -110,6 +111,7 @@ struct						s_obj
 	double					kspec;
 	double					kdiff;
 	double					kp;
+	double					rindex;
 	struct s_obj			*left;
 	struct s_obj			*right;
 	char					csg;
@@ -122,6 +124,12 @@ struct						s_obj
 	t_vec3				face_ref;
 };
 
+typedef struct		s_obj_stack
+{
+	t_obj			*obj[MAX_REC_DEPTH];
+	int				size;
+}					t_obj_stack;
+
 struct						s_ray
 {
 	t_vec3					pos;
@@ -132,6 +140,8 @@ struct						s_ray
 	t_obj					*collided;
 	t_vec3					hit;
 	t_vec3					light;
+	t_obj_stack				r_stack;
+	int						location;
 };
 
 struct						s_spot

@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 19:53:11 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/16 16:43:40 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -422,6 +422,7 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 	}
 	return (location);
 }
+
 /*
 ** Intersection between ray and csg_obj
 ** @return the distance between camera and object if there is collision
