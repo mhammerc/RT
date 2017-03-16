@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <libft.h>
+#include <math.h>
 
 #include "ui.h"
 #include "renderer.h"
@@ -25,8 +26,14 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 {
 	obj->pos = object->pos;
 	obj->color = object->color;
-	obj->dir = object->rot;
-	obj->radius =  object->radius / 1000;
+	if (vec3_norm2(object->rot) > EPS)
+		obj->dir = vec3_get_normalized(object->rot);
+	else
+		obj->dir = object->rot;
+	if (object->type == CONE)
+		obj->radius = cos((object->radius / 1000) * DEG_TO_RAD);
+	else
+		obj->radius =  object->radius / 1000;
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
@@ -35,8 +42,6 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->kp = 256;
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
-	obj->intersect_csg = get_obj_intersection_csg(obj->type);
-	obj->normal_csg = get_obj_normal_csg(obj->type);
 	obj->left = NULL;
 	obj->right = NULL;
 	obj->csg = '0';
@@ -175,8 +180,14 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
-	ui->scene.percent = 0.;
-	ui->scene.aa = ui->rp->scene_gtk.aa;
+	/*
+	** aa = 1 = 2x2 = 1x2
+	** aa = 2 = 4x4 = 2x2
+	** aa = 3 = 8x8 = 8 (3x2 = 6)
+	*/
+	ui->scene.aa = ui->rp->scene_gtk.aa * 2;
+	if (ui->scene.aa == 6)
+		ui->scene.aa = 8;
 
 	//FIXME camera up ne doit pas etre en dur ?
 	ui->scene.cam.up = (t_vec3){0, 1, 0};

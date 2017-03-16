@@ -21,6 +21,7 @@ float			light_find_max(t_vec3 *light, int w, int h)
 		max = fmax(max, light[i].y);
 		max = fmax(max, light[i].z);
 	}
+	printf("%f\n", max);
 	return (max);
 }
 
@@ -93,8 +94,8 @@ t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam)
 
 t_ray		ray_new_aim(t_vec3 pos, t_vec3 aim)
 {
-	t_vec3	dir;
 	t_vec3	n;
+	t_vec3	dir;
 
 	n = (t_vec3){0, 0, 0};
 	dir = vec3_get_normalized(vec3_sub(aim, pos));
@@ -110,29 +111,19 @@ static int		ray_object(t_obj* obj, t_ray *ray)
 {
 	t_interval	interval;
 	int			res;
-	double		x1;
-	double		x2;
 	t_obj		*collided;
 
 	collided = NULL;
-	if ((res = obj->intersect(obj, ray, &interval)))
+	res = LOCATION_NONE;
+	if (obj->intersect(obj, ray, &interval))
 	{
-		x1 = interval.min[0].dist;
-		x2 = interval.max[0].dist;
-		if (x1 > 0 && x1 < ray->t)
+		if ((res = minimal_positiv(&interval, obj, &(ray->t), &collided)))
 		{
-			ray->t = x1;
-			collided = obj;
+			if (ray->type == INITIAL_RAY)
+				ray->collided = collided;
 		}
-		if (x2 > 0 && x2 < ray->t)
-		{
-			ray->t = x2;
-			collided = obj;
-		}
-		if (collided && ray->type == INITIAL_RAY)
-			ray->collided = collided;
 	}
-	return (res);
+	return (res == LOCATION_NONE ? 0 : 1);
 }
 
 /*
@@ -151,16 +142,14 @@ static int		rt_object(t_scene *sce, t_ray *ray)
 	while (l)
 	{
 		obj = (t_obj*)l->content;
-		//if (obj->intersect(obj, ray))
 		if (ray_object(obj, ray))
 			collision = 1;
 		l = l->next;
 	}
 	if (ray->type == INITIAL_RAY && collision)
 	{
-		ray->pos = vec3_add(ray->pos, vec3_mult(ray->t, ray->dir));
+		ray->pos = vec3_add(ray->pos, vec3_mult(ray->t - EPS, ray->dir));
 		ray->n = ray->collided->normal(ray->collided, ray->pos);
-		ray->pos = vec3_add(ray->pos, vec3_mult(EPS, ray->n));
 	}
 	return (collision);
 }
@@ -221,6 +210,7 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 		if (ray.collided->kspec > 0)
 		{
 			refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
+			refl_light = vec3_mult(REFL_ATTENUATION, refl_light);
 			light = vec3_add(light, color_light_mix(ray.collided->color,
 													refl_light,
 													ray.collided->kspec));
@@ -229,38 +219,97 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 	return (light);
 }
 
-static void		update_progress_bar(t_scene *scene)
+static void		update_progress_bar(t_scene *scene, double percent_per_line)
 {
 	static double	last_percent = 0.;
 
-	if (scene->percent > 0.95)
+	*scene->percent += percent_per_line;
+	if (*scene->percent > 0.95)
 	{
 		last_percent = 0.;
 	}
-	else if (scene->percent - last_percent > 0.0001)
+	else if (*scene->percent - last_percent > 0.0001)
 	{
-		last_percent = scene->percent;
-		scene->ui->percent = last_percent;
+		last_percent = *scene->percent;
+		*scene->ui->percent = last_percent;
 	}
+}
+
+static t_vec3	color_average(t_vec3 *aa, int size)
+{
+	t_vec3	r;
+	int		i;
+
+	r.x = 0.;
+	r.y = 0.;
+	r.z = 0.;
+	i = 0;
+	while (i < size)
+	{
+		r.x += aa[i].x;
+		r.y += aa[i].y;
+		r.z += aa[i].z;
+		++i;
+	}
+	r.x /= (double)size;
+	r.y /= (double)size;
+	r.z /= (double)size;
+	return (r);
+}
+
+t_list			*ft_lstdup(t_list	*original_begin)
+{
+	t_list	*original;
+	t_list	*original_cpy;
+	t_list	*n;
+	t_obj	*obj;
+
+	n = NULL;
+	original = original_begin;
+	while (original)
+	{
+		original_cpy = ft_lstnew(original->content, original->content_size);
+		//original_cpy = malloc(sizeof(t_list));
+		//original_cpy->content = malloc(sizeof(t_obj));
+		//memcpy(original_cpy->content, original->content, sizeof(t_obj));
+		obj = (t_obj*)original_cpy->content;
+		if (obj->type == POLYGONS)
+		{
+			t_face	*faces = malloc(sizeof(t_face) * obj->nb_faces);
+			memcpy(faces, obj->faces, sizeof(t_face) * obj->nb_faces);
+			obj->faces = faces;
+		}
+		ft_lstadd(&n, original_cpy);
+		original = original->next;
+	}
+	return (n);
 }
 
 static void		*thread_compute_image(void *thread_data)
 {
 	int						i;
 	int						j;
+	int						k;
+	int						l;
 	t_ray					r;
 	t_vec3					aim;
 	t_vec3					start;
+	t_vec3					start2;
+	t_vec3					start3;
 	t_renderer_thread		*data;
 	t_scene					*sce;
+	t_vec3					aa[64];
 	double					percent_per_line;
 
 	data = (t_renderer_thread*)thread_data;
 	sce = data->sce;
+	sce->obj = ft_lstdup(sce->obj);
 	percent_per_line = (double)sce->cam.w / ((double)sce->cam.w * (double)sce->cam.h);
 	sce->cam = camera_set(sce->cam);
 	aim = sce->cam.top_left;
 	aim = vec3_sub(aim, vec3_mult(data->y_begin, sce->cam.vy));
+	aim = vec3_add(aim, vec3_mult(0.5, sce->cam.vy));
+	aim = vec3_sub(aim, vec3_mult(0.5, sce->cam.vx));
 	r = ray_new_aim(sce->cam.pos, aim);
 	i = data->y_begin - 1;
 	while (++i < data->y_end)
@@ -269,15 +318,35 @@ static void		*thread_compute_image(void *thread_data)
 		j = -1;
 		while (++j < sce->cam.w)
 		{
-			data->light[i * sce->cam.w + j] = ray_trace(sce, r, 0);
-			aim = vec3_add(aim, sce->cam.vx);
+			start2 = aim;
+			if (sce->aa != 0)
+			{
+				k = -1;
+				while (++k < sce->aa)
+				{
+					start3 = aim;
+					l = -1;
+					while (++l < sce->aa)
+					{
+						aa[k * sce->aa + l] = ray_trace(sce, r, 0);
+						aim = vec3_add(aim, vec3_mult(1. / (double)sce->aa, sce->cam.vx));
+						r = ray_new_aim(sce->cam.pos, aim);
+					}
+					aim = vec3_sub(start3, vec3_mult(1. / (double)sce->aa, sce->cam.vy));
+					r = ray_new_aim(sce->cam.pos, aim);
+				}
+				data->light[i * sce->cam.w + j] = color_average(aa, sce->aa * sce->aa);
+			}
+			else
+				data->light[i * sce->cam.w + j] = ray_trace(sce, r, 0);
+			aim = vec3_add(start2, sce->cam.vx);
 			r = ray_new_aim(sce->cam.pos, aim);
 		}
 		aim = vec3_sub(start, sce->cam.vy);
 		r = ray_new_aim(sce->cam.pos, aim);
+
 		pthread_mutex_lock(&sce->ui->mutex_stock);
-		sce->percent += percent_per_line;
-		update_progress_bar(sce);
+			update_progress_bar(sce, percent_per_line);
 		pthread_mutex_unlock(&sce->ui->mutex_stock);
 	}
 	return (NULL);
@@ -292,13 +361,17 @@ void			*renderer_compute_image2(void *sce2)
 	t_vec3				*light;
 
 	t_scene *sce = (t_scene *)sce2;
-	sce->ui->percent = 0.;
+	sce->percent = malloc(sizeof(double));
+	*sce->percent = 0.;
+	*sce->ui->percent = 0.;
 	sce->pixels = (int*)malloc(sizeof(int) * sce->cam.w * sce->cam.h);
 	light = (t_vec3*)malloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
 	i = 0;
 	while (i < CORE_COUNT)
 	{
 		threads_data[i].sce = sce;
+		threads_data[i].sce = malloc(sizeof(t_scene));
+		memcpy(threads_data[i].sce, sce, sizeof(t_scene));
 		threads_data[i].pixels = sce->pixels;
 		threads_data[i].light = light;
 		threads_data[i].y_begin = sce->cam.h / CORE_COUNT * i;
@@ -323,10 +396,8 @@ void			*renderer_compute_image2(void *sce2)
 	}
 	light_to_pixel(light, sce->pixels, sce->cam.w, sce->cam.h);
 	free(light);
-	sce->ui->percent = 1.;
-	//ui_print_scene(pixels);
-	//free(pixels);
-	return(0);
+	*sce->ui->percent = 1.1;
+	return (NULL);
 }
 
 int		test(void *data)
@@ -336,8 +407,8 @@ int		test(void *data)
 	scene = (t_scene*)data;
 	pthread_mutex_lock(&scene->ui->mutex_stock);
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(scene->ui->progress_bar),
-			scene->ui->percent);
-	if (scene->ui->percent == 1.)
+			*scene->ui->percent);
+	if (*scene->ui->percent == 1.1)
 	{
 		ui_print_scene(scene->pixels);
 		free(scene->pixels);
