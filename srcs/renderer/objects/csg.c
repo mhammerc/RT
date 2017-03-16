@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 19:53:11 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/16 19:46:22 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -358,11 +358,7 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	t_interval	right;
 
 	if (obj->csg == '0')
-		//TODO faire une generique dist_obj(obj, ray) qui remplit interval;
-		//pour l'instant uniquement cas sphere :
-		{
 			obj->intersect(obj, ray, interval);
-		}
 	else
 	{
 		test_csg(obj->left, ray, &left);
