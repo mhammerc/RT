@@ -5,6 +5,7 @@ void		init_scene(t_ui *ui)
 	ui->rp->scene_gtk.ambiant_light = 0.42;
 	ui->rp->scene_gtk.fov = 45;
 	ui->rp->scene_gtk.aa = 0;
+	ui->rp->scene_gtk.filter = 0;
 }
 
 static void		scene_edited()
@@ -98,7 +99,7 @@ void			edit_scene_properties(gpointer data)
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "None");
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Black and White");
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Sepia");
-	gtk_combo_box_set_active(GTK_COMBO_BOX_TEXT(filters), 0);
+	gtk_combo_box_set_active(GTK_COMBO_BOX(filters), 0);
 	g_signal_connect(filters, "changed", G_CALLBACK(filters_edited), ui);
 	gtk_container_add(GTK_CONTAINER(filters_box), filters_title);
 	gtk_container_add(GTK_CONTAINER(filters_box), filters);
