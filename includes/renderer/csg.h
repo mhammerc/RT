@@ -6,6 +6,7 @@
 
 int				csg_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3				csg_normal(t_obj *self, t_vec3 pos);
+
 int				norm_quad_solve2(double b, double c, t_interval *interval);
 int				quad_solve2(double a, double b, double c, t_interval *interval);
 

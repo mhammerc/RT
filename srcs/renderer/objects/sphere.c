@@ -42,7 +42,7 @@ int				sphere_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 ** Normal vector at given point
 */
 
-t_vec3			sphere_normal(t_obj *self, t_vec3 pos)
+t_vec3			sphere_normal(t_obj *self, t_ray ray)
 {
 	if (self->normal_dir == OUTWARDS)
 		return (vec3_get_normalized(vec3_sub(pos, self->pos)));

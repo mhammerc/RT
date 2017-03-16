@@ -149,7 +149,7 @@ struct						s_scene
 	t_spot					ambiant;
 	t_cam					cam;
 	t_ui					*ui;
-	double					percent;
+	double					*percent;
 	int						*pixels;
 	int						aa;
 };

@@ -24,7 +24,7 @@ int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*, t_inter
 		return (NULL);
 }
 
-t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_vec3)
+t_vec3	(*get_obj_normal(enum e_object_type obj_type))(t_obj*, t_ray)
 {
 	if (obj_type == CSG)
 		return (&csg_normal);

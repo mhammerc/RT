@@ -67,7 +67,6 @@ t_vec3		cone_normal(t_obj *self, t_vec3 pos);
 int			plane_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		plane_normal(t_obj *self, t_vec3 pos);
 
-
 int (*get_obj_intersection(enum e_object_type))(t_obj*, t_ray*, t_interval*);
 t_vec3 (*get_obj_normal())(t_obj*, t_vec3);
 

@@ -64,6 +64,7 @@ void			build_interface(GtkApplication *app, gpointer user_data)
 	ui->dp = (t_display_panel*)malloc(sizeof(t_display_panel));
 	ui->rp = (t_right_panel*)malloc(sizeof(t_right_panel));
 	ui->render_on_change = TRUE;
+	ui->percent = (double*)malloc(sizeof(double));
 	index = (int*)malloc(sizeof(int) * 50);
 	if (!index)
 		exit (EXIT_FAILURE);
