@@ -3,9 +3,10 @@
 void		add_obj_btn(GtkButton *button, gpointer view)
 {
 	t_ui		*ui;
-	GtkWidget		*popover;
+	GtkWidget	*popover;
 
 	ui = (t_ui*)view;
+	(void)button;
 	popover = gtk_popover_menu_new();
 	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_obj);
 	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
@@ -43,8 +44,10 @@ void		add_light_btn(GtkButton *button, gpointer view)
 	GtkWidget		*popover;
 
 	ui = (t_ui*)view;
+	(void)button;
 	popover = gtk_popover_menu_new();
-	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_light);
+	gtk_popover_set_relative_to(GTK_POPOVER(popover),
+													ui->lp->lp_btns.add_light);
 	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	GtkWidget *light = gtk_button_new_with_label("Diffuse");
 	g_signal_connect(light, "clicked", G_CALLBACK(create_light), NULL);
@@ -62,7 +65,6 @@ void		ft_lst_cpy(t_list **new, t_list *original)
 		ft_lst_cpy(&((*new)->next), original->next);
 }
 
-
 void		cpy_obj_btn(GtkButton *button, gpointer data)
 {
 	t_list			*tmp;
@@ -74,6 +76,7 @@ void		cpy_obj_btn(GtkButton *button, gpointer data)
 	t_object		*obj;
 
 	ui = (t_ui*)data;
+	(void)button;
 	index = ui->selected_obj.index;
 	depth = ui->selected_obj.depth;
 	new = NULL;
@@ -121,11 +124,12 @@ void		del_obj_btn(GtkButton *button, gpointer data)
 {
 	t_list			*tmp;
 	t_list			*tmp_clean;
-	t_ui		*ui;
+	t_ui			*ui;
 	int				*index;
 	int				depth;
 
 	ui = (t_ui*)data;
+	(void)button;
 	index = ui->selected_obj.index;
 	depth = ui->selected_obj.depth;
 	if (ui->selected_obj.object)
