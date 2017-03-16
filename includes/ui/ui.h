@@ -30,7 +30,7 @@ typedef struct			s_object
 	t_vec3				color;
 	double				length;
 	double				radius;
-	double				kscale;
+	double				kdiff;
 	double				kspec;
 	char				name[80];
 	char				operation;
@@ -90,7 +90,7 @@ struct					s_ui
 	int					render_on_change;
 	int					lock;
 	pthread_mutex_t		mutex_stock;
-	double				percent;
+	double				*percent;
 	int					rendering;
 };
 

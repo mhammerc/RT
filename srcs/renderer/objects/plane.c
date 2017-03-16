@@ -6,12 +6,13 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:46:56 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/08 15:45:03 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/15 18:31:57 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <libft.h>
+#include <math.h>
 #include "renderer.h"
 
 /*
@@ -20,7 +21,7 @@
 ** or a negative value otherwise
 */
 
-int				plane_intersect(t_obj *self, t_ray *ray)
+int				plane_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 	t_vec3		x;
 	double		a;
@@ -33,11 +34,14 @@ int				plane_intersect(t_obj *self, t_ray *ray)
 	x = vec3_sub(self->pos, ray->pos);
 	a = vec3_dot(x, self->dir);
 	d = a / b;
-	if (d < ray->t && d > 0)
+	interval->nb_hit = 0;
+	if (d > 0)
 	{
-		ray->t = d;
-		if (ray->type == INITIAL_RAY)
-			ray->collided = self;
+		interval->nb_hit = 1;
+		interval->min[0].dist = d;
+		interval->max[0].dist = d;
+		interval->min[0].ref = self;
+		interval->max[0].ref = self;
 		return (1);
 	}
 	return (0);
