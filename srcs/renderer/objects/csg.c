@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/10 17:39:48 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/15 19:53:11 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -361,7 +361,7 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 		//TODO faire une generique dist_obj(obj, ray) qui remplit interval;
 		//pour l'instant uniquement cas sphere :
 		{
-			obj->intersect_csg(obj, ray, interval);
+			obj->intersect(obj, ray, interval);
 		}
 	else
 	{
@@ -382,34 +382,45 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 ** 
 */
 
-int	minimal_positiv(t_interval *interval, t_obj *obj, double *d)
+int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **collided)
 {
-	int	i;
+	int		i;
+	int		hit;
+	int		location;
 
+	location = LOCATION_NONE;
 	if (interval->nb_hit == 0)
-		return (0);
-//	printf("interval %p hit %d\n", interval, interval->nb_hit);
+		return (LOCATION_NONE);
 	i = 0;
-	*d = 10000000;//TODO max double
 	while (i < interval->nb_hit)
 	{
+		hit = 0;
 		if (*d > interval->min[i].dist && interval->min[i].dist > 0)
 		{
+			*collided = interval->min[i].ref;
 			*d = interval->min[i].dist;
 			obj->csg_ref = interval->min[i].ref;
-			obj->csg_ref->csg_normal = interval->min[i].normal;
+			obj->csg_ref->normal_dir = interval->min[i].normal;
+			hit = 1;
 		}
 		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
 		{
+			*collided = interval->max[i].ref;
 			*d = interval->max[i].dist;
 			obj->csg_ref = interval->max[i].ref;
-			obj->csg_ref->csg_normal = interval->max[i].normal;
+			obj->csg_ref->normal_dir = interval->max[i].normal;
+			hit = 1;
+		}
+		if (hit)
+		{
+			if (0 > interval->min[i].dist && 0 < interval->max[i].dist)
+				location = LOCATION_INSIDE;
+			else
+				location = LOCATION_OUTSIDE;
 		}
 		i++;
 	}
-	if (*d == 10000000)// TODO max double
-		return (0);
-	return (1);
+	return (location);
 }
 /*
 ** Intersection between ray and csg_obj
@@ -417,19 +428,14 @@ int	minimal_positiv(t_interval *interval, t_obj *obj, double *d)
 ** or a negative value otherwise
 */
 
-int				csg_intersect(t_obj *self, t_ray *ray)
+int				csg_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
-	t_interval	interval;
 	double	d;
 
-	test_csg(self, ray, &interval);
-	if (minimal_positiv(&interval, self, &d))
-	{
-		ray->t = d;
-		if (ray->type == INITIAL_RAY)
-			ray->collided = self->csg_ref;
+	d = BIG_DIST;
+	test_csg(self, ray, interval);
+	if (interval->nb_hit)
 		return (1);
-	}
 	return (0);
 }
 
@@ -438,10 +444,10 @@ int				csg_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			csg_normal(t_obj *self, t_ray ray)
+t_vec3			csg_normal(t_obj *self, t_vec3 pos)
 {
 	t_obj *obj;
 
 	obj = self->csg_ref;
-	return(obj->normal_csg(obj, ray.pos));
+	return(obj->normal(obj, pos));
 }

@@ -38,8 +38,8 @@ typedef struct			s_parser_scene
 
 typedef struct			s_parser_cam
 {
-	t_vec3			pos;
-	t_vec3			dir;
+	t_vec3				pos;
+	t_vec3				dir;
 }						t_parser_cam;
 
 typedef struct			s_entity

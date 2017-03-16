@@ -52,9 +52,9 @@ int				test_polygon_in(t_vec3 hit, t_vec3 normal, t_face *face)
 ** @return normal direction
 */
 
-t_vec3			polygon_normal(t_obj *self, t_ray ray)
+t_vec3			polygon_normal(t_obj *self, t_vec3 pos)
 {
-	if (vec3_dot(vec3_sub(ray.pos, self->pos), self->face_ref) > 0.)
+	if (vec3_dot(vec3_sub(pos, self->pos), self->face_ref) > 0.)
 		return ((self->face_ref));
 	return (vec3_mult(-1, self->dir));
 }

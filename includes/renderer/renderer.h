@@ -15,6 +15,13 @@
 # define B_BITSHIFT 16
 # define MAX_REC_DEPTH 42
 
+# define OUTWARDS 0
+# define INWARDS 1
+
+# define LOCATION_NONE 0
+# define LOCATION_INSIDE -1
+# define LOCATION_OUTSIDE 1
+
 typedef struct		s_renderer_thread
 {
 	t_scene			*sce;
@@ -49,24 +56,21 @@ t_vec3		vec3_sub(t_vec3 a, t_vec3 b);
 
 t_cam		camera_set(t_cam cam);
 
-int			sphere_intersect(t_obj *self, t_ray *ray);
-int				polygon_intersect(t_obj *self, t_ray *ray);
-t_vec3			polygon_normal(t_obj *self, t_ray ray);
-t_vec3		sphere_normal(t_obj *self, t_ray ray);
-int				cylinder_intersect(t_obj *self, t_ray *ray);
-t_vec3				cylinder_normal(t_obj *self, t_ray ray);
-int				cone_intersect(t_obj *self, t_ray *ray);
-t_vec3			cone_normal(t_obj *self, t_ray ray);
-int				plane_intersect(t_obj *self, t_ray *ray);
-t_vec3			plane_normal(t_obj *self, t_ray ray);
+int			sphere_intersect(t_obj *self, t_ray *ray, t_interval *interval);
+int			polygon_intersect(t_obj *self, t_ray *ray);
+t_vec3		polygon_normal(t_obj *self, t_vec3 pos);
+t_vec3		sphere_normal(t_obj *self, t_vec3 pos);
+int			cylinder_intersect(t_obj *self, t_ray *ray, t_interval *interval);
+t_vec3		cylinder_normal(t_obj *self, t_vec3 pos);
+int			cone_intersect(t_obj *self, t_ray *ray, t_interval *interval);
+t_vec3		cone_normal(t_obj *self, t_vec3 pos);
+int			plane_intersect(t_obj *self, t_ray *ray, t_interval *interval);
+t_vec3		plane_normal(t_obj *self, t_vec3 pos);
 
-int			quad_solve(double a, double b, double c, double *root);
-int			norm_quad_solve(double b, double c, double *root);
+int (*get_obj_intersection(enum e_object_type))(t_obj*, t_ray*, t_interval*);
+t_vec3 (*get_obj_normal())(t_obj*, t_vec3);
 
-
-int (*get_obj_intersection(enum e_object_type))(t_obj*, t_ray*);
-//get_obj_intersection(enum e_object_type);
-//normal_fun			get_obj_normal(enum e_object_type);
-t_vec3 (*get_obj_normal())(t_obj*, t_ray);
+int			norm_quad_solve(double b, double c, t_interval *interval);
+int			quad_solve(double a, double b, double c, t_interval *interval);
 
 #endif
