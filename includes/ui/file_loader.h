@@ -31,6 +31,10 @@ typedef struct			s_env
 }						t_env;
 
 t_vec3					p_read_vec3(t_env *env, char *ln);
+void					p_parse_object(t_env *env, char *ln);
+void					p_parse_camera(t_env *env, char *ln);
+enum e_object_type		p_str_to_type(char *str);
+size_t					count_tab(char *ln);
 
 
 /*

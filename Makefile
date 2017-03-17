@@ -38,10 +38,12 @@ SRCS_NAME	=	main.c										\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
 				ui/top_menu/top_menu.c						\
-				file_loader/file_loader.c		\
-				file_loader/parser.c			\
-				file_loader/tools.c			\
-				file_loader/vec3.c			\
+				file_loader/file_loader.c					\
+				file_loader/parser.c						\
+				file_loader/object.c						\
+				file_loader/camera.c						\
+				file_loader/tools.c							\
+				file_loader/vec3.c							\
 				converter/converter.c						\
 				obj_parser/obj_parser.c						\
 				texture_loader/texture_loader.c				\

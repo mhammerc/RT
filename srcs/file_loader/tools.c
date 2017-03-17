@@ -1,16 +1,36 @@
 #include "ui.h"
 
-void		ft_strsplit_free(char **tab)
+enum e_object_type	p_str_to_type(char *str)
 {
-	int	count;
+	if (ft_strncmp(str, "SPHERE", 6) == 0)
+		return (SPHERE);
+	else if (ft_strncmp(str, "PLANE", 5) == 0)
+		return (PLANE);
+	else if (ft_strncmp(str, "CONE", 4) == 0)
+		return (CONE);
+	else if (ft_strncmp(str, "CYLINDER", 8) == 0)
+		return (CYLINDER);
+	else if (ft_strncmp(str, "TORUS", 5) == 0)
+		return (TORUS);
+	else if (ft_strncmp(str, "CSG", 3) == 0)
+		return (CSG);
+	else if (ft_strncmp(str, "POLYGONS", 8) == 0)
+		return (POLYGONS);
+	else if (ft_strncmp(str, "EMPTY", 5) == 0)
+		return (EMPTY);
+	else if (ft_strncmp(str, "LIGHT", 5) == 0)
+		return (LIGHT);
+	return (EMPTY);
+}
 
-	count = 0;
-	while (tab[count])
-	{
-		free(tab[count]);
-		count++;
-	}
-	free(tab);
+size_t		count_tab(char *ln)
+{
+	size_t	i;
+
+	i = 0;
+	while (ln[i] && ln[i] == '\t')
+		++i;
+	return (i);
 }
 
 void 		ft_puterr(int err, t_env *env)
