@@ -1,0 +1,6 @@
+sphere
+	plane
+	torus
+plane
+	cone
+	cylinder

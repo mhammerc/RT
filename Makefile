@@ -8,7 +8,7 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\
-				renderer/maths/solve_quad.c						\
+				renderer/maths/solve_quad.c					\
 				renderer/objects/sphere.c					\
 				renderer/objects/polygon.c					\
 				renderer/objects/torus.c					\
@@ -48,6 +48,7 @@ SRCS_NAME	=	main.c										\
 				ui/top_menu/file_loader/object.c			\
 				ui/top_menu/file_loader/lists.c				\
 				ui/top_menu/file_loader/tools.c				\
+				ui/top_menu/file_saver/saver.c				\
 				converter/converter.c						\
 				obj_parser/obj_parser.c						\
 				texture_loader/texture_loader.c				\
@@ -94,6 +95,7 @@ create_objs_dir:
 				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/top_menu 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/top_menu/file_loader 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/top_menu/file_saver 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/obj_parser 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/texture_loader 2> /dev/null || true
 
