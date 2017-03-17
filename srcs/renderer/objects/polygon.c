@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 09:11:10 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/16 19:45:41 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/17 14:37:51 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,8 +54,8 @@ int				test_polygon_in(t_vec3 hit, t_vec3 normal, t_face *face)
 
 t_vec3			polygon_normal(t_obj *self, t_vec3 pos)
 {
-	if (vec3_dot(vec3_sub(pos, self->pos), self->face_ref) > 0.)
-		return ((self->face_ref));
+	if (vec3_dot(vec3_sub(pos, self->pos), self->dir) > 0.)
+		return ((self->dir));
 	return (vec3_mult(-1, self->dir));
 }
 
@@ -71,12 +71,13 @@ double			aire_face_ref(t_face *face)
 	return(vec3_dot(*(face->normales), vec3_cross(s1, s2)));
 }
 
-int				face_intersect(t_obj *self, t_ray *ray, t_face *face, double *tmp)
+int				face_intersect(t_obj *self, t_ray *ray, t_face *face, t_csg *tmp)
 {
 	t_vec3		x;
 	double		a;
 	double		b;
 	double		d;
+	t_obj		face_ref;
 
 	if (face->nb < 3)
 		return (0);
@@ -90,107 +91,110 @@ int				face_intersect(t_obj *self, t_ray *ray, t_face *face, double *tmp)
 	x = vec3_add(ray->pos, vec3_mult(d, ray->dir));
 	if (test_polygon_in(x, *face->normales, face))
 	{
-		*tmp = d;
-		self->face_ref = *(face->normales);
-		if (ray->type == INITIAL_RAY)
-		{
-			self->pos = *(face->sommets);
-			self->dir = *(face->normales);
-			ray->collided = self;
-		}
+		tmp->dist = d;
+		tmp->normal = 0;
+		ft_bzero(&face_ref, sizeof(t_obj));
+		face_ref = *self;
+		face_ref.pos = *(face->sommets);
+		face_ref.dir = *(face->normales);
+		tmp->ref = face_ref;
 		return (1);
 	}
 	return (0);
 }
 
-void			sort_interval(t_interval *interval, int	i, int swap, int cmp)
+void			sort_interval(t_interval *interval, int	i, t_csg swap, int cmp)
 {
-	double	tmp;
+	t_csg	tmp;
 	int		nb;
 
-	nb = interval->nb_hit;
+	nb = interval->nb_hit - 1;
 	while (i < nb)
 	{
-		tmp = interval->max[i].dist;
-		interval->max[i].dist = interval->min[i].dist;
-		interval->min[i].dist = swap;
-		swap = tmp;
-		i++;
-	}
+			tmp = interval->max[i];
+			interval->max[i] = interval->min[i];
+			interval->min[i] = swap;
+			swap = tmp;
+			i++;
+		}
 	if (cmp % 2)
 	{
-		interval->max[i].dist = interval->min[i].dist;
-		interval->min[i].dist = swap;
+		interval->max[i] = interval->min[i];
+		interval->min[i] = swap;
 	}
 	else
 	{
-		interval->min[i].dist = swap;
-		interval->max[i].dist = swap;
+		interval->min[i] = swap;
+		interval->max[i] = swap;
 	}
 }
 
-void			sort_interval_case1(t_interval *interval, int i, double tmp, int cmp)
+void			sort_interval_case1(t_interval *interval, int i, t_csg tmp, int cmp)
 {
-	double	swap;
+	t_csg	swap;
 
-	swap = interval->max[i].dist;
-	interval->max[i].dist = interval->min[i].dist;
-	interval->min[i].dist = tmp;
+	swap = interval->max[i];
+	interval->max[i] = interval->min[i];
+	interval->min[i] = tmp;
 	sort_interval(interval, i + 1, swap, cmp);
 }
 
-void			sort_interval_case2(t_interval *interval, int i, double tmp, int cmp)
+void			sort_interval_case2(t_interval *interval, int i, t_csg tmp, int cmp)
 {
-	double	swap;
+	t_csg	swap;
 
-	swap = interval->max[i].dist;
-	interval->max[i].dist = tmp;
+	swap = interval->max[i];
+	interval->max[i] = tmp;
 	sort_interval(interval, i + 1, swap, cmp);
 }
 
-void			adapt_polygon2csg(t_interval *interval, double tmp, int *cmp)
+void			adapt_polygon2csg(t_interval *interval, t_csg t, int *cmp)
 {
 	int		i;
 	int		nb;
+	double	tmp;
 
 	i = 0;
-	nb = interval->nb_hit;
+	if (*cmp % 2 == 0)
+		interval->nb_hit++;
+	nb = interval->nb_hit - 1;
+	tmp = t.dist;
 	while (i < nb)
 	{
 		if (tmp < interval->min[i].dist)
 		{
-			sort_interval_case1(interval, i, tmp, *cmp);
+			sort_interval_case1(interval, i, t, *cmp);
 			break;
 		}
-		if (tmp < interval->max[i].dist)
+		else if (tmp < interval->max[i].dist)
 		{
-			sort_interval_case2(interval, i, tmp, *cmp);
+			sort_interval_case2(interval, i, t, *cmp);
 			break;
 		}
 		i++;
 	}
 	if (i == nb)
 	{
-		if (*cmp % 2)
+		if (*cmp % 2 == 0)
 		{
-			interval->min[i].dist = tmp;
-			interval->max[i].dist = tmp;
+			interval->min[i] = t;
+			interval->max[i] = t;
+		}
+		else if (tmp < interval->min[i].dist)
+		{
+			interval->max[i] = interval->min[i];
+			interval->min[i] = t;
 		}
 		else
-		{
-			interval->max[i].dist = interval->min[i].dist;
-			interval->min[i].dist = tmp;
-		}
+			interval->max[i] = t;
 	}
 	(*cmp)++;
-	if (*cmp % 2)
-		interval->nb_hit++;
 }
 
 int				polygon_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 	unsigned long	i;
-	double			tmp;
+	t_csg			tmp;
 	int				cmp;
 
 	interval->nb_hit = 0;
@@ -203,11 +207,6 @@ int				polygon_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 			if (face_intersect(self, ray, self->faces + i, &tmp))
 				adapt_polygon2csg(interval, tmp, &cmp);
 			i++;
-		}
-		if (interval->nb_hit != 0)
-		{
-			interval->min[0].ref = self;
-			interval->max[0].ref = self;
 		}
 	}
 	return (interval->nb_hit);

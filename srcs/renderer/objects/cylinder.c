@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:47:41 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/15 19:25:44 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/17 10:25:47 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,8 @@ int				cylinder_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	c = vec3_dot(dpmva, dpmva) - self->radius;
 	if ((interval->nb_hit = quad_solve(vec3_dot(vmvva, vmvva), b, c, interval)))
 	{
-		interval->min[0].ref = self;
-		interval->max[0].ref = self;
+		interval->min[0].ref = *self;
+		interval->max[0].ref = *self;
 		return (1);
 	}
 	return (0);

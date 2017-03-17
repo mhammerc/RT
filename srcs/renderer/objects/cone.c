@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:48:05 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/15 19:24:43 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/17 10:17:53 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,8 @@ int				cone_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	a[0] = a[0] * vec3_norm2(vmvva) - a[3] * a[4] * a[4];
 	if ((interval->nb_hit = quad_solve(a[0], a[1], a[2], interval)))
 	{
-		interval->min[0].ref = self;
-		interval->max[0].ref = self;
+		interval->min[0].ref = *self;
+		interval->max[0].ref = *self;
 		return (1);
 	}
 	return (0);

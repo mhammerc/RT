@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:35:22 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/15 19:23:33 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/17 10:17:34 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,8 @@ int				sphere_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	c = vec3_norm2(ray_sphere) - self->radius;
 	if((interval->nb_hit = norm_quad_solve(b, c, interval)))
 	{
-		interval->min[0].ref = self;
-		interval->max[0].ref = self;
+		interval->min[0].ref = *self;
+		interval->max[0].ref = *self;
 		return (1);
 	}
 	return (0);
