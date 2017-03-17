@@ -6,13 +6,14 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/14 16:08:42 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/17 16:29:24 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <libft.h>
 #include "renderer.h"
+#include <math.h>
 
 /*
 ** Intersection between ray and torus
@@ -20,17 +21,16 @@
 ** or a negative value otherwise
 */
 
-int			quad4_solve(double a, double b, double c, double d, double e, double *root);
-int				torus_intersect(t_obj *self, t_ray *ray)
+int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 
-	self->radius = 1;
+	//self->radius = 1;
 	self->length = 0.2;
-	self->dir.x = 0;
-	self->dir.y = 0;
-	self->dir.z = 1;
-	self->kdiff = 1;
-	self->kspec = 1;
+	//self->dir.x = 0;
+	//self->dir.y = 0;
+	//self->dir.z = 1;
+	//self->kdiff = 1;
+	//self->kspec = 1;
 	ray->dir = vec3_get_normalized(ray->dir);
 
 	double	R = self->radius;
@@ -51,10 +51,10 @@ int				torus_intersect(t_obj *self, t_ray *ray)
 	double	D = B * d - 4 * pow(R, 2) * b;
 	double	E = pow(d, 2) - 4 * pow(R, 2) * c;
 
-	if (quad4_solve(A,B,C,D,E, &(ray->t)))
+	if ((interval->nb_hit = quad4_solve(A,B,C,D,E, interval)))
 	{
-		if (ray->type == INITIAL_RAY)
-			ray->collided = self;
+		interval->min[0].ref = *self;
+		interval->max[0].ref = *self;
 		return (1);
 	}
 	return (0);
@@ -65,57 +65,14 @@ int				torus_intersect(t_obj *self, t_ray *ray)
 ** @return normal direction
 */
 
-t_vec3			torus_normal(t_obj *self, t_ray ray)
+t_vec3			torus_normal(t_obj *self, t_vec3 pos)
 {
 	double		y;
 	t_vec3		D;
 	t_vec3		X;
 
-	y = vec3_dot(vec3_sub(ray.pos, self->pos), self->dir);
-	D = vec3_sub(vec3_sub(ray.pos, self->pos), vec3_mult(y, self->dir));
+	y = vec3_dot(vec3_sub(pos, self->pos), self->dir);
+	D = vec3_sub(vec3_sub(pos, self->pos), vec3_mult(y, self->dir));
 	X = vec3_mult(self->radius / sqrt(vec3_dot(D, D)), D);
-	return (vec3_get_normalized(vec3_sub(ray.pos, vec3_add(self->pos ,X))));
+	return (vec3_get_normalized(vec3_sub(pos, vec3_add(self->pos ,X))));
 }
-
-/*
-** intersect intervall between ray and cylindre, interval->hit is 0 if no intersection 1 else
-** @return 1
-**
-*/
-/*
-int				cylinder_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval)
-{
-	double		b;
-	double		c;
-	t_vec3		vmvva;
-	t_vec3		dpmva;
-
-	vmvva = vec3_mult(vec3_dot(ray->dir, obj->dir), obj->dir);
-	vmvva = vec3_sub(ray->dir, vmvva);
-	dpmva = vec3_sub(ray->pos, obj->pos);
-	dpmva = vec3_sub(dpmva, vec3_mult(vec3_dot(dpmva, obj->dir), obj->dir));
-	b = 2 * vec3_dot(vmvva, dpmva);
-	c = vec3_dot(dpmva, dpmva) - obj->param;
-	if ((interval->nb_hit = quad_solve2(vec3_dot(vmvva, vmvva), b, c, interval)))
-	{
-		interval->min[0].ref = obj;
-		interval->max[0].ref = obj;
-	}
-	return (1);
-}
-*/
-/*
-** Normal vector at given point
-*/
-/*
-t_vec3			cylinder_normal_csg(t_obj *obj, t_vec3 pos)
-{
-	double		m;
-	t_vec3		cy_pos;
-
-	//TODO if(!obj->csg_normal)
-	m = vec3_dot(obj->dir, vec3_sub(pos, obj->pos));
-	cy_pos = vec3_add(obj->pos, vec3_mult(m, obj->dir));
-	return (vec3_get_normalized(vec3_sub(pos, cy_pos)));
-}
-*/
