@@ -1,6 +1,6 @@
 #include "ui.h"
 
-void		ft_free_split(char **tab)
+void		ft_strsplit_free(char **tab)
 {
 	int	count;
 
@@ -41,39 +41,4 @@ void 		ft_puterr(int err, t_env *env)
 									GTK_BUTTONS_CLOSE, "%s\n", env->error_text);
 	 gtk_dialog_run(GTK_DIALOG(dialog));
 	 gtk_widget_destroy(dialog);
-}
-
-void		ft_free_list(t_entity_lst **entity_lst)
-{
-	t_entity_lst	*tmp;
-	t_entity_lst	*tmp2;
-
-	tmp = *entity_lst;
-	if (!*entity_lst)
-		return ;
-	while (tmp)
-	{
-		tmp2 = tmp;
-		tmp = tmp->next;
-		free(tmp2);
-	}
-	*entity_lst = NULL;
-}
-
-t_entity_lst	*ft_cpy_lst(t_entity_lst *entity_lst)
-{
-	t_entity_lst	*tmp;
-	t_entity_lst	*tmp2;
-	t_entity_lst	*new;
-
-	tmp = entity_lst;
-	tmp2 = NULL;
-	new = NULL;
-	while (tmp)
-	{
-		tmp2 = ft_new_entity(tmp->entity);
-		ft_push_entity(&new, tmp2);
-		tmp = tmp->next;
-	}
-	return (new);
 }

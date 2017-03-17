@@ -1,0 +1,26 @@
+camera:
+	position: 1; 0; 7
+	lookAt: 0; 0; 0
+
+object:
+	type: EMPTY
+	name: Les objets
+
+	object:
+		type: PLANE
+		name: Background
+		rotation: 0;0;1;
+		position: 0;0;-10
+		color: 1;1;1
+
+	object:
+		type: SPHERE
+		name: First sphere
+		position: -1;0;0
+		color: 0;1;0
+		radius: 150
+
+object:
+	name: The light
+	type: LIGHT
+	position: 0;0;7

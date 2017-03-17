@@ -2,6 +2,40 @@
 # define PARSER_H
 
 # include "shared.h"
+# include <libft.h>
+
+/*
+** New
+*/
+typedef struct			s_parser_cam
+{
+	t_vec3				pos;
+	t_vec3				look_at;
+}						t_parser_cam;
+
+
+typedef struct			s_env
+{
+	t_parser_cam		camera;
+	t_list				*objects;
+	t_list				**current_object;
+	size_t				depth;
+
+	char				*ln;
+
+	int					fd;
+
+	int					object_type;
+
+	char				error_text[80];
+}						t_env;
+
+t_vec3					p_read_vec3(t_env *env, char *ln);
+
+
+/*
+** Old
+*/
 # define MAX_INDEX_SCENE 2
 # define MAX_INDEX_CAMERA 2
 # define MAX_INDEX_OBJECT 6
@@ -36,12 +70,6 @@ typedef struct			s_parser_scene
 	t_point				size;
 }						t_parser_scene;
 
-typedef struct			s_parser_cam
-{
-	t_vec3				pos;
-	t_vec3				dir;
-}						t_parser_cam;
-
 typedef struct			s_entity
 {
 	enum e_env			env_type;
@@ -68,23 +96,6 @@ typedef struct			s_group_lst
 	t_entity_lst		*group;
 	struct s_group_lst	*next;
 }						t_group_lst;
-
-typedef struct			s_env
-{
-	t_parser_scene		scene;
-	t_parser_cam		camera;
-	t_entity_lst		*entity_lst;
-	t_entity_lst		*group_tmp;
-	t_group_lst			*group_lst;
-	int					line_count;
-	int					entity_type;
-	int					group_entity_type;
-	char				scene_filled[MAX_INDEX_SCENE];
-	char				camera_filled[MAX_INDEX_CAMERA];
-	char				object_filled[MAX_INDEX_OBJECT];
-	char				error_text[80];
-}						t_env;
-
 int						ft_exit(void);
 int						ft_check_all(t_env *env);
 int						ft_check_entity(t_env *env, int entity_type);
