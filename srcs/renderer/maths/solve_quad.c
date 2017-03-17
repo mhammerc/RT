@@ -12,8 +12,79 @@
 
 #include <math.h>
 #include <stdio.h>
-#include "renderer.h"
+//#include "renderer.h"
 
+int			quad_solve(double a, double b, double c, double *root)
+{
+	double		d;
+
+	d = b * b - 4.0 * a * c;
+	if (d < 0.)
+		return (0);
+	d = sqrt(d);
+	a = 0.5 / a;
+	*root = (-b - d) * a;
+	root[1] = (-b + d) * a;
+	return (1);
+}
+
+/*
+** Solve a quadratic equation ax² + bx + c = 0 with a == 1
+** Updates interval with new intersection distances and normal direction
+** @return 1 if smaller solution found, 0 otherwise
+*/
+
+double			case1(double f, double g, double h, double a, double b)
+{
+	//printf("case1 f %f g %f h %f a %f b %f\n", f,g,h,a,b);
+	double	R = -g / 2. + sqrt(h);
+	//printf("R %f\n", R);
+	//double	S = pow(R, 1./3.);
+	double	S = -pow(-R, 1./3.);
+	//printf("S %f\n", S);
+	double	T = -g / 2 - sqrt(h);
+	double	U = -pow(-T, 1./3.);
+	//printf("case1 S %f U %f b %f a %f\n", S,U,b,a);
+	return(S + U - b / (3 * a));
+}
+
+double			case2(double f, double g, double h, double a, double b)
+{
+	double	i = sqrt(pow(g, 2.) / 4 - h);
+	double	j = pow(i, 1./3.);
+	double	k = acos(-g /(2. * i));
+	return(2* j * cos(k / 3) - b / ( 3 *a));
+}
+
+double			quad3_solve(double a, double b, double c, double d)
+{
+	double	f = (3. * c / a - pow(b, 2.) / pow(a, 2.)) / 3;
+	double	g = (2. * pow(b, 3.) / pow(a, 3.) - 9. * b * c / pow(a, 2.) + 27 * d / a) / 27;
+	double	h = pow(g, 2) / 4 + pow(f, 3.) / 27;
+	if ( h > 0)
+		return (case1(f, g, h, a, b));
+	else
+		return (case2(f, g, h, a, b));
+}
+double			quad4_solve(double a, double b, double c, double d)
+{
+	double y = quad3_solve(a,b,c,d);
+	double	r_g[2];
+	double	r_h[2];
+	if (!(quad_solve(1, -a, b - y, r_g)))
+		printf("not g\n");
+	if (!(quad_solve(1, -y, d, r_h)))
+		printf("not h\n");
+	double	root_1[2];
+	double	root_2[2];
+	if (!(quad_solve(1, *r_g, *r_h, root_1)))
+		printf("not 1\n");
+	if (!(quad_solve(1, r_g[1], r_h[1], root_2)))
+		printf("not 2\n");
+	printf("x1 %f x2 %f x3 %f x4 %f\n", root_1[0], root_1[1], root_2[0], root_2[1]);
+	return (*root_1);
+}
+/*
 int			quad4_solve(double a, double b, double c, double d, double e, t_interval *interval)
 {
 	int			nb_root;
@@ -123,4 +194,10 @@ int			quad4_solve(double a, double b, double c, double d, double e, t_interval *
 		interval->max[0].normal = OUTWARDS;
 	}
 	return (1);
+}
+*/
+int	main()
+{
+	
+	printf("root %f\n", quad4_solve(-1, -4 ,1 ,1));
 }
