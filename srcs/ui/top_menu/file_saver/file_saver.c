@@ -15,7 +15,7 @@ static void		save_cam_properties(FILE *file)
 
 static void		save_obj(FILE *file, t_object *obj, int depth)
 {
-	char				*tab;
+	char	*tab;
 
 	tab = str_tab(depth);
 	fprintf(file, "%sobject:\n", tab);
@@ -44,7 +44,7 @@ static void		save_elements_properties(FILE *file, t_list *obj, int depth)
 	--depth;
 }
 
-void	save_scene(char *filename)
+void			save_scene(char *filename)
 {
 	FILE	*file = NULL;
 	t_ui	*ui;
