@@ -37,6 +37,8 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 		g_signal_connect_swapped(dialog, "response", G_CALLBACK(
 												gtk_widget_destroy), dialog);
 		gtk_dialog_run(GTK_DIALOG(dialog));
+		ui->selected_obj.object->nb_faces = 0;
+		ui->selected_obj.object->faces = 0;
 		return ;
 	}
 	ui->selected_obj.object->nb_faces = object->nb_faces;

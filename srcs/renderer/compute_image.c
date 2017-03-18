@@ -268,9 +268,6 @@ t_list			*ft_lstdup(t_list	*original_begin)
 	while (original)
 	{
 		original_cpy = ft_lstnew(original->content, original->content_size);
-		//original_cpy = malloc(sizeof(t_list));
-		//original_cpy->content = malloc(sizeof(t_obj));
-		//memcpy(original_cpy->content, original->content, sizeof(t_obj));
 		obj = (t_obj*)original_cpy->content;
 		if (obj->type == POLYGONS)
 		{
