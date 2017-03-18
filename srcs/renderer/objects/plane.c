@@ -40,6 +40,8 @@ int				plane_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 		interval->nb_hit = 1;
 		interval->min[0].dist = d;
 		interval->max[0].dist = d;
+		interval->min[0].ref = *self;
+		interval->max[0].ref = *self;
 		return (1);
 	}
 	return (0);

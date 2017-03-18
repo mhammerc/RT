@@ -62,7 +62,7 @@ void	inter(t_interval *left, t_interval *right, t_interval *interval)
 	int	r;
 	int	i;
 
-	if (!inter_case(left, right, interval))	
+	if (!inter_case(left, right, interval))
 		return;
 	l = 0;
 	i = 0;
@@ -387,33 +387,27 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 	location = LOCATION_NONE;
 	if (interval->nb_hit == 0)
 		return (LOCATION_NONE);
-	if(obj->type == PLANE)
-	{
-		if (*d > interval->min[0].dist && interval->min[0].dist > 0)
-		{
-			*d = interval->min[0].dist;
-			*collided = obj;
-			location = LOCATION_OUTSIDE;
-		}
-		return (location);
-	}
 	i = 0;
 	while (i < interval->nb_hit)
 	{
 		hit = 0;
 		if (*d > interval->min[i].dist && interval->min[i].dist > 0)
 		{
-			*collided = &(interval->min[i].ref);
+			//*collided = &(interval->min[i].ref);
+			*collided = (t_obj*)malloc(sizeof(t_obj));
+			memcpy(*collided, &interval->min[i].ref, sizeof(t_obj));
 			*d = interval->min[i].dist;
-			obj->csg_ref = &(interval->min[i].ref);
+			obj->csg_ref = *collided;
 			obj->csg_ref->normal_dir = interval->min[i].normal;
 			hit = 1;
 		}
 		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
 		{
-			*collided = &(interval->max[i].ref);
+			//*collided = &(interval->max[i].ref);
+			*collided = (t_obj*)malloc(sizeof(t_obj));
+			memcpy(*collided, &interval->min[i].ref, sizeof(t_obj));
 			*d = interval->max[i].dist;
-			obj->csg_ref = &(interval->max[i].ref);
+			obj->csg_ref = *collided;
 			obj->csg_ref->normal_dir = interval->max[i].normal;
 			hit = 1;
 		}
