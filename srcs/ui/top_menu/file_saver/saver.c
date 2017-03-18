@@ -1,8 +1,34 @@
 #include "ui.h"
 #include "right_panel.h"
 
-// Saver
-void	save_cam_properties(FILE * file);
+char	*get_enum_type(enum e_object_type type)
+{
+	static char *list[OBJECT_TYPE_COUNT] = {"SPHERE", "PLANE", "CONE",
+		"CYLINDER", "TORUS", "CSG", "POLYGONS", "EMPTY", "LIGHT"};
+
+	return (list[type]);
+}
+
+void	print_vec3(FILE *file, char *key, t_vec3 value, char *tab)
+{
+	fprintf(file, "%s\t%s: %.1lf; %.1lf; %.1lf\n", tab, key,
+		value.x, value.y, value.z);
+}
+
+char	*str_tab(int depth)
+{
+	char	*str;
+	int		i;
+
+	i = 0;
+	str = ft_strdup("");
+	if (depth == 0)
+		return (str);
+	str = (char *)malloc(sizeof(char) * depth);
+	while (i < depth)
+		str[i++] = '\t';
+	return (str);
+}
 
 void	save_cam_properties(FILE *file)
 {
@@ -12,58 +38,40 @@ void	save_cam_properties(FILE *file)
 	ui = get_interface();
 	cam = ui->cam;
 	fprintf(file, "camera:\n");
-	fprintf(file, "\tposition: %.1lf; %.1lf; %.1lf\n", cam->pos.x,
-														cam->pos.y,
-														cam->pos.z);
-	fprintf(file, "\tdirection: %.1lf; %.1lf; %.1lf\n", cam->dir.x,
-														cam->dir.y,
-														cam->dir.z);
+	print_vec3(file, "position", cam->pos, "");
+	print_vec3(file, "lookAt", cam->dir, "");
 	fprintf(file, "\n");
 }
 
-void	save_elements_properties(FILE *file, t_list *obj)
+void	save_obj(FILE *file, t_object *obj, int depth)
 {
-	static int depth = -1;
+	char				*tab;
+	enum e_object_type	type;
 
+	tab = str_tab(depth);
+	fprintf(file, "%sobject:\n", tab);
+	fprintf(file, "%s\ttype: %s\n", tab, get_enum_type(obj->type));
+	fprintf(file, "%s\tname: %s\n", tab, obj->name);
+	print_vec3(file, "position", obj->pos, tab);
+	print_vec3(file, "rotation", obj->rot, tab);
+	print_vec3(file, "color", obj->color, tab);
+	fprintf(file, "%s\tradius: %lf\n", tab, obj->radius);
+	fprintf(file, "%s\tkspec: %lf\n", tab, obj->kspec);
+	fprintf(file, "\n");
+	free(tab);
+}
+
+void	save_elements_properties(FILE *file, t_list *obj, int depth)
+{
 	++depth;
 	while (obj)
 	{
-		printf("name = %s, %d\n", ((t_object *)obj->content)->name, depth);
+		save_obj(file, ((t_object *)obj->content), depth);
 		if (obj->children)
-		{
-			save_elements_properties(file, obj->children);
-		}
+			save_elements_properties(file, obj->children, depth);
 		obj = obj->next;
 	}
 	--depth;
-	// while (obj)
-	// {
-	// 	t_object *object = obj->content;
-	// 	jfkdsjfklsdjflksdjflkjsdflkj
-	// 	if (obj->children)
-	// 		save_elements_properties(obj->children);
-	// 	obj = obj->next;
-	// }
-
-	// else if (obj->children)
-	// {
-	// 	printf("name children = %s\n", ((t_object *)obj->children->content)->name);
-	// 	save_elements_properties(file, obj->children->next);
-	// }
-	// else
-	// 	printf("name parent = %s\n", ((t_object *)obj->content)->name);
-	// save_elements_properties(file, obj->next);
-
-	// if (obj)
-	// {
-	// 	printf("name parent = %s\n", ((t_object *)obj->content)->name);
-	// 	save_elements_properties(file, obj->next);
-		// if (obj->children)
-		// {
-		// 	save_elements_properties(file, obj->children->next);
-		// 	printf("name children = %s\n", ((t_object *)obj->children->content)->name);
-		// }
-	// }
 }
 
 void	save_scene(char *filename)
@@ -76,9 +84,9 @@ void	save_scene(char *filename)
 	if (file)
 	{
 		save_cam_properties(file);
-		save_elements_properties(file, ui->objs);
+		save_elements_properties(file, ui->objs, -1);
 		fclose(file);
 	}
 	else
-		printf("Impossible d'ouvrir le fichier %s\n", filename);
+		printf("Unable to open %s!\n", filename);
 }
