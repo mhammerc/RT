@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:46:56 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/17 10:26:00 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/18 15:53:35 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,8 +40,6 @@ int				plane_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 		interval->nb_hit = 1;
 		interval->min[0].dist = d;
 		interval->max[0].dist = d;
-		interval->min[0].ref = *self;
-		interval->max[0].ref = *self;
 		return (1);
 	}
 	return (0);
