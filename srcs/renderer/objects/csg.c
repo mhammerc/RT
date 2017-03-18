@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/17 12:01:00 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/18 15:54:09 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -387,6 +387,16 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 	location = LOCATION_NONE;
 	if (interval->nb_hit == 0)
 		return (LOCATION_NONE);
+	if(obj->type == PLANE)
+	{
+		if (*d > interval->min[0].dist && interval->min[0].dist > 0)
+		{
+			*d = interval->min[0].dist;
+			*collided = obj;
+			location = LOCATION_OUTSIDE;
+		}
+		return (location);
+	}
 	i = 0;
 	while (i < interval->nb_hit)
 	{
