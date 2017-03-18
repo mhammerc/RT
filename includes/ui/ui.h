@@ -94,7 +94,8 @@ struct					s_ui
 	int					rendering;
 };
 
-void					build_interface(GtkApplication *app, gpointer user_data);
+void					build_interface(GtkApplication *app,
+							gpointer user_data);
 void					left_panel(t_ui *ui, t_left_panel *lp);
 void					display_panel(t_ui *ui, t_display_panel *dp);
 void					right_panel(t_ui *ui, t_right_panel *lp);

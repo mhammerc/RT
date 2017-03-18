@@ -27,6 +27,8 @@ static void		save_obj(FILE *file, t_object *obj, int depth)
 	fprintf(file, "%s\tradius: %lf\n", tab, obj->radius);
 	fprintf(file, "%s\tkspec: %lf\n", tab, obj->kspec);
 	fprintf(file, "%s\tkdiff: %lf\n", tab, obj->kdiff);
+	fprintf(file, "%s\tcsgOperation: %c\n", tab, obj->operation);
+	fprintf(file, "%s\tfile: %s\n", tab, obj->filename);
 	fprintf(file, "\n");
 	free(tab);
 }
