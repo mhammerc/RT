@@ -12,19 +12,35 @@
 
 #include <math.h>
 #include <stdio.h>
-//#include "renderer.h"
+#include "renderer.h"
 
-int			quad_solve(double a, double b, double c, double *root)
+int			quad2_solve(double b, double c, double *root)
 {
 	double		d;
 
-	d = b * b - 4.0 * a * c;
+	d = b * b - 4. * c;
+	if (d < 0.)
+	{
+		root[0] = 10000;
+		root[1] = 10000;
+		return (0);
+	}
+	d = sqrt(d);
+	root[0] = (-b - d) / 2.;
+	root[1] = (-b + d) / 2.;
+	return (1);
+}
+
+int			quad2_solve_inv(double b, double c, double *root)
+{
+	double		d;
+
+	d = b * b - 4. * c;
 	if (d < 0.)
 		return (0);
 	d = sqrt(d);
-	a = 0.5 / a;
-	*root = (-b - d) * a;
-	root[1] = (-b + d) * a;
+	root[1] = (-b - d) / 2.;
+	root[0] = (-b + d) / 2.;
 	return (1);
 }
 
@@ -34,22 +50,28 @@ int			quad_solve(double a, double b, double c, double *root)
 ** @return 1 if smaller solution found, 0 otherwise
 */
 
-double			case1(double f, double g, double h, double a, double b)
+double			case1(double g, double h, double a, double b)
 {
 	//printf("case1 f %f g %f h %f a %f b %f\n", f,g,h,a,b);
 	double	R = -g / 2. + sqrt(h);
-	//printf("R %f\n", R);
-	//double	S = pow(R, 1./3.);
-	double	S = -pow(-R, 1./3.);
-	//printf("S %f\n", S);
+	////printf("R %f\n", R);
+	double S;
+	if (R>0)
+		S = pow(R, 1./3.);
+	else
+		S = -pow(-R, 1./3.);
 	double	T = -g / 2 - sqrt(h);
-	double	U = -pow(-T, 1./3.);
-	//printf("case1 S %f U %f b %f a %f\n", S,U,b,a);
+	double	U;
+	if (T>0)
+		U = pow(T, 1./3.);
+	else
+		U = -pow(-T, 1./3.);
 	return(S + U - b / (3 * a));
 }
 
-double			case2(double f, double g, double h, double a, double b)
+double			case2(double g, double h, double a, double b)
 {
+	//printf("case2\n");
 	double	i = sqrt(pow(g, 2.) / 4 - h);
 	double	j = pow(i, 1./3.);
 	double	k = acos(-g /(2. * i));
@@ -58,31 +80,73 @@ double			case2(double f, double g, double h, double a, double b)
 
 double			quad3_solve(double a, double b, double c, double d)
 {
+	//printf("%fx3+ %fx2 + %fx +%f\n",a,b,c,d);
 	double	f = (3. * c / a - pow(b, 2.) / pow(a, 2.)) / 3;
 	double	g = (2. * pow(b, 3.) / pow(a, 3.) - 9. * b * c / pow(a, 2.) + 27 * d / a) / 27;
 	double	h = pow(g, 2) / 4 + pow(f, 3.) / 27;
 	if ( h > 0)
-		return (case1(f, g, h, a, b));
+		return (case1(g, h, a, b));
 	else
-		return (case2(f, g, h, a, b));
+		return (case2(g, h, a, b));
 }
-double			quad4_solve(double a, double b, double c, double d)
+int		quad4_solve(double a, double b, double c, double d, t_interval *interval)
 {
-	double y = quad3_solve(a,b,c,d);
+	double y = quad3_solve(1, -b,a * c - 4 *d,-pow(a,2) * d - pow(c,2) + 4 * b * d);
+	//printf("sol %f\n", y);
 	double	r_g[2];
 	double	r_h[2];
-	if (!(quad_solve(1, -a, b - y, r_g)))
-		printf("not g\n");
-	if (!(quad_solve(1, -y, d, r_h)))
-		printf("not h\n");
+	if (!(quad2_solve(-a, b - y, r_g)))
+		;
+		//printf("not g\n");
+	if (!(quad2_solve(-y, d, r_h)))
+		;
+		//printf("not h\n");
+	if (abs(r_g[0] * r_h[1] + r_g[1] * r_h[0] - c) > abs(r_g[0] * r_h[0] + r_g[1] * r_h[1] - c))	
+		{
+			double	tmp = r_h[0];
+			r_h[0] = r_h[1];
+			r_h[1] = tmp;
+		}
+	//printf("g equation: %fx2 + %fx +%f\n",1., -a, b-y);
+	//printf("h equation: %fx2 + %fx +%f\n",1., -y, d);
+	//printf("g1 %f g2 %f h1 %f h2 %f\n", r_g[0], r_g[1], r_h[0], r_h[1]);
+	//printf("result equation: x4 +%fx3 +  %fx2 + %fx +%f\n", r_g[0] + r_g[1], r_g[0] * r_g[1] + r_h[0] + r_h[1], r_g[0] * r_h[1] + r_g[1] *r_h[0], r_h[0] *r_h[1]);
 	double	root_1[2];
 	double	root_2[2];
-	if (!(quad_solve(1, *r_g, *r_h, root_1)))
-		printf("not 1\n");
-	if (!(quad_solve(1, r_g[1], r_h[1], root_2)))
-		printf("not 2\n");
-	printf("x1 %f x2 %f x3 %f x4 %f\n", root_1[0], root_1[1], root_2[0], root_2[1]);
-	return (*root_1);
+	bzero(root_1, sizeof(double) * 2);
+	bzero(root_2, sizeof(double) * 2);
+	if (!(quad2_solve(r_g[0], r_h[0], root_1)))
+;
+		//printf("not 1\n");
+	if (!(quad2_solve(r_g[1], r_h[1], root_2)))
+;
+		//printf("not 2\n");
+	//printf("x1 %f x2 %f x3 %f x4 %f\n", root_1[0], root_1[1], root_2[0], root_2[1]);
+
+	double	root;
+	if ( root_1[0] > 0 && root_1[0] < root_1[1] && root_1[0] < root_2[0] && root_1[0] < root_2[1] )
+		root = root_1[0];
+	else if ( root_1[1] > 0 && root_1[1] < root_1[0] && root_1[1] < root_2[0] && root_1[1] < root_2[1] )
+		root = root_1[1];
+	else if ( root_2[0] > 0 && root_2[0] < root_1[0] && root_2[0] < root_1[1] && root_2[0] < root_2[1] )
+		root = root_2[0];
+	else if ( root_2[1] > 0 && root_2[1] < root_1[0] && root_2[1] < root_1[1] && root_2[1] < root_2[0] )
+		root = root_2[1];
+	else
+		return (0);
+	interval->min[0].dist = root;
+	interval->max[0].dist = root;
+	if (root > 0)
+	{
+		interval->min[0].normal = OUTWARDS;
+		interval->max[0].normal = INWARDS;
+	}
+	else
+	{
+		interval->min[0].normal = INWARDS;
+		interval->max[0].normal = OUTWARDS;
+	}
+	return (1);
 }
 /*
 int			quad4_solve(double a, double b, double c, double d, double e, t_interval *interval)
@@ -113,7 +177,7 @@ int			quad4_solve(double a, double b, double c, double d, double e, t_interval *
 	double	L = b3 + 8*d - 4 * b *c;
 	double	D = 64 * e - 16 * c2 + 16 *b2 * c - 16 *b *d - 3 * b4;
 	if ( D < EPS && D > -EPS)
-		printf("4 root\n");
+		//printf("4 root\n");
 
 
 
@@ -137,7 +201,7 @@ int			quad4_solve(double a, double b, double c, double d, double e, t_interval *
 	double Q = pow( (delta1 + sqrt(delta1 * delta1 - 4. * delta0 * delta0 * delta0)) / 2., 1.0 / 3.0);
 	if ( Q < EPS && Q > -EPS)
 	{
-		printf("Q negatif\n");
+		//printf("Q negatif\n");
 		return (0);
 	}
 	double	titi = -2. * p /3. + (Q + delta0 / Q)/3.;
@@ -196,8 +260,3 @@ int			quad4_solve(double a, double b, double c, double d, double e, t_interval *
 	return (1);
 }
 */
-int	main()
-{
-	
-	printf("root %f\n", quad4_solve(-1, -4 ,1 ,1));
-}

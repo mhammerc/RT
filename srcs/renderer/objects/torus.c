@@ -33,6 +33,8 @@ int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	//self->kspec = 1;
 	ray->dir = vec3_get_normalized(ray->dir);
 
+	if (!(cylinder_intersect(self,ray, interval)))
+		return (0);
 	double	R = self->radius;
 	double	r = self->length;
 
@@ -51,7 +53,7 @@ int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	double	D = B * d - 4 * pow(R, 2) * b;
 	double	E = pow(d, 2) - 4 * pow(R, 2) * c;
 
-	if ((interval->nb_hit = quad4_solve(A,B,C,D,E, interval)))
+	if ((interval->nb_hit = quad4_solve(B,C,D,E, interval)))
 	{
 		interval->min[0].ref = *self;
 		interval->max[0].ref = *self;

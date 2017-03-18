@@ -74,6 +74,6 @@ t_vec3 (*get_obj_normal())(t_obj*, t_vec3);
 
 int			norm_quad_solve(double b, double c, t_interval *interval);
 int			quad_solve(double a, double b, double c, t_interval *interval);
-int			quad4_solve(double a, double b, double c, double d, double e, t_interval *interval);
+int			quad4_solve(double a, double b, double c, double d, t_interval *interval);
 
 #endif
