@@ -1,11 +1,10 @@
 # include "ui.h"
+# include "obj_parser.h"
 
 void			load_file(char *filename)
 {
 	t_ui			*ui;
 	t_env			env;
-	GtkDialogFlags	flags;
-	GtkWidget		*dialog;
 
 	ui = get_interface();
 	ft_bzero(&env, sizeof(t_env));
@@ -21,10 +20,32 @@ void			load_file(char *filename)
 	}
 }
 
+static void		load_polygons(t_list *objects)
+{
+	t_object	*object;
+	t_object	*new;
+
+	if (!objects)
+		return ;
+	object = (t_object*)objects->content;
+	if (object->type == POLYGONS && *object->filename != 0)
+	{
+		new = parse_wavefront_file(object->filename);
+		if (new)
+		{
+			object->faces = new->faces;
+			object->nb_faces = new->nb_faces;
+		}
+	}
+	if (objects->children)
+		load_polygons(objects->children);
+	if (objects->next)
+		load_polygons(objects->next);
+}
+
 void			hook_up_obj_lst(t_ui *ui, t_env *env)
 {
-	t_object	cur_obj;
-
+	load_polygons(env->objects);
 	ui->cam->pos = env->camera.pos;
 	ui->cam->dir = env->camera.look_at;
 	//todo update camera in interface

@@ -52,6 +52,12 @@ void	p_parse_object(t_env *env, char *ln)
 			new_object.operation = *ln3;
 			free(ln3);
 		}
+		else if (ft_strncmp(ln2, "filename:", 9) == 0)
+		{
+			ln3 = ft_strtrim(ln2 + 9);
+			new_object.filename = ft_strdup(ln3);
+			free(ln3);
+		}
 		else if (ft_strncmp(ln2, "object:", 7) == 0)
 		{
 			size_t tabs = count_tab(env->ln);

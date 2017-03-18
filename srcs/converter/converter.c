@@ -31,7 +31,7 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	else
 		obj->dir = object->rot;
 	if (object->type == CONE)
-		obj->radius = cos((object->radius / 1000) * DEG_TO_RAD);
+		obj->radius = object->radius;
 	else
 		obj->radius =  object->radius / 1000;
 	obj->length = object->length;
