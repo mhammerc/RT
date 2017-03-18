@@ -48,7 +48,8 @@ SRCS_NAME	=	main.c										\
 				ui/top_menu/file_loader/object.c			\
 				ui/top_menu/file_loader/lists.c				\
 				ui/top_menu/file_loader/tools.c				\
-				ui/top_menu/file_saver/file_saver.c				\
+				ui/top_menu/file_saver/file_saver.c			\
+				ui/top_menu/file_saver/saver_tools.c		\
 				converter/converter.c						\
 				obj_parser/obj_parser.c						\
 				texture_loader/texture_loader.c				\
