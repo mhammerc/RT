@@ -8,6 +8,7 @@ typedef struct		s_texture
 	guchar			*pixels;
 	int				width;
 	int				height;
+	/* Total number of byte (!!) */
 	int				bytes_per_pixel;
 	/* Number of bytes per row */
 	int				rowstride;

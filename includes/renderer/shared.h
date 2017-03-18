@@ -119,7 +119,6 @@ struct						s_interval
 	t_csg					max[10];
 	int						nb_hit;
 };
-
 typedef struct s_interval	t_interval;
 
 struct						s_ray

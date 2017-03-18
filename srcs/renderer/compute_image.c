@@ -5,6 +5,47 @@
 #include "ui.h"
 #include "renderer.h"
 #include "shared.h"
+#include "texture_loader.h"
+
+static t_texture	worldmap = {0};
+
+static t_vec3		black = {0., 0., 0.};
+static t_vec3		white = {1., 1., 1.};
+
+t_vec3			get_texture_color(t_ray ray)
+{
+	t_vec3	r;
+	t_vec3	d;
+	double	u;
+	double	v;
+
+//	if (ray.collided->type == SPHERE)
+	{
+		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+		u = fmod(u, 0.10);
+		//u *= worldmap.width;
+		v = 0.5 - asin(d.y) / M_PI;
+		v = fmod(v, 0.10);
+		//v *= worldmap.height;
+
+//		r.x = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride];
+//		r.y = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 1];
+//		r.z = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 2];
+//		r = vec3_mult(1. / 256., r);
+		if (u < 0.05 && v < 0.05)
+			return (black);
+		if (u > 0.05 && v < 0.05)
+			return (white);
+		if (u > 0.05 && v > 0.05)
+			return (black);
+		if (u < 0.05 && v > 0.05)
+			return (white);
+		return (white);
+	}
+//	else
+		return (ray.collided->color);
+}
 
 float			light_find_max(t_vec3 *light, int w, int h)
 {
@@ -71,7 +112,7 @@ t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam)
 	t_vec3	h;
 
 	light = (t_vec3){0, 0, 0};
-	obj = ray.collided->color;
+	obj = get_texture_color(ray);
 	if ((diff = fmax(vec3_dot(ray.dir, ray.n), 0)) > 0)
 	{
 		diff *= ray.collided->kdiff * l->intensity;
@@ -166,7 +207,7 @@ static t_vec3	rt_light(t_scene *sce, t_ray ray)
 	t_spot		*spot;
 
 	obj_cam = vec3_mult(-1, ray.dir);
-	light = color_light_mix(ray.collided->color,
+	light = color_light_mix(get_texture_color(ray),
 							sce->ambiant.color,
 							sce->ambiant.intensity);
 	ray.type = OCCLUSION_RAY;
@@ -210,7 +251,7 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 		{
 			refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
 			refl_light = vec3_mult(REFL_ATTENUATION, refl_light);
-			light = vec3_add(light, color_light_mix(ray.collided->color,
+			light = vec3_add(light, color_light_mix(get_texture_color(ray),
 													refl_light,
 													ray.collided->kspec));
 		}
@@ -420,6 +461,8 @@ void renderer_compute_image(t_scene *sce)
 {
 	pthread_t thread;
 
+	if (!worldmap.pixels)
+		worldmap = load_texture("textures/map.jpg");
 	sce->ui->rendering = 1;
 	pthread_create(&thread, NULL, renderer_compute_image2, sce);
 	gdk_threads_add_timeout(100, test, sce);
