@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 11:09:33 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/17 16:29:21 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/18 18:14:37 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,9 +52,7 @@ int			quad2_solve_inv(double b, double c, double *root)
 
 double			case1(double g, double h, double a, double b)
 {
-	//printf("case1 f %f g %f h %f a %f b %f\n", f,g,h,a,b);
 	double	R = -g / 2. + sqrt(h);
-	////printf("R %f\n", R);
 	double S;
 	if (R>0)
 		S = pow(R, 1./3.);
@@ -71,7 +69,21 @@ double			case1(double g, double h, double a, double b)
 
 double			case2(double g, double h, double a, double b)
 {
-	//printf("case2\n");
+	double	i = sqrt(pow(g, 2.) / 4 - h);
+	double	j = pow(i, 1./3.);
+	double	K = acos(-g /(2. * i));
+		return(2* j * cos(K / 3) - b / ( 3 *a));
+//	double	L = -j;
+//	double	M = cos(K / 3.);
+//	double	N = 1.73205 * sin(K / 3);
+//	double	P = -b / (3 * a);
+//	if (root_number == 1)
+//		return (L * (M + N) + P);
+//	else
+//		return (L * (M - N) + P);
+}
+double			case3(double g, double h, double a, double b)
+{
 	double	i = sqrt(pow(g, 2.) / 4 - h);
 	double	j = pow(i, 1./3.);
 	double	k = acos(-g /(2. * i));
@@ -80,28 +92,38 @@ double			case2(double g, double h, double a, double b)
 
 double			quad3_solve(double a, double b, double c, double d)
 {
-	//printf("%fx3+ %fx2 + %fx +%f\n",a,b,c,d);
 	double	f = (3. * c / a - pow(b, 2.) / pow(a, 2.)) / 3;
 	double	g = (2. * pow(b, 3.) / pow(a, 3.) - 9. * b * c / pow(a, 2.) + 27 * d / a) / 27;
 	double	h = pow(g, 2) / 4 + pow(f, 3.) / 27;
 	if ( h > 0)
 		return (case1(g, h, a, b));
 	else
+	{
 		return (case2(g, h, a, b));
+	}
 }
 int		quad4_solve(double a, double b, double c, double d, t_interval *interval)
 {
 	double y = quad3_solve(1, -b,a * c - 4 *d,-pow(a,2) * d - pow(c,2) + 4 * b * d);
-	//printf("sol %f\n", y);
+	double	eps = 0;
 	double	r_g[2];
 	double	r_h[2];
-	if (!(quad2_solve(-a, b - y, r_g)))
-		;
+	while (!(quad2_solve(-a, b - y - eps, r_g)))
+	{
 		//printf("not g\n");
-	if (!(quad2_solve(-y, d, r_h)))
-		;
+		//r_g[0] = 0;
+		//r_g[1] = 0;
+		eps += b - y;
+	}
+	eps = 0;
+	while (!(quad2_solve(-y, d - eps, r_h)))
+	{
+		//r_h[0] = 0;
+		//r_h[1] = 0;
+		eps += d;
 		//printf("not h\n");
-	if (abs(r_g[0] * r_h[1] + r_g[1] * r_h[0] - c) > abs(r_g[0] * r_h[0] + r_g[1] * r_h[1] - c))	
+	}
+	if (fabs(r_g[0] * r_h[1] + r_g[1] * r_h[0] - c) > fabs(r_g[0] * r_h[0] + r_g[1] * r_h[1] - c))	
 		{
 			double	tmp = r_h[0];
 			r_h[0] = r_h[1];
@@ -134,6 +156,8 @@ int		quad4_solve(double a, double b, double c, double d, t_interval *interval)
 		root = root_2[1];
 	else
 		return (0);
+	//printf("x^4+ %fx^3 + %fx^2 +%fx + %f\n",a,b,c,d);
+	//printf("x1 %f x2 %f x3 %f x4 %f\n" ,root_1[0], root_1[1], root_2[0], root_2[1]);
 	interval->min[0].dist = root;
 	interval->max[0].dist = root;
 	if (root > 0)
