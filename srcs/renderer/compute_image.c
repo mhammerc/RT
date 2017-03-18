@@ -21,7 +21,6 @@ float			light_find_max(t_vec3 *light, int w, int h)
 		max = fmax(max, light[i].y);
 		max = fmax(max, light[i].z);
 	}
-	printf("%f\n", max);
 	return (max);
 }
 
