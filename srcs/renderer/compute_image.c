@@ -21,18 +21,29 @@ t_vec3			get_texture_color(t_ray ray)
 
 //	if (ray.collided->type == SPHERE)
 	{
+		/*  globe  */
+		/*
+		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+		u *= worldmap.width;
+		v = 0.5 - asin(d.y) / M_PI;
+		v *= worldmap.height;
+
+		r.x = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride];
+		r.y = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 1];
+		r.z = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 2];
+		r = vec3_mult(1. / 256., r);
+		return (r);
+		*/
+
+		/* damier */
+
 		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
 		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
 		u = fmod(u, 0.10);
-		//u *= worldmap.width;
 		v = 0.5 - asin(d.y) / M_PI;
 		v = fmod(v, 0.10);
-		//v *= worldmap.height;
 
-//		r.x = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride];
-//		r.y = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 1];
-//		r.z = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 2];
-//		r = vec3_mult(1. / 256., r);
 		if (u < 0.05 && v < 0.05)
 			return (black);
 		if (u > 0.05 && v < 0.05)
@@ -42,6 +53,7 @@ t_vec3			get_texture_color(t_ray ray)
 		if (u < 0.05 && v > 0.05)
 			return (white);
 		return (white);
+		
 	}
 //	else
 		return (ray.collided->color);
