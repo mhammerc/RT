@@ -5,7 +5,7 @@ camera:
 object:
 	name: Le cube
 	type: POLYGONS
-	filename: mokdels/cube.obj
+	filename: models/cube.obj
 	position: 1;0;0
 	color: 0.3; 0.5; 0.3
 

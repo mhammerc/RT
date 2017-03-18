@@ -243,7 +243,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 	}
 
 	if (type == SPHERE || type == CYLINDER || type == CONE || type == PLANE
-			|| type == TORUS)
+			|| type == TORUS || type == POLYGONS)
 	{
 		GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
 				view->selected_obj.object->kdiff, 0, 1);

@@ -223,7 +223,7 @@ static void		update_progress_bar(t_scene *scene, double percent_per_line)
 	static double	last_percent = 0.;
 
 	*scene->percent += percent_per_line;
-	if (*scene->percent > 0.95)
+	if (*scene->percent > 0.99)
 	{
 		last_percent = 0.;
 	}
