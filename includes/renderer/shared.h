@@ -13,6 +13,7 @@
 #ifndef ENV_H
 # define ENV_H
 # include <libft.h>
+# include <texture_loader.h>
 
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
@@ -21,6 +22,8 @@
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 # define REFL_ATTENUATION 0.2
+# define WHITE (t_vec3){1., 1., 1.}
+# define BLACK (t_vec3){0., 0., 0.}
 
 typedef struct s_ui	t_ui;
 
@@ -36,6 +39,15 @@ enum e_object_type
 	EMPTY,
 	LIGHT,
 	OBJECT_TYPE_COUNT
+};
+
+enum e_texture_type
+{
+	NO_TEXTURE,
+	SPHERICAL,
+	SPHERICAL_DAMIER,
+	PLANAR_DAMIER,
+	TEXTURE_TYPE_COUNT
 };
 
 struct						s_vec3
@@ -103,6 +115,8 @@ struct						s_obj
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
 	t_face					*faces;
+	enum e_texture_type		have_texture;
+	t_texture				texture;
 };
 
 struct						s_csg

@@ -7,11 +7,6 @@
 #include "shared.h"
 #include "texture_loader.h"
 
-static t_texture	worldmap = {0};
-
-static t_vec3		black = {0., 0., 0.};
-static t_vec3		white = {1., 1., 1.};
-
 t_vec3			get_texture_color(t_ray ray)
 {
 	t_vec3	r;
@@ -19,8 +14,77 @@ t_vec3			get_texture_color(t_ray ray)
 	double	u;
 	double	v;
 
-	if (ray.collided->type == SPHERE)
+	if (ray.collided->have_texture == NO_TEXTURE)
+		return (ray.collided->color);
+	else if (ray.collided->have_texture == SPHERICAL_DAMIER)
 	{
+		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+		u = fmod(u, 0.10);
+		v = 0.5 - asin(d.y) / M_PI;
+		v = fmod(v, 0.10);
+
+		if (u < 0.05 && v < 0.05)
+			return (BLACK);
+		if (u > 0.05 && v < 0.05)
+			return (WHITE);
+		if (u > 0.05 && v > 0.05)
+			return (BLACK);
+		if (u < 0.05 && v > 0.05)
+			return (WHITE);
+		return (WHITE);
+	}
+	else if (ray.collided->have_texture == SPHERICAL
+			&& ray.collided->texture.is_valid)
+	{
+		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+		u *= ray.collided->texture.width;
+		v = 0.5 - asin(d.y) / M_PI;
+		v *= ray.collided->texture.height;
+		int offset = 3;
+		if (ray.collided->texture.has_alpha)
+			offset = 4;
+
+		r.x = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride];
+		r.y = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 1];
+		r.z = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 2];
+		r = vec3_mult(1. / 256., r);
+		return (r);
+
+	}
+	else if (ray.collided->have_texture == PLANAR_DAMIER)
+	{
+		d = vec3_sub(ray.collided->pos, ray.pos);
+		u = d.x;
+		v = d.y;
+		if (u < 0.)
+		{
+			u -= 0.05;
+			u = -u;
+		}
+		if (v < 0.)
+		{
+			v -= 0.05;
+			v = -v;
+		}
+		u = fmod(u, 0.10);
+		v = fmod(v, 0.10);
+		if (u < 0.05 && v < 0.05)
+			return (BLACK);
+		if (u > 0.05 && v < 0.05)
+			return (WHITE);
+		if (u > 0.05 && v > 0.05)
+			return (BLACK);
+		if (u < 0.05 && v > 0.05)
+			return (WHITE);
+		return (WHITE);
+	}
+	else
+		return (ray.collided->color);
+
+	//if (ray.collided->type == SPHERE)
+	
 		/*  globe  */
 		/*
 		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
@@ -37,7 +101,7 @@ t_vec3			get_texture_color(t_ray ray)
 		*/
 
 		/* damier */
-
+/* 
 		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
 		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
 		u = fmod(u, 0.10);
@@ -55,15 +119,22 @@ t_vec3			get_texture_color(t_ray ray)
 		return (white);
 
 	}
-	if (ray.collided->type == PLANE)
+	if (0 && ray.collided->type == PLANE)
 	{
 		d = vec3_sub(ray.collided->pos, ray.pos);
 		u = d.x;
 		v = d.y;
-		u = fabs(d.x);
-		v = fabs(d.y);
-		//u = fmod((double)worldmap.width, u);
-		//v = fmod((double)worldmap.height, v);
+		if (u < 0.)
+		{
+			//u -= 0.05;
+			u = -u;
+		}
+		if (v < 0.)
+		{
+			//v -= 0.05;
+			v = -v;
+		}
+		/* 
 		u = fmod(u, 0.10);
 		v = fmod(v, 0.10);
 		if (u < 0.05 && v < 0.05)
@@ -75,22 +146,24 @@ t_vec3			get_texture_color(t_ray ray)
 		if (u < 0.05 && v > 0.05)
 			return (white);
 		return (white);
+		*/
 
 		/*
+		printf("%f\n", v);
 		u = fmod(1, u);
 		v = fmod(1, v);
-		u *= worldmap.width;
-		v *= worldmap.height;
+		u *= (double)worldmap.width;
+		v *= (double)worldmap.height;
 
 		r.x = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride];
 		r.y = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 1];
 		r.z = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 2];
 		r = vec3_mult(1. / 256., r);
 		return (r);
-		*/
 	}
 //	else
 		return (ray.collided->color);
+		*/
 }
 
 float			light_find_max(t_vec3 *light, int w, int h)
@@ -507,8 +580,8 @@ void renderer_compute_image(t_scene *sce)
 {
 	pthread_t thread;
 
-	if (!worldmap.pixels)
-		worldmap = load_texture("textures/map.jpg");
+	//if (!worldmap.pixels)
+		//worldmap = load_texture("textures/map.jpg");
 	sce->ui->rendering = 1;
 	pthread_create(&thread, NULL, renderer_compute_image2, sce);
 	gdk_threads_add_timeout(100, test, sce);

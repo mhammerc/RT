@@ -179,6 +179,43 @@ static void		kspec_edited(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
+static void		texture_type_edited(GtkComboBox *widget, gpointer user_data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)user_data;
+	(void)widget;
+	ui->selected_obj.object->have_texture = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	element_edited();
+}
+
+static void		texture_file_set(GtkFileChooserButton *widget,
+		gpointer user_data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)user_data;
+	free_texture(&ui->selected_obj.object->texture);
+	if (ui->selected_obj.object->texture_filename)
+		g_free(ui->selected_obj.object->texture_filename);
+	ui->selected_obj.object->texture_filename = gtk_file_chooser_get_filename(
+													GTK_FILE_CHOOSER(widget));
+	ui->selected_obj.object->texture = load_texture(ui->selected_obj.object->texture_filename);
+	if (!ui->selected_obj.object->texture.is_valid)
+	{
+		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window),
+			GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+			"Can not load %s.\nIt is not a valid texture.\n%s",
+			ui->selected_obj.object->filename, g_strerror(errno));
+		g_signal_connect_swapped(dialog, "response", G_CALLBACK(
+												gtk_widget_destroy), dialog);
+		gtk_dialog_run(GTK_DIALOG(dialog));
+		return ;
+	}
+	element_edited();
+}
+
+
 void		 	edit_element_properties(GtkTreeView *tree_view,
 					GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
 {
@@ -260,7 +297,24 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 	}
 
 	if (type != CSG && type != LIGHT)
+	{
 		create_color_chooser(view, view->selected_obj.object->color);
+		GtkWidget	*texture_type = gtk_combo_box_text_new();
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "None");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Spherical");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Sphere damier");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar damier");
+		gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type), 0);
+		g_signal_connect(texture_type, "changed", G_CALLBACK(texture_type_edited), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_type);
+		GtkWidget	*texture_chooser;
+		texture_chooser = gtk_file_chooser_button_new("Texture images", GTK_FILE_CHOOSER_ACTION_OPEN);
+		if (view->selected_obj.object->texture_filename)
+			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(texture_chooser), view->selected_obj.object->filename);
+		g_signal_connect(texture_chooser, "file-set", G_CALLBACK(texture_file_set), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_chooser);
+	}
+
 	if (type == POLYGONS)
 	{
 		GtkWidget *file_chooser;

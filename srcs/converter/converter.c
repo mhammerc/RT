@@ -47,6 +47,8 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->csg = '0';
 	obj->nb_faces = object->nb_faces;
 	obj->faces = object->faces;
+	obj->have_texture = object->have_texture;
+	obj->texture = object->texture;
 	apply_parent_relative(parent, obj);
 }
 

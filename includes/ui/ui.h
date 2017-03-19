@@ -37,6 +37,9 @@ typedef struct			s_object
 	char				*filename;
 	size_t				nb_faces;
 	t_face				*faces;
+	enum e_texture_type		have_texture;
+	t_texture				texture;
+	char					*texture_filename;
 }						t_object;
 
 typedef struct			s_selected_obj
