@@ -276,11 +276,21 @@ static int		ray_object(t_obj* obj, t_ray *ray)
 	res = LOCATION_NONE;
 	if (obj->intersect(obj, ray, &interval))
 	{
+		collided = (t_obj*)malloc(sizeof(t_obj));
 		if ((res = minimal_positiv(&interval, obj, &(ray->t), &collided)))
 		{
 			if (ray->type == INITIAL_RAY)
+			{
+				if (ray->collided)
+				{
+					free(ray->collided);
+					ray->collided = 0;
+				}
 				ray->collided = collided;
+			}
 		}
+		else
+			free(collided);
 	}
 	return (res == LOCATION_NONE ? 0 : 1);
 }
@@ -441,6 +451,24 @@ t_list			*ft_lstdup(t_list	*original_begin)
 	return (n);
 }
 
+void			lstfree(t_list	*begin)
+{
+	t_list	*list;
+	t_list	*tmp;
+	t_obj	*obj;
+
+	list = begin;
+	while (list)
+	{
+		obj = (t_obj*)list->content;
+		if (obj->type == POLYGONS && obj->faces)
+		free(obj->faces);
+		tmp = list->next;
+		free(list);
+		list = tmp;
+	}
+}
+
 static void		*thread_compute_image(void *thread_data)
 {
 	int						i;
@@ -505,6 +533,7 @@ static void		*thread_compute_image(void *thread_data)
 			update_progress_bar(sce, percent_per_line);
 		pthread_mutex_unlock(&sce->ui->mutex_stock);
 	}
+	lstfree(sce->obj);
 	return (NULL);
 }
 
@@ -525,9 +554,8 @@ void			*renderer_compute_image2(void *sce2)
 	i = 0;
 	while (i < CORE_COUNT)
 	{
-		threads_data[i].sce = sce;
 		threads_data[i].sce = malloc(sizeof(t_scene));
-		memcpy(threads_data[i].sce, sce, sizeof(t_scene));
+		ft_memcpy(threads_data[i].sce, sce, sizeof(t_scene));
 		threads_data[i].pixels = sce->pixels;
 		threads_data[i].light = light;
 		threads_data[i].y_begin = sce->cam.h / CORE_COUNT * i;
@@ -552,6 +580,13 @@ void			*renderer_compute_image2(void *sce2)
 	}
 	light_to_pixel(light, sce->pixels, sce->cam.w, sce->cam.h);
 	free(light);
+	i = 0;
+	while (i < CORE_COUNT)
+	{
+		free(threads_data[i].sce);
+		++i;
+	}
+	free(sce->percent);
 	*sce->ui->percent = 1.1;
 	return (NULL);
 }
@@ -580,8 +615,6 @@ void renderer_compute_image(t_scene *sce)
 {
 	pthread_t thread;
 
-	//if (!worldmap.pixels)
-		//worldmap = load_texture("textures/map.jpg");
 	sce->ui->rendering = 1;
 	pthread_create(&thread, NULL, renderer_compute_image2, sce);
 	gdk_threads_add_timeout(100, test, sce);
