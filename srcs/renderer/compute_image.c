@@ -19,7 +19,7 @@ t_vec3			get_texture_color(t_ray ray)
 	double	u;
 	double	v;
 
-//	if (ray.collided->type == SPHERE)
+	if (ray.collided->type == SPHERE)
 	{
 		/*  globe  */
 		/*
@@ -53,7 +53,41 @@ t_vec3			get_texture_color(t_ray ray)
 		if (u < 0.05 && v > 0.05)
 			return (white);
 		return (white);
-		
+
+	}
+	if (ray.collided->type == PLANE)
+	{
+		d = vec3_sub(ray.collided->pos, ray.pos);
+		u = d.x;
+		v = d.y;
+		u = fabs(d.x);
+		v = fabs(d.y);
+		//u = fmod((double)worldmap.width, u);
+		//v = fmod((double)worldmap.height, v);
+		u = fmod(u, 0.10);
+		v = fmod(v, 0.10);
+		if (u < 0.05 && v < 0.05)
+			return (black);
+		if (u > 0.05 && v < 0.05)
+			return (white);
+		if (u > 0.05 && v > 0.05)
+			return (black);
+		if (u < 0.05 && v > 0.05)
+			return (white);
+		return (white);
+
+		/*
+		u = fmod(1, u);
+		v = fmod(1, v);
+		u *= worldmap.width;
+		v *= worldmap.height;
+
+		r.x = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride];
+		r.y = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 1];
+		r.z = worldmap.pixels[(int)u * 3 + (int)v * worldmap.rowstride + 2];
+		r = vec3_mult(1. / 256., r);
+		return (r);
+		*/
 	}
 //	else
 		return (ray.collided->color);
