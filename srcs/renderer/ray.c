@@ -53,13 +53,12 @@ t_ray		reflected_ray(t_ray ray)
 //	- if stack is empty, previous rindex is 1 (air)
 //	- then stack new object
 //if collision from inside
-//	- pop stack to get rnew, if stack was empty, rnew is 1 (air)
+//	- pop stack and read top to get rnew, if stack is empty then rnew is 1
 //	- rprev is of object collided
 //compute transmitted direction
 	//return refracted ray
 t_ray	refracted_ray(t_ray ray)
 {
-	t_ray		r;
 	t_obj		*prev_obj;
 	double		ki; //rprev : rindex incident ray
 	double		kr; //rnew : rindex refracted ray
@@ -67,24 +66,30 @@ t_ray	refracted_ray(t_ray ray)
 	double		c1;
 	double		c2;
 	t_vec3		Rr;
+	int			size_before;
 
+	size_before = ray.rstack.size;
 	if (ray.location == LOCATION_OUTSIDE)
 	{
 		prev_obj = stack_peak(&(ray.rstack));
 		ki = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
 		kr = ray.collided->rindex;
+		//printf("from outside - ki:%f, kr:%f, size_before:%d\n", ki, kr, size_before);
 		stack_push(&(ray.rstack), ray.collided);
 	}
 	else
 	{
-		prev_obj = stack_pop(&(ray.rstack));
+		stack_pop(&(ray.rstack));
+		prev_obj = stack_peak(&(ray.rstack));
 		kr = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
 		ki = ray.collided->rindex;
+		//printf("from inside - ki:%f, kr:%f, size_before:%d\n", ki, kr, size_before);
 	}
 	kr = kr > 0 ? kr : R_DEFAULT;
 	n = ki / kr;
 	c1 = -vec3_dot(ray.dir, ray.n);
 	c2 = sqrt( 1 - n * n * (1. - c1 * c1));
-	Rr = vec3_add(vec3_mult(n, ray.dir),vec3_mult(n * c1 - c2, ray.n)); 
+	Rr = vec3_add(vec3_mult(n, ray.dir),vec3_mult(n * c1 - c2, ray.n));
+	ray.pos = vec3_add(ray.pos, vec3_mult(2. * EPS, ray.dir));
 	return (ray_new_dir(ray, vec3_get_normalized(Rr)));
 }

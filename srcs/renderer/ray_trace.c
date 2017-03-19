@@ -109,8 +109,8 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 		if (ray.collided->transparency > 0)
 		{
 			refl_light = ray_trace(sce, refracted_ray(ray), depth + 1);
-			refl_light = vec3_mult(REFR_ATTENUATION, refl_light);
-			light = vec3_add(light, color_light_mix(ray.collided->color,
+			//printf("refr_light=%f,%f,%f\n", refl_light.x, refl_light.y, refl_light.z);
+			light = vec3_add(light, color_light_mix((t_vec3){1, 1, 1},
 													refl_light,
 													ray.collided->transparency));
 		}

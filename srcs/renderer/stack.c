@@ -17,9 +17,10 @@ t_obj		*stack_pop(t_obj_stack *stack)
 	size = stack->size;
 	if (size == 0)
 		return (NULL);
-	res = stack->obj[size - 1];
-	stack->obj[size - 1] = NULL;
-	stack->size--;
+	stack->size = stack->size - 1;
+	--size;
+	res = stack->obj[size];
+	stack->obj[size] = NULL;
 	return (res);
 }
 

@@ -22,7 +22,7 @@
 # define OCCLUSION_RAY 1
 # define REFL_ATTENUATION 0.2
 # define REFR_ATTENUATION 0.2
-# define MAX_REC_DEPTH 42
+# define MAX_REC_DEPTH 3
 # define R_GLASS 1.42
 # define R_DEFAULT 1.0
 
