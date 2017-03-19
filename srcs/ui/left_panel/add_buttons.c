@@ -104,7 +104,10 @@ static void	ui_free_object(t_object *object)
 	size_t	i;
 
 	if (object->filename)
-		free(object->filename);
+		g_free(object->filename);
+	if (object->texture_filename)
+		g_free(object->texture_filename);
+	free_texture(&object->texture);
 	if (object->faces)
 	{
 		i = 0;

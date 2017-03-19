@@ -304,13 +304,13 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Spherical");
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Sphere damier");
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar damier");
-		gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type), 0);
+		gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type), view->selected_obj.object->have_texture);
 		g_signal_connect(texture_type, "changed", G_CALLBACK(texture_type_edited), view);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_type);
 		GtkWidget	*texture_chooser;
 		texture_chooser = gtk_file_chooser_button_new("Texture images", GTK_FILE_CHOOSER_ACTION_OPEN);
 		if (view->selected_obj.object->texture_filename)
-			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(texture_chooser), view->selected_obj.object->filename);
+			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(texture_chooser), view->selected_obj.object->texture_filename);
 		g_signal_connect(texture_chooser, "file-set", G_CALLBACK(texture_file_set), view);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_chooser);
 	}
