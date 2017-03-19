@@ -21,7 +21,10 @@
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 # define REFL_ATTENUATION 0.2
+# define REFR_ATTENUATION 0.2
 # define MAX_REC_DEPTH 42
+# define R_GLASS 1.42
+# define R_DEFAULT 1.0
 
 typedef struct s_ui	t_ui;
 
@@ -108,6 +111,7 @@ struct						s_obj
 	double					length;
 	enum e_object_type		type;
 	int						id;
+	int						transparency;
 	double					kspec;
 	double					kdiff;
 	double					kp;
@@ -140,7 +144,7 @@ struct						s_ray
 	t_obj					*collided;
 	t_vec3					hit;
 	t_vec3					light;
-	t_obj_stack				r_stack;
+	t_obj_stack				rstack;
 	int						location;
 };
 

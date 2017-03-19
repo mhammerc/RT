@@ -78,7 +78,9 @@ t_obj		*stack_peak(t_obj_stack *stack);
 t_obj_stack	stack_new(void);
 
 t_ray		ray_new(t_vec3 pos, t_vec3 aim);
+t_ray		ray_new_dir(t_ray ray, t_vec3 dir);
 t_ray		reflected_ray(t_ray ray);
+t_ray	refracted_ray(t_ray ray);
 
 int			colorcomp_to_rgb(int r, int g, int b);
 void		light_to_pixel(t_vec3 *light, int *px, int w, int h);

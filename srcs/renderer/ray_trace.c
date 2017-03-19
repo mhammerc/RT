@@ -97,7 +97,7 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 		return (light);
 	if (rt_object(sce, &ray))
 	{
-		light = rt_light(sce, ray);
+		light = vec3_mult(1.0 - ray.collided->transparency , rt_light(sce, ray));
 		if (ray.collided->kspec > 0)
 		{
 			refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
@@ -105,6 +105,14 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 			light = vec3_add(light, color_light_mix(ray.collided->color,
 													refl_light,
 													ray.collided->kspec));
+		}
+		if (ray.collided->transparency > 0)
+		{
+			refl_light = ray_trace(sce, refracted_ray(ray), depth + 1);
+			refl_light = vec3_mult(REFR_ATTENUATION, refl_light);
+			light = vec3_add(light, color_light_mix(ray.collided->color,
+													refl_light,
+													ray.collided->transparency));
 		}
 	}
 	return (light);
