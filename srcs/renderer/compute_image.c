@@ -60,23 +60,23 @@ t_vec3			get_texture_color(t_ray ray)
 		v = d.y;
 		if (u < 0.)
 		{
-			u -= 0.05;
+			u -= 0.5;
 			u = -u;
 		}
 		if (v < 0.)
 		{
-			v -= 0.05;
+			v -= 0.5;
 			v = -v;
 		}
-		u = fmod(u, 0.10);
-		v = fmod(v, 0.10);
-		if (u < 0.05 && v < 0.05)
+		u = fmod(u, 1.0);
+		v = fmod(v, 1.0);
+		if (u < 0.5 && v < 0.5)
 			return (BLACK);
-		if (u > 0.05 && v < 0.05)
+		if (u > 0.5 && v < 0.5)
 			return (WHITE);
-		if (u > 0.05 && v > 0.05)
+		if (u > 0.5 && v > 0.5)
 			return (BLACK);
-		if (u < 0.05 && v > 0.05)
+		if (u < 0.5 && v > 0.5)
 			return (WHITE);
 		return (WHITE);
 	}
@@ -282,12 +282,11 @@ static int		ray_object(t_obj* obj, t_ray *ray)
 			if (ray->type == INITIAL_RAY)
 			{
 				if (ray->collided)
-				{
 					free(ray->collided);
-					ray->collided = 0;
-				}
 				ray->collided = collided;
 			}
+			else
+				free(collided);
 		}
 		else
 			free(collided);
@@ -385,6 +384,8 @@ static t_vec3	ray_trace(t_scene *sce, t_ray ray, int depth)
 													ray.collided->kspec));
 		}
 	}
+	if (ray.collided)
+		free(ray.collided);
 	return (light);
 }
 
@@ -464,6 +465,7 @@ void			lstfree(t_list	*begin)
 		if (obj->type == POLYGONS && obj->faces)
 		free(obj->faces);
 		tmp = list->next;
+		free(list->content);
 		free(list);
 		list = tmp;
 	}
