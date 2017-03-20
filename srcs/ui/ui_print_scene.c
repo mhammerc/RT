@@ -7,7 +7,7 @@
 ** p[2] = blue;
 ** p[3] = alpha;
 */
-void			ui_print_scene(int *pixels)
+void	ui_print_scene(int *pixels)
 {
 	t_ui	*ui;
 	guchar	*image;

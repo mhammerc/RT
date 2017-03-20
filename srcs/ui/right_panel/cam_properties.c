@@ -55,15 +55,14 @@ void		edit_cam_properties(gpointer data)
 
 	view = (t_ui*)data;
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop),
-										gtk_label_new_with_mnemonic("_Camera"));
+		gtk_label_new_with_mnemonic("_Camera"));
 	GtkWidget	*pos = create_vector3_entry("pos		", view->cam->pos);
 	GtkWidget	*lkat = create_vector3_entry("LookAt	", view->cam->dir);
-	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_edited),
-																		view);
-	g_signal_connect(lkat, "rt-vector3-entry-edited", G_CALLBACK(dir_edited),
-																		view);
+	g_signal_connect(pos, "rt-vector3-entry-edited",
+		G_CALLBACK(pos_edited), view);
+	g_signal_connect(lkat, "rt-vector3-entry-edited",
+		G_CALLBACK(dir_edited), view);
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop), lkat);
-
 	gtk_widget_show_all(view->window);
 }

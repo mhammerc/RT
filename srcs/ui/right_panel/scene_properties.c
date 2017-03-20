@@ -26,7 +26,7 @@ static void		aa_edited(GtkComboBox *widget, gpointer data)
 }
 
 static void		ambiant_light_edited(GtkWidget *widget, gdouble value,
-																gpointer data)
+					gpointer data)
 {
 	t_ui	*ui;
 
@@ -56,14 +56,13 @@ void			edit_scene_properties(gpointer data)
 	ui = (t_ui*)data;
 
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop),
-										gtk_label_new_with_mnemonic("_Scene"));
-
+		gtk_label_new_with_mnemonic("_Scene"));
 	ambiant_light = create_scale_entry("Ambiant Light",
-										ui->rp->scene_gtk.ambiant_light, 0, 1);
+		ui->rp->scene_gtk.ambiant_light, 0, 1);
 	g_signal_connect(ambiant_light, "rt-scale-entry-edited",
-										G_CALLBACK(ambiant_light_edited), ui);
-
-	fov = create_scale_entry("FOV              ", ui->rp->scene_gtk.fov, 45, 90);
+		G_CALLBACK(ambiant_light_edited), ui);
+	fov = create_scale_entry("FOV              ",
+		ui->rp->scene_gtk.fov, 45, 90);
 	g_signal_connect(fov, "rt-scale-entry-edited", G_CALLBACK(fov_edited), ui);
 
 	GtkWidget	*aa_box;
@@ -79,7 +78,6 @@ void			edit_scene_properties(gpointer data)
 	g_signal_connect(aa, "changed", G_CALLBACK(aa_edited), ui);
 	gtk_container_add(GTK_CONTAINER(aa_box), aa_title);
 	gtk_container_add(GTK_CONTAINER(aa_box), aa);
-
 
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), ambiant_light);
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), fov);

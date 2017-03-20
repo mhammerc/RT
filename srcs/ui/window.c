@@ -2,7 +2,7 @@
 #include <locale.h>
 
 static GtkWidget		*create_app_window(GtkApplication *app, int width,
-														int height, char *title)
+							int height, char *title)
 {
 	GtkWidget	*win;
 
@@ -23,38 +23,28 @@ static void			default_scene(t_ui *ui)
 t_ui	*get_interface()
 {
 	static t_ui	ui = {};
-
 	return (&ui);
 }
 
 void			setup_custom_signals()
 {
-	g_signal_new("rt-entry-edited",
-			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
-			0, NULL, NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE, 1, G_TYPE_STRING);
-	g_signal_new("rt-scale-entry-edited",
-			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
-			0, NULL, NULL,
-			g_cclosure_marshal_VOID__DOUBLE,
-			G_TYPE_NONE, 1, G_TYPE_DOUBLE);
-	g_signal_new("rt-numeric-entry-edited",
-			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
-			0, NULL, NULL,
-			g_cclosure_marshal_VOID__DOUBLE,
-			G_TYPE_NONE, 1, G_TYPE_DOUBLE);
-	g_signal_new("rt-vector3-entry-edited",
-			G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
-			0, NULL, NULL,
-			g_cclosure_marshal_VOID__POINTER,
-			G_TYPE_NONE, 1, G_TYPE_POINTER);
+	g_signal_new("rt-entry-edited", G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST, 0, NULL,
+		NULL, g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1, G_TYPE_STRING);
+	g_signal_new("rt-scale-entry-edited", G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST, 0,
+		NULL, NULL, g_cclosure_marshal_VOID__DOUBLE, G_TYPE_NONE, 1,
+		G_TYPE_DOUBLE);
+	g_signal_new("rt-numeric-entry-edited", G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
+		0, NULL, NULL, g_cclosure_marshal_VOID__DOUBLE, G_TYPE_NONE, 1,
+		G_TYPE_DOUBLE);
+	g_signal_new("rt-vector3-entry-edited", G_TYPE_OBJECT, G_SIGNAL_RUN_FIRST,
+		0, NULL, NULL, g_cclosure_marshal_VOID__POINTER, G_TYPE_NONE, 1,
+		G_TYPE_POINTER);
 }
 
 void			build_interface(GtkApplication *app, gpointer user_data)
 {
-	t_ui			*ui;
-	int				*index;
+	t_ui	*ui;
+	int		*index;
 
 	setlocale(LC_ALL, "C");
 	ui = get_interface();
