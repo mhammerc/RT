@@ -38,16 +38,12 @@ SRCS_NAME	=	main.c										\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
 				ui/top_menu/top_menu.c						\
-				ui/top_menu/file_loader/file_loader.c		\
-				ui/top_menu/file_loader/parser.c			\
-				ui/top_menu/file_loader/fill_env.c			\
-				ui/top_menu/file_loader/fill_group.c		\
-				ui/top_menu/file_loader/checker.c			\
-				ui/top_menu/file_loader/scene.c				\
-				ui/top_menu/file_loader/camera.c			\
-				ui/top_menu/file_loader/object.c			\
-				ui/top_menu/file_loader/lists.c				\
-				ui/top_menu/file_loader/tools.c				\
+				file_loader/file_loader.c					\
+				file_loader/parser.c						\
+				file_loader/object.c						\
+				file_loader/camera.c						\
+				file_loader/tools.c							\
+				file_loader/vec3.c							\
 				converter/converter.c						\
 				obj_parser/obj_parser.c						\
 				texture_loader/texture_loader.c				\
@@ -93,7 +89,7 @@ create_objs_dir:
 				@mkdir $(OBJS_PATH)/ui/tools 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/top_menu 2> /dev/null || true
-				@mkdir $(OBJS_PATH)/ui/top_menu/file_loader 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/file_loader 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/obj_parser 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/texture_loader 2> /dev/null || true
 

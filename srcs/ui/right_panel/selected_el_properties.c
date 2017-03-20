@@ -37,6 +37,8 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 		g_signal_connect_swapped(dialog, "response", G_CALLBACK(
 												gtk_widget_destroy), dialog);
 		gtk_dialog_run(GTK_DIALOG(dialog));
+		ui->selected_obj.object->nb_faces = 0;
+		ui->selected_obj.object->faces = 0;
 		return ;
 	}
 	ui->selected_obj.object->nb_faces = object->nb_faces;
@@ -225,7 +227,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
 	}
 
-	if (type == SPHERE || type == CONE || type == CYLINDER)
+	if (type == SPHERE || type == CONE || type == CYLINDER || type == TORUS)
 	{
 		GtkWidget	*radius = create_scale_entry("Radius  ",
 			view->selected_obj.object->radius, 0, 1000);
@@ -234,7 +236,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				G_CALLBACK(radius_edited), view);
 
 	}
-	if (type == CONE || type == CYLINDER)
+	if (type == CONE || type == CYLINDER || type == TORUS)
 	{
 		GtkWidget	*length = create_scale_entry("Length  ",
 			view->selected_obj.object->length, 0, 1000);
@@ -243,7 +245,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 	}
 
 	if (type == SPHERE || type == CYLINDER || type == CONE || type == PLANE
-			|| type == TORUS)
+			|| type == TORUS || type == POLYGONS)
 	{
 		GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
 				view->selected_obj.object->kdiff, 0, 1);

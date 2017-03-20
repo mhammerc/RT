@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/15 19:16:50 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/17 10:33:50 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,22 +79,6 @@ typedef struct				s_face
 
 typedef struct s_obj		t_obj;
 
-struct						s_csg
-{
-	double					dist;
-	int						normal;
-	t_obj					*ref;
-};
-typedef	struct s_csg		t_csg;
-
-struct						s_interval
-{
-	t_csg					min[10];//TODO protect if is more than 10
-	t_csg					max[10];
-	int						nb_hit;
-};
-
-typedef struct s_interval	t_interval;
 typedef struct s_ray		t_ray;
 
 struct						s_obj
@@ -115,12 +99,28 @@ struct						s_obj
 	char					csg;
 	int						normal_dir;
 	struct s_obj			*csg_ref;
-	int						(*intersect)(struct s_obj *self, t_ray *ray, t_interval*);
+	int						(*intersect)(struct s_obj *self, t_ray *ray, void*);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
 	t_face					*faces;
-	t_vec3				face_ref;
 };
+
+struct						s_csg
+{
+	double					dist;
+	int						normal;
+	t_obj					ref;
+};
+typedef	struct s_csg		t_csg;
+
+struct						s_interval
+{
+	t_csg					min[10];//TODO protect if is more than 10
+	t_csg					max[10];
+	int						nb_hit;
+};
+
+typedef struct s_interval	t_interval;
 
 struct						s_ray
 {

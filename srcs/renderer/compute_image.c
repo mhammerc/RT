@@ -21,7 +21,6 @@ float			light_find_max(t_vec3 *light, int w, int h)
 		max = fmax(max, light[i].y);
 		max = fmax(max, light[i].z);
 	}
-	printf("%f\n", max);
 	return (max);
 }
 
@@ -224,7 +223,7 @@ static void		update_progress_bar(t_scene *scene, double percent_per_line)
 	static double	last_percent = 0.;
 
 	*scene->percent += percent_per_line;
-	if (*scene->percent > 0.95)
+	if (*scene->percent > 0.99)
 	{
 		last_percent = 0.;
 	}
@@ -269,9 +268,6 @@ t_list			*ft_lstdup(t_list	*original_begin)
 	while (original)
 	{
 		original_cpy = ft_lstnew(original->content, original->content_size);
-		//original_cpy = malloc(sizeof(t_list));
-		//original_cpy->content = malloc(sizeof(t_obj));
-		//memcpy(original_cpy->content, original->content, sizeof(t_obj));
 		obj = (t_obj*)original_cpy->content;
 		if (obj->type == POLYGONS)
 		{
