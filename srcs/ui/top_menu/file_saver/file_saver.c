@@ -19,16 +19,17 @@ static void		save_obj(FILE *file, t_object *obj, int depth)
 
 	tab = str_tab(depth);
 	fprintf(file, "%sobject:\n", tab);
-	fprintf(file, "%s\ttype: %s\n", tab, get_enum_type(obj->type));
+	fprintf(file, "%s\ttype: %s\n", tab, get_el_type_char(obj));
 	fprintf(file, "%s\tname: %s\n", tab, obj->name);
 	print_vec3(file, "position", obj->pos, tab);
 	print_vec3(file, "rotation", obj->rot, tab);
 	print_vec3(file, "color", obj->color, tab);
-	fprintf(file, "%s\tradius: %lf\n", tab, obj->radius);
-	fprintf(file, "%s\tkspec: %lf\n", tab, obj->kspec);
-	fprintf(file, "%s\tkdiff: %lf\n", tab, obj->kdiff);
+	fprintf(file, "%s\tradius: %f\n", tab, obj->radius);
+	fprintf(file, "%s\tkspec: %f\n", tab, obj->kspec);
+	fprintf(file, "%s\tkdiff: %f\n", tab, obj->kdiff);
 	fprintf(file, "%s\tcsgOperation: %c\n", tab, obj->operation);
-	fprintf(file, "%s\tfile: %s\n", tab, obj->filename);
+	if (obj->filename)
+		fprintf(file, "%s\tfile: %s\n", tab, obj->filename);
 	fprintf(file, "\n");
 	free(tab);
 }

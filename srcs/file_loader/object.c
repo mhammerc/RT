@@ -11,6 +11,7 @@ void	p_parse_object(t_env *env, char *ln)
 	ft_bzero(&new_object, sizeof(t_object));
 	new_object.kspec = 1.;
 	new_object.kdiff = 1.;
+	new_object.operation = '0';
 	free(env->ln);
 	while ((ret = ft_get_next_line(env->fd, &env->ln)))
 	{
@@ -80,6 +81,8 @@ void	p_parse_object(t_env *env, char *ln)
 				p_parse_object(env, env->ln);
 				env->current_object = old;
 				env->depth = old_depth;
+				if (!env->ln)
+					return ;
 				tabs = count_tab(env->ln);
 				if (tabs < env->depth)
 				{
