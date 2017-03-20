@@ -142,6 +142,8 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		spot.intensity = 1;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
+	if (objects->children)
+		fill_spot(objects->children, spots);
 	if (objects->next)
 		fill_spot(objects->next, spots);
 }
