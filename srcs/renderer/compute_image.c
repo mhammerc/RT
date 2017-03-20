@@ -110,6 +110,53 @@ int				colorcomp_to_rgb(int r, int g, int b)
 	return ((0xff << ALPHA_BITSHIFT) + (r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
 }
 
+void			filter_black_and_white(t_vec3 *light, int len)
+{
+	int		i;
+	double	tmp2;
+
+	i = -1;
+	while (++i < len)
+	{
+		tmp2 = light[i].x + light[i].y + light[i].z;
+		tmp2 /= 3;
+		light[i].x = tmp2;
+		light[i].y = tmp2;
+		light[i].z = tmp2;
+	}
+
+}
+
+void			filter_sepia(t_vec3 *light, int len)
+{
+	int		i;
+	t_vec3	tmp;
+
+	i = -1;
+	while (++i < len)
+	{
+		tmp.x = (light[i].x * .393) + (light[i].y * .769) + (light[i].z * .189);
+		tmp.y = (light[i].x * .349) + (light[i].y * .686) + (light[i].z * .168);
+		tmp.z = (light[i].x * .272) + (light[i].y * .534) + (light[i].z * .131);
+		light[i] = tmp;
+	}
+}
+
+static void 	light_apply_filters(t_scene *sce, t_vec3 *light, int w, int h)
+{
+	int		i;
+	int		len;
+	t_vec3	tmp;
+	double	tmp2;
+
+	len = w * h;
+	i = -1;
+	if (sce->filter == BLACK_WHITE)
+		filter_black_and_white(light, len);
+	if (sce->filter == SEPIA)
+		filter_sepia(light, len);
+}
+
 void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
 //void			light_to_pixel(t_renderer_thread *data)
 {
@@ -498,6 +545,7 @@ void			*renderer_compute_image2(void *sce2)
 		}
 		++i;
 	}
+	light_apply_filters(sce, light, sce->cam.w, sce->cam.h);
 	light_to_pixel(light, sce->pixels, sce->cam.w, sce->cam.h);
 	free(light);
 	i = 0;

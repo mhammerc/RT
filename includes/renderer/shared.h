@@ -51,6 +51,14 @@ enum e_texture_type
 	TEXTURE_TYPE_COUNT
 };
 
+enum e_filters
+{
+	NONE,
+	BLACK_WHITE,
+	SEPIA,
+	FILTERS_COUNT
+};
+
 struct						s_vec3
 {
 	double					x;
@@ -166,6 +174,7 @@ struct						s_scene
 	double					*percent;
 	int						*pixels;
 	int						aa;
+	enum e_filters			filter;
 };
 typedef struct s_scene		t_scene;
 

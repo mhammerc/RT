@@ -5,6 +5,7 @@ void		init_scene(t_ui *ui)
 	ui->rp->scene_gtk.ambiant_light = 0.42;
 	ui->rp->scene_gtk.fov = 45;
 	ui->rp->scene_gtk.aa = 0;
+	ui->rp->scene_gtk.filter = 0;
 }
 
 static void		scene_edited()
@@ -22,6 +23,15 @@ static void		aa_edited(GtkComboBox *widget, gpointer data)
 
 	ui = (t_ui*)data;
 	ui->rp->scene_gtk.aa = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	scene_edited();
+}
+
+static void		filters_edited(GtkComboBox *widget, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	ui->rp->scene_gtk.filter = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
 	scene_edited();
 }
 
@@ -80,8 +90,22 @@ void			edit_scene_properties(gpointer data)
 	gtk_container_add(GTK_CONTAINER(aa_box), aa_title);
 	gtk_container_add(GTK_CONTAINER(aa_box), aa);
 
+	GtkWidget	*filters_box;
+	filters_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+	GtkWidget	*filters_title;
+	filters_title = gtk_label_new_with_mnemonic("Filters");
+	GtkWidget	*filters;
+	filters = gtk_combo_box_text_new();
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "None");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Black and White");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Sepia");
+	gtk_combo_box_set_active(GTK_COMBO_BOX(filters), 0);
+	g_signal_connect(filters, "changed", G_CALLBACK(filters_edited), ui);
+	gtk_container_add(GTK_CONTAINER(filters_box), filters_title);
+	gtk_container_add(GTK_CONTAINER(filters_box), filters);
 
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), ambiant_light);
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), fov);
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), aa_box);
+	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), filters_box);
 }
