@@ -25,6 +25,7 @@ static void		save_obj(FILE *file, t_object *obj, int depth)
 	print_vec3(file, "rotation", obj->rot, tab);
 	print_vec3(file, "color", obj->color, tab);
 	fprintf(file, "%s\tradius: %f\n", tab, obj->radius);
+	fprintf(file, "%s\tlength: %f\n", tab, obj->length);
 	fprintf(file, "%s\tkspec: %f\n", tab, obj->kspec);
 	fprintf(file, "%s\tkdiff: %f\n", tab, obj->kdiff);
 	fprintf(file, "%s\tcsgOperation: %c\n", tab, obj->operation);

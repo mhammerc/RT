@@ -1,81 +1,174 @@
 camera:
-	position: 0; 0; 7
-	lookAt: 0; 0; 0
+	position: -1.5; -1.0; 3.0
+	lookAt: 0.0; 0.0; 0.0
+
+object:
+	type: LIGHT
+	name: The light
+	position: 0.0; 0.0; 7.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.0; 0.0; 0.0
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+	texture: 0
 
 object:
 	type: EMPTY
 	name: Les objets
+	position: 0.0; 0.0; 0.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.0; 0.0; 0.0
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+	texture: 0
 
 	object:
 		type: PLANE
 		name: Background
-		rotation: 0;0;1;
-		position: 0;0;-50
-		color: 1;1;1
-		kspec: 0
+		position: 0.0; 0.0; -50.0
+		rotation: 0.0; 0.0; 1.0
+		color: 1.0; 1.0; 1.0
+		radius: 0.000000
+		length: 0.000000
+		kspec: 0.000000
+		kdiff: 1.000000
+		csgOperation: 0
+		texture: 0
 
 	object:
 		type: PLANE
 		name: Background left
-		rotation: 1;0;0
-		position: 8;0;0
-		color: 0;1;1
-		kspec: 0
+		position: 8.0; 0.0; 0.0
+		rotation: 1.0; 0.0; 0.0
+		color: 0.0; 1.0; 1.0
+		radius: 0.000000
+		length: 0.000000
+		kspec: 0.000000
+		kdiff: 1.000000
+		csgOperation: 0
+		texture: 0
 
 	object:
 		type: PLANE
 		name: Background bottom
-		rotation: 0;1;0
-		position: 0;-3;0
-		color: 1;0;1
-		kspec: 0
+		position: 0.0; -3.0; 0.0
+		rotation: 0.0; 1.0; 0.0
+		color: 1.0; 0.0; 1.0
+		radius: 0.000000
+		length: 0.000000
+		kspec: 0.000000
+		kdiff: 1.000000
+		csgOperation: 0
+		texture: 0
 
 	object:
 		type: SPHERE
 		name: First sphere
-		position: -1;0;0
-		color: 0;1;0
-		radius: 150
+		position: 2.0; 1.0; -10.0
+		rotation: 0.0; 0.0; 0.0
+		color: 0.0; 1.0; 0.0
+		radius: 50.000000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
+		csgOperation: 0
+		texture: 0
 
 	object:
 		type: CONE
 		name: First cone
-		position: 0;1;-20
-		rotation: 0.1;0.8;0.1
-		color: 0;1;0
-		radius: 0.95
+		position: -1.0; 1.0; -20.0
+		rotation: 1.0; 1.0; 0.0
+		color: 0.0; 1.0; 0.0
+		radius: 0.900000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
+		csgOperation: 0
+		texture: 0
 
 	object:
 		type: CYLINDER
 		name: Cylinder near camera
-		position: 1.0;-0.5;0
-		rotation: 0;0;1
-		color: 0;1;0
-		radius: 30
+		position: 0.5; -0.5; 0.0
+		rotation: 0.0; 0.0; 1.0
+		color: 0.0; 1.0; 0.0
+		radius: 50.000000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
+		csgOperation: 0
+		texture: 0
 
 	object:
 		type: CSG
 		name: the CSG
+		position: 0.0; 0.0; 0.0
+		rotation: 0.0; 0.0; 0.0
+		color: 0.0; 0.0; 0.0
+		radius: 0.000000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
 		csgOperation: -
+		texture: 0
 
 		object:
 			type: SPHERE
 			name: Sphere csg
-			radius: 100
-			color: 0;0;1
+			position: 0.0; 0.0; 0.0
+			rotation: 0.0; 0.0; 0.0
+			color: 0.0; 0.0; 1.0
+			radius: 300.000000
+			length: 0.000000
+			kspec: 1.000000
+			kdiff: 1.000000
+			csgOperation: 0
+			texture: 1
+			texture_filename: /home/mhammerd/Dev/RT/textures/sun.jpg
 
-		#object:
-			#type: POLYGONS
-			#name: Polygons csg
-			#file: models/cube.obj
 		object:
-			type: SPHERE
-			name: Sphere csg 2
-			radius: 100;
-			color: 1;0;0
-			position: 0.5;0;0
+			type: CSG
+			name: CSG
+			position: 0.0; 0.0; 0.0
+			rotation: 0.0; 0.0; 0.0
+			color: 0.0; 0.0; 0.0
+			radius: 0.000000
+			length: 0.000000
+			kspec: 0.000000
+			kdiff: 0.000000
+			csgOperation: U
+			texture: 0
 
-object:
-	name: The light
-	type: LIGHT
-	position: 0;0;7
+			object:
+				type: TORUS
+				name: Torus
+				position: 0.0; 0.0; 0.0
+				rotation: 0.0; 0.0; 1.0
+				color: 0.0; 0.0; 1.0
+				radius: 400.000000
+				length: 0.200000
+				kspec: 1.000000
+				kdiff: 1.000000
+				csgOperation: 0
+				texture: 2
+
+			object:
+				type: TORUS
+				name: Torus
+				position: 0.0; 0.0; 0.0
+				rotation: 1.0; 0.0; 0.0
+				color: 0.0; 0.0; 1.0
+				radius: 400.000000
+				length: 0.200000
+				kspec: 1.000000
+				kdiff: 1.000000
+				csgOperation: 0
+				texture: 2
+

@@ -11,6 +11,8 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 	size_t		i;
 
 	ui = (t_ui*)user_data;
+	if (ui->rendering)
+		return ;
 	if (ui->selected_obj.object->filename)
 		g_free(ui->selected_obj.object->filename);
 	if (ui->selected_obj.object->faces)
@@ -195,6 +197,8 @@ static void		texture_file_set(GtkFileChooserButton *widget,
 	t_ui	*ui;
 
 	ui = (t_ui*)user_data;
+	if (ui->rendering)
+		return ;
 	free_texture(&ui->selected_obj.object->texture);
 	if (ui->selected_obj.object->texture_filename)
 		g_free(ui->selected_obj.object->texture_filename);
