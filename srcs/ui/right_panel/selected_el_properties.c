@@ -264,7 +264,8 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
 	}
 
-	if (type == SPHERE || type == CONE || type == CYLINDER || type == TORUS)
+	if (type == SPHERE || type == CONE || type == CYLINDER || type == TORUS
+			|| type == DISK)
 	{
 		GtkWidget	*radius = create_scale_entry("Radius  ",
 			view->selected_obj.object->radius, 0, 1000);

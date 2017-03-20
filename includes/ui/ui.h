@@ -109,6 +109,7 @@ void					refresh_obj_tree(t_ui *ui);
 void					add_object(t_object object, gboolean render_new);
 void					create_sphere();
 void					create_plane();
+void					create_disk();
 void					create_cone();
 void					create_torus(gboolean render_new);
 void					create_cgs();

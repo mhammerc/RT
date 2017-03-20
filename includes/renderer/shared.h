@@ -31,6 +31,7 @@ enum e_object_type
 {
 	SPHERE,
 	PLANE,
+	DISK,
 	CONE,
 	CYLINDER,
 	TORUS,
