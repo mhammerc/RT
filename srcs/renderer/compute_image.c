@@ -56,8 +56,27 @@ t_vec3			get_texture_color(t_ray ray)
 	else if (ray.collided->have_texture == PLANAR_DAMIER)
 	{
 		d = vec3_sub(ray.collided->pos, ray.pos);
-		u = d.x;
-		v = d.y;
+		t_vec3	n = ray.collided->dir;
+		if (n.x < n.y && n.x < n.z)
+		{
+			u = d.x;
+			v = (n.y < n.z) ? d.y : d.z;
+		}
+		else if (n.y < n.x && n.y < n.z)
+		{
+			u = d.y;
+			v = (n.x < n.z) ? d.x : d.z;
+		}
+		else if (n.z < n.y && n.z < n.x)
+		{
+			u = d.z;
+			v = (n.y < n.x) ? d.y : d.x;
+		}
+		else
+		{
+			u = d.x;
+			v = d.y;
+		}
 		if (u < 0.)
 		{
 			u -= 0.5;
