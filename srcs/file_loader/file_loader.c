@@ -16,6 +16,7 @@ void			load_file(char *filename)
 		free_obj_tree(ui);
 		hook_up_obj_lst(ui, &env);
 		refresh_obj_tree(ui);
+		refresh_cam_properties(ui);
 		ask_for_new_image(ui);
 	}
 }
