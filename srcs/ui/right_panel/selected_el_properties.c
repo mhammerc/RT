@@ -243,14 +243,12 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos);
 	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot);
-	GtkWidget	*scale = create_scale_entry("Scale      ", 0, 0, 1000); // TODO make scale a truth
 	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_edited), view);
 	g_signal_connect(rot, "rt-vector3-entry-edited", G_CALLBACK(rot_edited), view);
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), scale);
 
 	if (type == CSG)
 	{
@@ -278,6 +276,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 	{
 		GtkWidget	*length = create_scale_entry("Length  ",
 			view->selected_obj.object->length, 0, 1000);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
 		g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
 			view);
 	}
