@@ -53,7 +53,7 @@ t_vec3		vec3_sub(t_vec3 a, t_vec3 b);
 t_cam		camera_set(t_cam cam);
 
 int			sphere_intersect(t_obj *self, t_ray *ray, t_interval *interval);
-int			polygon_intersect(t_obj *self, t_ray *ray);
+int			polygon_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		polygon_normal(t_obj *self, t_vec3 pos);
 t_vec3		sphere_normal(t_obj *self, t_vec3 pos);
 int			cylinder_intersect(t_obj *self, t_ray *ray, t_interval *interval);
@@ -62,11 +62,16 @@ int			cone_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		cone_normal(t_obj *self, t_vec3 pos);
 int			plane_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		plane_normal(t_obj *self, t_vec3 pos);
+int			disk_intersect(t_obj *self, t_ray *ray, t_interval *interval);
+t_vec3		disk_normal(t_obj *self, t_vec3 pos);
+int			torus_intersect(t_obj *self, t_ray *ray, t_interval *interval);
+t_vec3		torus_normal(t_obj *self, t_vec3 pos);
 
 int (*get_obj_intersection(enum e_object_type))(t_obj*, t_ray*, t_interval*);
 t_vec3 (*get_obj_normal())(t_obj*, t_vec3);
 
 int			norm_quad_solve(double b, double c, t_interval *interval);
 int			quad_solve(double a, double b, double c, t_interval *interval);
+int			quad4_solve(double a, double b, double c, double d, t_interval *interval);
 
 #endif

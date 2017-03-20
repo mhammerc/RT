@@ -70,6 +70,21 @@ void		create_plane(gboolean render_new)
 	add_object(object, render_new);
 }
 
+void		create_disk(gboolean render_new)
+{
+	t_object	object;
+
+	ft_bzero(&object, sizeof(t_object));
+	object.type = DISK;
+	object.color.z = 1;
+	object.radius = 50;
+	object.operation = '0';
+	object.kdiff = 1.;
+	object.kspec = 1.;
+	ft_strcpy(object.name, "Disk");
+	add_object(object, render_new);
+}
+
 void		create_cone(gboolean render_new)
 {
 	t_object	object;

@@ -155,6 +155,9 @@ static int	start_parsing(t_object *object, char *filename)
 			i = 1;
 			while (i <= face.nb)
 			{
+				if ((size_t)atoi(split[i]) > components.n_sommets
+						|| (size_t)atoi(ft_strrchr(split[i], '/') + 1) > components.n_normales)
+					return (0);
 				tmp = components.sommets[atoi(split[i]) - 1];
 				face.sommets[i - 1] = tmp;
 				face.normales[i - 1] = components.normales[atoi(ft_strrchr(split[i], '/') + 1) - 1];
