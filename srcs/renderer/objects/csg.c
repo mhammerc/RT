@@ -393,8 +393,6 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 		hit = 0;
 		if (*d > interval->min[i].dist && interval->min[i].dist > 0)
 		{
-			//*collided = &(interval->min[i].ref);
-			*collided = (t_obj*)malloc(sizeof(t_obj));
 			memcpy(*collided, &interval->min[i].ref, sizeof(t_obj));
 			*d = interval->min[i].dist;
 			obj->csg_ref = *collided;
@@ -403,8 +401,6 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 		}
 		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
 		{
-			//*collided = &(interval->max[i].ref);
-			*collided = (t_obj*)malloc(sizeof(t_obj));
 			memcpy(*collided, &interval->min[i].ref, sizeof(t_obj));
 			*d = interval->max[i].dist;
 			obj->csg_ref = *collided;

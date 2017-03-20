@@ -13,7 +13,8 @@
 #include <math.h>
 #include <stdlib.h>
 #include <libft.h>
-#include "rtv1.h"
+#include <shared.h>
+#include <renderer.h>
 
 /*
 ** Intersection between ray and plane
@@ -21,7 +22,7 @@
 ** or a negative value otherwise
 */
 
-int				disk_intersect(t_obj *self, t_ray *ray)
+int				disk_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 	t_vec3		x;
 	double		a;
@@ -35,6 +36,21 @@ int				disk_intersect(t_obj *self, t_ray *ray)
 	x = vec3_sub(self->pos, ray->pos);
 	a = vec3_dot(x, self->dir);
 	d = a / b;
+	if (d > 0.)
+	{
+		pos = vec3_add(ray->pos, vec3_mult(d, ray->dir));
+		if (vec3_norm(vec3_sub(pos, self->pos)) < self->radius)
+		{
+			interval->nb_hit = 1;
+			interval->min[0].dist = d;
+			interval->max[0].dist = d;
+			interval->min[0].ref = *self;
+			interval->max[0].ref = *self;
+			return (1);
+		}
+	}
+	interval->nb_hit = 0;
+	/*
 	if (d < ray->d && d > 0)
 	{
 		pos = vec3_add(ray->pos, vec3_mult(d, ray->dir));
@@ -46,6 +62,7 @@ int				disk_intersect(t_obj *self, t_ray *ray)
 			return (1);
 		}
 	}
+	*/
 	return (0);
 }
 

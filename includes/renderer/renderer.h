@@ -66,6 +66,8 @@ int			cone_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		cone_normal(t_obj *self, t_vec3 pos);
 int			plane_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		plane_normal(t_obj *self, t_vec3 pos);
+int			disk_intersect(t_obj *self, t_ray *ray, t_interval *interval);
+t_vec3		disk_normal(t_obj *self, t_vec3 pos);
 int			torus_intersect(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3		torus_normal(t_obj *self, t_vec3 pos);
 

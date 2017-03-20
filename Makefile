@@ -15,6 +15,7 @@ SRCS_NAME	=	main.c										\
 				renderer/objects/cylinder.c					\
 				renderer/objects/cone.c						\
 				renderer/objects/plane.c					\
+				renderer/objects/disk.c					\
 				renderer/objects/csg.c						\
 				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
