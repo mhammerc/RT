@@ -67,8 +67,13 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 	gtk_container_add(GTK_CONTAINER(lp->lp_btns.button), lp->lp_btns.remove);
 	gtk_container_add(GTK_CONTAINER(lp->lp_btns.button), lp->lp_btns.cpy);
 
+	GtkWidget	*scroll;
+	scroll = gtk_scrolled_window_new(NULL, NULL);
+	gtk_widget_set_size_request(scroll, 280, 768);
+	gtk_container_add(GTK_CONTAINER(scroll), lp->tree.tree);
+
 	gtk_container_add(GTK_CONTAINER(lp->lp_box), lp->lp_btns.button);
-	gtk_container_add(GTK_CONTAINER(lp->lp_box), lp->tree.tree);
+	gtk_container_add(GTK_CONTAINER(lp->lp_box), scroll);
 
 	g_signal_connect(lp->lp_btns.add_obj, "clicked",
 												G_CALLBACK(add_obj_btn), ui);

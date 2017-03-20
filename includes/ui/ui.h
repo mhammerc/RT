@@ -37,6 +37,9 @@ typedef struct			s_object
 	char				*filename;
 	size_t				nb_faces;
 	t_face				*faces;
+	enum e_texture_type		have_texture;
+	t_texture				texture;
+	char					*texture_filename;
 }						t_object;
 
 typedef struct			s_selected_obj
@@ -107,6 +110,7 @@ void					refresh_obj_tree(t_ui *ui);
 void					add_object(t_object object, gboolean render_new);
 void					create_sphere();
 void					create_plane();
+void					create_disk();
 void					create_cone();
 void					create_torus(gboolean render_new);
 void					create_cgs();

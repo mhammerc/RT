@@ -8,6 +8,7 @@ typedef struct		s_texture
 	guchar			*pixels;
 	int				width;
 	int				height;
+	/* Total number of byte (!!) */
 	int				bytes_per_pixel;
 	/* Number of bytes per row */
 	int				rowstride;
@@ -15,9 +16,10 @@ typedef struct		s_texture
 	gboolean		has_alpha;
 	GdkPixbuf		*_pixbuf;
 	GError			*error;
+	int				is_valid;
 }					t_texture;
 
 t_texture			load_texture(char const *filename);
-void				free_texture(t_texture texture);
+void				free_texture(t_texture *texture);
 
 #endif

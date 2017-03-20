@@ -31,7 +31,7 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	else
 		obj->dir = object->rot;
 	if (object->type == CONE)
-		obj->radius = cos((object->radius / 1000) * DEG_TO_RAD);
+		obj->radius = object->radius;
 	else
 		obj->radius =  object->radius / 1000;
 	obj->length = object->length;
@@ -47,6 +47,8 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->csg = '0';
 	obj->nb_faces = object->nb_faces;
 	obj->faces = object->faces;
+	obj->have_texture = object->have_texture;
+	obj->texture = object->texture;
 	apply_parent_relative(parent, obj);
 }
 
@@ -140,6 +142,8 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		spot.intensity = 1;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
+	if (objects->children)
+		fill_spot(objects->children, spots);
 	if (objects->next)
 		fill_spot(objects->next, spots);
 }
@@ -180,6 +184,7 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
+	ui->scene.filter = ui->rp->scene_gtk.filter;
 	/*
 	** aa = 1 = 2x2 = 1x2
 	** aa = 2 = 4x4 = 2x2

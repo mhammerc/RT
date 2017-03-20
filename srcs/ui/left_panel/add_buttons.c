@@ -13,6 +13,7 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	GtkWidget *empty = gtk_button_new_with_label("Empty");
 	GtkWidget *sphere = gtk_button_new_with_label("Sphere");
 	GtkWidget *plane = gtk_button_new_with_label("Plane");
+	GtkWidget *disk = gtk_button_new_with_label("Disk");
 	GtkWidget *cylinder = gtk_button_new_with_label("Cylinder");
 	GtkWidget *cone = gtk_button_new_with_label("Cone");
 	GtkWidget *torus = gtk_button_new_with_label("Torus");
@@ -20,6 +21,7 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	GtkWidget *polygons = gtk_button_new_with_label("Polygons");
 	g_signal_connect(sphere, "clicked", G_CALLBACK(create_sphere), NULL);
 	g_signal_connect(plane, "clicked", G_CALLBACK(create_plane), NULL);
+	g_signal_connect(disk, "clicked", G_CALLBACK(create_disk), NULL);
 	g_signal_connect(cylinder, "clicked", G_CALLBACK(create_cylinder), NULL);
 	g_signal_connect(cone, "clicked", G_CALLBACK(create_cone), NULL);
 	g_signal_connect(torus, "clicked", G_CALLBACK(create_torus), NULL);
@@ -29,6 +31,7 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	gtk_container_add(GTK_CONTAINER(submenu), sphere);
 	gtk_container_add(GTK_CONTAINER(submenu), empty);
 	gtk_container_add(GTK_CONTAINER(submenu), plane);
+	gtk_container_add(GTK_CONTAINER(submenu), disk);
 	gtk_container_add(GTK_CONTAINER(submenu), cylinder);
 	gtk_container_add(GTK_CONTAINER(submenu), cone);
 	gtk_container_add(GTK_CONTAINER(submenu), torus);
@@ -104,7 +107,10 @@ static void	ui_free_object(t_object *object)
 	size_t	i;
 
 	if (object->filename)
-		free(object->filename);
+		g_free(object->filename);
+	if (object->texture_filename)
+		g_free(object->texture_filename);
+	free_texture(&object->texture);
 	if (object->faces)
 	{
 		i = 0;

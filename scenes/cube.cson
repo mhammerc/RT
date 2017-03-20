@@ -1,0 +1,15 @@
+camera:
+	position: 2.0; 3.0; 7.0
+	direction: 1.0; 0.0; 0.0
+
+object:
+	name: Le cube
+	type: POLYGONS
+	filename: models/cube.obj
+	position: 1;0;0
+	color: 0.3; 0.5; 0.3
+
+object:
+	type: LIGHT
+	name: La lumiere
+	position: 0;0;7
