@@ -31,6 +31,7 @@ typedef struct			s_scene_gtk
 	int					aa;
 	double				ambiant_light;
 	int					fov;
+	enum e_filters		filter;
 }						t_scene_gtk;
 
 typedef struct			s_element_properties

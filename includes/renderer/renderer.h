@@ -32,10 +32,6 @@ typedef struct		s_renderer_thread
 	int				y_range;
 }					t_renderer_thread;
 
-/*
-typedef int (*intersection_fun)(t_obj*, t_ray*);
-typedef t_vec3 (*normal_fun)(t_obj*, t_vec3);
-*/
 
 void		renderer_compute_image();
 
