@@ -41,16 +41,19 @@ int				cone_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	a[0] = a[0] * vec3_norm2(vmvva) - a[3] * a[4] * a[4];
 	if ((interval->nb_hit = quad_solve(a[0], a[1], a[2], interval)))
 	{
-		m = vec3_dot(ray->dir, vec3_mult(interval->min[0].dist, self->dir)) +  vec3_dot(vec3_sub(ray->pos, self->pos), self->dir);
-		if ((m > self->length || m < 0))
+		if (self->length != 0.)
 		{
-		m = vec3_dot(ray->dir, vec3_mult(interval->max[0].dist, self->dir)) +  vec3_dot(vec3_sub(ray->pos, self->pos), self->dir);
+			m = vec3_dot(ray->dir, vec3_mult(interval->min[0].dist, self->dir)) +  vec3_dot(vec3_sub(ray->pos, self->pos), self->dir);
 			if ((m > self->length || m < 0))
 			{
-				interval->nb_hit = 0;
-				return (0);
+				m = vec3_dot(ray->dir, vec3_mult(interval->max[0].dist, self->dir)) +  vec3_dot(vec3_sub(ray->pos, self->pos), self->dir);
+				if ((m > self->length || m < 0))
+				{
+					interval->nb_hit = 0;
+					return (0);
+				}
+				interval->min[0] = interval->max[0];
 			}
-			interval->min[0] = interval->max[0];
 		}
 		interval->min[0].ref = *self;
 		interval->max[0].ref = *self;
