@@ -39,6 +39,8 @@ SRCS_NAME	=	main.c										\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
 				ui/top_menu/top_menu.c						\
+				ui/top_menu/file_saver/file_saver.c			\
+				ui/top_menu/file_saver/saver_tools.c		\
 				file_loader/file_loader.c					\
 				file_loader/parser.c						\
 				file_loader/object.c						\
