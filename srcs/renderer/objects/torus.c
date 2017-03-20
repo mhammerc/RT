@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/18 19:49:17 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/20 12:09:35 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 
 	//self->radius = 1;
-	self->length = 0.2;
 	//self->dir.x = EPS;
 	//self->dir.y = EPS;
 	//self->dir.z = EPS;
@@ -33,8 +32,8 @@ int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	//self->kspec = 1;
 	ray->dir = vec3_get_normalized(ray->dir);
 
-	if (!(cylinder_intersect(self,ray, interval)))
-		return (0);
+	//if (!(torus_intersect(self,ray, interval)))
+	//	return (0);
 	double	R = self->radius;
 	double	r = self->length;
 
