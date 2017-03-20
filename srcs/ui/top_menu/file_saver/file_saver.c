@@ -1,40 +1,64 @@
-# include "ui.h"
+#include "file_saver.h"
 
-void			save_file(char *filename)
+static void		save_cam_properties(FILE *file)
 {
-	t_ui			*ui;
-	t_env			env;
+	t_ui		*ui;
+	t_ui_cam	*cam;
 
 	ui = get_interface();
-	env.line_count = 0;
-	env.entity_lst = NULL;
-	env.group_lst = NULL;
-	env.group_tmp = NULL;
-	ft_init_tabs(&env);
-	ft_read_file(filename, &env);
-	hook_up_obj_lst(ui, env);
-	refresh_obj_tree(ui);
-	// g_assert_no_error (error);
+	cam = ui->cam;
+	fprintf(file, "camera:\n");
+	print_vec3(file, "position", cam->pos, "");
+	print_vec3(file, "lookAt", cam->dir, "");
+	fprintf(file, "\n");
 }
 
-void			hook_up_obj_scene(t_ui *ui, t_env *env)
+static void		save_obj(FILE *file, t_object *obj, int depth)
 {
-	t_object	cur_obj;
+	char	*tab;
 
-	env-> = ui->cam.pos;
-	env-> = ui->cam.dir;
-	while (ui->objs)
+	tab = str_tab(depth);
+	fprintf(file, "%sobject:\n", tab);
+	fprintf(file, "%s\ttype: %s\n", tab, get_enum_type(obj->type));
+	fprintf(file, "%s\tname: %s\n", tab, obj->name);
+	print_vec3(file, "position", obj->pos, tab);
+	print_vec3(file, "rotation", obj->rot, tab);
+	print_vec3(file, "color", obj->color, tab);
+	fprintf(file, "%s\tradius: %lf\n", tab, obj->radius);
+	fprintf(file, "%s\tkspec: %lf\n", tab, obj->kspec);
+	fprintf(file, "%s\tkdiff: %lf\n", tab, obj->kdiff);
+	fprintf(file, "%s\tcsgOperation: %c\n", tab, obj->operation);
+	fprintf(file, "%s\tfile: %s\n", tab, obj->filename);
+	fprintf(file, "\n");
+	free(tab);
+}
+
+static void		save_elements_properties(FILE *file, t_list *obj, int depth)
+{
+	++depth;
+	while (obj)
 	{
-		cur_obj = (t_object)(ui->objs->content);
-		env-> = cur_obj.type;
-		ft_strcpy(env->, cur_obj.name);
-		env-> = cur_obj.pos;
-		env-> = cur_obj.rot;
-		env-> = cur_obj.length;
-		env-> = cur_obj.radius;
-		env-> = cur_obj.color;
-		env-> = env->lst;
-		env-> = ui->objs;
-		ui->objs = ui->objs->next;
+		save_obj(file, ((t_object *)obj->content), depth);
+		if (obj->children)
+			save_elements_properties(file, obj->children, depth);
+		obj = obj->next;
 	}
+	--depth;
+}
+
+void			save_scene(char *filename)
+{
+	FILE	*file = NULL;
+	t_ui	*ui;
+
+	ui = get_interface();
+	file = fopen(filename, "w+");
+	if (file)
+	{
+		save_cam_properties(file);
+		save_elements_properties(file, ui->objs, -1);
+		fclose(file);
+	}
+	else
+		printf("Unable to open %s!\n", filename);
 }

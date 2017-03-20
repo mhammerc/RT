@@ -26,11 +26,11 @@ void		create_color_chooser(t_ui *ui, t_vec3 color)
 	gtk_color.blue = color.z;
 	gtk_color.alpha = 1;
 	gtk_container_add(GTK_CONTAINER(ui->rp->el_prop_lst),
-								gtk_label_new_with_mnemonic("_Color Picker"));
+		gtk_label_new_with_mnemonic("_Color Picker"));
 	color_chooser = gtk_color_button_new();
 	ui->rp->color_chooser = color_chooser;
 	g_signal_connect(G_OBJECT(color_chooser), "color-set",
-			G_CALLBACK(color_edited), ui);
+		G_CALLBACK(color_edited), ui);
 	gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(color_chooser), &gtk_color);
 	gtk_container_add(GTK_CONTAINER(ui->rp->el_prop_lst), color_chooser);
 }

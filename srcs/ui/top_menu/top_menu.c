@@ -1,6 +1,7 @@
 #include "ui.h"
 
-static void				toggle_render_on_change(GtkCheckMenuItem *checkmenuitem, gpointer user_data)
+static void				toggle_render_on_change(GtkCheckMenuItem *checkmenuitem,
+							gpointer user_data)
 {
 	t_ui	*ui;
 
@@ -59,28 +60,27 @@ void			open_dialog_open(void)
 
 void			open_dialog_save(void)
 {
-	// GtkWidget				*dialog;
-	// GtkFileChooser 			*chooser;
-	// GtkFileChooserAction	action;
-	// gint					res;
-	// char 					*filename;
-	// t_ui					*ui;
-	//
-	// ui = get_interface();
-	// action = GTK_FILE_CHOOSER_ACTION_SAVE;
-	// dialog = gtk_file_chooser_dialog_new("Save File", GTK_WINDOW(ui->window),
-	// 	action, "_Cancel", GTK_RESPONSE_CANCEL, "_Save", GTK_RESPONSE_ACCEPT,
-	// 	NULL);
-	// chooser = GTK_FILE_CHOOSER (dialog);
-	// gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
-	// res = gtk_dialog_run (GTK_DIALOG(dialog));
-	// if (res == GTK_RESPONSE_ACCEPT)
-	// {
-	// 	filename = gtk_file_chooser_get_filename(chooser);
-		ft_printf("Can't save yet, parser coming soon(ish)!\n");
-	// 	g_free (filename);
-	// }
-	// gtk_widget_destroy (dialog);
+	GtkWidget				*dialog;
+	GtkFileChooser 			*chooser;
+	GtkFileChooserAction	action;
+	gint					res;
+	char 					*filename;
+	t_ui					*ui;
+
+	ui = get_interface();
+	action = GTK_FILE_CHOOSER_ACTION_SAVE;
+	dialog = gtk_file_chooser_dialog_new("Save File", GTK_WINDOW(ui->window),
+	action, "_Cancel", GTK_RESPONSE_CANCEL, "_Save", GTK_RESPONSE_ACCEPT, NULL);
+	chooser = GTK_FILE_CHOOSER (dialog);
+	gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
+	res = gtk_dialog_run (GTK_DIALOG(dialog));
+	if (res == GTK_RESPONSE_ACCEPT)
+	{
+		filename = gtk_file_chooser_get_filename(chooser);
+		save_scene(filename);
+		g_free(filename);
+	}
+	gtk_widget_destroy (dialog);
 }
 
 void			open_dialog_export(void)
@@ -111,34 +111,35 @@ void			open_dialog_export(void)
 
 static	t_menu_file		*create_file_menu(void)
 {
-	t_ui	*ui;
+	t_ui			*ui;
+	t_menu_file		*f_menu;
 
 	ui = get_interface();
-	ui->file_menu = (t_menu_file *)malloc(sizeof(t_menu_file));
-	ui->file_menu->menu = gtk_menu_new();
-	ui->file_menu->open = gtk_menu_item_new_with_label("Open (F1)");
-	ui->file_menu->save = gtk_menu_item_new_with_label("Save scene (F2)");
-	ui->file_menu->export = gtk_menu_item_new_with_label("Export as PNG (F3)");
-	ui->file_menu->quit = gtk_menu_item_new_with_label("Quit (ESC)");
-	ui->file_menu->render_on_change =
+	f_menu = ui->file_menu;
+	f_menu = (t_menu_file *)malloc(sizeof(t_menu_file));
+	f_menu->menu = gtk_menu_new();
+	f_menu->open = gtk_menu_item_new_with_label("Open (F1)");
+	f_menu->save = gtk_menu_item_new_with_label("Save scene (F2)");
+	f_menu->export = gtk_menu_item_new_with_label("Export as PNG (F3)");
+	f_menu->quit = gtk_menu_item_new_with_label("Quit (ESC)");
+	f_menu->render_on_change =
 			gtk_check_menu_item_new_with_label("Render scene on every change");
 	gtk_check_menu_item_set_active(
-					GTK_CHECK_MENU_ITEM(ui->file_menu->render_on_change), TRUE);
-	ui->file_menu->start_render =
-							gtk_menu_item_new_with_label("Render the scene");
-	g_signal_connect(ui->file_menu->open, "activate",
+					GTK_CHECK_MENU_ITEM(f_menu->render_on_change), TRUE);
+	f_menu->start_render = gtk_menu_item_new_with_label("Render the scene");
+	g_signal_connect(f_menu->open, "activate",
 		G_CALLBACK (open_dialog_open), NULL);
-	g_signal_connect(ui->file_menu->save, "activate",
+	g_signal_connect(f_menu->save, "activate",
 		G_CALLBACK (open_dialog_save), NULL);
-	g_signal_connect(ui->file_menu->export, "activate",
+	g_signal_connect(f_menu->export, "activate",
 		G_CALLBACK (open_dialog_export), NULL);
-	g_signal_connect(ui->file_menu->quit, "activate",
+	g_signal_connect(f_menu->quit, "activate",
 		G_CALLBACK (exit_rt), NULL);
-	g_signal_connect(ui->file_menu->render_on_change, "activate",
+	g_signal_connect(f_menu->render_on_change, "activate",
 									G_CALLBACK(toggle_render_on_change), NULL);
-	g_signal_connect(ui->file_menu->start_render, "activate",
+	g_signal_connect(f_menu->start_render, "activate",
 									G_CALLBACK(render_new_image), NULL);
-	return (ui->file_menu);
+	return (f_menu);
 }
 
 GtkWidget				*create_top_menu(void)

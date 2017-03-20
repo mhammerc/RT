@@ -21,7 +21,7 @@ static void		button_relase(GtkWidget *widget, GdkEvent *event,
 	}
 	ui = (t_ui*)user_data;
 	gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(
-														GTK_TREE_VIEW(widget)));
+		GTK_TREE_VIEW(widget)));
 	clear_properties_list(ui);
 	ui->selected_obj.object = NULL;
 }

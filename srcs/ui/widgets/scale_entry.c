@@ -35,33 +35,31 @@ static void			entry_edited(GtkWidget *entry, gpointer data)
 		--lock;
 		return ;
 	}
-
 	box = (GtkWidget*)data;
 	GList	*childs;
 	childs = gtk_container_get_children(GTK_CONTAINER(box));
 	childs = childs->next;
 	scale = (GtkWidget*)childs->data;
-
 	childs = childs->next;
 	buffer = gtk_entry_get_buffer(GTK_ENTRY((GtkWidget*)childs->data));
-
 	content = (gchar*)gtk_entry_buffer_get_text(buffer);
 	value = atof(content);
 	gtk_range_set_value(GTK_RANGE(scale), value);
 	g_signal_emit_by_name(box, "rt-scale-entry-edited", value);
 }
 
-GtkWidget			*create_scale_entry(gchar *name, gdouble value, gdouble min,
-																	gdouble max)
+GtkWidget			*create_scale_entry(gchar *name, gdouble value,
+						gdouble min, gdouble max)
 {
-	GtkWidget		*box;
-	GtkWidget		*label;
-	GtkWidget		*scale;
-	GtkWidget		*entry;
+	GtkWidget	*box;
+	GtkWidget	*label;
+	GtkWidget	*scale;
+	GtkWidget	*entry;
 
 	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	label = gtk_label_new_with_mnemonic(name);
-	scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, min, max, (max - min) / 100.);
+	scale = gtk_scale_new_with_range(GTK_ORIENTATION_HORIZONTAL, min, max,
+		(max - min) / 100.);
 	gtk_range_set_value(GTK_RANGE(scale), value);
 	entry = create_numeric_entry(name, value);
 	gtk_widget_set_size_request(scale, 100, 0);
@@ -69,7 +67,7 @@ GtkWidget			*create_scale_entry(gchar *name, gdouble value, gdouble min,
 	gtk_container_add(GTK_CONTAINER(box), scale);
 	gtk_container_add(GTK_CONTAINER(box), entry);
 	g_signal_connect(scale, "change-value", G_CALLBACK(scale_edited), box);
-	g_signal_connect(entry, "rt-numeric-entry-edited", G_CALLBACK(entry_edited),
-																		box);
+	g_signal_connect(entry, "rt-numeric-entry-edited",
+		G_CALLBACK(entry_edited), box);
 	return (box);
 }

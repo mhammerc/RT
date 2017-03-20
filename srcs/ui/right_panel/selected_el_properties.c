@@ -4,7 +4,7 @@
 #include <errno.h>
 
 static void		wavefront_file_set(GtkFileChooserButton *widget,
-															gpointer user_data)
+					gpointer user_data)
 {
 	t_ui		*ui;
 	t_object	*object;
@@ -26,7 +26,7 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 		free(ui->selected_obj.object->faces);
 	}
 	ui->selected_obj.object->filename = gtk_file_chooser_get_filename(
-													GTK_FILE_CHOOSER(widget));
+		GTK_FILE_CHOOSER(widget));
 	object = parse_wavefront_file(ui->selected_obj.object->filename);
 	if (!object)
 	{
@@ -35,7 +35,7 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 			"Can not load %s.\nAn error occured.\n%s",
 			ui->selected_obj.object->filename, g_strerror(errno));
 		g_signal_connect_swapped(dialog, "response", G_CALLBACK(
-												gtk_widget_destroy), dialog);
+			gtk_widget_destroy), dialog);
 		gtk_dialog_run(GTK_DIALOG(dialog));
 		ui->selected_obj.object->nb_faces = 0;
 		ui->selected_obj.object->faces = 0;
@@ -48,8 +48,8 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 static void		object_name_edited(GtkWidget *emitter, gchar *new_text,
 																gpointer data)
 {
-	t_object			*obj;
-	t_ui				*ui;
+	t_object	*obj;
+	t_ui		*ui;
 
 	(void)emitter;
 	(void)data;
@@ -57,12 +57,12 @@ static void		object_name_edited(GtkWidget *emitter, gchar *new_text,
 	obj = ui->selected_obj.object;
 	ft_strcpy(obj->name, new_text);
 	gtk_tree_store_set(GTK_TREE_STORE(ui->lp->tree.store),
-									&ui->selected_obj.iter, 0, obj->name, -1);
+		&ui->selected_obj.iter, 0, obj->name, -1);
 }
 
 static void		element_edited()
 {
-	t_ui				*ui;
+	t_ui	*ui;
 
 	ui = get_interface();
 	if (ui->render_on_change)
@@ -97,7 +97,7 @@ static void		bounding_edited(GtkComboBox *widget, gpointer user_data)
 
 	ui = (t_ui*)user_data;
 	ui->selected_obj.object->operation = get_operation_code_from_id(
-							gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
+		gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
 	ask_for_new_image(ui);
 }
 

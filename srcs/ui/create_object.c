@@ -24,11 +24,11 @@ void		add_object(t_object object, gboolean render_new)
 	{
 		father = &ui->selected_obj.iter;
 		lst = ft_lstat_child(ui->objs, ui->selected_obj.index,
-														ui->selected_obj.depth);
+			ui->selected_obj.depth);
 		ft_lstpushback(&lst->children, ft_lstnew(&object, sizeof(t_object)));
 		gtk_tree_store_append(ui->lp->tree.store, &elem, father);
 		gtk_tree_store_set(ui->lp->tree.store, &elem, 0, object.name, 1,
-												get_el_type_char(&object), -1);
+			get_el_type_char(&object), -1);
 		gtk_tree_view_expand_row(GTK_TREE_VIEW(ui->lp->tree.tree),
 			gtk_tree_model_get_path(GTK_TREE_MODEL(ui->lp->tree.store), father),
 			FALSE);
