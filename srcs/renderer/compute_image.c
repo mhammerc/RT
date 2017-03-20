@@ -53,6 +53,40 @@ t_vec3			get_texture_color(t_ray ray)
 		return (r);
 
 	}
+	else if (ray.collided->have_texture == PLANAR
+			&& ray.collided->texture.is_valid)
+	{
+		d = vec3_sub(ray.collided->pos, ray.pos);
+		t_vec3	tmp;
+		tmp = vec3_cross(d, ray.collided->dir);
+		if (abs(ray.collided->dir.x) < abs(ray.collided->dir.y))
+		{
+			u = d.x;
+			v = tmp.x;
+		}
+		else
+		{
+			u = d.y;
+			v = tmp.y;
+		}
+		if (u < 0.)
+			u = -u;
+		if (v < 0.)
+			v = -v;
+		u = fmod(u, 1.0);
+		v = fmod(v, 1.0);
+		u *= ray.collided->texture.width;
+		v *= ray.collided->texture.height;
+		int offset = 3;
+		if (ray.collided->texture.has_alpha)
+			offset = 4;
+
+		r.x = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride];
+		r.y = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 1];
+		r.z = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 2];
+		r = vec3_mult(1. / 256., r);
+		return (r);
+	}
 	else if (ray.collided->have_texture == PLANAR_DAMIER)
 	{
 		d = vec3_sub(ray.collided->pos, ray.pos);
@@ -70,28 +104,14 @@ t_vec3			get_texture_color(t_ray ray)
 		}
 		if (u < 0.)
 		{
-		//	u -= 0.5;
+			u -= 0.5;
 			u = -u;
 		}
 		if (v < 0.)
 		{
-		//	v -= 0.5;
+			v -= 0.5;
 			v = -v;
 		}
-		u = fmod(u, 1.0);
-		v = fmod(v, 1.0);
-		u *= ray.collided->texture.width;
-		v *= ray.collided->texture.height;
-		int offset = 3;
-		if (ray.collided->texture.has_alpha)
-			offset = 4;
-
-		r.x = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride];
-		r.y = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 1];
-		r.z = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 2];
-		r = vec3_mult(1. / 256., r);
-		return (r);
-
 		u = fmod(u, 1.0);
 		v = fmod(v, 1.0);
 		if (u < 0.5 && v < 0.5)

@@ -303,6 +303,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "None");
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Spherical");
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Sphere damier");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar");
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar damier");
 		gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type), view->selected_obj.object->have_texture);
 		g_signal_connect(texture_type, "changed", G_CALLBACK(texture_type_edited), view);
