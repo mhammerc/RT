@@ -1,5 +1,6 @@
 # include "ui.h"
 # include "obj_parser.h"
+# include "texture_loader.h"
 
 void			load_file(char *filename)
 {
@@ -21,7 +22,7 @@ void			load_file(char *filename)
 	}
 }
 
-static void		load_polygons(t_list *objects)
+static void		load_resources(t_list *objects)
 {
 	t_object	*object;
 	t_object	*new;
@@ -29,7 +30,7 @@ static void		load_polygons(t_list *objects)
 	if (!objects)
 		return ;
 	object = (t_object*)objects->content;
-	if (object->type == POLYGONS && *object->filename != 0)
+	if (object->type == POLYGONS && object->filename && *object->filename != 0)
 	{
 		new = parse_wavefront_file(object->filename);
 		if (new)
@@ -38,15 +39,19 @@ static void		load_polygons(t_list *objects)
 			object->nb_faces = new->nb_faces;
 		}
 	}
+	if (object->texture_filename && *object->texture_filename != 0)
+	{
+		object->texture = load_texture(object->texture_filename);
+	}
 	if (objects->children)
-		load_polygons(objects->children);
+		load_resources(objects->children);
 	if (objects->next)
-		load_polygons(objects->next);
+		load_resources(objects->next);
 }
 
 void			hook_up_obj_lst(t_ui *ui, t_env *env)
 {
-	load_polygons(env->objects);
+	load_resources(env->objects);
 	ui->cam->pos = env->camera.pos;
 	ui->cam->dir = env->camera.look_at;
 	//todo update camera in interface

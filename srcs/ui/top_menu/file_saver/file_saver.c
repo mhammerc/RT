@@ -30,6 +30,9 @@ static void		save_obj(FILE *file, t_object *obj, int depth)
 	fprintf(file, "%s\tcsgOperation: %c\n", tab, obj->operation);
 	if (obj->filename)
 		fprintf(file, "%s\tfile: %s\n", tab, obj->filename);
+	fprintf(file, "%s\ttexture: %d\n", tab, obj->have_texture);
+	if (obj->texture_filename)
+		fprintf(file, "%s\ttexture_filename: %s\n", tab, obj->texture_filename);
 	fprintf(file, "\n");
 	free(tab);
 }

@@ -1,0 +1,92 @@
+camera:
+	position: -1.8; 0.1; 0.7
+	lookAt: 2.0; -0.5; 0.5
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.0; 0.0; -3.0
+	rotation: 0.0; 0.0; 1.0
+	color: 0.0; 0.0; 1.0
+	radius: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.0; -1.0; 0.0
+	rotation: 0.0; 1.0; 0.0
+	color: 0.5; 0.5; 0.5
+	radius: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+
+object:
+	type: CONE
+	name: Cone
+	position: 1.0; -0.5; 0.0
+	rotation: -1.0; 1.0; 0.0
+	color: 1.0; 0.9; 0.3
+	radius: 0.950000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+
+object:
+	type: CYLINDER
+	name: Cylinder
+	position: 0.0; 0.0; 0.0
+	rotation: 1.0; 1.0; 0.0
+	color: 0.9; 0.1; 0.9
+	radius: 130.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: -1.5; -0.5; 0.7
+	rotation: 0.0; 0.0; 0.0
+	color: 0.9; 0.2; 0.2
+	radius: 200.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: 2.0; -0.5; 0.5
+	rotation: 0.0; 0.0; 0.0
+	color: 0.5; 0.9; 0.2
+	radius: 200.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	csgOperation: 0
+
+object:
+	type: LIGHT
+	name: Light
+	position: -2.0; 1.0; 7.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.0; 0.0; 0.0
+	radius: 0.000000
+	kspec: 0.000000
+	kdiff: 0.000000
+	csgOperation: 0
+
+object:
+	type: LIGHT
+	name: Light
+	position: 2.0; 1.0; 7.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.0; 0.0; 0.0
+	radius: 0.000000
+	kspec: 0.000000
+	kdiff: 0.000000
+	csgOperation: 0
+

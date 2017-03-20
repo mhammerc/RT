@@ -59,6 +59,18 @@ void	p_parse_object(t_env *env, char *ln)
 			new_object.filename = ft_strdup(ln3);
 			free(ln3);
 		}
+		else if (ft_strncmp(ln2, "texture:", 8) == 0)
+		{
+			ln3 = ft_strtrim(ln2 + 8);
+			new_object.have_texture = ft_atoi(ln3);
+			free(ln3);
+		}
+		else if (ft_strncmp(ln2, "texture_filename:", 17) == 0)
+		{
+			ln3 = ft_strtrim(ln2 + 17);
+			new_object.texture_filename = ft_strdup(ln3);
+			free(ln3);
+		}
 		else if (ft_strncmp(ln2, "object:", 7) == 0)
 		{
 			size_t tabs = count_tab(env->ln);
