@@ -54,6 +54,7 @@ typedef struct			s_ui_cam
 {
 	t_vec3				pos;
 	t_vec3				dir;
+	t_vec3				up;
 }						t_ui_cam;
 
 /*
