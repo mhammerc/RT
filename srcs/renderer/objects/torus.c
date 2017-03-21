@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/20 18:25:04 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/21 15:09:43 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,29 +23,6 @@
 
 int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
-	//TODO put this part in initialisation of torus
-	////
-	if(self->dir.x == 0 && self->dir.y == 0 && self->dir.z == 0)
-		self->dir.z = 1;
-	if (self->dir.x == 0)
-		self->dir.x = 0.01;
-	if (self->dir.y == 0)
-		self->dir.y = 0.01;
-	if (self->dir.z == 0)
-		self->dir.z = 0.01;
-	if (self->dir.x == 0)
-		self->dir.x = 0.01;
-	if (self->dir.y == 0)
-		self->dir.y = 0.01;
-	if (self->dir.z == 0)
-		self->dir.z = 0.01;
-	if (self->radius < 0.2)
-		self->radius = 0.2;
-	if (self->length < 0.1)
-		self->length = 0.1;
-	if (self->length > self->radius / 1.1)
-		self->length = self->radius / 1.1;
-	//
 	long double	R = self->radius;
 	long double	r = self->length;
 

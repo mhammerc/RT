@@ -47,6 +47,30 @@ static void convert_polygon(t_obj *obj, t_object *object)
 	}
 }
 
+static void	convert_torus(t_obj *self)
+{
+	if(self->dir.x == 0 && self->dir.y == 0 && self->dir.z == 0)
+		self->dir.z = 1;
+	if (self->dir.x == 0)
+		self->dir.x = 0.01;
+	if (self->dir.y == 0)
+		self->dir.y = 0.01;
+	if (self->dir.z == 0)
+		self->dir.z = 0.01;
+	if (self->dir.x == 0)
+		self->dir.x = 0.01;
+	if (self->dir.y == 0)
+		self->dir.y = 0.01;
+	if (self->dir.z == 0)
+		self->dir.z = 0.01;
+	if (self->radius < 0.2)
+		self->radius = 0.2;
+	if (self->length < 0.1)
+		self->length = 0.1;
+	if (self->length > self->radius / 1.1)
+		self->length = self->radius / 1.1;
+}
+
 static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 {
 	obj->pos = object->pos;
@@ -76,6 +100,8 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->texture = object->texture;
 	if (obj->type == POLYGONS)
 		convert_polygon(obj, object);
+	else if (obj->type == TORUS)
+		convert_torus(obj);
 	apply_parent_relative(parent, obj);
 }
 
