@@ -55,18 +55,20 @@ t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam)
 	t_vec3	light;
 	double	diff;
 	t_vec3	h;
+	double	atten;
 
+	atten = 1.0 / ray.t;
 	light = (t_vec3){0, 0, 0};
 	obj = ray.collided->color;
 	if ((diff = fmax(vec3_dot(ray.dir, ray.n), 0)) > 0)
 	{
-		diff *= ray.collided->kdiff * l->intensity;
+		diff *= ray.collided->kdiff * l->intensity * atten;
 		light = color_light_mix(obj, l->color, diff);
 	}
 	h = vec3_get_normalized(vec3_add(obj_cam, ray.dir));
 	if ((diff = fmax(pow(vec3_dot(ray.n, h), ray.collided->kp), 0)) > 0)
 	{
-		diff *= ray.collided->kspec * l->intensity;
+		diff *= ray.collided->kspec * l->intensity * atten;
 		light = vec3_add(light, color_light_mix(obj, l->color, diff));
 	}
 	return (light);

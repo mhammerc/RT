@@ -14,7 +14,7 @@ t_ray		ray_new(t_vec3 pos, t_vec3 aim)
 	n = (t_vec3){0, 0, 0};
 	dir = vec3_get_normalized(vec3_sub(aim, pos));
 	return ((t_ray){pos, dir, n, BIG_DIST + 1,
-			INITIAL_RAY, NULL, n, n, stack_new(), LOCATION_NONE});
+			INITIAL_RAY, NULL, n, n, stack_new(), LOCATION_NONE, 0.0});
 }
 
 /*
@@ -46,35 +46,22 @@ t_ray		reflected_ray(t_ray ray)
 	return (ray);
 }
 
-
-//if collision from outside
-//	- new rindex is of object collided
-//	- old rindex is at top of stack
-//	- if stack is empty, previous rindex is 1 (air)
-//	- then stack new object
-//if collision from inside
-//	- pop stack and read top to get rnew, if stack is empty then rnew is 1
-//	- rprev is of object collided
-//compute transmitted direction
-	//return refracted ray
 t_ray	refracted_ray(t_ray ray)
 {
 	t_obj		*prev_obj;
-	double		ki; //rprev : rindex incident ray
-	double		kr; //rnew : rindex refracted ray
-	double		n;
+	double		ki;
+	double		kr;
 	double		c1;
-	double		c2;
-	t_vec3		Rr;
-	int			size_before;
+	double		cs2;
+	double		eta;
+	t_vec3		T;
+	double		n_correction;
 
-	size_before = ray.rstack.size;
 	if (ray.location == LOCATION_OUTSIDE)
 	{
 		prev_obj = stack_peak(&(ray.rstack));
 		ki = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
 		kr = ray.collided->rindex;
-		//printf("from outside - ki:%f, kr:%f, size_before:%d\n", ki, kr, size_before);
 		stack_push(&(ray.rstack), ray.collided);
 	}
 	else
@@ -83,13 +70,19 @@ t_ray	refracted_ray(t_ray ray)
 		prev_obj = stack_peak(&(ray.rstack));
 		kr = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
 		ki = ray.collided->rindex;
-		//printf("from inside - ki:%f, kr:%f, size_before:%d\n", ki, kr, size_before);
 	}
-	kr = kr > 0 ? kr : R_DEFAULT;
-	n = ki / kr;
-	c1 = -vec3_dot(ray.dir, ray.n);
-	c2 = sqrt( 1 - n * n * (1. - c1 * c1));
-	Rr = vec3_add(vec3_mult(n, ray.dir),vec3_mult(n * c1 - c2, ray.n));
+	eta = ki / kr;
+	c1 = vec3_dot(ray.dir, ray.n);
+	n_correction = (0.0 < c1) ? -1.0 : 1.0;
+	c1 = c1 > 0 ? c1 : -c1;
+	cs2 = 1.0 - eta * eta * (1.0 - c1 * c1);
+	if (cs2 < 0.0)
+	{
+		ray.t = -1.0;
+		return (ray);
+	}
+	T = vec3_mult(eta, ray.dir);
+	T = vec3_add(T, vec3_mult(n_correction * (eta * c1 - sqrt(cs2)), ray.n));
 	ray.pos = vec3_add(ray.pos, vec3_mult(2. * EPS, ray.dir));
-	return (ray_new_dir(ray, vec3_get_normalized(Rr)));
+	return (ray_new_dir(ray, vec3_get_normalized(T)));
 }

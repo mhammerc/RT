@@ -91,29 +91,42 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 {
 	t_vec3		light;
 	t_vec3		refl_light;
+	t_ray		new_ray;
+	double		atten;
 
 	light = (t_vec3){0, 0, 0};
-	if (depth > MAX_REC_DEPTH)
-		return (light);
+	atten = 1.0;
 	if (rt_object(sce, &ray))
 	{
-		light = vec3_mult(1.0 - ray.collided->transparency , rt_light(sce, ray));
-		if (ray.collided->kspec > 0)
+		ray.dist = ray.dist < 1.0 ? 1.0 : ray.dist + ray.t;
+		atten = 1.0 / ray.dist;
+		light = rt_light(sce, ray);
+		if (depth < MAX_REC_DEPTH)
 		{
-			refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
-			refl_light = vec3_mult(REFL_ATTENUATION, refl_light);
-			light = vec3_add(light, color_light_mix(ray.collided->color,
-													refl_light,
-													ray.collided->kspec));
-		}
-		if (ray.collided->transparency > 0)
-		{
-			refl_light = ray_trace(sce, refracted_ray(ray), depth + 1);
-			//printf("refr_light=%f,%f,%f\n", refl_light.x, refl_light.y, refl_light.z);
-			light = vec3_add(light, color_light_mix((t_vec3){1, 1, 1},
-													refl_light,
-													ray.collided->transparency));
+			if (ray.collided->kspec > 0)
+			{
+				refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
+				refl_light = vec3_mult(REFL_ATTENUATION, refl_light);
+				light = vec3_add(light, color_light_mix(ray.collided->color,
+							refl_light,
+							ray.collided->kspec));
+			}
+			if (ray.collided->transparency > 0)
+			{
+				new_ray = refracted_ray(ray);
+				if (new_ray.t > 0)
+				{
+					refl_light = ray_trace(sce, new_ray, depth + 1);
+					/*
+					light = vec3_add(light, color_light_mix((t_vec3){1, 1, 1},
+								refl_light,
+								ray.collided->transparency));
+					*/
+					light = vec3_add(light, refl_light);
+
+				}
+			}
 		}
 	}
-	return (light);
+	return (vec3_mult(atten,light));
 }

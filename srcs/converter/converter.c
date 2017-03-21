@@ -139,7 +139,7 @@ static void		fill_spot(t_list *objects, t_list **spots)
 	{
 		spot.pos = object->pos;
 		spot.color = (t_vec3){1, 1, 1};
-		spot.intensity = 1;
+		spot.intensity = 100;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
 	if (objects->next)

@@ -22,7 +22,7 @@
 # define OCCLUSION_RAY 1
 # define REFL_ATTENUATION 0.2
 # define REFR_ATTENUATION 0.2
-# define MAX_REC_DEPTH 3
+# define MAX_REC_DEPTH 8
 # define R_GLASS 1.42
 # define R_DEFAULT 1.0
 
@@ -146,6 +146,7 @@ struct						s_ray
 	t_vec3					light;
 	t_obj_stack				rstack;
 	int						location;
+	double					dist;
 };
 
 struct						s_spot
