@@ -17,7 +17,7 @@ static void		menu_keys(GdkEventKey *event)
 }
 
 static int		on_key_press_window(GtkWidget *widget, GdkEventKey *event,
-															gpointer user_data)
+					gpointer user_data)
 {
 	t_ui		*ui;
 
@@ -31,5 +31,5 @@ static int		on_key_press_window(GtkWidget *widget, GdkEventKey *event,
 void			event_handler_window(t_ui *ui)
 {
 	g_signal_connect(G_OBJECT(ui->window), "key_press_event",
-										G_CALLBACK(on_key_press_window), NULL);
+		G_CALLBACK(on_key_press_window), NULL);
 }

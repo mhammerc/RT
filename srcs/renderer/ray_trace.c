@@ -15,17 +15,25 @@ static int		ray_object(t_obj* obj, t_ray *ray)
 	location = LOCATION_NONE;
 	if (obj->intersect(obj, ray, &interval))
 	{
+		collided = (t_obj*)malloc(sizeof(t_obj));
 		if ((location = minimal_positiv(&interval, obj, &(ray->t), &collided)))
 		{
 			if (ray->type == INITIAL_RAY)
 			{
+				if (ray->collided)
+					free(ray->collided);
 				ray->collided = collided;
 				ray->location = location;
 			}
+			else
+				free(collided);
 		}
+		else
+			free(collided);
 	}
 	return (location == LOCATION_NONE ? 0 : 1);
 }
+
 
 /*
 ** Intersect ray with all objects in scene
@@ -109,7 +117,7 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 			{
 				refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
 				refl_light = vec3_mult(REFL_ATTENUATION, refl_light);
-				light = vec3_add(light, color_light_mix(ray.collided->color,
+				light = vec3_add(light, color_light_mix(get_texture_color(ray),
 							refl_light,
 							ray.collided->kspec));
 			}
@@ -130,5 +138,7 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 			}
 		}
 	}
+	if (ray.collided)
+		free(ray.collided);
 	return (vec3_mult(atten,light));
 }

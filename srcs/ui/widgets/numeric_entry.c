@@ -6,7 +6,7 @@ static int		is_numerical(const gchar c)
 }
 
 static void		text_inserted(GtkEntryBuffer *buffer, guint position,
-									gchar *chars, guint n_chars, gpointer data)
+					gchar *chars, guint n_chars, gpointer data)
 {
 	t_ui		*ui;
 	char		*text;
@@ -41,7 +41,7 @@ static void		text_inserted(GtkEntryBuffer *buffer, guint position,
 	new_text[j] = 0;
 	gtk_entry_buffer_set_text(buffer, new_text, -1);
 	g_signal_emit_by_name((GtkWidget*)data, "rt-numeric-entry-edited",
-																atof(new_text));
+		atof(new_text));
 	free(new_text);
 }
 
@@ -58,7 +58,8 @@ static void		text_deleted(GtkEntryBuffer *buffer, guint position,
 		return ;
 	}
 	//get_interface()->lock = 1;
-	//g_signal_emit_by_name((GtkWidget*)data, "rt-numeric-entry-edited", atof(gtk_entry_buffer_get_text(gtk_entry_get_buffer(data))));
+	//g_signal_emit_by_name((GtkWidget*)data, "rt-numeric-entry-edited",
+	//	atof(gtk_entry_buffer_get_text(gtk_entry_get_buffer(data))));
 }
 
 GtkWidget		*create_numeric_entry(char *placeholder, gdouble value)

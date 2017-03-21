@@ -4,13 +4,15 @@
 #include <errno.h>
 
 static void		wavefront_file_set(GtkFileChooserButton *widget,
-															gpointer user_data)
+					gpointer user_data)
 {
 	t_ui		*ui;
 	t_object	*object;
 	size_t		i;
 
 	ui = (t_ui*)user_data;
+	if (ui->rendering)
+		return ;
 	if (ui->selected_obj.object->filename)
 		g_free(ui->selected_obj.object->filename);
 	if (ui->selected_obj.object->faces)
@@ -26,7 +28,7 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 		free(ui->selected_obj.object->faces);
 	}
 	ui->selected_obj.object->filename = gtk_file_chooser_get_filename(
-													GTK_FILE_CHOOSER(widget));
+		GTK_FILE_CHOOSER(widget));
 	object = parse_wavefront_file(ui->selected_obj.object->filename);
 	if (!object)
 	{
@@ -35,8 +37,10 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 			"Can not load %s.\nAn error occured.\n%s",
 			ui->selected_obj.object->filename, g_strerror(errno));
 		g_signal_connect_swapped(dialog, "response", G_CALLBACK(
-												gtk_widget_destroy), dialog);
+			gtk_widget_destroy), dialog);
 		gtk_dialog_run(GTK_DIALOG(dialog));
+		ui->selected_obj.object->nb_faces = 0;
+		ui->selected_obj.object->faces = 0;
 		return ;
 	}
 	ui->selected_obj.object->nb_faces = object->nb_faces;
@@ -46,8 +50,8 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 static void		object_name_edited(GtkWidget *emitter, gchar *new_text,
 																gpointer data)
 {
-	t_object			*obj;
-	t_ui				*ui;
+	t_object	*obj;
+	t_ui		*ui;
 
 	(void)emitter;
 	(void)data;
@@ -55,12 +59,12 @@ static void		object_name_edited(GtkWidget *emitter, gchar *new_text,
 	obj = ui->selected_obj.object;
 	ft_strcpy(obj->name, new_text);
 	gtk_tree_store_set(GTK_TREE_STORE(ui->lp->tree.store),
-									&ui->selected_obj.iter, 0, obj->name, -1);
+		&ui->selected_obj.iter, 0, obj->name, -1);
 }
 
 static void		element_edited()
 {
-	t_ui				*ui;
+	t_ui	*ui;
 
 	ui = get_interface();
 	if (ui->render_on_change)
@@ -95,7 +99,7 @@ static void		bounding_edited(GtkComboBox *widget, gpointer user_data)
 
 	ui = (t_ui*)user_data;
 	ui->selected_obj.object->operation = get_operation_code_from_id(
-							gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
+		gtk_combo_box_get_active(GTK_COMBO_BOX(widget)));
 	ask_for_new_image(ui);
 }
 
@@ -163,6 +167,7 @@ static void		kdiff_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->kdiff = value;
 	element_edited();
 }
@@ -176,6 +181,75 @@ static void		kspec_edited(GtkWidget *widget, gdouble value, gpointer data)
 	ui->selected_obj.object->kspec = value;
 	element_edited();
 }
+
+static void		rindex_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->rindex = value;
+	element_edited();
+}
+
+static void		transmittance_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->transmittance = value;
+	element_edited();
+}
+
+static void		reflectance_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->reflectance = value;
+	element_edited();
+}
+
+static void		texture_type_edited(GtkComboBox *widget, gpointer user_data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)user_data;
+	(void)widget;
+	ui->selected_obj.object->have_texture = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
+	element_edited();
+}
+
+static void		texture_file_set(GtkFileChooserButton *widget,
+		gpointer user_data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)user_data;
+	if (ui->rendering)
+		return ;
+	free_texture(&ui->selected_obj.object->texture);
+	if (ui->selected_obj.object->texture_filename)
+		g_free(ui->selected_obj.object->texture_filename);
+	ui->selected_obj.object->texture_filename = gtk_file_chooser_get_filename(
+													GTK_FILE_CHOOSER(widget));
+	ui->selected_obj.object->texture = load_texture(ui->selected_obj.object->texture_filename);
+	if (!ui->selected_obj.object->texture.is_valid)
+	{
+		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window),
+			GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
+			"Can not load %s.\nIt is not a valid texture.\n%s",
+			ui->selected_obj.object->filename, g_strerror(errno));
+		g_signal_connect_swapped(dialog, "response", G_CALLBACK(
+												gtk_widget_destroy), dialog);
+		gtk_dialog_run(GTK_DIALOG(dialog));
+		return ;
+	}
+	element_edited();
+}
+
 
 void		 	edit_element_properties(GtkTreeView *tree_view,
 					GtkTreePath *path, GtkTreeViewColumn *column, gpointer data)
@@ -204,14 +278,12 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 
 	GtkWidget	*pos = create_vector3_entry("pos		", view->selected_obj.object->pos);
 	GtkWidget	*rot = create_vector3_entry("rot		", view->selected_obj.object->rot);
-	GtkWidget	*scale = create_scale_entry("Scale      ", 0, 0, 1000); // TODO make scale a truth
 	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_edited), view);
 	g_signal_connect(rot, "rt-vector3-entry-edited", G_CALLBACK(rot_edited), view);
 
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), name);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), pos);
 	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rot);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), scale);
 
 	if (type == CSG)
 	{
@@ -225,7 +297,8 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), bounding_list);
 	}
 
-	if (type == SPHERE || type == CONE || type == CYLINDER)
+	if (type == SPHERE || type == CONE || type == CYLINDER || type == TORUS
+			|| type == DISK)
 	{
 		GtkWidget	*radius = create_scale_entry("Radius  ",
 			view->selected_obj.object->radius, 0, 1000);
@@ -234,16 +307,17 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				G_CALLBACK(radius_edited), view);
 
 	}
-	if (type == CONE || type == CYLINDER)
+	if (type == CONE || type == CYLINDER || type == TORUS)
 	{
 		GtkWidget	*length = create_scale_entry("Length  ",
 			view->selected_obj.object->length, 0, 1000);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
 		g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
 			view);
 	}
 
 	if (type == SPHERE || type == CYLINDER || type == CONE || type == PLANE
-			|| type == TORUS)
+			|| type == TORUS || type == POLYGONS)
 	{
 		GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
 				view->selected_obj.object->kdiff, 0, 1);
@@ -255,10 +329,46 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				view);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
+
+		GtkWidget	*rindex = create_scale_entry("rindex",
+				view->selected_obj.object->rindex, 1, 2);
+		GtkWidget	*transmittance  = create_scale_entry("transmittance",
+				view->selected_obj.object->transmittance, 0, 1);
+		GtkWidget	*reflectance = create_scale_entry("reflectance",
+				view->selected_obj.object->reflectance, 0, 1);
+
+		g_signal_connect(rindex, "rt-scale-entry-edited",
+				G_CALLBACK(rindex_edited), view);
+		g_signal_connect(transmittance, "rt-scale-entry-edited",
+				G_CALLBACK(transmittance_edited), view);
+		g_signal_connect(reflectance, "rt-scale-entry-edited",
+				G_CALLBACK(reflectance_edited), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rindex);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), transmittance);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), reflectance);
 	}
 
 	if (type != CSG && type != LIGHT)
+	{
 		create_color_chooser(view, view->selected_obj.object->color);
+		GtkWidget	*texture_type = gtk_combo_box_text_new();
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "None");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Spherical");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Sphere damier");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar");
+		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar damier");
+		gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type), view->selected_obj.object->have_texture);
+		g_signal_connect(texture_type, "changed", G_CALLBACK(texture_type_edited), view);
+		GtkWidget	*texture_chooser;
+		texture_chooser = gtk_file_chooser_button_new("Texture images", GTK_FILE_CHOOSER_ACTION_OPEN);
+		if (view->selected_obj.object->texture_filename)
+			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(texture_chooser), view->selected_obj.object->texture_filename);
+		g_signal_connect(texture_chooser, "file-set", G_CALLBACK(texture_file_set), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new("Texture"));
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_type);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_chooser);
+	}
+
 	if (type == POLYGONS)
 	{
 		GtkWidget *file_chooser;
@@ -266,6 +376,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		if (view->selected_obj.object->filename)
 			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(file_chooser), view->selected_obj.object->filename);
 		g_signal_connect(file_chooser, "file-set", G_CALLBACK(wavefront_file_set), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new("Model .obj"));
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), file_chooser);
 	}
 

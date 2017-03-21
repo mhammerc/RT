@@ -7,7 +7,7 @@
 
 static int	is_obj(t_object *object)
 {
-	return (object->type < 7);
+	return (object->type < EMPTY);
 }
 
 static int	is_light(t_object *object)
@@ -22,6 +22,31 @@ static void	apply_parent_relative(t_obj *parent, t_obj *child)
 	child->pos = vec3_add(child->pos, parent->pos);
 }
 
+static void convert_polygon(t_obj *obj, t_object *object)
+{
+	size_t          i;
+	size_t          j;
+	t_face          *face;
+	t_vec3			*sommets;
+
+	obj->faces = (t_face*)malloc(sizeof(t_face) * object->nb_faces);
+	memcpy(obj->faces, object->faces, sizeof(t_face) * object->nb_faces);
+	i = 0;
+	while (i < obj->nb_faces)
+	{
+		face = obj->faces + i;
+		j = 0;
+		sommets = (t_vec3*)malloc(sizeof(t_vec3) * face->nb);
+		while (j < face->nb)
+		{
+			sommets[j] = vec3_add(face->sommets[j], obj->pos);
+			j++;
+		}
+		face->sommets = sommets;
+		i++;
+	}
+}
+
 static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 {
 	obj->pos = object->pos;
@@ -31,7 +56,7 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	else
 		obj->dir = object->rot;
 	if (object->type == CONE)
-		obj->radius = cos((object->radius / 1000) * DEG_TO_RAD);
+		obj->radius = object->radius;
 	else
 		obj->radius =  object->radius / 1000;
 	obj->length = object->length;
@@ -40,7 +65,9 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->kspec = object->kspec;
 	obj->kdiff = object->kdiff;
 	obj->kp = 256;
-	obj->rindex = R_GLASS;
+	obj->rindex = object->rindex;
+	obj->transmittance = object->transmittance;
+	obj->reflectance = object->reflectance;
 	obj->transparency = (obj->type == SPHERE) ? 1.0 : 0.0;
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
@@ -49,6 +76,10 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->csg = '0';
 	obj->nb_faces = object->nb_faces;
 	obj->faces = object->faces;
+	obj->have_texture = object->have_texture;
+	obj->texture = object->texture;
+	if (obj->type == POLYGONS)
+		convert_polygon(obj, object);
 	apply_parent_relative(parent, obj);
 }
 
@@ -142,6 +173,8 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		spot.intensity = 100;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
+	if (objects->children)
+		fill_spot(objects->children, spots);
 	if (objects->next)
 		fill_spot(objects->next, spots);
 }
@@ -164,17 +197,49 @@ static void		del_list(t_list **list)
 	*list = NULL;
 }
 
+static void		del_list_obj(t_list **list)
+{
+	t_list	*object;
+	t_list	*next;
+	t_obj	*obj;
+
+	if (NULL == list)
+		return ;
+	object = *list;
+	while (object)
+	{
+		next = object->next;
+		obj = (t_obj*)object->content;
+		if (obj->type == POLYGONS)
+		{
+			size_t	i;
+			i = 0;
+			while (i < obj->nb_faces)
+			{
+				free(obj->faces[i].sommets);
+				++i;
+			}
+			free(obj->faces);
+		}
+		free(object->content);
+		free(object);
+		object = next;
+	}
+	*list = NULL;
+}
+
 void	ask_for_new_image(t_ui *ui)
 {
 	if (ui->rendering == 1)
 		return ;
-	del_list(&ui->scene.obj);
+	del_list_obj(&ui->scene.obj);
 	del_list(&ui->scene.spot);
 	fill_obj(ui->objs, &(ui->scene.obj), NULL);
 	fill_spot(ui->objs, &(ui->scene.spot));
 
 	ui->scene.cam.dir = ui->cam->dir;
 	ui->scene.cam.pos = ui->cam->pos;
+	ui->scene.cam.up = ui->cam->up;
 	ui->scene.cam.w = RENDER_SIZE_W;
 	ui->scene.cam.h = RENDER_SIZE_H;
 	ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;
@@ -182,6 +247,7 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
+	ui->scene.filter = ui->rp->scene_gtk.filter;
 	/*
 	** aa = 1 = 2x2 = 1x2
 	** aa = 2 = 4x4 = 2x2
@@ -190,9 +256,5 @@ void	ask_for_new_image(t_ui *ui)
 	ui->scene.aa = ui->rp->scene_gtk.aa * 2;
 	if (ui->scene.aa == 6)
 		ui->scene.aa = 8;
-
-	//FIXME camera up ne doit pas etre en dur ?
-	ui->scene.cam.up = (t_vec3){0, 1, 0};
-
 	renderer_compute_image((&(ui->scene)));
 }

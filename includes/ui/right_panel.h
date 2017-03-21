@@ -24,6 +24,7 @@ typedef struct			s_cam_gtk
 {
 	t_vector3w			pos;
 	t_vector3w			lkat;
+	t_vector3w			up;
 }						t_cam_gtk;
 
 typedef struct			s_scene_gtk
@@ -31,6 +32,7 @@ typedef struct			s_scene_gtk
 	int					aa;
 	double				ambiant_light;
 	int					fov;
+	enum e_filters		filter;
 }						t_scene_gtk;
 
 typedef struct			s_element_properties
@@ -49,6 +51,9 @@ typedef struct			s_right_panel
 	GtkWidget			*right_panel;
 	GtkWidget			*el_prop_lst;
 	GtkWidget			*cam_prop;
+	GtkWidget			*pos;
+	GtkWidget			*lkat;
+	GtkWidget			*up;
 	GtkWidget			*scene_prop;
 	GtkWidget			*color_chooser;
 	t_elem_properties	el_prop;
@@ -61,6 +66,7 @@ void		edit_scene_properties(gpointer data);
 
 void		init_cam(t_ui *ui);
 void		edit_cam_properties(gpointer data);
+void 		refresh_cam_properties(t_ui *ui);
 
 void		clear_properties_list(t_ui *ui);
 

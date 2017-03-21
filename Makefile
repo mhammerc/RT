@@ -19,6 +19,7 @@ SRCS_NAME	=	main.c										\
 				renderer/objects/cylinder.c					\
 				renderer/objects/cone.c						\
 				renderer/objects/plane.c					\
+				renderer/objects/disk.c						\
 				renderer/objects/csg.c						\
 				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
@@ -42,32 +43,30 @@ SRCS_NAME	=	main.c										\
 				ui/window.c									\
 				ui/ui_print_scene.c							\
 				ui/top_menu/top_menu.c						\
-				ui/top_menu/file_loader/file_loader.c		\
-				ui/top_menu/file_loader/parser.c			\
-				ui/top_menu/file_loader/fill_env.c			\
-				ui/top_menu/file_loader/fill_group.c		\
-				ui/top_menu/file_loader/checker.c			\
-				ui/top_menu/file_loader/scene.c				\
-				ui/top_menu/file_loader/camera.c			\
-				ui/top_menu/file_loader/object.c			\
-				ui/top_menu/file_loader/lists.c				\
-				ui/top_menu/file_loader/tools.c				\
 				converter/converter.c						\
-				obj_parser/obj_parser.c						\
-				texture_loader/texture_loader.c				\
+				parsers/file_saver/file_saver.c				\
+				parsers/file_saver/saver_tools.c			\
+				parsers/file_loader/file_loader.c			\
+				parsers/file_loader/parser.c				\
+				parsers/file_loader/object.c				\
+				parsers/file_loader/camera.c				\
+				parsers/file_loader/tools.c					\
+				parsers/file_loader/vec3.c					\
+				parsers/obj_parser.c						\
+				parsers/texture_loader.c					\
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
 
 OBJS_PATH	=	./objs
-INCS_PATH	=	./includes
 LFT_PATH	=	./libs/libft
+INCS_PATH	=	./includes
 
 GTK_CFLAGS	=	$(shell pkg-config --cflags gtk+-3.0)
 GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc -fdiagnostics-color=auto
 
-CFLAGS		=	-I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/obj_parser -I$(INCS_PATH)/texture_loader -Wall -Wextra -O3 -funroll-loops -ffast-math
+CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
 
 CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft -flto
@@ -78,14 +77,11 @@ OBJS		=	$(addprefix $(OBJS_PATH)/,$(OBJS_NAME))
 
 all: $(NAME)
 
-$(NAME): 		create_objs_dir $(OBJS)
+$(NAME): 		$(OBJS)
 				make -C $(LFT_PATH)
-				gcc $(OBJS) -o $@ $(CLIBS)
+				gcc $^ -o $@ $(CLIBS)
 
 $(OBJS_PATH)/%.o: $(SRCS_PATH)/%.c
-				$(CC) -o $@ -c $< $(CFLAGS)
-
-create_objs_dir:
 				@mkdir $(OBJS_PATH) 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/converter 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/renderer 2> /dev/null || true
@@ -97,9 +93,10 @@ create_objs_dir:
 				@mkdir $(OBJS_PATH)/ui/tools 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/top_menu 2> /dev/null || true
-				@mkdir $(OBJS_PATH)/ui/top_menu/file_loader 2> /dev/null || true
-				@mkdir $(OBJS_PATH)/obj_parser 2> /dev/null || true
-				@mkdir $(OBJS_PATH)/texture_loader 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/parsers 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/parsers/file_loader 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/parsers/file_saver 2> /dev/null || true
+				$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
 				rm -rf $(OBJS)

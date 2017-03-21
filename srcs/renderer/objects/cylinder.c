@@ -6,12 +6,13 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:47:41 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/15 19:25:44 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/20 11:56:24 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <stdlib.h>
 #include <libft.h>
+#include <math.h>
 #include "renderer.h"
 
 /*
@@ -24,6 +25,7 @@ int				cylinder_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
 	double		b;
 	double		c;
+	double		m;
 	t_vec3		vmvva;
 	t_vec3		dpmva;
 
@@ -35,8 +37,22 @@ int				cylinder_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	c = vec3_dot(dpmva, dpmva) - self->radius;
 	if ((interval->nb_hit = quad_solve(vec3_dot(vmvva, vmvva), b, c, interval)))
 	{
-		interval->min[0].ref = self;
-		interval->max[0].ref = self;
+		if (self->length != 0.)
+		{
+			m = vec3_dot(vec3_add(vec3_mult(interval->min[0].dist, ray->dir), vec3_sub(ray->pos, self->pos)), self->dir);
+			if ((m > self->length || m < 0))
+			{
+				m = vec3_dot(vec3_add(vec3_mult(interval->max[0].dist, ray->dir), vec3_sub(ray->pos, self->pos)), self->dir);
+				if ((m > self->length || m < 0))
+				{
+					interval->nb_hit = 0;
+					return (0);
+				}
+				interval->min[0] = interval->max[0];
+			}
+		}
+		interval->min[0].ref = *self;
+		interval->max[0].ref = *self;
 		return (1);
 	}
 	return (0);

@@ -30,6 +30,9 @@ void					open_dialog_open(void);
 void					open_dialog_save(void);
 void					open_dialog_export(void);
 
+//Saver tmp for testing
+void					save_scene(char *filename);
+
 /*
 ** HOMEMADE WIDGETS
 */

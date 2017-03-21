@@ -5,14 +5,180 @@
 #include "ui.h"
 #include "renderer.h"
 #include "shared.h"
+#include "texture_loader.h"
 
+t_vec3			get_texture_color(t_ray ray)
+{
+	t_vec3	r;
+	t_vec3	d;
+	double	u;
+	double	v;
+
+	if (ray.collided->have_texture == NO_TEXTURE)
+		return (ray.collided->color);
+	else if (ray.collided->have_texture == SPHERICAL_DAMIER)
+	{
+		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+		u = fmod(u, 0.10);
+		v = 0.5 - asin(d.y) / M_PI;
+		v = fmod(v, 0.10);
+
+		if (u < 0.05 && v < 0.05)
+			return (BLACK);
+		if (u > 0.05 && v < 0.05)
+			return (WHITE);
+		if (u > 0.05 && v > 0.05)
+			return (BLACK);
+		if (u < 0.05 && v > 0.05)
+			return (WHITE);
+		return (WHITE);
+	}
+	else if (ray.collided->have_texture == SPHERICAL
+			&& ray.collided->texture.is_valid)
+	{
+		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+		u *= ray.collided->texture.width;
+		v = 0.5 - asin(d.y) / M_PI;
+		v *= ray.collided->texture.height;
+		int offset = 3;
+		if (ray.collided->texture.has_alpha)
+			offset = 4;
+
+		r.x = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride];
+		r.y = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 1];
+		r.z = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 2];
+		r = vec3_mult(1. / 256., r);
+		return (r);
+
+	}
+	else if (ray.collided->have_texture == PLANAR
+			&& ray.collided->texture.is_valid)
+	{
+		d = vec3_sub(ray.collided->pos, ray.pos);
+		t_vec3	tmp;
+		tmp = vec3_cross(d, ray.collided->dir);
+		if (fabs(ray.collided->dir.x) < fabs(ray.collided->dir.y))
+		{
+			u = d.x;
+			v = tmp.x;
+		}
+		else
+		{
+			u = d.y;
+			v = tmp.y;
+		}
+		if (u < 0.)
+			u = -u;
+		if (v < 0.)
+			v = -v;
+		u = fmod(u, 1.0);
+		v = fmod(v, 1.0);
+		u *= ray.collided->texture.width;
+		v *= ray.collided->texture.height;
+		int offset = 3;
+		if (ray.collided->texture.has_alpha)
+			offset = 4;
+
+		r.x = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride];
+		r.y = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 1];
+		r.z = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 2];
+		r = vec3_mult(1. / 256., r);
+		return (r);
+	}
+	else if (ray.collided->have_texture == PLANAR_DAMIER)
+	{
+		d = vec3_sub(ray.collided->pos, ray.pos);
+		t_vec3	tmp;
+		tmp = vec3_cross(d, ray.collided->dir);
+		if (fabs(ray.collided->dir.x) < fabs(ray.collided->dir.y))
+		{
+			u = d.x;
+			v = tmp.x;
+		}
+		else
+		{
+			u = d.y;
+			v = tmp.y;
+		}
+		if (u < 0.)
+		{
+			u -= 0.5;
+			u = -u;
+		}
+		if (v < 0.)
+		{
+			v -= 0.5;
+			v = -v;
+		}
+		u = fmod(u, 1.0);
+		v = fmod(v, 1.0);
+		if (u < 0.5 && v < 0.5)
+			return (BLACK);
+		if (u > 0.5 && v < 0.5)
+			return (WHITE);
+		if (u > 0.5 && v > 0.5)
+			return (BLACK);
+		if (u < 0.5 && v > 0.5)
+			return (WHITE);
+		return (WHITE);
+	}
+	else
+		return (ray.collided->color);
+}
+
+void			filter_black_and_white(t_vec3 *light, int len)
+{
+	int		i;
+	double	tmp2;
+
+	i = -1;
+	while (++i < len)
+	{
+		tmp2 = light[i].x + light[i].y + light[i].z;
+		tmp2 /= 3;
+		light[i].x = tmp2;
+		light[i].y = tmp2;
+		light[i].z = tmp2;
+	}
+
+}
+
+void			filter_sepia(t_vec3 *light, int len)
+{
+	int		i;
+	t_vec3	tmp;
+
+	i = -1;
+	while (++i < len)
+	{
+		tmp.x = (light[i].x * .393) + (light[i].y * .769) + (light[i].z * .189);
+		tmp.y = (light[i].x * .349) + (light[i].y * .686) + (light[i].z * .168);
+		tmp.z = (light[i].x * .272) + (light[i].y * .534) + (light[i].z * .131);
+		light[i] = tmp;
+	}
+}
+
+static void 	light_apply_filters(t_scene *sce, t_vec3 *light, int w, int h)
+{
+	int		i;
+	int		len;
+
+	len = w * h;
+	i = -1;
+	if (sce->filter == BLACK_WHITE)
+		filter_black_and_white(light, len);
+	if (sce->filter == SEPIA)
+		filter_sepia(light, len);
+}
 
 static void		update_progress_bar(t_scene *scene, double percent_per_line)
 {
 	static double	last_percent = 0.;
 
 	*scene->percent += percent_per_line;
-	if (*scene->percent > 0.95)
+	if (*scene->percent > 0.99)
 	{
 		last_percent = 0.;
 	}
@@ -35,9 +201,6 @@ t_list			*ft_lstdup(t_list	*original_begin)
 	while (original)
 	{
 		original_cpy = ft_lstnew(original->content, original->content_size);
-		//original_cpy = malloc(sizeof(t_list));
-		//original_cpy->content = malloc(sizeof(t_obj));
-		//memcpy(original_cpy->content, original->content, sizeof(t_obj));
 		obj = (t_obj*)original_cpy->content;
 		if (obj->type == POLYGONS)
 		{
@@ -49,6 +212,25 @@ t_list			*ft_lstdup(t_list	*original_begin)
 		original = original->next;
 	}
 	return (n);
+}
+
+void			lstfree(t_list	*begin)
+{
+	t_list	*list;
+	t_list	*tmp;
+	t_obj	*obj;
+
+	list = begin;
+	while (list)
+	{
+		obj = (t_obj*)list->content;
+		if (obj->type == POLYGONS && obj->faces)
+		free(obj->faces);
+		tmp = list->next;
+		free(list->content);
+		free(list);
+		list = tmp;
+	}
 }
 
 static void		*thread_compute_image(void *thread_data)
@@ -115,6 +297,7 @@ static void		*thread_compute_image(void *thread_data)
 			update_progress_bar(sce, percent_per_line);
 		pthread_mutex_unlock(&sce->ui->mutex_stock);
 	}
+	lstfree(sce->obj);
 	return (NULL);
 }
 
@@ -135,9 +318,8 @@ void			*renderer_compute_image2(void *sce2)
 	i = 0;
 	while (i < CORE_COUNT)
 	{
-		threads_data[i].sce = sce;
 		threads_data[i].sce = malloc(sizeof(t_scene));
-		memcpy(threads_data[i].sce, sce, sizeof(t_scene));
+		ft_memcpy(threads_data[i].sce, sce, sizeof(t_scene));
 		threads_data[i].pixels = sce->pixels;
 		threads_data[i].light = light;
 		threads_data[i].y_begin = sce->cam.h / CORE_COUNT * i;
@@ -160,8 +342,16 @@ void			*renderer_compute_image2(void *sce2)
 		}
 		++i;
 	}
+	light_apply_filters(sce, light, sce->cam.w, sce->cam.h);
 	light_to_pixel(light, sce->pixels, sce->cam.w, sce->cam.h);
 	free(light);
+	i = 0;
+	while (i < CORE_COUNT)
+	{
+		free(threads_data[i].sce);
+		++i;
+	}
+	free(sce->percent);
 	*sce->ui->percent = 1.1;
 	return (NULL);
 }

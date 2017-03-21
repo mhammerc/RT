@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/16 16:43:40 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/18 15:54:09 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ void	inter(t_interval *left, t_interval *right, t_interval *interval)
 	int	r;
 	int	i;
 
-	if (!inter_case(left, right, interval))	
+	if (!inter_case(left, right, interval))
 		return;
 	l = 0;
 	i = 0;
@@ -358,11 +358,7 @@ void			test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	t_interval	right;
 
 	if (obj->csg == '0')
-		//TODO faire une generique dist_obj(obj, ray) qui remplit interval;
-		//pour l'instant uniquement cas sphere :
-		{
 			obj->intersect(obj, ray, interval);
-		}
 	else
 	{
 		test_csg(obj->left, ray, &left);
@@ -397,17 +393,17 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 		hit = 0;
 		if (*d > interval->min[i].dist && interval->min[i].dist > 0)
 		{
-			*collided = interval->min[i].ref;
+			memcpy(*collided, &interval->min[i].ref, sizeof(t_obj));
 			*d = interval->min[i].dist;
-			obj->csg_ref = interval->min[i].ref;
+			obj->csg_ref = *collided;
 			obj->csg_ref->normal_dir = interval->min[i].normal;
 			hit = 1;
 		}
 		if (*d > interval->max[i].dist && interval->max[i].dist > 0)
 		{
-			*collided = interval->max[i].ref;
+			memcpy(*collided, &interval->min[i].ref, sizeof(t_obj));
 			*d = interval->max[i].dist;
-			obj->csg_ref = interval->max[i].ref;
+			obj->csg_ref = *collided;
 			obj->csg_ref->normal_dir = interval->max[i].normal;
 			hit = 1;
 		}

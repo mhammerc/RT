@@ -37,6 +37,14 @@ typedef struct			s_object
 	char				*filename;
 	size_t				nb_faces;
 	t_face				*faces;
+	enum e_texture_type		have_texture;
+	t_texture				texture;
+	char					*texture_filename;
+
+	double					rindex;
+	double					transmittance;
+	double					reflectance;
+	int					transparency;
 }						t_object;
 
 typedef struct			s_selected_obj
@@ -51,6 +59,7 @@ typedef struct			s_ui_cam
 {
 	t_vec3				pos;
 	t_vec3				dir;
+	t_vec3				up;
 }						t_ui_cam;
 
 /*
@@ -94,7 +103,8 @@ struct					s_ui
 	int					rendering;
 };
 
-void					build_interface(GtkApplication *app, gpointer user_data);
+void					build_interface(GtkApplication *app,
+							gpointer user_data);
 void					left_panel(t_ui *ui, t_left_panel *lp);
 void					display_panel(t_ui *ui, t_display_panel *dp);
 void					right_panel(t_ui *ui, t_right_panel *lp);
@@ -106,6 +116,7 @@ void					refresh_obj_tree(t_ui *ui);
 void					add_object(t_object object, gboolean render_new);
 void					create_sphere();
 void					create_plane();
+void					create_disk();
 void					create_cone();
 void					create_torus(gboolean render_new);
 void					create_cgs();
@@ -130,5 +141,6 @@ void					load_file(char *filename);
 void					hook_up_obj_lst(t_ui *ui, t_env *env);
 
 void					free_obj_tree(t_ui *ui);
+
 
 #endif
