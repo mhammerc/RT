@@ -331,5 +331,16 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), file_chooser);
 	}
 
+	GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
+			view->selected_obj.object->kdiff, 0, 1);
+	GtkWidget	*kspec  = create_scale_entry("Kspec  ",
+			view->selected_obj.object->kspec, 0, 1);
+	g_signal_connect(kdiff, "rt-scale-entry-edited", G_CALLBACK(kdiff_edited),
+			view);
+	g_signal_connect(kspec, "rt-scale-entry-edited", G_CALLBACK(kspec_edited),
+			view);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
+	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
+
 	gtk_widget_show_all(view->window);
 }
