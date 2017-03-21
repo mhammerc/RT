@@ -145,15 +145,30 @@ int	minus_test0(t_interval *a_i, t_interval *a_j, int i, int j)
 		return (1);
 	return (0);
 }
+int	minus_test00(t_interval *a_i, t_interval *a_j, int i, int j)
+{
+	double	min1;
+	double	min2;
+	double	max1;
+	double	max2;
+	
+	min1 = a_i->min[i].dist;
+	max1 = a_i->max[i].dist;
+	min2 = a_j->min[j].dist;
+	max2 = a_j->max[j].dist;
+	if (min1 < min2 && max1 > max2)
+		return (1);
+	return (0);
+}
 /*
 **
 ** modify : creat new segment
 */
 void	modify_by_minus2(t_interval *a_i, t_interval *a_j, int i, int *j)
 {
-	a_i->min[i + 1] = a_j->min[*j];
+	a_i->min[i + 1] = a_j->max[*j];
 	a_i->max[i + 1] = a_i->max[i];
-	a_i->max[i] = a_i->min[*j];
+	a_i->max[i] = a_j->min[*j];
 	(*j)++;
 }
 void	modify_by_minus3(t_interval *a_i, t_interval *a_j, int i)
@@ -207,19 +222,18 @@ void	minus(t_interval *left, t_interval *right, t_interval *interval)
 			}
 			else if (minus_test0(interval, right, i, r))
 			{
-			//	printf("ecrasement\n");
+				//printf("ecrasement\n");
 				break;
 			}
-			else if (minus_test1(interval, right, i, r))
+			else if (minus_test00(interval, right, i, r))
+			{
+				modify_by_minus2(interval, right, i, &r);
+				modify_by_minus3(interval, left, i + 1);
+			}
+			else //if (minus_test1(interval, right, i, r))
 			{
 			//	printf("chevauchement\n");
 				modify_by_minus1(interval, right, i, &r);
-			}
-			else
-			{
-			//	printf("decoupage\n");
-				modify_by_minus2(interval, right, i, &r);
-				modify_by_minus3(interval, left, i + 1);
 			}
 		}
 		if  (r == right->nb_hit)
