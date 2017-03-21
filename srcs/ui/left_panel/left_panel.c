@@ -48,7 +48,7 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 									G_CALLBACK(edit_element_properties), ui);
 	g_signal_connect(ui->lp->tree.tree, "cursor-changed",
 									G_CALLBACK(make_lock), ui);
-	g_signal_connect(GTK_SCROLLABLE(lp->tree.tree), "button-release-event",
+	g_signal_connect_after(GTK_SCROLLABLE(lp->tree.tree), "button-release-event",
 									G_CALLBACK(button_relase), ui);
 
 	gtk_widget_set_size_request(lp->lp_btns.add_obj, 70, 0);
