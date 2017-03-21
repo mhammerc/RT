@@ -182,6 +182,36 @@ static void		kspec_edited(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
+static void		rindex_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->rindex = value;
+	element_edited();
+}
+
+static void		transmittance_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->transmittance = value;
+	element_edited();
+}
+
+static void		reflectance_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->reflectance = value;
+	element_edited();
+}
+
 static void		texture_type_edited(GtkComboBox *widget, gpointer user_data)
 {
 	t_ui	*ui;
@@ -299,6 +329,23 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				view);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
+
+		GtkWidget	*rindex = create_scale_entry("rIndex",
+				view->selected_obj.object->rindex, 0, 1);
+		GtkWidget	*transmittance  = create_scale_entry("transmittance",
+				view->selected_obj.object->transmittance, 0, 1);
+		GtkWidget	*reflectance = create_scale_entry("reflectance",
+				view->selected_obj.object->reflectance, 0, 1);
+
+		g_signal_connect(rindex, "rt-scale-entry-edited",
+				G_CALLBACK(rindex_edited), view);
+		g_signal_connect(transmittance, "rt-scale-entry-edited",
+				G_CALLBACK(transmittance_edited), view);
+		g_signal_connect(reflectance, "rt-scale-entry-edited",
+				G_CALLBACK(reflectance_edited), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rindex);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), transmittance);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), reflectance);
 	}
 
 	if (type != CSG && type != LIGHT)
@@ -312,12 +359,13 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar damier");
 		gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type), view->selected_obj.object->have_texture);
 		g_signal_connect(texture_type, "changed", G_CALLBACK(texture_type_edited), view);
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_type);
 		GtkWidget	*texture_chooser;
 		texture_chooser = gtk_file_chooser_button_new("Texture images", GTK_FILE_CHOOSER_ACTION_OPEN);
 		if (view->selected_obj.object->texture_filename)
 			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(texture_chooser), view->selected_obj.object->texture_filename);
 		g_signal_connect(texture_chooser, "file-set", G_CALLBACK(texture_file_set), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new("Texture"));
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_type);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_chooser);
 	}
 
@@ -328,19 +376,9 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		if (view->selected_obj.object->filename)
 			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(file_chooser), view->selected_obj.object->filename);
 		g_signal_connect(file_chooser, "file-set", G_CALLBACK(wavefront_file_set), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new("Model .obj"));
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), file_chooser);
 	}
-
-	GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
-			view->selected_obj.object->kdiff, 0, 1);
-	GtkWidget	*kspec  = create_scale_entry("Kspec  ",
-			view->selected_obj.object->kspec, 0, 1);
-	g_signal_connect(kdiff, "rt-scale-entry-edited", G_CALLBACK(kdiff_edited),
-			view);
-	g_signal_connect(kspec, "rt-scale-entry-edited", G_CALLBACK(kspec_edited),
-			view);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
-	gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
 
 	gtk_widget_show_all(view->window);
 }

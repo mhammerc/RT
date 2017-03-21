@@ -69,7 +69,7 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 
 	GtkWidget	*scroll;
 	scroll = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_size_request(scroll, 280, 768);
+	gtk_widget_set_size_request(scroll, 280, 950);
 	gtk_container_add(GTK_CONTAINER(scroll), lp->tree.tree);
 
 	gtk_container_add(GTK_CONTAINER(lp->lp_box), lp->lp_btns.button);
