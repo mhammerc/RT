@@ -7,6 +7,8 @@ void	p_parse_camera(t_env *env, char *ln)
 
 	ft_bzero(&env->camera, sizeof(t_parser_cam));
 	free(env->ln);
+	env->camera.pos = (t_vec3){0., 0., 7.};
+	env->camera.up = (t_vec3){0., 1., 0.};
 	while ((ret = ft_get_next_line(env->fd, &env->ln)))
 	{
 		if (ret == -1)
