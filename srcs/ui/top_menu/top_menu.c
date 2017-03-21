@@ -114,8 +114,8 @@ static	t_menu_file		*create_file_menu(void)
 	t_menu_file		*f_menu;
 
 	ui = get_interface();
-	f_menu = ui->file_menu;
 	f_menu = (t_menu_file *)malloc(sizeof(t_menu_file));
+	ui->file_menu = f_menu;
 	f_menu->menu = gtk_menu_new();
 	f_menu->open = gtk_menu_item_new_with_label("Open (F1)");
 	f_menu->save = gtk_menu_item_new_with_label("Save scene (F2)");
