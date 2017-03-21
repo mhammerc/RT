@@ -1,6 +1,7 @@
 camera:
 	position: -1.8; 0.1; 0.7
 	lookAt: 2.0; -0.5; 0.5
+	up: 0.0; 1.0; 0.0
 
 object:
 	type: PLANE
