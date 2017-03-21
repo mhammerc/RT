@@ -116,6 +116,8 @@ struct						s_obj
 	double					kdiff;
 	double					kp;
 	double					rindex;
+	double					transmittance;
+	double					reflectance;
 	struct s_obj			*left;
 	struct s_obj			*right;
 	char					csg;
