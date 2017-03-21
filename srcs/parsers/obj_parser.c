@@ -94,6 +94,8 @@ static int	start_parsing(t_object *object, char *filename)
 		}
 		if (ft_strcmp(split[0], "v") == 0)
 		{
+			if (!split[1] || !split[2] || !split[3])
+				return (0);
 			tmp.x = atof(split[1]);
 			tmp.y = atof(split[2]);
 			tmp.z = atof(split[3]);
@@ -107,12 +109,16 @@ static int	start_parsing(t_object *object, char *filename)
 		}
 		else if (ft_strcmp(split[0], "vt") == 0)
 		{
+			if (!split[1] || !split[2])
+				return (0);
 			tmp2.x = atof(split[1]);
 			tmp2.y = atof(split[2]);
 			components.textures[components.n_textures++] = tmp2;
 		}
 		else if (ft_strcmp(split[0], "vn") == 0)
 		{
+			if (!split[1] || !split[2] || !split[3])
+				return (0);
 			tmp.x = atof(split[1]);
 			tmp.y = atof(split[2]);
 			tmp.z = atof(split[3]);
