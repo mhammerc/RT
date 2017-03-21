@@ -74,4 +74,5 @@ int			norm_quad_solve(double b, double c, t_interval *interval);
 int			quad_solve(double a, double b, double c, t_interval *interval);
 int			quad4_solve(long double a, long double b, long double c,
 										long double d, t_interval *interval);
+
 #endif

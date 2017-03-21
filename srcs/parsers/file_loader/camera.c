@@ -22,7 +22,7 @@ void	p_parse_camera(t_env *env)
 		else if (ft_strncmp(ln2, "lookAt:", 7) == 0)
 			env->camera.look_at = p_read_vec3(ln2);
 		else if (ft_strncmp(ln2, "up:", 3) == 0)
-			env->camera.up = p_read_vec3(env, ln2);
+			env->camera.up = p_read_vec3(ln2);
 		if (*ln2 == 0)
 		{
 			free(ln2);

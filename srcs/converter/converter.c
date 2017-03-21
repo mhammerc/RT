@@ -177,7 +177,7 @@ void	ask_for_new_image(t_ui *ui)
 
 	ui->scene.cam.dir = ui->cam->dir;
 	ui->scene.cam.pos = ui->cam->pos;
-	i->scene.cam.pos = ui->cam->up;
+	ui->scene.cam.up = ui->cam->up;
 	ui->scene.cam.w = RENDER_SIZE_W;
 	ui->scene.cam.h = RENDER_SIZE_H;
 	ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;

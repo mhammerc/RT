@@ -10,6 +10,7 @@ static void		save_cam_properties(FILE *file)
 	fprintf(file, "camera:\n");
 	print_vec3(file, "position", cam->pos, "");
 	print_vec3(file, "lookAt", cam->dir, "");
+	print_vec3(file, "up", cam->up, "");
 	fprintf(file, "\n");
 }
 
