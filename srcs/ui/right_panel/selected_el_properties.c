@@ -167,6 +167,7 @@ static void		kdiff_edited(GtkWidget *widget, gdouble value, gpointer data)
 	t_ui	*ui;
 
 	ui = (t_ui*)data;
+	(void)widget;
 	ui->selected_obj.object->kdiff = value;
 	element_edited();
 }

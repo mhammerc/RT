@@ -24,6 +24,7 @@ typedef struct			s_cam_gtk
 {
 	t_vector3w			pos;
 	t_vector3w			lkat;
+	t_vector3w			up;
 }						t_cam_gtk;
 
 typedef struct			s_scene_gtk
@@ -52,6 +53,7 @@ typedef struct			s_right_panel
 	GtkWidget			*cam_prop;
 	GtkWidget			*pos;
 	GtkWidget			*lkat;
+	GtkWidget			*up;
 	GtkWidget			*scene_prop;
 	GtkWidget			*color_chooser;
 	t_elem_properties	el_prop;

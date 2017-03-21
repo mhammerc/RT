@@ -59,7 +59,7 @@ t_vec3			get_texture_color(t_ray ray)
 		d = vec3_sub(ray.collided->pos, ray.pos);
 		t_vec3	tmp;
 		tmp = vec3_cross(d, ray.collided->dir);
-		if (abs(ray.collided->dir.x) < abs(ray.collided->dir.y))
+		if (fabs(ray.collided->dir.x) < fabs(ray.collided->dir.y))
 		{
 			u = d.x;
 			v = tmp.x;
@@ -92,7 +92,7 @@ t_vec3			get_texture_color(t_ray ray)
 		d = vec3_sub(ray.collided->pos, ray.pos);
 		t_vec3	tmp;
 		tmp = vec3_cross(d, ray.collided->dir);
-		if (abs(ray.collided->dir.x) < abs(ray.collided->dir.y))
+		if (fabs(ray.collided->dir.x) < fabs(ray.collided->dir.y))
 		{
 			u = d.x;
 			v = tmp.x;
@@ -190,8 +190,6 @@ static void 	light_apply_filters(t_scene *sce, t_vec3 *light, int w, int h)
 {
 	int		i;
 	int		len;
-	t_vec3	tmp;
-	double	tmp2;
 
 	len = w * h;
 	i = -1;

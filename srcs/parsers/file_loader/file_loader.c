@@ -54,6 +54,7 @@ void			hook_up_obj_lst(t_ui *ui, t_env *env)
 	load_resources(env->objects);
 	ui->cam->pos = env->camera.pos;
 	ui->cam->dir = env->camera.look_at;
+	ui->cam->up = env->camera.up;
 	//todo update camera in interface
 	ui->objs = env->objects;
 /*	ft_bzero(&cur_obj, sizeof(t_object));

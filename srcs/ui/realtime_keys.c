@@ -104,7 +104,7 @@ static int		on_key_press_display(GtkWidget *widget, GdkEventKey *event,
 	else if (!ui->selected_obj.object)
 	{
 		cam_pos_key(ui, event);
-		cam_pos_key(ui, event);
+		cam_rot_key(ui, event);
 	}
 	else
 		other_key(ui, event);

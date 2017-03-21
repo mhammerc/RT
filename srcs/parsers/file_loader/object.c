@@ -1,7 +1,7 @@
 #include <ui.h>
 #include <file_loader.h>
 
-void	p_parse_object(t_env *env, char *ln)
+void	p_parse_object(t_env *env)
 {
 	int			ret;
 	char		*ln2;
@@ -27,15 +27,15 @@ void	p_parse_object(t_env *env, char *ln)
 			free(ln3);
 		}
 		else if (ft_strncmp(ln2, "position:", 9) == 0)
-			new_object.pos = p_read_vec3(env, ln2);
+			new_object.pos = p_read_vec3(ln2);
 		else if (ft_strncmp(ln2, "rotation:", 9) == 0)
-			new_object.rot = p_read_vec3(env, ln2);
+			new_object.rot = p_read_vec3(ln2);
 		else if (ft_strncmp(ln2, "radius:", 7) == 0)
 			new_object.radius = atof(ln2 + 7);
 		else if (ft_strncmp(ln2, "length:", 7) == 0)
 			new_object.length = atof(ln2 + 7);
 		else if (ft_strncmp(ln2, "color:", 6) == 0)
-			new_object.color = p_read_vec3(env, ln2);
+			new_object.color = p_read_vec3(ln2);
 		else if (ft_strncmp(ln2, "name:", 5) == 0)
 		{
 			new_object.name[0] = 0;
@@ -79,7 +79,7 @@ void	p_parse_object(t_env *env, char *ln)
 				free(ln2);
 				ft_lstadd(env->current_object, ft_lstnew(&new_object, sizeof(t_object)));
 				env->current_object = &(*env->current_object)->next;
-				p_parse_object(env, env->ln);
+				p_parse_object(env);
 				return ;
 			}
 			else if (tabs > env->depth)
@@ -90,7 +90,7 @@ void	p_parse_object(t_env *env, char *ln)
 				ft_lstadd(env->current_object, ft_lstnew(&new_object, sizeof(t_object)));
 				old = env->current_object;
 				env->current_object = &(*env->current_object)->children;
-				p_parse_object(env, env->ln);
+				p_parse_object(env);
 				env->current_object = old;
 				env->depth = old_depth;
 				if (!env->ln)
@@ -113,4 +113,3 @@ void	p_parse_object(t_env *env, char *ln)
 	}
 	ft_lstadd(env->current_object, ft_lstnew(&new_object, sizeof(t_object)));
 }
-
