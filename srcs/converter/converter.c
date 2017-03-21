@@ -28,9 +28,9 @@ static void convert_polygon(t_obj *obj, t_object *object)
 	size_t          j;
 	t_face          *face;
 	t_vec3			*sommets;
-	
+
 	obj->faces = (t_face*)malloc(sizeof(t_face) * object->nb_faces);
- 	memcpy(obj->faces, object->faces, sizeof(t_face) * object->nb_faces);
+	memcpy(obj->faces, object->faces, sizeof(t_face) * object->nb_faces);
 	i = 0;
 	while (i < obj->nb_faces)
 	{
@@ -40,7 +40,7 @@ static void convert_polygon(t_obj *obj, t_object *object)
 		while (j < face->nb)
 		{
 			sommets[j] = vec3_add(face->sommets[j], obj->pos);
-	  		j++;
+			j++;
 		}
 		face->sommets = sommets;
 		i++;
@@ -65,6 +65,10 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->kspec = object->kspec;
 	obj->kdiff = object->kdiff;
 	obj->kp = 256;
+	obj->rindex = object->rindex;
+	obj->transmittance = object->transmittance;
+	obj->reflectance = object->reflectance;
+	obj->transparency = (obj->type == SPHERE) ? 1.0 : 0.0;
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
 	obj->left = NULL;
@@ -166,7 +170,7 @@ static void		fill_spot(t_list *objects, t_list **spots)
 	{
 		spot.pos = object->pos;
 		spot.color = (t_vec3){1, 1, 1};
-		spot.intensity = 1;
+		spot.intensity = 100;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
 	if (objects->children)

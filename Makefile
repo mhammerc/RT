@@ -5,6 +5,10 @@ SRCS_PATH	=	srcs
 SRCS_NAME	=	main.c										\
 				renderer/compute_image.c					\
 				renderer/camera.c							\
+				renderer/stack.c							\
+				renderer/ray.c								\
+				renderer/ray_trace.c						\
+				renderer/color_light.c						\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\
@@ -65,7 +69,7 @@ CC			=	gcc -fdiagnostics-color=auto
 CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
 
-CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft
+CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft -flto
 CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))

@@ -409,7 +409,7 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 		}
 		if (hit)
 		{
-			if (0 > interval->min[i].dist && 0 < interval->max[i].dist)
+			if (0 >= interval->min[i].dist && 0 < interval->max[i].dist)
 				location = LOCATION_INSIDE;
 			else
 				location = LOCATION_OUTSIDE;
@@ -418,6 +418,7 @@ int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **colli
 	}
 	return (location);
 }
+
 /*
 ** Intersection between ray and csg_obj
 ** @return the distance between camera and object if there is collision
