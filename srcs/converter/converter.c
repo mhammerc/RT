@@ -22,6 +22,31 @@ static void	apply_parent_relative(t_obj *parent, t_obj *child)
 	child->pos = vec3_add(child->pos, parent->pos);
 }
 
+static void convert_polygon(t_obj *obj, t_object *object)
+{
+	size_t          i;
+	size_t          j;
+	t_face          *face;
+	t_vec3			*sommets;
+	
+	obj->faces = (t_face*)malloc(sizeof(t_face) * object->nb_faces);
+ 	memcpy(obj->faces, object->faces, sizeof(t_face) * object->nb_faces);
+	i = 0;
+	while (i < obj->nb_faces)
+	{
+		face = obj->faces + i;
+		j = 0;
+		sommets = (t_vec3*)malloc(sizeof(t_vec3) * face->nb);
+		while (j < face->nb)
+		{
+			sommets[j] = vec3_add(face->sommets[j], obj->pos);
+	  		j++;
+		}
+		face->sommets = sommets;
+		i++;
+	}
+}
+
 static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 {
 	obj->pos = object->pos;
@@ -49,6 +74,8 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->faces = object->faces;
 	obj->have_texture = object->have_texture;
 	obj->texture = object->texture;
+	if (obj->type == POLYGONS)
+		convert_polygon(obj, object);
 	apply_parent_relative(parent, obj);
 }
 
@@ -166,11 +193,42 @@ static void		del_list(t_list **list)
 	*list = NULL;
 }
 
+static void		del_list_obj(t_list **list)
+{
+	t_list	*object;
+	t_list	*next;
+	t_obj	*obj;
+
+	if (NULL == list)
+		return ;
+	object = *list;
+	while (object)
+	{
+		next = object->next;
+		obj = (t_obj*)object->content;
+		if (obj->type == POLYGONS)
+		{
+			size_t	i;
+			i = 0;
+			while (i < obj->nb_faces)
+			{
+				free(obj->faces[i].sommets);
+				++i;
+			}
+			free(obj->faces);
+		}
+		free(object->content);
+		free(object);
+		object = next;
+	}
+	*list = NULL;
+}
+
 void	ask_for_new_image(t_ui *ui)
 {
 	if (ui->rendering == 1)
 		return ;
-	del_list(&ui->scene.obj);
+	del_list_obj(&ui->scene.obj);
 	del_list(&ui->scene.spot);
 	fill_obj(ui->objs, &(ui->scene.obj), NULL);
 	fill_spot(ui->objs, &(ui->scene.spot));
