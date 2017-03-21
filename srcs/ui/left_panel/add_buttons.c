@@ -126,6 +126,18 @@ static void	ui_free_object(t_object *object)
 	free(object);
 }
 
+static void	ui_free_list_object(t_list	*objects)
+{
+	t_object	*object;
+
+	object = objects->content;
+	ui_free_object(object);
+	if (objects->children)
+		ui_free_list_object(objects->children);
+	// Don't free next because we want to free that specific node
+	free(objects);
+}
+
 void		del_obj_btn(GtkButton *button, gpointer data)
 {
 	t_list			*tmp;
@@ -146,16 +158,14 @@ void		del_obj_btn(GtkButton *button, gpointer data)
 			{
 				tmp_clean = ui->objs;
 				ui->objs = ui->objs->next;
-				ui_free_object(tmp_clean->content);
-				free(tmp_clean); //FIXME free content
+				ui_free_list_object(tmp_clean);
 			}
 			else
 			{
 				tmp = ft_lstat_child(ui->objs, index, depth - 1);
 				tmp_clean = tmp->children;
 				tmp->children = tmp_clean->next;
-				ui_free_object(tmp_clean->content);
-				free(tmp_clean);//TODO free content et children
+				ui_free_list_object(tmp_clean);
 			}
 		}
 		else
@@ -163,9 +173,9 @@ void		del_obj_btn(GtkButton *button, gpointer data)
 			tmp = ft_lstat_child_before(ui->objs, index, depth);
 			tmp_clean = tmp->next;
 			tmp->next = tmp_clean->next;
-			ui_free_object(tmp_clean->content);
-			free(tmp_clean);//TODO free content
+			ui_free_list_object(tmp_clean);
 		}
 		refresh_obj_tree(ui);
+		clear_properties_list(ui);
 	}
 }
