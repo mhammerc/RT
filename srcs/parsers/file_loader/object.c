@@ -47,15 +47,21 @@ void	p_parse_object(t_env *env)
 			new_object.kdiff = atof(ln2 + 6);
 		else if (ft_strncmp(ln2, "kspec:", 6) == 0)
 			new_object.kspec = atof(ln2 + 6);
+		else if (ft_strncmp(ln2, "transmittance:", 14) == 0)
+			new_object.transmittance = atof(ln2 + 14);
+		else if (ft_strncmp(ln2, "reflectance:", 12) == 0)
+			new_object.reflectance = atof(ln2 + 12);
+		else if (ft_strncmp(ln2, "rindex:", 7) == 0)
+			new_object.rindex = atof(ln2 + 7);
 		else if (ft_strncmp(ln2, "csgOperation:", 13) == 0)
 		{
 			ln3 = ft_strtrim(ln2 + 13);
 			new_object.operation = *ln3;
 			free(ln3);
 		}
-		else if (ft_strncmp(ln2, "filename:", 9) == 0)
+		else if (ft_strncmp(ln2, "file:", 5) == 0)
 		{
-			ln3 = ft_strtrim(ln2 + 9);
+			ln3 = ft_strtrim(ln2 + 5);
 			new_object.filename = ft_strdup(ln3);
 			free(ln3);
 		}

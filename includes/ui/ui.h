@@ -41,9 +41,10 @@ typedef struct			s_object
 	t_texture				texture;
 	char					*texture_filename;
 
-	int					rindex;
-	int					transmittance;
-	int					reflectance;
+	double					rindex;
+	double					transmittance;
+	double					reflectance;
+	int					transparency;
 }						t_object;
 
 typedef struct			s_selected_obj

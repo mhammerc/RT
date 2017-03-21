@@ -330,8 +330,8 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
 
-		GtkWidget	*rindex = create_scale_entry("rIndex",
-				view->selected_obj.object->rindex, 0, 1);
+		GtkWidget	*rindex = create_scale_entry("rindex",
+				view->selected_obj.object->rindex, 1, 2);
 		GtkWidget	*transmittance  = create_scale_entry("transmittance",
 				view->selected_obj.object->transmittance, 0, 1);
 		GtkWidget	*reflectance = create_scale_entry("reflectance",

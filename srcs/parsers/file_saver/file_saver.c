@@ -29,6 +29,9 @@ static void		save_obj(FILE *file, t_object *obj, int depth)
 	fprintf(file, "%s\tlength: %f\n", tab, obj->length);
 	fprintf(file, "%s\tkspec: %f\n", tab, obj->kspec);
 	fprintf(file, "%s\tkdiff: %f\n", tab, obj->kdiff);
+	fprintf(file, "%s\ttransmittance: %f\n", tab, obj->transmittance);
+	fprintf(file, "%s\treflectance: %f\n", tab, obj->reflectance);
+	fprintf(file, "%s\trindex: %f\n", tab, obj->rindex);
 	fprintf(file, "%s\tcsgOperation: %c\n", tab, obj->operation);
 	if (obj->filename)
 		fprintf(file, "%s\tfile: %s\n", tab, obj->filename);
