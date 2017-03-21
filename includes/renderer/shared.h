@@ -102,6 +102,7 @@ typedef struct				s_face
 typedef struct s_obj		t_obj;
 
 typedef struct s_ray		t_ray;
+typedef struct s_interval	t_interval;
 
 struct						s_obj
 {
@@ -121,7 +122,7 @@ struct						s_obj
 	char					csg;
 	int						normal_dir;
 	struct s_obj			*csg_ref;
-	int						(*intersect)(struct s_obj *self, t_ray *ray, void*);
+	int						(*intersect)(struct s_obj *self, t_ray *ray, t_interval*);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
 	t_face					*faces;
@@ -143,7 +144,6 @@ struct						s_interval
 	t_csg					max[10];
 	int						nb_hit;
 };
-typedef struct s_interval	t_interval;
 
 struct						s_ray
 {
