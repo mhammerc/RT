@@ -16,6 +16,7 @@ typedef struct			s_parser_cam
 {
 	t_vec3				pos;
 	t_vec3				look_at;
+	t_vec3				up;
 }						t_parser_cam;
 
 

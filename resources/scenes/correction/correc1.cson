@@ -1,6 +1,7 @@
 camera:
 	position: 0.0; 1.5; 8.0
 	lookAt: 0.0; 0.0; 0.0
+	up: 0.0; 1.0; 0.0
 
 object:
 	type: PLANE
@@ -89,4 +90,3 @@ object:
 	kspec: 0.000000
 	kdiff: 0.000000
 	csgOperation: 0
-

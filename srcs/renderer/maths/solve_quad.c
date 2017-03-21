@@ -1,22 +1,10 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   solve_quad.c                                       :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/14 11:09:33 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/18 19:49:19 by racousin         ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include <math.h>
 #include <stdio.h>
 #include "renderer.h"
 
-int			quad2_solve(double b, double c, double *root)
+int			quad2_solve(long double b, long double c, long double *root)
 {
-	double		d;
+	long double	d;
 
 	d = b * b - 4. * c;
 	if (d < 0.)
@@ -25,20 +13,20 @@ int			quad2_solve(double b, double c, double *root)
 		root[1] = 10000;
 		return (0);
 	}
-	d = sqrt(d);
+	d = sqrtl(d);
 	root[0] = (-b - d) / 2.;
 	root[1] = (-b + d) / 2.;
 	return (1);
 }
 
-int			quad2_solve_inv(double b, double c, double *root)
+int			quad2_solve_inv(long double b, long double c, long double *root)
 {
-	double		d;
+	long double		d;
 
 	d = b * b - 4. * c;
 	if (d < 0.)
 		return (0);
-	d = sqrt(d);
+	d = sqrtl(d);
 	root[1] = (-b - d) / 2.;
 	root[0] = (-b + d) / 2.;
 	return (1);
@@ -50,16 +38,16 @@ int			quad2_solve_inv(double b, double c, double *root)
 ** @return 1 if smaller solution found, 0 otherwise
 */
 
-double			case1(double g, double h, double a, double b)
+long double			case1(long double g, long double h, long double a, long double b)
 {
-	double	R = -g / 2. + sqrt(h);
-	double S;
+	long double	R = -g / 2. + sqrt(h);
+	long double S;
 	if (R>0)
 		S = pow(R, 1./3.);
 	else
 		S = -pow(-R, 1./3.);
-	double	T = -g / 2 - sqrt(h);
-	double	U;
+	long double	T = -g / 2 - sqrt(h);
+	long double	U;
 	if (T>0)
 		U = pow(T, 1./3.);
 	else
@@ -67,26 +55,26 @@ double			case1(double g, double h, double a, double b)
 	return(S + U - b / (3 * a));
 }
 
-double			case2(double g, double h, double a, double b)
+long double			case2(long double g, long double h, long double a, long double b)
 {
-	double	i = sqrt(pow(g, 2.) / 4 - h);
-	double	j = pow(i, 1./3.);
-	double	K = acos(-g /(2. * i));
+	long double	i = sqrt(pow(g, 2.) / 4 - h);
+	long double	j = pow(i, 1./3.);
+	long double	K = acos(-g /(2. * i));
 		return(2* j * cos(K / 3) - b / ( 3 *a));
 }
-double			case3(double g, double h, double a, double b)
+long double			case3(long double g, long double h, long double a, long double b)
 {
-	double	i = sqrt(pow(g, 2.) / 4 - h);
-	double	j = pow(i, 1./3.);
-	double	k = acos(-g /(2. * i));
+	long double	i = sqrt(pow(g, 2.) / 4 - h);
+	long double	j = pow(i, 1./3.);
+	long double	k = acos(-g /(2. * i));
 	return(2* j * cos(k / 3) - b / ( 3 *a));
 }
 
-double			quad3_solve(double a, double b, double c, double d)
+long double			quad3_solve(long double a, long double b, long double c, long double d)
 {
-	double	f = (3. * c / a - pow(b, 2.) / pow(a, 2.)) / 3;
-	double	g = (2. * pow(b, 3.) / pow(a, 3.) - 9. * b * c / pow(a, 2.) + 27 * d / a) / 27;
-	double	h = pow(g, 2.) / 4. + pow(f, 3.) / 27.;
+	long double	f = (3. * c / a - pow(b, 2.) / pow(a, 2.)) / 3;
+	long double	g = (2. * pow(b, 3.) / pow(a, 3.) - 9. * b * c / pow(a, 2.) + 27 * d / a) / 27;
+	long double	h = pow(g, 2.) / 4. + pow(f, 3.) / 27.;
 	if ( h > 0.)
 		return (case1(g, h, a, b));
 	else if (f < EPS && g < EPS && f > EPS && g > EPS)
@@ -96,7 +84,7 @@ double			quad3_solve(double a, double b, double c, double d)
 		return (case2(g, h, a, b));
 	}
 }
-int		quad4_solve(double a, double b, double c, double d, t_interval *interval)
+int		quad4_solve(long double a, double b, double c, double d, t_interval *interval)
 {
 	double y = quad3_solve(1, -b,a * c - 4 *d,-pow(a,2) * d - pow(c,2) + 4 * b * d);
 	double	r_g[2];
@@ -105,7 +93,7 @@ int		quad4_solve(double a, double b, double c, double d, t_interval *interval)
 		return (0);
 	if(!(quad2_solve(-y, d, r_h)))
 		return (0);
-	if (fabs(r_g[0] * r_h[1] + r_g[1] * r_h[0] - c) > fabs(r_g[0] * r_h[0] + r_g[1] * r_h[1] - c))	
+	if (fabs(r_g[0] * r_h[1] + r_g[1] * r_h[0] - c) > fabs(r_g[0] * r_h[0] + r_g[1] * r_h[1] - c))
 		{
 			double	tmp = r_h[0];
 			r_h[0] = r_h[1];
@@ -237,7 +225,7 @@ int			quad4_solve(double a, double b, double c, double d, double e, t_interval *
 	double		delta1 = 2. * c3 - 9. * b* c*d +27. *b2*e +27.*d2 -72.*c*e;
 	double	p = (8. *c - 3.*b2)/8.;
 	double q = (b3 - 4. *b*c+ 8. *d)/ 8.;
-	double	delta = 27 * (4. * pow(delta0, 3.) - pow(delta1, 2.)); 
+	double	delta = 27 * (4. * pow(delta0, 3.) - pow(delta1, 2.));
 	double	P = 8 * c - 3 * b2;
 	double	L = b3 + 8*d - 4 * b *c;
 	double	D = 64 * e - 16 * c2 + 16 *b2 * c - 16 *b *d - 3 * b4;
