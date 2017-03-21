@@ -34,5 +34,6 @@ void			ft_read_file(char *name, t_env *env)
 			if (!ft_parse_line(env))
 				return ;
 	}
+	close(fd);
 	free(env->ln);
 }
