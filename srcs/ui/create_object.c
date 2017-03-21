@@ -161,6 +161,8 @@ void		create_light(gboolean render_new)
 	ft_bzero(&object, sizeof(t_object));
 	object.type = LIGHT;
 	object.pos.z = 7.;
+	object.length = 100.;
+	object.color = (t_vec3){1., 1., 1.};
 	ft_strcpy(object.name, "Light");
 	add_object(object, render_new);
 }

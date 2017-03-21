@@ -169,8 +169,8 @@ static void		fill_spot(t_list *objects, t_list **spots)
 	if (is_light(object))
 	{
 		spot.pos = object->pos;
-		spot.color = (t_vec3){1, 1, 1};
-		spot.intensity = 100;
+		spot.color = object->color;
+		spot.intensity = object->length;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
 	if (objects->children)

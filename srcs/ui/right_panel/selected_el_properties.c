@@ -348,9 +348,26 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), reflectance);
 	}
 
-	if (type != CSG && type != LIGHT)
+	if (type == LIGHT)
+	{
+		GtkWidget	*length = create_scale_entry("Intensity	",
+			view->selected_obj.object->length, 0, 100);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
+		g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
+			view);
+	}
+
+	if (type != CSG)
 	{
 		create_color_chooser(view, view->selected_obj.object->color);
+	}
+
+	if (type != CSG && type != LIGHT)
+	{
+		GtkWidget	*texture_type_box;
+		texture_type_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+		GtkWidget	*texture_type_title;
+		texture_type_title = gtk_label_new_with_mnemonic("Texture type	");
 		GtkWidget	*texture_type = gtk_combo_box_text_new();
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "None");
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Spherical");
