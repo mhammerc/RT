@@ -30,6 +30,7 @@ static void			entry_edited(GtkWidget *entry, gpointer data)
 	gchar			*content;
 	double			value;
 
+	(void)entry;
 	if (lock)
 	{
 		--lock;
