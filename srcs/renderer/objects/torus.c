@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/20 12:09:35 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/20 18:25:04 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,34 +23,45 @@
 
 int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
-
-	//self->radius = 1;
-	//self->dir.x = EPS;
-	//self->dir.y = EPS;
-	//self->dir.z = EPS;
-	//self->kdiff = 1;
-	//self->kspec = 1;
-	ray->dir = vec3_get_normalized(ray->dir);
-
-	//if (!(torus_intersect(self,ray, interval)))
-	//	return (0);
-	double	R = self->radius;
-	double	r = self->length;
+	//TODO put this part in initialisation of torus
+	////
+	if(self->dir.x == 0 && self->dir.y == 0 && self->dir.z == 0)
+		self->dir.z = 1;
+	if (self->dir.x == 0)
+		self->dir.x = 0.01;
+	if (self->dir.y == 0)
+		self->dir.y = 0.01;
+	if (self->dir.z == 0)
+		self->dir.z = 0.01;
+	if (self->dir.x == 0)
+		self->dir.x = 0.01;
+	if (self->dir.y == 0)
+		self->dir.y = 0.01;
+	if (self->dir.z == 0)
+		self->dir.z = 0.01;
+	if (self->radius < 0.2)
+		self->radius = 0.2;
+	if (self->length < 0.1)
+		self->length = 0.1;
+	if (self->length > self->radius / 1.1)
+		self->length = self->radius / 1.1;
+	//
+	long double	R = self->radius;
+	long double	r = self->length;
 
 	t_vec3	Q = vec3_sub(ray->pos, self->pos);
-	double	u = vec3_dot(self->dir, Q);
-	double	v = vec3_dot(self->dir, ray->dir);
+	long double	u = vec3_dot(self->dir, Q);
+	long double	v = vec3_dot(self->dir, ray->dir);
 
-	double	a = 1. - pow(v, 2.);
-	double	b = 2. * (vec3_dot(Q, ray->dir) - u * v);
-	double	c = vec3_dot(Q, Q) - pow(u, 2.);
-	double	d = vec3_dot(Q, Q) + pow(R, 2.) - pow(r, 2.);
+	long double	a = 1. - powl(v, 2.);
+	long double	b = 2. * (vec3_dot(Q, ray->dir) - u * v);
+	long double	c = vec3_dot(Q, Q) - powl(u, 2.);
+	long double	d = vec3_dot(Q, Q) + powl(R, 2.) - powl(r, 2.);
 
-	double	A = 1.;
-	double	B = 4. * vec3_dot(Q, ray->dir);
-	double	C = 2. * d + pow(B, 2.) / 4. - 4. * pow(R, 2.) * a;
-	double	D = B * d - 4. * pow(R, 2.) * b;
-	double	E = pow(d, 2.) - 4. * pow(R, 2.) * c + EPS;
+	long double	B = 4. * vec3_dot(Q, ray->dir);
+	long double	C = 2. * d + powl(B, 2.) / 4. - 4. * powl(R, 2.) * a;
+	long double	D = B * d - 4. * powl(R, 2.) * b;
+	long double	E = powl(d, 2.) - 4. * powl(R, 2.) * c + EPS;
 
 	if ((interval->nb_hit = quad4_solve(B,C,D,E, interval)))
 	{
@@ -70,13 +81,13 @@ int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 
 t_vec3			torus_normal(t_obj *self, t_vec3 pos)
 {
-	double		y;
+	long double		y;
 	t_vec3		D;
 	t_vec3		X;
 
 	y = vec3_dot(vec3_sub(pos, self->pos), self->dir);
 	D = vec3_sub(vec3_sub(pos, self->pos), vec3_mult(y, self->dir));
-	X = vec3_mult(self->radius / sqrt(vec3_dot(D, D)), D);
+	X = vec3_mult(self->radius / sqrtl(vec3_dot(D, D)), D);
 	if (self->normal_dir == OUTWARDS)
 		return (vec3_get_normalized(vec3_sub(pos, vec3_add(self->pos ,X))));
 	else
