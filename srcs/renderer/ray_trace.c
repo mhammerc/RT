@@ -100,6 +100,8 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 	{
 		ray.dist = ray.dist < 1.0 ? 1.0 : ray.dist + ray.t;
 		atten = 1.0 / ray.dist;
+		if (atten < EPS)
+			return ((t_vec3){0, 0, 0});
 		light = rt_light(sce, ray);
 		if (depth < MAX_REC_DEPTH)
 		{
