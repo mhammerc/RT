@@ -21,10 +21,10 @@
 # define EPS 1e-3
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
-# define REFL_ATTENUATION 0.2
+# define REFL_ATTENUATION 0.8
 # define WHITE (t_vec3){1., 1., 1.}
 # define BLACK (t_vec3){0., 0., 0.}
-# define REFR_ATTENUATION 0.2
+//# define REFR_ATTENUATION 0.8
 # define MAX_REC_DEPTH 8
 # define R_GLASS 1.42
 # define R_DEFAULT 1.0

@@ -56,7 +56,7 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	else
 		obj->dir = object->rot;
 	if (object->type == CONE)
-		obj->radius = object->radius;
+		obj->radius = cos(object->radius * DEG_TO_RAD);
 	else
 		obj->radius =  object->radius / 1000;
 	obj->length = object->length;
@@ -68,7 +68,7 @@ static void	convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->rindex = object->rindex;
 	obj->transmittance = object->transmittance;
 	obj->reflectance = object->reflectance;
-	obj->transparency = (obj->type == SPHERE) ? 1.0 : 0.0;
+	//obj->transparency = (obj->type == SPHERE) ? 1.0 : 0.0;
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
 	obj->left = NULL;
