@@ -96,11 +96,15 @@ void 		refresh_cam_properties(t_ui *ui)
 		gtk_label_new_with_mnemonic("_Camera"));
 	ui->rp->pos = create_vector3_entry("pos		", ui->cam->pos);
 	ui->rp->lkat = create_vector3_entry("LookAt	", ui->cam->dir);
+	ui->rp->up = create_vector3_entry("Up           ", ui->cam->up);
 	g_signal_connect(ui->rp->pos, "rt-vector3-entry-edited",
 		G_CALLBACK(pos_edited), ui);
 	g_signal_connect(ui->rp->lkat, "rt-vector3-entry-edited",
 		G_CALLBACK(dir_edited), ui);
+	g_signal_connect(ui->rp->up, "rt-vector3-entry-edited",
+		G_CALLBACK(up_edited), ui);
 	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->pos);
 	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->lkat);
+	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->up);
 	gtk_widget_show_all(ui->rp->cam_prop);
 }
