@@ -2,8 +2,8 @@
 
 char			*get_el_type_char(t_object *object)
 {
-	static char		*type[] = {"SPHERE", "PLANE", "DISK", "CONE", "CYLINDER", "TORUS",
-								"CSG", "POLYGONS", "EMPTY", "LIGHT", "\0", };
+	static char		*type[] = {"SPHERE", "PLANE", "DISK", "CONE", "CYLINDER",
+						"TORUS", "CSG", "POLYGONS", "EMPTY", "LIGHT", "\0", };
 
 	return (type[object->type]);
 }

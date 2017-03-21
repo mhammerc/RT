@@ -5,7 +5,7 @@ static int		p_is_digit(char c)
 	return ((c >= '0' && c <= '9') || c == '.' || c == '-');
 }
 
-t_vec3			p_read_vec3(t_env *env, char *ln)
+t_vec3			p_read_vec3(char *ln)
 {
 	t_vec3	v;
 	size_t	i;

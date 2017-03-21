@@ -132,7 +132,7 @@ object:
 			kdiff: 1.000000
 			csgOperation: 0
 			texture: 1
-			texture_filename: /home/mhammerd/Dev/RT/textures/sun.jpg
+			texture_filename: resources/textures/sun.jpg
 
 		object:
 			type: CSG
@@ -172,4 +172,3 @@ object:
 				kdiff: 1.000000
 				csgOperation: 0
 				texture: 2
-

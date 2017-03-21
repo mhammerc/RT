@@ -37,7 +37,6 @@ static void		export_png(char *filename)
 void			open_dialog_open(void)
 {
 	GtkWidget				*dialog;
-	GtkFileChooser 			*chooser;
 	GtkFileChooserAction	action;
 	gint					res;
 	char 					*filename;
