@@ -51,10 +51,10 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 	g_signal_connect(GTK_SCROLLABLE(lp->tree.tree), "button-release-event",
 									G_CALLBACK(button_relase), ui);
 
-	gtk_widget_set_size_request(lp->lp_btns.add_obj, 100, 0);
-	gtk_widget_set_size_request(lp->lp_btns.add_light, 100, 0);
-	gtk_widget_set_size_request(lp->lp_btns.remove, 10, 0);
-	gtk_widget_set_size_request(lp->tree.tree, 280, 768);
+	gtk_widget_set_size_request(lp->lp_btns.add_obj, 70, 0);
+	gtk_widget_set_size_request(lp->lp_btns.add_light, 70, 0);
+	gtk_widget_set_size_request(lp->lp_btns.remove, 70, 0);
+	gtk_widget_set_size_request(lp->tree.tree, 277, 735);
 
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree), lp->tree.col_el);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree),
@@ -69,7 +69,7 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 
 	GtkWidget	*scroll;
 	scroll = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_size_request(scroll, 280, 768);
+	gtk_widget_set_size_request(scroll, 277, 735);
 	gtk_container_add(GTK_CONTAINER(scroll), lp->tree.tree);
 
 	gtk_container_add(GTK_CONTAINER(lp->lp_box), lp->lp_btns.button);

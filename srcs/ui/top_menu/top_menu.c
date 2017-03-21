@@ -71,7 +71,7 @@ void			open_dialog_save(void)
 	dialog = gtk_file_chooser_dialog_new("Save File", GTK_WINDOW(ui->window),
 	action, "_Cancel", GTK_RESPONSE_CANCEL, "_Save", GTK_RESPONSE_ACCEPT, NULL);
 	chooser = GTK_FILE_CHOOSER (dialog);
-	gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
+	gtk_file_chooser_set_do_overwrite_confirmation(chooser, TRUE);
 	res = gtk_dialog_run (GTK_DIALOG(dialog));
 	if (res == GTK_RESPONSE_ACCEPT)
 	{

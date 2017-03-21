@@ -19,18 +19,24 @@ static void	color_edited(GtkColorButton *button,
 void		create_color_chooser(t_ui *ui, t_vec3 color)
 {
 	GtkWidget	*color_chooser;
+	GtkWidget	*color_box;
+	GtkWidget	*color_title;
 	GdkRGBA		gtk_color;
 
 	gtk_color.red = color.x;
 	gtk_color.green = color.y;
 	gtk_color.blue = color.z;
 	gtk_color.alpha = 1;
-	gtk_container_add(GTK_CONTAINER(ui->rp->el_prop_lst),
-		gtk_label_new_with_mnemonic("_Color Picker"));
+
+	color_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+	color_title = gtk_label_new_with_mnemonic("Color		");
 	color_chooser = gtk_color_button_new();
 	ui->rp->color_chooser = color_chooser;
 	g_signal_connect(G_OBJECT(color_chooser), "color-set",
 		G_CALLBACK(color_edited), ui);
 	gtk_color_chooser_set_rgba(GTK_COLOR_CHOOSER(color_chooser), &gtk_color);
-	gtk_container_add(GTK_CONTAINER(ui->rp->el_prop_lst), color_chooser);
+	gtk_widget_set_size_request(color_chooser, 130, 0);
+	gtk_container_add(GTK_CONTAINER(color_box), color_title);
+	gtk_container_add(GTK_CONTAINER(color_box), color_chooser);
+	gtk_container_add(GTK_CONTAINER(ui->rp->el_prop_lst), color_box);
 }

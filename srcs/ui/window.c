@@ -64,7 +64,7 @@ void			build_interface(GtkApplication *app, gpointer user_data)
 	ui->window = create_app_window(app, 0, 0, "RT by The Most Awesome Group");
 	ui->main_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	ui->top_menu = create_top_menu();
-	ui->workspace = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 10);
+	ui->workspace = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 0);
 	ui->progress_bar = gtk_progress_bar_new();
 	gtk_progress_bar_set_fraction(GTK_PROGRESS_BAR(ui->progress_bar), 0.);
 
