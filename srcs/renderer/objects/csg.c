@@ -58,9 +58,6 @@ void		test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 
 int			csg_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
-	double	d;
-
-	d = BIG_DIST;
 	test_csg(self, ray, interval);
 	if (interval->nb_hit)
 		return (1);

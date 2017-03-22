@@ -15,9 +15,6 @@
 int		on_key_press_window(GtkWidget *widget, GdkEventKey *event,
 															gpointer user_data)
 {
-	t_ui		*ui;
-
-	ui = get_interface();
 	(void)widget;
 	(void)user_data;
 	if (event->keyval == GDK_KEY_Escape)
