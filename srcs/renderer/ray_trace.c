@@ -68,11 +68,6 @@ static int		rt_object(t_scene *sce, t_ray *ray)
 	return (collision);
 }
 
-static void		vec3_print(char *truc, t_vec3 v)
-{
-	printf("%s: %f, %f, %f\n", truc, v.x, v.y, v.z);
-	return ;
-}
 static t_vec3	rt_shadow(t_scene *sce, t_ray ray)
 {
 	t_list		*l;

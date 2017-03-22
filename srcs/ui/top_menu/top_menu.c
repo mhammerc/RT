@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   top_menu.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 12:48:48 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 16:18:48 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ui.h"
 
 static void				toggle_render_on_change(GtkCheckMenuItem *checkmenuitem,
@@ -10,7 +22,7 @@ static void				toggle_render_on_change(GtkCheckMenuItem *checkmenuitem,
 	ui->render_on_change = gtk_check_menu_item_get_active(checkmenuitem);
 }
 
-static void				render_new_image()
+static void				render_new_image(void)
 {
 	t_ui	*ui;
 
@@ -23,139 +35,52 @@ static void				exit_rt(void)
 	ft_exit_fd("Closing RT.", 1);
 }
 
-static void		export_png(char *filename)
+static t_menu_file		*create_file_menu(void)
 {
-	GError		*error;
-	t_ui		*ui;
+	t_menu_file		*fmenu;
 
-	error = NULL;
-	ui = get_interface();
-	gdk_pixbuf_save(ui->dp->pixbuf, filename, "png", &error, NULL);
-	g_assert_no_error(error);
-}
-
-void			open_dialog_open(void)
-{
-	GtkWidget				*dialog;
-	GtkFileChooserAction	action;
-	gint					res;
-	char 					*filename;
-	t_ui					*ui;
-
-	ui = get_interface();
-	action = GTK_FILE_CHOOSER_ACTION_OPEN;
-	dialog = gtk_file_chooser_dialog_new("Open File", GTK_WINDOW(ui->window),
-		action, "_Cancel", GTK_RESPONSE_CANCEL, "_Open", GTK_RESPONSE_ACCEPT,
-		NULL);
-	res = gtk_dialog_run(GTK_DIALOG(dialog));
-	if (res == GTK_RESPONSE_ACCEPT)
-	{
-		filename = gtk_file_chooser_get_filename(GTK_FILE_CHOOSER(dialog));
-		load_file(filename);
-		g_free(filename);
-	}
-	gtk_widget_destroy(dialog);
-}
-
-void			open_dialog_save(void)
-{
-	GtkWidget				*dialog;
-	GtkFileChooser 			*chooser;
-	GtkFileChooserAction	action;
-	gint					res;
-	char 					*filename;
-	t_ui					*ui;
-
-	ui = get_interface();
-	action = GTK_FILE_CHOOSER_ACTION_SAVE;
-	dialog = gtk_file_chooser_dialog_new("Save File", GTK_WINDOW(ui->window),
-	action, "_Cancel", GTK_RESPONSE_CANCEL, "_Save", GTK_RESPONSE_ACCEPT, NULL);
-	chooser = GTK_FILE_CHOOSER (dialog);
-	gtk_file_chooser_set_do_overwrite_confirmation(chooser, TRUE);
-	res = gtk_dialog_run (GTK_DIALOG(dialog));
-	if (res == GTK_RESPONSE_ACCEPT)
-	{
-		filename = gtk_file_chooser_get_filename(chooser);
-		save_scene(filename);
-		g_free(filename);
-	}
-	gtk_widget_destroy (dialog);
-}
-
-void			open_dialog_export(void)
-{
-	GtkWidget				*dialog;
-	GtkFileChooser 			*chooser;
-	GtkFileChooserAction	action;
-	gint					res;
-	char 					*filename;
-	t_ui					*ui;
-
-	ui = get_interface();
-	action = GTK_FILE_CHOOSER_ACTION_SAVE;
-	dialog = gtk_file_chooser_dialog_new("Export File", GTK_WINDOW(ui->window),
-		action, "_Cancel", GTK_RESPONSE_CANCEL, "_Save", GTK_RESPONSE_ACCEPT,
-		NULL);
-	chooser = GTK_FILE_CHOOSER (dialog);
-	gtk_file_chooser_set_do_overwrite_confirmation (chooser, TRUE);
-	res = gtk_dialog_run (GTK_DIALOG(dialog));
-	if (res == GTK_RESPONSE_ACCEPT)
-	{
-		filename = gtk_file_chooser_get_filename(chooser);
-		export_png(filename);
-		g_free (filename);
-	}
-	gtk_widget_destroy(dialog);
-}
-
-static	t_menu_file		*create_file_menu(void)
-{
-	t_ui			*ui;
-	t_menu_file		*f_menu;
-
-	ui = get_interface();
-	f_menu = (t_menu_file *)malloc(sizeof(t_menu_file));
-	ui->file_menu = f_menu;
-	f_menu->menu = gtk_menu_new();
-	f_menu->open = gtk_menu_item_new_with_label("Open (F1)");
-	f_menu->save = gtk_menu_item_new_with_label("Save scene (F2)");
-	f_menu->export = gtk_menu_item_new_with_label("Export as PNG (F3)");
-	f_menu->quit = gtk_menu_item_new_with_label("Quit (ESC)");
-	f_menu->render_on_change =
+	fmenu = (t_menu_file *)malloc(sizeof(t_menu_file));
+	fmenu->menu = gtk_menu_new();
+	fmenu->open = gtk_menu_item_new_with_label("Open (F1)");
+	fmenu->save = gtk_menu_item_new_with_label("Save scene (F2)");
+	fmenu->export = gtk_menu_item_new_with_label("Export as PNG (F3)");
+	fmenu->quit = gtk_menu_item_new_with_label("Quit (ESC)");
+	fmenu->render_on_change =
 			gtk_check_menu_item_new_with_label("Render scene on every change");
 	gtk_check_menu_item_set_active(
-					GTK_CHECK_MENU_ITEM(f_menu->render_on_change), TRUE);
-	f_menu->start_render = gtk_menu_item_new_with_label("Render the scene");
-	g_signal_connect(f_menu->open, "activate",
-		G_CALLBACK (open_dialog_open), NULL);
-	g_signal_connect(f_menu->save, "activate",
-		G_CALLBACK (open_dialog_save), NULL);
-	g_signal_connect(f_menu->export, "activate",
-		G_CALLBACK (open_dialog_export), NULL);
-	g_signal_connect(f_menu->quit, "activate",
-		G_CALLBACK (exit_rt), NULL);
-	g_signal_connect(f_menu->render_on_change, "activate",
+						GTK_CHECK_MENU_ITEM(fmenu->render_on_change), TRUE);
+	fmenu->start_render = gtk_menu_item_new_with_label("Render the scene");
+	g_signal_connect(fmenu->open, "activate",
+		G_CALLBACK(open_dialog_open), NULL);
+	g_signal_connect(fmenu->save, "activate",
+		G_CALLBACK(open_dialog_save), NULL);
+	g_signal_connect(fmenu->export, "activate",
+		G_CALLBACK(open_dialog_export), NULL);
+	g_signal_connect(fmenu->quit, "activate", G_CALLBACK(exit_rt), NULL);
+	g_signal_connect(fmenu->render_on_change, "activate",
 									G_CALLBACK(toggle_render_on_change), NULL);
-	g_signal_connect(f_menu->start_render, "activate",
+	g_signal_connect(fmenu->start_render, "activate",
 									G_CALLBACK(render_new_image), NULL);
-	return (f_menu);
+	return (fmenu);
 }
 
 GtkWidget				*create_top_menu(void)
 {
 	GtkWidget		*top_menu;
 	GtkWidget		*box;
-	t_menu_file		*file_menu;
+	t_ui			*ui;
 
+	ui = get_interface();
 	top_menu = gtk_menu_bar_new();
-	file_menu = create_file_menu();
-	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->open);
-	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->save);
-	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->export);
-	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->quit);
+	ui->file_menu = create_file_menu();
+	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), ui->file_menu->open);
+	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), ui->file_menu->save);
+	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), ui->file_menu->export);
+	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), ui->file_menu->quit);
 	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu),
-												file_menu->render_on_change);
-	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu), file_menu->start_render);
+											ui->file_menu->render_on_change);
+	gtk_menu_shell_append(GTK_MENU_SHELL(top_menu),
+											ui->file_menu->start_render);
 	box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 0);
 	gtk_box_pack_start(GTK_BOX(box), top_menu, FALSE, FALSE, 0);
 	return (box);

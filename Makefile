@@ -30,11 +30,19 @@ SRCS_NAME	=	main.c										\
 				renderer/objects/csg_minus.c				\
 				renderer/objects/csg_minus2.c				\
 				renderer/objects/object_selection.c			\
-				ui/create_object.c							\
 				ui/display_panel.c							\
-				ui/left_panel/add_buttons.c					\
-				ui/left_panel/left_panel.c					\
 				ui/obj_tree.c								\
+				ui/ui_print_scene.c							\
+				ui/window.c									\
+				ui/create_objs/add_objs.c					\
+				ui/create_objs/create_basic_objs.c			\
+				ui/create_objs/create_complex_objs.c		\
+				ui/events/init_and_menu_keys.c				\
+				ui/events/realtime_keys.c					\
+				ui/left_panel/add_btns.c					\
+				ui/left_panel/cpy_btn.c						\
+				ui/left_panel/del_btn.c						\
+				ui/left_panel/left_panel.c					\
 				ui/right_panel/selected_el_properties.c		\
 				ui/right_panel/cam_properties.c				\
 				ui/right_panel/right_panel.c				\
@@ -42,15 +50,13 @@ SRCS_NAME	=	main.c										\
 				ui/right_panel/color_chooser.c				\
 				ui/tools/dtoa.c								\
 				ui/tools/type_char.c						\
-				ui/menu_keys.c								\
-				ui/realtime_keys.c							\
+				ui/tools/get_interface.c					\
+				ui/top_menu/top_menu.c						\
+				ui/top_menu/dialogs.c						\
 				ui/widgets/numeric_entry.c					\
 				ui/widgets/scale_entry.c					\
 				ui/widgets/text_entry.c						\
 				ui/widgets/vector3_entry.c					\
-				ui/window.c									\
-				ui/ui_print_scene.c							\
-				ui/top_menu/top_menu.c						\
 				converter/converter.c						\
 				parsers/file_saver/file_saver.c				\
 				parsers/file_saver/saver_tools.c			\
@@ -79,7 +85,7 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc -fdiagnostics-color=auto
 
-CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra
+CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra -Werror
 CFLAGS		+=	$(GTK_CFLAGS)
 
 CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft -flto
@@ -101,11 +107,13 @@ $(OBJS_PATH)/%.o: $(SRCS_PATH)/%.c
 				@mkdir $(OBJS_PATH)/renderer/maths 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/renderer/objects 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/create_objs 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/events 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/left_panel 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/right_panel 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/tools 2> /dev/null || true
-				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/ui/top_menu 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/ui/widgets 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/parsers 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/parsers/file_loader 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/parsers/file_saver 2> /dev/null || true

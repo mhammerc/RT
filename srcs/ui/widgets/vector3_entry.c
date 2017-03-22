@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   vector3_entry.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 12:48:41 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 12:49:42 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ui.h"
 
-static void	vector3_edited(GtkWidget *widget, gdouble value, gpointer data)
+static void		vector3_edited(GtkWidget *widget, gdouble value, gpointer data)
 {
 	GtkWidget	*box;
 	t_vector3w	group;
@@ -17,8 +29,6 @@ static void	vector3_edited(GtkWidget *widget, gdouble value, gpointer data)
 	group.y = (GtkWidget*)childs->data;
 	childs = childs->next;
 	group.z = (GtkWidget*)childs->data;
-	//FIXME bien utiliser les listes
-
 	values = malloc(sizeof(t_vec3));
 	values->x = atof(gtk_entry_buffer_get_text(
 		gtk_entry_get_buffer(GTK_ENTRY(group.x))));
@@ -29,11 +39,11 @@ static void	vector3_edited(GtkWidget *widget, gdouble value, gpointer data)
 	g_signal_emit_by_name(box, "rt-vector3-entry-edited", values);
 }
 
-GtkWidget	*create_vector3_entry(gchar *name, t_vec3 value)
+GtkWidget		*create_vector3_entry(gchar *name, t_vec3 value)
 {
-	GtkWidget		*box;
-	GtkWidget		*label;
-	t_vector3w		group;
+	GtkWidget	*box;
+	GtkWidget	*label;
+	t_vector3w	group;
 
 	box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	label = gtk_label_new_with_mnemonic(name);
