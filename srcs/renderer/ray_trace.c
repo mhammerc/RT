@@ -191,7 +191,7 @@ static t_vec3	rt_light(t_scene *sce, t_ray ray)
 		ray.t = vec3_norm(ray.dir);
 		ray.dir = vec3_mult(1. / ray.t, ray.dir);
 		absorbance = vec3_apply(rt_shadow(sce, ray), exp);
-		light = vec3_add(light, color_add_light(ray, spot, absorbance, obj_cam));
+		light = vec3_add(light, color_add_light(ray, spot, obj_cam, absorbance));
 		l = l->next;
 	}
 	return (light);
