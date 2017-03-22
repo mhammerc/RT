@@ -11,7 +11,6 @@ SRCS_NAME	=	main.c										\
 				renderer/color_light.c						\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
-				renderer/maths/vec3_op2.c					\
 				renderer/maths/solve.c						\
 				renderer/maths/solve_quad.c					\
 				renderer/maths/minimal_positiv_dist.c		\

@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/06 11:48:57 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/08 16:20:36 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/22 22:43:04 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,9 @@ double		vec3_norm2(t_vec3 v)
 double		vec3_norm(t_vec3 v)
 {
 	return ((double)sqrtf(v.x * v.x + v.y * v.y + v.z * v.z));
+}
+
+t_vec3		vec3_mul(t_vec3 a, t_vec3 b)
+{
+	return ((t_vec3){a.x * b.x, a.y * b.y, a.z * b.z});
 }
