@@ -71,18 +71,8 @@ static void		convert_torus(t_obj *self)
 		self->length = self->radius / 1.1;
 }
 
-static void		convert_object(t_obj *obj, t_object *object, t_obj *parent)
+static void		convert_object2(t_obj *obj, t_object *object)
 {
-	obj->pos = object->pos;
-	obj->color = object->color;
-	if (vec3_norm2(object->rot) > EPS)
-		obj->dir = vec3_get_normalized(object->rot);
-	else
-		obj->dir = object->rot;
-	if (object->type == CONE)
-		obj->radius = object->radius;
-	else
-		obj->radius = object->radius / 1000;
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
@@ -98,11 +88,42 @@ static void		convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	obj->faces = object->faces;
 	obj->have_texture = object->have_texture;
 	obj->texture = object->texture;
+}
+
+static void		convert_object(t_obj *obj, t_object *object, t_obj *parent)
+{
+	obj->pos = object->pos;
+	obj->color = object->color;
+	if (vec3_norm2(object->rot) > EPS)
+		obj->dir = vec3_get_normalized(object->rot);
+	else
+		obj->dir = object->rot;
+	if (object->type == CONE)
+		obj->radius = object->radius;
+	else
+		obj->radius = object->radius / 1000;
+	convert_object2(obj, object);
 	apply_parent_relative(parent, obj);
 	if (obj->type == POLYGONS)
 		convert_polygon(obj, object);
 	else if (obj->type == TORUS)
 		convert_torus(obj);
+}
+
+static void		convert_csg2(t_obj *renderer_obj, t_object *ui_root)
+{
+	renderer_obj->type = CSG;
+	renderer_obj->intersect = get_obj_intersection(renderer_obj->type);
+	renderer_obj->normal = get_obj_normal(renderer_obj->type);
+	renderer_obj->left = (t_obj*)malloc(sizeof(t_obj));
+	renderer_obj->right = (t_obj*)malloc(sizeof(t_obj));
+	renderer_obj->csg = ui_root->operation;
+	renderer_obj->pos = ui_root->pos;
+	renderer_obj->color = ui_root->color;
+	renderer_obj->dir = ui_root->rot;
+	renderer_obj->radius = ui_root->radius;
+	renderer_obj->length = ui_root->length;
+	renderer_obj->param = ui_root->length / 1000;
 }
 
 static int		convert_csg(t_obj *renderer_obj, t_list *objects, t_obj *parent)
@@ -118,34 +139,17 @@ static int		convert_csg(t_obj *renderer_obj, t_list *objects, t_obj *parent)
 	ui_son2 = (t_object*)objects->children->next->content;
 	if (ui_root->operation == '0')
 		return (FALSE);
-	renderer_obj->type = CSG;
-	renderer_obj->intersect = get_obj_intersection(renderer_obj->type);
-	renderer_obj->normal = get_obj_normal(renderer_obj->type);
-	renderer_obj->left = (t_obj*)malloc(sizeof(t_obj));
-	renderer_obj->right = (t_obj*)malloc(sizeof(t_obj));
-	renderer_obj->csg = ui_root->operation;
-	renderer_obj->pos = ui_root->pos;
-	renderer_obj->color = ui_root->color;
-	renderer_obj->dir = ui_root->rot;
-	renderer_obj->radius = ui_root->radius;
-	renderer_obj->length = ui_root->length;
-	renderer_obj->param = ui_root->length / 1000;
+	convert_csg2(renderer_obj, ui_root);
 	apply_parent_relative(parent, renderer_obj);
 	if (ui_son1->type != CSG)
 		convert_object(renderer_obj->left, ui_son1, renderer_obj);
-	else
-	{
-		if (!convert_csg(renderer_obj->left, objects->children, renderer_obj))
-			return (FALSE);
-	}
+	else if (!convert_csg(renderer_obj->left, objects->children, renderer_obj))
+		return (FALSE);
 	if (ui_son2->type != CSG)
 		convert_object(renderer_obj->right, ui_son2, renderer_obj);
-	else
-	{
-		if (!convert_csg(renderer_obj->right,
-					objects->children->next, renderer_obj))
-			return (FALSE);
-	}
+	else if (!convert_csg(renderer_obj->right, objects->children->next,
+				renderer_obj))
+		return (FALSE);
 	return (TRUE);
 }
 
@@ -221,9 +225,9 @@ static void		del_list_obj(t_list **list)
 	t_list	*object;
 	t_list	*next;
 	t_obj	*obj;
-	size_t	i;
+	int		i;
 
-	if (NULL == list)
+	if (!list)
 		return ;
 	object = *list;
 	while (object)
@@ -232,12 +236,9 @@ static void		del_list_obj(t_list **list)
 		obj = (t_obj*)object->content;
 		if (obj->type == POLYGONS)
 		{
-			i = 0;
-			while (i < obj->nb_faces)
-			{
+			i = -1;
+			while ((size_t)++i < obj->nb_faces)
 				free(obj->faces[i].sommets);
-				++i;
-			}
 			free(obj->faces);
 		}
 		free(object->content);

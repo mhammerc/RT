@@ -6,7 +6,7 @@ t_texture	load_texture(char const *filename)
 	t_texture	texture;
 
 	texture.error = NULL;
-	texture._pixbuf = gdk_pixbuf_new_from_file(filename, &texture.error);
+	texture.pixbuf = gdk_pixbuf_new_from_file(filename, &texture.error);
 	texture.is_valid = 0;
 	if (!texture.pixbuf)
 		return (texture);
