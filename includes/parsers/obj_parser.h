@@ -1,5 +1,5 @@
-#ifndef OBJ_PARSER
-# define OBJ_PARSER
+#ifndef OBJ_PARSER_H
+# define OBJ_PARSER_H
 
 # include "ui.h"
 
