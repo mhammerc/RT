@@ -8,13 +8,11 @@ typedef struct		s_texture
 	guchar			*pixels;
 	int				width;
 	int				height;
-	/* Total number of byte (!!) */
 	int				bytes_per_pixel;
-	/* Number of bytes per row */
 	int				rowstride;
 	int				bits_per_color;
 	gboolean		has_alpha;
-	GdkPixbuf		*_pixbuf;
+	GdkPixbuf		*pixbuf;
 	GError			*error;
 	int				is_valid;
 }					t_texture;

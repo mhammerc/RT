@@ -54,9 +54,10 @@ static void		save_elements_properties(FILE *file, t_list *obj, int depth)
 
 void			save_scene(char *filename)
 {
-	FILE	*file = NULL;
+	FILE	*file;
 	t_ui	*ui;
 
+	file = NULL;
 	ui = get_interface();
 	file = fopen(filename, "w+");
 	if (file)

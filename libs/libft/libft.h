@@ -129,7 +129,8 @@ t_list					*ft_lstmap(t_list *lst, t_list *(*f)(t_list *elem));
 int						ft_lstcount(t_list *list);
 t_list					*ft_lstat(t_list *list, size_t index);
 t_list					*ft_lstat_child(t_list *list, int *index, int depth);
-t_list					*ft_lstat_child_before(t_list *list, int *index, int depth);
+t_list					*ft_lstat_child_before(t_list *list, int *index,
+		int depth);
 
 /*
 ** Mathematics computing

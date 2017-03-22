@@ -30,7 +30,7 @@ void		read_properties1(char *ln2, t_object *new_object)
 	}
 }
 
-void 	read_properties2(char *ln2, t_object *new_object)
+void		read_properties2(char *ln2, t_object *new_object)
 {
 	char	*ln3;
 
@@ -58,7 +58,7 @@ void 	read_properties2(char *ln2, t_object *new_object)
 		new_object->kspec = atof(ln2 + 6);
 }
 
-int		deeper_object(char *ln2, t_object *new_object, t_env *env,
+int			deeper_object(char *ln2, t_object *new_object, t_env *env,
 		size_t *tabs)
 {
 	size_t	old_depth;
