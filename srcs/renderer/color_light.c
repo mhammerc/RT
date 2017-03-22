@@ -1,18 +1,37 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color_light.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 22:29:01 by vfour             #+#    #+#             */
+/*   Updated: 2017/03/22 22:40:58 by vfour            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <math.h>
 #include "renderer.h"
 
-int				colorcomp_to_rgb(int r, int g, int b)
+int			colorcomp_to_rgb(int r, int g, int b)
 {
 	r = r < 0 ? 0 : (r & 0xff);
 	g = g < 0 ? 0 : (g & 0xff);
 	b = b < 0 ? 0 : (b & 0xff);
-	return ((0xff << ALPHA_BITSHIFT) + (r << R_BITSHIFT) + (g << G_BITSHIFT) + (b << B_BITSHIFT));
+	return ((0xff << ALPHA_BITSHIFT)
+			+ (r << R_BITSHIFT)
+			+ (g << G_BITSHIFT)
+			+ (b << B_BITSHIFT));
 }
 
-void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
+/*
+** Exposure function: color = 255 * (1 - exp(constant * light));
+*/
+
+void		light_to_pixel(t_vec3 *light, int *px, int w, int h)
 {
-	int			i;
-	int			len;
+	int		i;
+	int		len;
 
 	len = w * h;
 	i = -1;
@@ -25,8 +44,9 @@ void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
 }
 
 /*
-** Add color components
+** Mix light with object color and coefficient
 */
+
 t_vec3		color_light_mix(t_vec3 obj_color, t_vec3 light_color, double coeff)
 {
 	t_vec3	res;
@@ -37,9 +57,14 @@ t_vec3		color_light_mix(t_vec3 obj_color, t_vec3 light_color, double coeff)
 	return (res);
 }
 
+/*
+** Add light contribution to a pixel
+*/
 
-
-t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam, t_vec3 absorbance)
+t_vec3		color_add_light(t_ray ray,
+							t_spot *l,
+							t_vec3 obj_cam,
+							t_vec3 absorbance)
 {
 	t_vec3	light;
 	double	diff;
@@ -52,17 +77,25 @@ t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam, t_vec3 absorbance)
 	obj = ray.collided;
 	if ((diff = fmax(vec3_dot(ray.dir, ray.n), 0)) > 0)
 	{
-		diff *= ray.collided->kdiff * l->intensity * atten * (1.0 - obj->transmittance);
-		light = color_light_mix(get_texture_color(ray), vec3_mul(l->color, absorbance), diff);
+		diff *= ray.collided->kdiff * l->intensity;
+		diff *= atten * (1.0 - obj->transmittance);
+		light = color_light_mix(get_texture_color(ray),
+								vec3_mul(l->color, absorbance), diff);
 	}
 	h = vec3_get_normalized(vec3_add(obj_cam, ray.dir));
 	if ((diff = fmax(pow(vec3_dot(ray.n, h), ray.collided->kp), 0)) > 0)
 	{
-		diff *= ray.collided->kspec * l->intensity * atten * (1.0 - obj->transmittance);
-		light = vec3_add(light, color_light_mix(get_texture_color(ray), vec3_mul(l->color, absorbance), diff));
+		diff *= ray.collided->kspec * l->intensity;
+		diff *= atten * (1.0 - obj->transmittance);
+		light = vec3_add(light, color_light_mix(get_texture_color(ray),
+								vec3_mul(l->color, absorbance), diff));
 	}
 	return (light);
 }
+
+/*
+** Average convolution kernel
+*/
 
 t_vec3		color_average(t_vec3 *aa, int size)
 {
@@ -75,4 +108,3 @@ t_vec3		color_average(t_vec3 *aa, int size)
 		r = vec3_add(r, aa[i++]);
 	return (vec3_mult(1. / (double)size, r));
 }
-
