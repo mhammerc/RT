@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 08:36:22 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 10:20:23 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 21:12:29 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,8 @@ void	modify_by_minus2(t_interval *a_i, t_interval *a_j,
 	i++;
 	a_h->min[a_h->nb_hit] = a_i->min[i];
 	a_h->max[a_h->nb_hit] = a_i->max[i];
-	(a_h->nb_hit)++;
+	if (a_h->nb_hit < 20)
+		(a_h->nb_hit)++;
 }
 
 /*

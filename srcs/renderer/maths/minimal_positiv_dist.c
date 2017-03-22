@@ -17,7 +17,7 @@
 int			modify_ref_dist(double *d, t_obj **collided,
 		t_csg inter, t_obj *obj)
 {
-	memcpy(*collided, &(inter.ref), sizeof(t_obj));
+	ft_memcpy(*collided, &(inter.ref), sizeof(t_obj));
 	*d = inter.dist;
 	obj->csg_ref = *collided;
 	obj->csg_ref->normal_dir = inter.normal;

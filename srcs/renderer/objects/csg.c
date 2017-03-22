@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/09 10:13:40 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 08:46:35 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 20:46:09 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,8 @@ void		test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	t_interval	left;
 	t_interval	right;
 
+	left.nb_hit = 0;
+	right.nb_hit = 0;
 	if (obj->csg == '0')
 		obj->intersect(obj, ray, interval);
 	else
@@ -58,9 +60,6 @@ void		test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 
 int			csg_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
-	double	d;
-
-	d = BIG_DIST;
 	test_csg(self, ray, interval);
 	if (interval->nb_hit)
 		return (1);

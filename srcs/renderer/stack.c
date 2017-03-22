@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   stack.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 22:46:15 by vfour             #+#    #+#             */
+/*   Updated: 2017/03/22 22:48:08 by vfour            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 
-int			stack_push(t_obj_stack *stack, t_obj *obj)
+int				stack_push(t_obj_stack *stack, t_obj *obj)
 {
 	if (stack->size >= MAX_REC_DEPTH)
 		return (0);
@@ -9,10 +21,10 @@ int			stack_push(t_obj_stack *stack, t_obj *obj)
 	return (1);
 }
 
-t_obj		*stack_pop(t_obj_stack *stack)
+t_obj			*stack_pop(t_obj_stack *stack)
 {
-	t_obj	*res;
-	int		size;
+	t_obj		*res;
+	int			size;
 
 	size = stack->size;
 	if (size == 0)
@@ -24,9 +36,9 @@ t_obj		*stack_pop(t_obj_stack *stack)
 	return (res);
 }
 
-t_obj		*stack_peak(t_obj_stack *stack)
+t_obj			*stack_peak(t_obj_stack *stack)
 {
-	int		size;
+	int			size;
 
 	size = stack->size;
 	if (size == 0)
@@ -37,8 +49,8 @@ t_obj		*stack_peak(t_obj_stack *stack)
 t_obj_stack		stack_new(void)
 {
 	int			i;
-
 	t_obj_stack	stack;
+
 	stack.size = 0;
 	i = 0;
 	while (i < MAX_REC_DEPTH)

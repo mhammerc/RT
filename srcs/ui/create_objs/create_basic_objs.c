@@ -21,7 +21,7 @@ void		create_light(gboolean render_new)
 {
 	t_object	object;
 
-	ft_bzero(&object, sizeof(t_object));
+	object = create_base_object();
 	object.type = LIGHT;
 	object.pos.z = 7.;
 	object.length = 100.;
