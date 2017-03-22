@@ -6,13 +6,16 @@ camera:
 object:
 	type: LIGHT
 	name: The light
-	position: 0.0; 0.0; 7.0
+	position: 0.0; 0.0; 3.0
 	rotation: 0.0; 0.0; 0.0
-	color: 0.0; 0.0; 0.0
+	color: 0.9; 0.9; 0.9
 	radius: 0.000000
-	length: 0.000000
+	length: 2.000000
 	kspec: 1.000000
 	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 0.000000
 	csgOperation: 0
 	texture: 0
 
@@ -26,6 +29,9 @@ object:
 	length: 0.000000
 	kspec: 1.000000
 	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 0.000000
 	csgOperation: 0
 	texture: 0
 
@@ -39,6 +45,9 @@ object:
 		length: 0.000000
 		kspec: 0.000000
 		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 0.000000
 		csgOperation: 0
 		texture: 0
 
@@ -52,12 +61,15 @@ object:
 		length: 0.000000
 		kspec: 0.000000
 		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 0.000000
 		csgOperation: 0
 		texture: 0
 
 	object:
 		type: PLANE
-		name: Background bottom
+		name: Background bott
 		position: 0.0; -3.0; 0.0
 		rotation: 0.0; 1.0; 0.0
 		color: 1.0; 0.0; 1.0
@@ -65,6 +77,9 @@ object:
 		length: 0.000000
 		kspec: 0.000000
 		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 0.000000
 		csgOperation: 0
 		texture: 0
 
@@ -78,6 +93,9 @@ object:
 		length: 0.000000
 		kspec: 1.000000
 		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 0.000000
 		csgOperation: 0
 		texture: 0
 
@@ -91,6 +109,9 @@ object:
 		length: 0.000000
 		kspec: 1.000000
 		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 0.000000
 		csgOperation: 0
 		texture: 0
 
@@ -104,6 +125,9 @@ object:
 		length: 0.000000
 		kspec: 1.000000
 		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 0.000000
 		csgOperation: 0
 		texture: 0
 
@@ -117,6 +141,9 @@ object:
 		length: 0.000000
 		kspec: 1.000000
 		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 0.000000
 		csgOperation: -
 		texture: 0
 
@@ -130,6 +157,9 @@ object:
 			length: 0.000000
 			kspec: 1.000000
 			kdiff: 1.000000
+			transmittance: 0.010000
+			reflectance: 0.000000
+			rindex: 0.000000
 			csgOperation: 0
 			texture: 1
 			texture_filename: resources/textures/sun.jpg
@@ -144,6 +174,9 @@ object:
 			length: 0.000000
 			kspec: 0.000000
 			kdiff: 0.000000
+			transmittance: 0.000000
+			reflectance: 0.000000
+			rindex: 0.000000
 			csgOperation: U
 			texture: 0
 
@@ -157,6 +190,9 @@ object:
 				length: 0.200000
 				kspec: 1.000000
 				kdiff: 1.000000
+				transmittance: 0.010000
+				reflectance: 0.000000
+				rindex: 0.000000
 				csgOperation: 0
 				texture: 2
 
@@ -170,5 +206,9 @@ object:
 				length: 0.200000
 				kspec: 1.000000
 				kdiff: 1.000000
+				transmittance: 0.010000
+				reflectance: 0.000000
+				rindex: 0.000000
 				csgOperation: 0
 				texture: 2
+
