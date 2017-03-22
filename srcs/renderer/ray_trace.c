@@ -165,6 +165,13 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 								refl_light,
 								ray.collided->transmittance));
 				}
+				else
+				{
+				refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
+				light = vec3_add(light, color_light_mix(get_texture_color(ray),
+							refl_light,
+							ray.collided->transmittance));
+				}
 			}
 		}
 	}
