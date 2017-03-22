@@ -6,13 +6,13 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:34:09 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 21:55:55 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:11:20 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
 
-static char		get_operation_code_from_id(int id)
+static char	get_operation_code_from_id(int id)
 {
 	if (id == 1)
 		return ('I');
@@ -23,7 +23,7 @@ static char		get_operation_code_from_id(int id)
 	return ('0');
 }
 
-static int		get_operation_id_from_code(char code)
+static int	get_operation_id_from_code(char code)
 {
 	if (code == 'I')
 		return (1);
@@ -34,7 +34,7 @@ static int		get_operation_id_from_code(char code)
 	return (0);
 }
 
-static void		bounding_upd(GtkComboBox *widget, gpointer user_data)
+static void	bounding_upd(GtkComboBox *widget, gpointer user_data)
 {
 	t_ui	*ui;
 

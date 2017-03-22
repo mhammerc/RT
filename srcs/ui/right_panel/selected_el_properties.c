@@ -6,13 +6,13 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:32:20 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 22:35:09 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:06:53 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
 
-void		element_edited()
+void		element_edited(void)
 {
 	t_ui	*ui;
 
@@ -32,7 +32,7 @@ void		edit_element_properties(GtkTreeView *tree_view,
 	(void)tree_view;
 	(void)column;
 	tmp = gtk_tree_path_get_indices_with_depth(path, &(ui->selected_obj.depth));
-	ft_memcpy(ui->selected_obj.index, tmp , 4 * (ui->selected_obj.depth));
+	ft_memcpy(ui->selected_obj.index, tmp, 4 * (ui->selected_obj.depth));
 	obj_lst = ft_lstat_child(ui->objs, ui->selected_obj.index,
 														ui->selected_obj.depth);
 	ui->selected_obj.object = (t_object*)obj_lst->content;

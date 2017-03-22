@@ -6,13 +6,13 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:29:50 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 22:32:06 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:11:05 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
 
-static void		kdiff_upd(GtkWidget *widget, gdouble value, gpointer data)
+static void	kdiff_upd(GtkWidget *widget, gdouble value, gpointer data)
 {
 	t_ui	*ui;
 
@@ -22,7 +22,7 @@ static void		kdiff_upd(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
-static void		kspec_upd(GtkWidget *widget, gdouble value, gpointer data)
+static void	kspec_upd(GtkWidget *widget, gdouble value, gpointer data)
 {
 	t_ui	*ui;
 
@@ -32,7 +32,7 @@ static void		kspec_upd(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
-static void		rindex_upd(GtkWidget *widget, gdouble value, gpointer data)
+static void	rindex_upd(GtkWidget *widget, gdouble value, gpointer data)
 {
 	t_ui	*ui;
 
@@ -42,8 +42,7 @@ static void		rindex_upd(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
-static void		transmittance_upd(GtkWidget *widget, gdouble value,
-																gpointer data)
+static void	transmittance_upd(GtkWidget *widget, gdouble value, gpointer data)
 {
 	t_ui	*ui;
 

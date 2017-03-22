@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:28:58 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 22:35:45 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:13:13 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,6 +18,7 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 {
 	t_ui		*ui;
 	t_object	*object;
+	GtkWidget	*dialog;
 	size_t		i;
 
 	ui = (t_ui*)user_data;
@@ -42,7 +43,7 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 	object = parse_wavefront_file(ui->selected_obj.object->filename);
 	if (!object)
 	{
-		GtkWidget *dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window),
+		dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window),
 			GTK_DIALOG_MODAL, GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE,
 			"Can not load %s.\nAn error occured.\n%s",
 			ui->selected_obj.object->filename, g_strerror(errno));
@@ -57,7 +58,8 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 	ui->selected_obj.object->faces = object->faces;
 }
 
-void	add_objext_widgets(t_ui *ui, t_object *focused_obj, GtkWidget *props)
+void			add_objext_widgets(t_ui *ui, t_object *focused_obj,
+															GtkWidget *props)
 {
 	GtkWidget	*file_chooser;
 
@@ -70,5 +72,4 @@ void	add_objext_widgets(t_ui *ui, t_object *focused_obj, GtkWidget *props)
 											G_CALLBACK(wavefront_file_set), ui);
 	gtk_container_add(GTK_CONTAINER(props), gtk_label_new("Model .obj"));
 	gtk_container_add(GTK_CONTAINER(props), file_chooser);
-
 }

@@ -6,14 +6,13 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:28:58 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 22:29:52 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:10:45 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
 
-static void		object_name_upd(GtkWidget *emitter, gchar *new_text,
-																gpointer data)
+static void	object_name_upd(GtkWidget *emitter, gchar *new_text, gpointer data)
 {
 	t_object	*obj;
 	t_ui		*ui;
@@ -27,7 +26,7 @@ static void		object_name_upd(GtkWidget *emitter, gchar *new_text,
 		&ui->selected_obj.iter, 0, obj->name, -1);
 }
 
-static void		pos_upd(GtkWidget *widget, t_vec3 *pos, gpointer data)
+static void	pos_upd(GtkWidget *widget, t_vec3 *pos, gpointer data)
 {
 	t_ui	*ui;
 
@@ -38,7 +37,7 @@ static void		pos_upd(GtkWidget *widget, t_vec3 *pos, gpointer data)
 	element_edited();
 }
 
-static void		rot_upd(GtkWidget *widget, t_vec3 *rot, gpointer data)
+static void	rot_upd(GtkWidget *widget, t_vec3 *rot, gpointer data)
 {
 	t_ui	*ui;
 
@@ -49,7 +48,8 @@ static void		rot_upd(GtkWidget *widget, t_vec3 *rot, gpointer data)
 	element_edited();
 }
 
-void	add_shared_widgets(t_ui *ui, t_object *focused_obj, GtkWidget *props)
+void		add_shared_widgets(t_ui *ui, t_object *focused_obj,
+															GtkWidget *props)
 {
 	GtkWidget	*name;
 	GtkWidget	*pos;
