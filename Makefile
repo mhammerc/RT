@@ -32,7 +32,9 @@ SRCS_NAME	=	main.c										\
 				ui/create_objs/create_complex_objs.c		\
 				ui/events/init_and_menu_keys.c				\
 				ui/events/realtime_keys.c					\
-				ui/left_panel/add_buttons.c					\
+				ui/left_panel/add_btns.c					\
+				ui/left_panel/cpy_btn.c						\
+				ui/left_panel/del_btn.c						\
 				ui/left_panel/left_panel.c					\
 				ui/right_panel/selected_el_properties.c		\
 				ui/right_panel/cam_properties.c				\

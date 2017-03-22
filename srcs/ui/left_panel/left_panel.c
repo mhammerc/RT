@@ -6,20 +6,15 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 16:15:34 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/22 16:20:41 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/03/22 17:21:50 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
 
-/*
-** FIXME: don't use global
-*/
-static int		lock = 0;
-
 static void		make_lock(void)
 {
-	lock = 1;
+	get_interface()->lock3 = 1;
 }
 
 static void		button_relase(GtkWidget *widget, GdkEvent *event,
@@ -28,12 +23,12 @@ static void		button_relase(GtkWidget *widget, GdkEvent *event,
 	t_ui		*ui;
 
 	(void)event;
-	if (lock)
+	ui = (t_ui*)user_data;
+	if (ui->lock3)
 	{
-		--lock;
+		--ui->lock3;
 		return ;
 	}
-	ui = (t_ui*)user_data;
 	gtk_tree_selection_unselect_all(gtk_tree_view_get_selection(
 		GTK_TREE_VIEW(widget)));
 	clear_properties_list(ui);

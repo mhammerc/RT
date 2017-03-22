@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 16:42:32 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 16:42:34 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 17:59:12 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,18 +101,18 @@ int				on_key_press_display(GtkWidget *widget, GdkEventKey *event,
 	{
 		obj_pos_key(ui, event);
 		obj_rot_key(ui, event);
+		refresh_elem_properties(ui);
 	}
 	else if (!ui->selected_obj.object)
 	{
 		cam_pos_key(ui, event);
 		cam_rot_key(ui, event);
+		refresh_cam_properties(ui);
 	}
 	else
 	{
 		if (event->keyval == GDK_KEY_Delete)
 			del_obj_btn(NULL, ui);
-		else if (event->keyval == GDK_KEY_Insert)
-			add_obj_btn(NULL, ui);
 		ask_for_new_image(ui);
 	}
 	return (FALSE);

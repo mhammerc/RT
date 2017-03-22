@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   left_panel.h                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 18:15:30 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 18:17:33 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef LEFT_PANEL_H
 # define LEFT_PANEL_H
 
@@ -6,13 +18,6 @@
 /*
 ** Object tree
 */
-
-typedef struct			s_point
-{
-	int					x;
-	int					y;
-}						t_point;
-
 typedef struct			s_tree
 {
 	GtkWidget			*tree;
@@ -42,10 +47,10 @@ typedef struct			s_left_panel
 	t_lp_btns			lp_btns;
 }						t_left_panel;
 
-void		add_obj_btn(GtkButton *button, gpointer view);
-void		add_light_btn(GtkButton *button, gpointer view);
-void		ft_lst_cpy(t_list **new, t_list *original);
-void		cpy_obj_btn(GtkButton *button, gpointer data);
-void		del_obj_btn(GtkButton *button, gpointer data);
+void					add_obj_btn(GtkButton *button, gpointer view);
+void					add_light_btn(GtkButton *button, gpointer view);
+void					ft_lst_cpy(t_list **new, t_list *original);
+void					cpy_obj_btn(GtkButton *button, gpointer data);
+void					del_obj_btn(GtkButton *button, gpointer data);
 
 #endif

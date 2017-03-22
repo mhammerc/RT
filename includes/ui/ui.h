@@ -1,16 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ui.h                                               :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 18:00:39 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 18:17:16 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef UI_H
 # define UI_H
 
 # include <gtk/gtk.h>
 # include <locale.h>
-
 # include "shared.h"
-
 # include "libft.h"
 # include "left_panel.h"
 # include "right_panel.h"
-# include "widget.h"
-# include "keys.h"
+# include "widgets.h"
+# include "events.h"
 # include "file_loader.h"
 # include "file_saver.h"
 
@@ -20,7 +30,7 @@
 /*
 ** Interface singleton (just in case, will be removed
 */
-t_ui			*get_interface();
+t_ui					*get_interface();
 
 typedef struct			s_object
 {
@@ -44,7 +54,7 @@ typedef struct			s_object
 
 typedef struct			s_selected_obj
 {
-	int					*index;//TODO limit index
+	int					*index;
 	int					depth;
 	t_object			*object;
 	GtkTreeIter			iter;
@@ -94,13 +104,13 @@ struct					s_ui
 	int					render_on_change;
 	int					lock;
 	int					lock2;
+	int					lock3;
 	pthread_mutex_t		mutex_stock;
 	double				*percent;
 	int					rendering;
 };
 
-void					init_interface(GtkApplication *app,
-							gpointer user_data);
+void					init_interface(GtkApplication *app, gpointer user_data);
 void					left_panel(t_ui *ui, t_left_panel *lp);
 void					display_panel(t_ui *ui, t_display_panel *dp);
 void					right_panel(t_ui *ui, t_right_panel *lp);
@@ -130,13 +140,9 @@ char					*get_el_type_char(t_object *object);
 /*
 ** gtk2cl.c
 */
-
 void					ask_for_new_image(t_ui *ui);
-
 void					load_file(char *filename);
 void					hook_up_obj_lst(t_ui *ui, t_env *env);
-
 void					free_obj_tree(t_ui *ui);
-
 
 #endif
