@@ -1,13 +1,25 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   text_entry.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 12:47:56 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 14:23:13 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ui.h"
 
 static void		inserted_text(GtkEntryBuffer *buffer, guint position,
-					gchar *chars, guint n_chars, gpointer widget)
+								gchar *chars, guint n_chars, gpointer widget)
 {
 	(void)position;
 	(void)chars;
 	(void)n_chars;
 	g_signal_emit_by_name((GtkWidget*)(widget), "rt-entry-edited",
-		gtk_entry_buffer_get_text(buffer));
+											gtk_entry_buffer_get_text(buffer));
 }
 
 static void		deleted_text(GtkEntryBuffer *buffer, guint position,
@@ -16,7 +28,7 @@ static void		deleted_text(GtkEntryBuffer *buffer, guint position,
 	(void)position;
 	(void)n_chars;
 	g_signal_emit_by_name((GtkWidget*)(widget), "rt-entry-edited",
-		gtk_entry_buffer_get_text(buffer));
+											gtk_entry_buffer_get_text(buffer));
 }
 
 GtkWidget		*create_text_entry(gchar *name, gchar *default_value)

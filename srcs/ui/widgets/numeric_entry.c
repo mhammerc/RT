@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   numeric_entry.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 12:48:32 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 16:20:02 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ui.h"
 
 static int		is_numerical(const gchar c)
@@ -5,43 +17,43 @@ static int		is_numerical(const gchar c)
 	return ((c >= '0' && c <= '9') || c == '.' || c == '-');
 }
 
+static int		check_locks(void)
+{
+	if (get_interface()->lock > 0)
+	{
+		--get_interface()->lock;
+		return (1);
+	}
+	get_interface()->lock = 2;
+	return (0);
+}
+
 static void		text_inserted(GtkEntryBuffer *buffer, guint position,
 					gchar *chars, guint n_chars, gpointer data)
 {
-	t_ui		*ui;
 	char		*text;
-	size_t		length;
-
-	ui = get_interface();
-	if (ui->lock > 0)
-	{
-		--ui->lock;
-		return ;
-	}
-	ui->lock = 2;
-
-	text = (char*)gtk_entry_buffer_get_text(buffer);
-	length = gtk_entry_buffer_get_length(buffer);
-	(void)position;
-	(void)chars;
-	(void)n_chars;
 	gchar		*new_text;
+	size_t		length;
 	size_t		i;
 	size_t		j;
 
+	(void)position;
+	(void)chars;
+	(void)n_chars;
 	i = 0;
 	j = 0;
+	if (check_locks())
+		return ;
+	text = (char*)gtk_entry_buffer_get_text(buffer);
+	length = gtk_entry_buffer_get_length(buffer);
 	new_text = malloc(sizeof(gchar) * (length + 1));
 	while (i < length)
-	{
 		if (is_numerical(text[i]))
-			new_text[j++] = text[i];
-		++i;
-	}
+			new_text[j++] = text[i++];
 	new_text[j] = 0;
 	gtk_entry_buffer_set_text(buffer, new_text, -1);
 	g_signal_emit_by_name((GtkWidget*)data, "rt-numeric-entry-edited",
-		atof(new_text));
+																atof(new_text));
 	free(new_text);
 }
 
@@ -57,9 +69,6 @@ static void		text_deleted(GtkEntryBuffer *buffer, guint position,
 		--get_interface()->lock;
 		return ;
 	}
-	//get_interface()->lock = 1;
-	//g_signal_emit_by_name((GtkWidget*)data, "rt-numeric-entry-edited",
-	//	atof(gtk_entry_buffer_get_text(gtk_entry_get_buffer(data))));
 }
 
 GtkWidget		*create_numeric_entry(char *placeholder, gdouble value)

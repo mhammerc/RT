@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   realtime_keys.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 16:42:32 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 17:59:12 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ui.h"
 
 static void		obj_pos_key(t_ui *ui, GdkEventKey *event)
@@ -51,7 +63,7 @@ static void		cam_pos_key(t_ui *ui, GdkEventKey *event)
 	else if (event->keyval == GDK_KEY_q)
 		ui->cam->pos.z -= 0.1;
 	else if (event->keyval == GDK_KEY_e)
-			ui->cam->pos.z += 0.1;
+		ui->cam->pos.z += 0.1;
 	else
 		return ;
 	ask_for_new_image(ui);
@@ -66,7 +78,7 @@ static void		cam_rot_key(t_ui *ui, GdkEventKey *event)
 	else if (event->keyval == GDK_KEY_S)
 		ui->cam->dir.y -= 0.1;
 	else if (event->keyval == GDK_KEY_D)
-			ui->cam->dir.x += 0.1;
+		ui->cam->dir.x += 0.1;
 	else if (event->keyval == GDK_KEY_Q)
 		ui->cam->dir.z -= 0.1;
 	else if (event->keyval == GDK_KEY_E)
@@ -76,18 +88,7 @@ static void		cam_rot_key(t_ui *ui, GdkEventKey *event)
 	ask_for_new_image(ui);
 }
 
-static void		other_key(t_ui *ui, GdkEventKey *event)
-{
-	if (event->keyval == GDK_KEY_Delete)
-		del_obj_btn(NULL, ui);
-	else if (event->keyval == GDK_KEY_Insert)
-		add_obj_btn(NULL, ui);
-	else
-		return ;
-	ask_for_new_image(ui);
-}
-
-static int		on_key_press_display(GtkWidget *widget, GdkEventKey *event,
+int				on_key_press_display(GtkWidget *widget, GdkEventKey *event,
 					gpointer user_data)
 {
 	t_ui	*ui;
@@ -100,19 +101,19 @@ static int		on_key_press_display(GtkWidget *widget, GdkEventKey *event,
 	{
 		obj_pos_key(ui, event);
 		obj_rot_key(ui, event);
+		refresh_elem_properties(ui);
 	}
 	else if (!ui->selected_obj.object)
 	{
 		cam_pos_key(ui, event);
 		cam_rot_key(ui, event);
+		refresh_cam_properties(ui);
 	}
 	else
-		other_key(ui, event);
+	{
+		if (event->keyval == GDK_KEY_Delete)
+			del_obj_btn(NULL, ui);
+		ask_for_new_image(ui);
+	}
 	return (FALSE);
-}
-
-void			event_handler_display(t_ui *ui)
-{
-	g_signal_connect(G_OBJECT(ui->lp->tree.tree), "key_press_event",
-		G_CALLBACK(on_key_press_display), NULL);
 }

@@ -1,18 +1,28 @@
-#include "ui.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   scale_entry.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 12:48:36 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 14:30:29 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-static int lock = 0;
+#include "ui.h"
 
 static gboolean		scale_edited(GtkRange *range, GtkScrollType scroll,
 		gdouble value, gpointer data)
 {
 	GtkEntryBuffer	*buffer;
 	GtkWidget		*box;
+	GList			*childs;
 
 	(void)range;
 	(void)scroll;
-	++lock;
+	++get_interface()->lock;
 	box = (GtkWidget*)data;
-	GList	*childs;
 	childs = gtk_container_get_children(GTK_CONTAINER(box));
 	childs = childs->next;
 	childs = childs->next;
@@ -24,21 +34,19 @@ static gboolean		scale_edited(GtkRange *range, GtkScrollType scroll,
 
 static void			entry_edited(GtkWidget *entry, gpointer data)
 {
-	GtkWidget		*box;
 	GtkEntryBuffer	*buffer;
 	GtkWidget		*scale;
 	gchar			*content;
 	double			value;
+	GList			*childs;
 
-	(void)entry;
-	if (lock)
+	if (get_interface()->lock2)
 	{
-		--lock;
+		--get_interface()->lock2;
 		return ;
 	}
-	box = (GtkWidget*)data;
-	GList	*childs;
-	childs = gtk_container_get_children(GTK_CONTAINER(box));
+	(void)entry;
+	childs = gtk_container_get_children(GTK_CONTAINER((GtkWidget*)data));
 	childs = childs->next;
 	scale = (GtkWidget*)childs->data;
 	childs = childs->next;
@@ -46,7 +54,7 @@ static void			entry_edited(GtkWidget *entry, gpointer data)
 	content = (gchar*)gtk_entry_buffer_get_text(buffer);
 	value = atof(content);
 	gtk_range_set_value(GTK_RANGE(scale), value);
-	g_signal_emit_by_name(box, "rt-scale-entry-edited", value);
+	g_signal_emit_by_name((GtkWidget*)data, "rt-scale-entry-edited", value);
 }
 
 GtkWidget			*create_scale_entry(gchar *name, gdouble value,
