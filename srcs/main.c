@@ -1,14 +1,24 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   main.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 12:05:41 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/03/22 12:06:44 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "rt.h"
-#include <gtk/gtk.h>
 
 int			main(int argc, char **argv)
 {
 	static GtkApplication	*app;
 	int						status;
 
-	//gdk_threads_init();
 	app = gtk_application_new("org.gtk.example", G_APPLICATION_FLAGS_NONE);
-	g_signal_connect(app, "activate", G_CALLBACK(build_interface), NULL);
+	g_signal_connect(app, "activate", G_CALLBACK(init_interface), NULL);
 	status = g_application_run(G_APPLICATION(app), argc, argv);
 	g_object_unref(app);
 	return (status);

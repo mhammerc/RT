@@ -37,9 +37,9 @@ typedef struct			s_object
 	char				*filename;
 	size_t				nb_faces;
 	t_face				*faces;
-	enum e_texture_type		have_texture;
-	t_texture				texture;
-	char					*texture_filename;
+	enum e_texture_type	have_texture;
+	t_texture			texture;
+	char				*texture_filename;
 }						t_object;
 
 typedef struct			s_selected_obj
@@ -93,12 +93,13 @@ struct					s_ui
 
 	int					render_on_change;
 	int					lock;
+	int					lock2;
 	pthread_mutex_t		mutex_stock;
 	double				*percent;
 	int					rendering;
 };
 
-void					build_interface(GtkApplication *app,
+void					init_interface(GtkApplication *app,
 							gpointer user_data);
 void					left_panel(t_ui *ui, t_left_panel *lp);
 void					display_panel(t_ui *ui, t_display_panel *dp);

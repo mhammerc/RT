@@ -173,7 +173,12 @@
 #define GDK_KEY_y 0x079
 #define GDK_KEY_z 0x07a
 
-void			event_handler_display(t_ui *ui);
 void			event_handler_window(t_ui *ui);
+int				on_key_press_window(GtkWidget *widget, GdkEventKey *event, 
+															gpointer user_data);
+
+void			event_handler_display(t_ui *ui);
+int				on_key_press_display(GtkWidget *widget, GdkEventKey *event,
+															gpointer user_data);
 
 #endif
