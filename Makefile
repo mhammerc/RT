@@ -13,6 +13,7 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/solve_quad_2_interval.c		\
 				renderer/objects/sphere.c					\
 				renderer/objects/polygon.c					\
+				renderer/objects/polygon_interval.c			\
 				renderer/objects/torus.c					\
 				renderer/objects/cylinder.c					\
 				renderer/objects/cone.c						\

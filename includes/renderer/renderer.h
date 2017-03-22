@@ -76,5 +76,6 @@ int			quad4_solve(long double a, long double b, long double c,
 										long double d, t_interval *interval);
 void		solve_interval(t_interval *interval, long double *r_g, long double *r_h);
 int			quad2_solve(long double b, long double c, long double *root);
+void		adapt_polygon2csg(t_interval *interval, t_csg t, int *cmp);
 
 #endif
