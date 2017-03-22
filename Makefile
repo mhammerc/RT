@@ -9,6 +9,7 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\
 				renderer/maths/solve_quad.c					\
+				renderer/maths/minimal_positiv_dist.c					\
 				renderer/objects/sphere.c					\
 				renderer/objects/polygon.c					\
 				renderer/objects/torus.c					\
@@ -17,6 +18,9 @@ SRCS_NAME	=	main.c										\
 				renderer/objects/plane.c					\
 				renderer/objects/disk.c						\
 				renderer/objects/csg.c						\
+				renderer/objects/csg_union.c				\
+				renderer/objects/csg_inter.c				\
+				renderer/objects/csg_minus.c				\
 				renderer/objects/object_selection.c			\
 				ui/create_object.c							\
 				ui/display_panel.c							\

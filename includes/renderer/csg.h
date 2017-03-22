@@ -19,5 +19,10 @@ int				cylinder_intersect_csg(t_obj *obj, t_ray *ray, t_interval *interval);
 t_vec3				cylinder_normal_csg(t_obj *obj, t_vec3 pos);
 int			cone_intersect_csg(t_obj *self, t_ray *ray, t_interval *interval);
 t_vec3			cone_normal_csg(t_obj *self, t_vec3 pos);
+void	ft_union(t_interval *left, t_interval *right, t_interval *interval);
+int	is_disjoint(t_interval *a_i, t_interval *a_j, int i, int j);
+void	inter(t_interval *left, t_interval *right, t_interval *interval);
+void	minus(t_interval *left, t_interval *right, t_interval *interval);
+int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **collided);
 
 #endif
