@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   color_chooser.c                                    :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 21:35:58 by aditsch           #+#    #+#             */
+/*   Updated: 2017/03/22 21:38:34 by aditsch          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ui.h"
 #include "converter.h"
 
@@ -27,7 +39,6 @@ void		create_color_chooser(t_ui *ui, t_vec3 color)
 	gtk_color.green = color.y;
 	gtk_color.blue = color.z;
 	gtk_color.alpha = 1;
-
 	color_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 	color_title = gtk_label_new_with_mnemonic("Color		");
 	color_chooser = gtk_color_button_new();

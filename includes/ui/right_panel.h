@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:00:29 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 22:35:53 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 21:27:37 by aditsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,11 +85,24 @@ typedef struct			s_right_panel
 }						t_right_panel;
 
 void		init_scene(t_ui *ui);
+void		create_ambient_light(t_ui *ui);
+void		create_fov_box(t_ui *ui);
+void		create_filters_box(t_ui *ui);
+void		create_aa_box(t_ui *ui);
+void		scene_edited();
+void		aa_edited(GtkComboBox *widget, gpointer data);
+void		filters_edited(GtkComboBox *widget, gpointer data);
+void		ambiant_light_edited(GtkWidget *widget, gdouble value,
+																gpointer data);
+void		fov_edited(GtkWidget *widget, gdouble value, gpointer data);
 void		create_color_chooser(t_ui *ui, t_vec3 color);
 void		edit_scene_properties(gpointer data);
 void		init_cam(t_ui *ui);
 void		edit_cam_properties(gpointer data);
 void 		refresh_cam_properties(t_ui *ui);
+void		cam_edited();
+void		dir_edited(GtkWidget *widget, t_vec3 *dir, gpointer data);
+void		up_edited(GtkWidget *widget, t_vec3 *up, gpointer data);
 void		clear_properties_list(t_ui *ui);
 void		edit_element_properties(GtkTreeView *tree_view,
 				GtkTreePath *path, GtkTreeViewColumn *column, gpointer data);
