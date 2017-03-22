@@ -2,7 +2,7 @@
 
 void		init_scene(t_ui *ui)
 {
-	ui->rp->scene_gtk.ambiant_light = 0.42;
+	ui->rp->scene_gtk.ambiant_light = 1.;
 	ui->rp->scene_gtk.fov = 45;
 	ui->rp->scene_gtk.aa = 0;
 	ui->rp->scene_gtk.filter = 0;
