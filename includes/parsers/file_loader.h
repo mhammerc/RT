@@ -3,6 +3,8 @@
 
 # include "shared.h"
 
+typedef struct s_object	t_object;
+
 enum	e_errors
 {
 	ERR_FILE_OPEN,
@@ -40,5 +42,13 @@ void					p_parse_object(t_env *env);
 void					p_parse_camera(t_env *env);
 enum e_object_type		p_str_to_type(char *str);
 size_t					count_tab(char *ln);
+
+void					read_properties1(char *ln2, t_object *new_object);
+void 					read_properties2(char *ln2, t_object *new_object);
+int						deeper_object(char *ln2, t_object *new_object,
+		t_env *env, size_t *tabs);
+void					less_deeper_object(char *ln2, t_object *new_object,
+		t_env *env);
+void					read_properties4(char *ln2, t_object *new_object);
 
 #endif
