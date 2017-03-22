@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/17 10:33:50 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 20:47:08 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -150,8 +150,8 @@ typedef	struct s_csg		t_csg;
 
 struct						s_interval
 {
-	t_csg					min[10];//TODO protect if is more than 10
-	t_csg					max[10];
+	t_csg					min[20];
+	t_csg					max[20];
 	int						nb_hit;
 };
 

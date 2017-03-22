@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 15:28:17 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 09:53:05 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 21:12:28 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	init_union(t_interval *left, t_interval *right, int *test)
 	}
 	while (i < left->nb_hit + right->nb_hit)
 		test[i++] = 1;
-	while (i < 10)
+	while (i < 20)
 		test[i++] = 0;
 }
 
@@ -76,7 +76,7 @@ void	fill_interval_complete(t_interval *interval,
 
 	i = 0;
 	j = 0;
-	while (j < 10)
+	while (j < 20)
 	{
 		if (test[j])
 		{
@@ -97,16 +97,16 @@ void	ft_union(t_interval *left, t_interval *right, t_interval *interval)
 {
 	int	i;
 	int	j;
-	int	test[10];
+	int	test[20];
 
 	if (union_case(left, right, interval))
 		return ;
 	init_union(left, right, test);
 	i = -1;
-	while (++i < 9)
+	while (++i < 19)
 	{
 		j = i;
-		while (++j < 10)
+		while (++j < 20)
 		{
 			if (test[j])
 				if (!is_disjoint(left, left, i, j))
