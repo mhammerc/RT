@@ -1,6 +1,17 @@
+#include <ui.h>
 #include <file_loader.h>
 
-void	p_parse_camera(t_env *env)
+static void		read_properties(char *ln2, t_env *env)
+{
+	if (ft_strncmp(ln2, "position:", 9) == 0)
+		env->camera.pos = p_read_vec3(ln2);
+	else if (ft_strncmp(ln2, "lookAt:", 7) == 0)
+		env->camera.look_at = p_read_vec3(ln2);
+	else if (ft_strncmp(ln2, "up:", 3) == 0)
+		env->camera.up = p_read_vec3(ln2);
+}
+
+void			p_parse_camera(t_env *env)
 {
 	int		ret;
 	char	*ln2;
@@ -17,12 +28,7 @@ void	p_parse_camera(t_env *env)
 			break ;
 		}
 		ln2 = ft_strtrim(env->ln);
-		if (ft_strncmp(ln2, "position:", 9) == 0)
-			env->camera.pos = p_read_vec3(ln2);
-		else if (ft_strncmp(ln2, "lookAt:", 7) == 0)
-			env->camera.look_at = p_read_vec3(ln2);
-		else if (ft_strncmp(ln2, "up:", 3) == 0)
-			env->camera.up = p_read_vec3(ln2);
+		read_properties(ln2, env);
 		if (*ln2 == 0)
 		{
 			free(ln2);
