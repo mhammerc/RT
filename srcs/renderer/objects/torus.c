@@ -12,6 +12,7 @@
 
 #include <stdlib.h>
 #include <libft.h>
+#include <math.h>
 #include "renderer.h"
 #include <math.h>
 

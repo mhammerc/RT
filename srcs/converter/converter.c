@@ -76,12 +76,25 @@ static void		convert_torus(t_obj *self)
 
 static void		convert_object2(t_obj *obj, t_object *object)
 {
+	obj->pos = object->pos;
+	obj->color = object->color;
+	if (vec3_norm2(object->rot) > EPS)
+		obj->dir = vec3_get_normalized(object->rot);
+	else
+		obj->dir = object->rot;
+	if (object->type == CONE)
+		obj->radius = cos(object->radius * DEG_TO_RAD);
+	else
+		obj->radius =  object->radius / 1000;
 	obj->length = object->length;
 	obj->param = object->length / 1000;
 	obj->type = object->type;
 	obj->kspec = object->kspec;
 	obj->kdiff = object->kdiff;
 	obj->kp = 256;
+	obj->rindex = object->rindex;
+	obj->transmittance = object->transmittance;
+	obj->reflectance = 1 - obj->transmittance;
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
 	obj->left = NULL;
@@ -195,8 +208,8 @@ static void		fill_spot(t_list *objects, t_list **spots)
 	if (is_light(object))
 	{
 		spot.pos = object->pos;
-		spot.color = (t_vec3){1, 1, 1};
-		spot.intensity = 1;
+		spot.color = object->color;
+		spot.intensity = object->length;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
 	if (objects->children)

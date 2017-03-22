@@ -40,6 +40,11 @@ typedef struct			s_object
 	enum e_texture_type		have_texture;
 	t_texture				texture;
 	char					*texture_filename;
+
+	double					rindex;
+	double					transmittance;
+	double					reflectance;
+	int					transparency;
 }						t_object;
 
 typedef struct			s_selected_obj

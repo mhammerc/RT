@@ -21,9 +21,15 @@
 # define EPS 1e-3
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
-# define REFL_ATTENUATION 0.2
+# define REFLECTION_RAY 2
+# define REFL_ATTENUATION 0.8
 # define WHITE (t_vec3){1., 1., 1.}
 # define BLACK (t_vec3){0., 0., 0.}
+//# define REFR_ATTENUATION 0.8
+# define MAX_REC_DEPTH 8
+# define R_GLASS 1.42
+# define R_DEFAULT 1.0
+# define ABSORB_COEFF 0.15
 
 typedef struct s_ui	t_ui;
 
@@ -114,9 +120,13 @@ struct						s_obj
 	double					length;
 	enum e_object_type		type;
 	int						id;
+	int						transparency;
 	double					kspec;
 	double					kdiff;
 	double					kp;
+	double					rindex;
+	double					transmittance;
+	double					reflectance;
 	struct s_obj			*left;
 	struct s_obj			*right;
 	char					csg;
@@ -145,6 +155,12 @@ struct						s_interval
 	int						nb_hit;
 };
 
+typedef struct		s_obj_stack
+{
+	t_obj			*obj[MAX_REC_DEPTH];
+	int				size;
+}					t_obj_stack;
+
 struct						s_ray
 {
 	t_vec3					pos;
@@ -153,8 +169,10 @@ struct						s_ray
 	double					t;
 	int						type;
 	t_obj					*collided;
-	t_vec3					hit;
 	t_vec3					light;
+	t_obj_stack				rstack;
+	int						location;
+	double					dist;
 };
 
 struct						s_spot

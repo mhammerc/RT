@@ -5,8 +5,13 @@ SRCS_PATH	=	srcs
 SRCS_NAME	=	main.c										\
 				renderer/compute_image.c					\
 				renderer/camera.c							\
+				renderer/stack.c							\
+				renderer/ray.c								\
+				renderer/ray_trace.c						\
+				renderer/color_light.c						\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
+				renderer/maths/vec3_op2.c					\
 				renderer/maths/solve.c						\
 				renderer/maths/solve_quad.c					\
 				renderer/maths/minimal_positiv_dist.c		\
@@ -47,7 +52,6 @@ SRCS_NAME	=	main.c										\
 				ui/ui_print_scene.c							\
 				ui/top_menu/top_menu.c						\
 				converter/converter.c						\
-				converter/rot.c								\
 				parsers/file_saver/file_saver.c				\
 				parsers/file_saver/saver_tools.c			\
 				parsers/file_loader/file_loader.c			\
@@ -78,7 +82,7 @@ CC			=	gcc -fdiagnostics-color=auto
 CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra
 CFLAGS		+=	$(GTK_CFLAGS)
 
-CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft
+CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft -flto
 CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
