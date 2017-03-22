@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/21 15:09:43 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 12:25:40 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,26 @@
 ** or a negative value otherwise
 */
 
-int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
+int		torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
-	long double	R = self->radius;
-	long double	r = self->length;
+	long double	z[8];
+	long double	res[4];
+	t_vec3		q;
 
-	t_vec3	Q = vec3_sub(ray->pos, self->pos);
-	long double	u = vec3_dot(self->dir, Q);
-	long double	v = vec3_dot(self->dir, ray->dir);
-
-	long double	a = 1. - powl(v, 2.);
-	long double	b = 2. * (vec3_dot(Q, ray->dir) - u * v);
-	long double	c = vec3_dot(Q, Q) - powl(u, 2.);
-	long double	d = vec3_dot(Q, Q) + powl(R, 2.) - powl(r, 2.);
-
-	long double	B = 4. * vec3_dot(Q, ray->dir);
-	long double	C = 2. * d + powl(B, 2.) / 4. - 4. * powl(R, 2.) * a;
-	long double	D = B * d - 4. * powl(R, 2.) * b;
-	long double	E = powl(d, 2.) - 4. * powl(R, 2.) * c + EPS;
-
-	if ((interval->nb_hit = quad4_solve(B,C,D,E, interval)))
+	q = vec3_sub(ray->pos, self->pos);
+	z[2] = vec3_dot(self->dir, q);
+	z[3] = vec3_dot(self->dir, ray->dir);
+	z[4] = 1. - powl(z[3], 2.);
+	z[5] = 2. * (vec3_dot(q, ray->dir) - z[2] * z[3]);
+	z[6] = vec3_dot(q, q) - powl(z[2], 2.);
+	z[7] = vec3_dot(q, q) + powl(self->radius, 2.) - powl(self->length, 2.);
+	res[0] = 4. * vec3_dot(q, ray->dir);
+	res[1] = 2. * z[7] + powl(res[0], 2.) / 4. - 4. * powl(self->radius, 2.)
+		* z[4];
+	res[2] = res[0] * z[7] - 4. * powl(self->radius, 2.) * z[5];
+	res[3] = powl(z[7], 2.) - 4. * powl(self->radius, 2.) * z[6] + EPS;
+	if ((interval->nb_hit = quad4_solve(res[0], res[1], res[2],
+					res[3], interval)))
 	{
 		interval->min[0].ref = *self;
 		interval->max[0].ref = *self;
@@ -56,17 +56,17 @@ int				torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 ** @return normal direction
 */
 
-t_vec3			torus_normal(t_obj *self, t_vec3 pos)
+t_vec3	torus_normal(t_obj *self, t_vec3 pos)
 {
-	long double		y;
-	t_vec3		D;
-	t_vec3		X;
+	long double	y;
+	t_vec3		o;
+	t_vec3		x;
 
 	y = vec3_dot(vec3_sub(pos, self->pos), self->dir);
-	D = vec3_sub(vec3_sub(pos, self->pos), vec3_mult(y, self->dir));
-	X = vec3_mult(self->radius / sqrtl(vec3_dot(D, D)), D);
+	o = vec3_sub(vec3_sub(pos, self->pos), vec3_mult(y, self->dir));
+	x = vec3_mult(self->radius / sqrtl(vec3_dot(o, o)), o);
 	if (self->normal_dir == OUTWARDS)
-		return (vec3_get_normalized(vec3_sub(pos, vec3_add(self->pos ,X))));
+		return (vec3_get_normalized(vec3_sub(pos, vec3_add(self->pos, x))));
 	else
-		return (vec3_get_normalized(vec3_sub(vec3_add(self->pos ,X), pos)));
+		return (vec3_get_normalized(vec3_sub(vec3_add(self->pos, x), pos)));
 }

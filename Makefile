@@ -10,6 +10,7 @@ SRCS_NAME	=	main.c										\
 				renderer/maths/solve.c						\
 				renderer/maths/solve_quad.c					\
 				renderer/maths/minimal_positiv_dist.c		\
+				renderer/maths/solve_quad_2_interval.c		\
 				renderer/objects/sphere.c					\
 				renderer/objects/polygon.c					\
 				renderer/objects/torus.c					\
