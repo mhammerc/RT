@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 08:34:15 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 08:36:14 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 08:56:57 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@
 
 /*
 ** particulary case solve quickly in intersecion interval
-**
 */
 
-int	inter_case(t_interval *left, t_interval *right, t_interval *interval)
+int		inter_case(t_interval *left, t_interval *right, t_interval *interval)
 {
 	if (left->nb_hit == 0 || right->nb_hit == 0)
 	{
@@ -31,7 +30,6 @@ int	inter_case(t_interval *left, t_interval *right, t_interval *interval)
 
 /*
 **result in a_i : intersectin between interval *a_i and *a_j
-**
 */
 
 void	modify_by_inter(t_interval *a_i, t_interval *a_j, int i, int j)
@@ -43,9 +41,9 @@ void	modify_by_inter(t_interval *a_i, t_interval *a_j, int i, int j)
 			a_i->max[i] = a_j->max[j];
 	}
 }
+
 /*
 **result in interval : intersectin between all interval in right and left
-**
 */
 
 void	inter(t_interval *left, t_interval *right, t_interval *interval)
@@ -55,10 +53,10 @@ void	inter(t_interval *left, t_interval *right, t_interval *interval)
 	int	i;
 
 	if (!inter_case(left, right, interval))
-		return;
-	l = 0;
+		return ;
+	l = -1;
 	i = 0;
-	while (l < left->nb_hit)
+	while (++l < left->nb_hit)
 	{
 		interval->min[i] = left->min[l];
 		interval->max[i] = left->max[l];
@@ -66,15 +64,13 @@ void	inter(t_interval *left, t_interval *right, t_interval *interval)
 		while (r < right->nb_hit)
 		{
 			if (is_disjoint(interval, right, i, r))
-				break;
+				break ;
 			else
 				modify_by_inter(interval, right, i, r);
 			r++;
 		}
 		if (r == right->nb_hit)
 			i++;
-		l++;
 	}
 	interval->nb_hit = i;
 }
-
