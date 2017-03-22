@@ -6,31 +6,11 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:29:50 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:11:05 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 00:26:01 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
-
-static void	kdiff_upd(GtkWidget *widget, gdouble value, gpointer data)
-{
-	t_ui	*ui;
-
-	ui = (t_ui*)data;
-	(void)widget;
-	ui->selected_obj.object->kdiff = value;
-	element_edited();
-}
-
-static void	kspec_upd(GtkWidget *widget, gdouble value, gpointer data)
-{
-	t_ui	*ui;
-
-	ui = (t_ui*)data;
-	(void)widget;
-	ui->selected_obj.object->kspec = value;
-	element_edited();
-}
 
 static void	rindex_upd(GtkWidget *widget, gdouble value, gpointer data)
 {
@@ -52,20 +32,23 @@ static void	transmittance_upd(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
+static void	reflectance_upd(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->reflectance = value;
+	element_edited();
+}
+
 void		add_material_widgets(t_ui *ui, t_object *focused_obj,
 															GtkWidget *props)
 {
-	GtkWidget	*kdiff;
-	GtkWidget	*kspec;
 	GtkWidget	*rindex;
 	GtkWidget	*transmittance;
+	GtkWidget	*reflectance;
 
-	kdiff = create_scale_entry("kdiff		", focused_obj->kdiff, 0, 1);
-	g_signal_connect(kdiff, "rt-scale-entry-edited", G_CALLBACK(kdiff_upd), ui);
-	gtk_container_add(GTK_CONTAINER(props), kdiff);
-	kspec = create_scale_entry("Kspec	", focused_obj->kspec, 0, 1);
-	g_signal_connect(kspec, "rt-scale-entry-edited", G_CALLBACK(kspec_upd), ui);
-	gtk_container_add(GTK_CONTAINER(props), kspec);
 	rindex = create_scale_entry("rindex", focused_obj->rindex, 1, 2);
 	g_signal_connect(rindex, "rt-scale-entry-edited",
 			G_CALLBACK(rindex_upd), ui);
@@ -75,4 +58,9 @@ void		add_material_widgets(t_ui *ui, t_object *focused_obj,
 	g_signal_connect(transmittance, "rt-scale-entry-edited",
 			G_CALLBACK(transmittance_upd), ui);
 	gtk_container_add(GTK_CONTAINER(props), transmittance);
+	reflectance = create_scale_entry("reflectance",
+											focused_obj->reflectance, 0, 1);
+	g_signal_connect(reflectance, "rt-scale-entry-edited",
+			G_CALLBACK(reflectance_upd), ui);
+	gtk_container_add(GTK_CONTAINER(props), reflectance);
 }

@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:00:29 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:58:18 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 00:25:14 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ void		add_texture_type_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
 void		add_texture_chooser_widgets(t_ui *ui, t_object *focused_obj,
 															GtkWidget *props);
 void		add_material_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
+void		add_material_widgets_aux(t_ui *ui, t_object *focused_obj,
+															GtkWidget *props);
 void		add_objext_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
 void		add_csg_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
 

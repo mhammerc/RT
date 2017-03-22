@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:32:45 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:28:34 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 00:28:29 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,10 @@ void			add_situational_widgets(t_ui *ui, t_object *focused_obj,
 	if (type != CSG)
 		create_color_chooser(ui, focused_obj->color);
 	if (type != CSG || type != EMPTY || type != LIGHT)
+	{
+		add_material_widgets_aux(ui, focused_obj, props);
 		add_material_widgets(ui, focused_obj, props);
+	}
 	if (type == CSG)
 		add_csg_widgets(ui, focused_obj, props);
 	if (type != CSG && type != LIGHT)

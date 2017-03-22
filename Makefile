@@ -46,6 +46,7 @@ SRCS_NAME	=	main.c										\
 				ui/right_panel/selected_el_properties.c		\
 				ui/right_panel/obj_csg_update.c				\
 				ui/right_panel/obj_material_update.c		\
+				ui/right_panel/obj_material_update_aux.c	\
 				ui/right_panel/obj_obj_load.c				\
 				ui/right_panel/obj_shared_update.c			\
 				ui/right_panel/obj_situational_update.c		\
