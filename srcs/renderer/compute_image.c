@@ -7,6 +7,50 @@
 #include "shared.h"
 #include "texture_loader.h"
 
+static t_vec3	tex_spherical_damier(t_ray ray)
+{
+	t_vec3	d;
+	double u;
+	double v;
+
+	d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+	u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+	u = fmod(u, 0.10);
+	v = 0.5 - asin(d.y) / M_PI;
+	v = fmod(v, 0.10);
+	if (u < 0.05 && v < 0.05)
+		return (BLACK);
+	if (u > 0.05 && v < 0.05)
+		return (WHITE);
+	if (u > 0.05 && v > 0.05)
+		return (BLACK);
+	if (u < 0.05 && v > 0.05)
+		return (WHITE);
+	return (WHITE);
+}
+
+static t_vec3	tex_spherical(t_ray ray)
+{
+	t_vec3	r;
+	t_vec3	d;
+	double	u;
+	double	v;
+
+	d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
+	u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
+	u *= ray.collided->texture.width;
+	v = 0.5 - asin(d.y) / M_PI;
+	v *= ray.collided->texture.height;
+	int offset = 3;
+	if (ray.collided->texture.has_alpha)
+		offset = 4;
+	r.x = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride];
+	r.y = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 1];
+	r.z = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 2];
+	r = vec3_mult(1. / 256., r);
+	return (r);
+}
+
 t_vec3			get_texture_color(t_ray ray)
 {
 	t_vec3	r;
@@ -17,42 +61,10 @@ t_vec3			get_texture_color(t_ray ray)
 	if (ray.collided->have_texture == NO_TEXTURE)
 		return (ray.collided->color);
 	else if (ray.collided->have_texture == SPHERICAL_DAMIER)
-	{
-		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
-		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
-		u = fmod(u, 0.10);
-		v = 0.5 - asin(d.y) / M_PI;
-		v = fmod(v, 0.10);
-
-		if (u < 0.05 && v < 0.05)
-			return (BLACK);
-		if (u > 0.05 && v < 0.05)
-			return (WHITE);
-		if (u > 0.05 && v > 0.05)
-			return (BLACK);
-		if (u < 0.05 && v > 0.05)
-			return (WHITE);
-		return (WHITE);
-	}
+		return (tex_spherical_damier(ray));
 	else if (ray.collided->have_texture == SPHERICAL
 			&& ray.collided->texture.is_valid)
-	{
-		d = vec3_get_normalized(vec3_sub(ray.collided->pos, ray.pos));
-		u = 0.5 + atan2(d.z, d.x) / (2 * M_PI);
-		u *= ray.collided->texture.width;
-		v = 0.5 - asin(d.y) / M_PI;
-		v *= ray.collided->texture.height;
-		int offset = 3;
-		if (ray.collided->texture.has_alpha)
-			offset = 4;
-
-		r.x = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride];
-		r.y = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 1];
-		r.z = ray.collided->texture.pixels[(int)u * offset + (int)v * ray.collided->texture.rowstride + 2];
-		r = vec3_mult(1. / 256., r);
-		return (r);
-
-	}
+		return (tex_spherical(ray));
 	else if (ray.collided->have_texture == PLANAR
 			&& ray.collided->texture.is_valid)
 	{

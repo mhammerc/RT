@@ -97,5 +97,9 @@ t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam, t_vec3 absorbance)
 t_vec3		color_average(t_vec3 *aa, int size);
 
 t_vec3		ray_trace(t_scene *sce, t_ray ray, int depth);
+int			rt_object(t_scene *sce, t_ray *ray);
+t_vec3		rt_shadow(t_scene *sce, t_ray ray);
+t_vec3		rt_light(t_scene *sce, t_ray ray);
+int			ray_object(t_obj *obj, t_ray *ray);
 
 #endif

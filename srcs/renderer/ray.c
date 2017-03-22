@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 22:55:18 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/22 22:55:54 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/22 23:21:48 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,7 +100,7 @@ t_ray		refracted_ray(t_ray ray)
 		return (ray);
 	}
 	new_dir = vec3_mult(ki, ray.dir);
-	new_dir = vec3_add(T, vec3_mult(kr * (ki * c1 - sqrt(cs2)), ray.n));
+	new_dir = vec3_add(new_dir, vec3_mult(kr * (ki * c1 - sqrt(cs2)), ray.n));
 	ray.pos = vec3_add(ray.pos, vec3_mult(2. * EPS, ray.dir));
-	return (ray_new_dir(ray, vec3_get_normalized(T)));
+	return (ray_new_dir(ray, vec3_get_normalized(new_dir)));
 }
