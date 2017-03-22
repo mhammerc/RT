@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 12:01:22 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/22 16:47:26 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/03/22 16:49:59 by aditsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ void		ft_lst_cpy(t_list **new, t_list *original)
 		ft_lst_cpy(&((*new)->next), original->next);
 }
 
-void		cpy_obj_btn_2(t)
+static void	cpy_obj_btn_2(t_ui *ui, GtkTreePath *path, t_object *obj)
 {
 	refresh_obj_tree(ui);
 	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(ui->lp->tree.tree), path);
@@ -107,12 +107,7 @@ void		cpy_obj_btn(GtkButton *button, gpointer data)
 		if (tmp->children)
 			ft_lst_cpy(&new->children, tmp->children);
 		ft_lstpushback(&tmp, new);
-		refresh_obj_tree(ui);
-		gtk_tree_view_expand_to_path(GTK_TREE_VIEW(ui->lp->tree.tree), path);
-		gtk_tree_view_set_cursor(GTK_TREE_VIEW(ui->lp->tree.tree), path, 0, 0);
-		ui->selected_obj.object = obj;
-		gtk_tree_model_get_iter(GTK_TREE_MODEL(ui->lp->tree.store),
-			&ui->selected_obj.iter, path);
+		cpy_obj_btn_2(ui, path, obj);
 	}
 }
 
