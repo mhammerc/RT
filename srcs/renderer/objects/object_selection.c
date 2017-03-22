@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   object_selection.c                                 :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 15:10:17 by racousin          #+#    #+#             */
+/*   Updated: 2017/03/22 15:10:47 by racousin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 
-int	(*get_obj_intersection(enum e_object_type obj_type))(t_obj*, t_ray*, t_interval*)
+int		(*get_obj_intersection(enum e_object_type
+			obj_type))(t_obj*, t_ray*, t_interval*)
 {
 	if (obj_type == CSG)
 		return (&csg_intersect);

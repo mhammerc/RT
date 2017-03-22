@@ -5,13 +5,20 @@ SRCS_PATH	=	srcs
 SRCS_NAME	=	main.c										\
 				renderer/compute_image.c					\
 				renderer/camera.c							\
+				renderer/stack.c							\
+				renderer/ray.c								\
+				renderer/ray_trace.c						\
+				renderer/color_light.c						\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
+				renderer/maths/vec3_op2.c					\
 				renderer/maths/solve.c						\
 				renderer/maths/solve_quad.c					\
 				renderer/maths/minimal_positiv_dist.c		\
+				renderer/maths/solve_quad_2_interval.c		\
 				renderer/objects/sphere.c					\
 				renderer/objects/polygon.c					\
+				renderer/objects/polygon_interval.c			\
 				renderer/objects/torus.c					\
 				renderer/objects/cylinder.c					\
 				renderer/objects/cone.c						\
@@ -60,7 +67,11 @@ SRCS_NAME	=	main.c										\
 				parsers/file_loader/camera.c				\
 				parsers/file_loader/tools.c					\
 				parsers/file_loader/vec3.c					\
-				parsers/obj_parser.c						\
+				parsers/obj_loader/parsing.c				\
+				parsers/obj_loader/obj_loader.c				\
+				parsers/obj_loader/faces.c					\
+				parsers/obj_loader/components.c				\
+				parsers/obj_loader/copy_content.c			\
 				parsers/texture_loader.c					\
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
@@ -77,7 +88,7 @@ CC			=	gcc -fdiagnostics-color=auto
 CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra -Werror
 CFLAGS		+=	$(GTK_CFLAGS)
 
-CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft
+CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft -flto
 CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
@@ -106,6 +117,7 @@ $(OBJS_PATH)/%.o: $(SRCS_PATH)/%.c
 				@mkdir $(OBJS_PATH)/parsers 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/parsers/file_loader 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/parsers/file_saver 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/parsers/obj_loader 2> /dev/null || true
 				$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:

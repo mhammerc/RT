@@ -182,6 +182,26 @@ static void		kspec_edited(GtkWidget *widget, gdouble value, gpointer data)
 	element_edited();
 }
 
+static void		rindex_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->rindex = value;
+	element_edited();
+}
+
+static void		transmittance_edited(GtkWidget *widget, gdouble value, gpointer data)
+{
+	t_ui	*ui;
+
+	ui = (t_ui*)data;
+	(void)widget;
+	ui->selected_obj.object->transmittance = value;
+	element_edited();
+}
+
 static void		texture_type_edited(GtkComboBox *widget, gpointer user_data)
 {
 	t_ui	*ui;
@@ -277,7 +297,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				G_CALLBACK(radius_edited), view);
 
 	}
-	if (type == CONE || type == CYLINDER || type == TORUS)
+	if (type == CONE || type == CYLINDER || type == TORUS || type == POLYGONS)
 	{
 		GtkWidget	*length = create_scale_entry("Length	",
 			view->selected_obj.object->length, 0, 1000);
@@ -299,12 +319,36 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				view);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kdiff);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), kspec);
+
+		GtkWidget	*rindex = create_scale_entry("rindex",
+				view->selected_obj.object->rindex, 1, 2);
+		GtkWidget	*transmittance  = create_scale_entry("transmittance",
+				view->selected_obj.object->transmittance, 0, 1);
+
+		g_signal_connect(rindex, "rt-scale-entry-edited",
+				G_CALLBACK(rindex_edited), view);
+		g_signal_connect(transmittance, "rt-scale-entry-edited",
+				G_CALLBACK(transmittance_edited), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rindex);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), transmittance);
+	}
+
+	if (type == LIGHT)
+	{
+		GtkWidget	*length = create_scale_entry("Intensity	",
+			view->selected_obj.object->length, 0, 100);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
+		g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
+			view);
+	}
+
+	if (type != CSG)
+	{
+		create_color_chooser(view, view->selected_obj.object->color);
 	}
 
 	if (type != CSG && type != LIGHT)
 	{
-		create_color_chooser(view, view->selected_obj.object->color);
-
 		GtkWidget	*texture_type_box;
 		texture_type_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
 		GtkWidget	*texture_type_title;
@@ -344,6 +388,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		if (view->selected_obj.object->filename)
 			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(file_chooser), view->selected_obj.object->filename);
 		g_signal_connect(file_chooser, "file-set", G_CALLBACK(wavefront_file_set), view);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new("Model .obj"));
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), file_chooser);
 	}
 

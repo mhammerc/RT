@@ -30,7 +30,7 @@ void		read_properties1(char *ln2, t_object *new_object)
 	}
 }
 
-void 	read_properties2(char *ln2, t_object *new_object)
+void		read_properties2(char *ln2, t_object *new_object)
 {
 	char	*ln3;
 
@@ -58,7 +58,7 @@ void 	read_properties2(char *ln2, t_object *new_object)
 		new_object->kspec = atof(ln2 + 6);
 }
 
-int		deeper_object(char *ln2, t_object *new_object, t_env *env,
+int			deeper_object(char *ln2, t_object *new_object, t_env *env,
 		size_t *tabs)
 {
 	size_t	old_depth;
@@ -99,4 +99,10 @@ void		read_properties4(char *ln2, t_object *new_object)
 		new_object->texture_filename = ft_strdup(ln3);
 		free(ln3);
 	}
+	else if (ft_strncmp(ln2, "transmittance:", 14) == 0)
+		new_object->transmittance = atof(ln2 + 14);
+	else if (ft_strncmp(ln2, "reflectance:", 12) == 0)
+		new_object->reflectance = atof(ln2 + 12);
+	else if (ft_strncmp(ln2, "rindex:", 7) == 0)
+		new_object->rindex = atof(ln2 + 7);
 }

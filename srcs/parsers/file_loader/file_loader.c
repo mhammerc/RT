@@ -30,6 +30,8 @@ static void		load_resources(t_list *objects)
 	if (!objects)
 		return ;
 	object = (t_object*)objects->content;
+	if (object->filename)
+		printf("%s\n", object->filename);
 	if (object->type == POLYGONS && object->filename && *object->filename != 0)
 	{
 		new = parse_wavefront_file(object->filename);

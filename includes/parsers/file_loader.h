@@ -1,5 +1,5 @@
-#ifndef PARSER_H
-# define PARSER_H
+#ifndef FILE_LOADER_H
+# define FILE_LOADER_H
 
 # include "shared.h"
 
@@ -20,7 +20,6 @@ typedef struct			s_parser_cam
 	t_vec3				look_at;
 	t_vec3				up;
 }						t_parser_cam;
-
 
 typedef struct			s_env
 {
@@ -44,7 +43,7 @@ enum e_object_type		p_str_to_type(char *str);
 size_t					count_tab(char *ln);
 
 void					read_properties1(char *ln2, t_object *new_object);
-void 					read_properties2(char *ln2, t_object *new_object);
+void					read_properties2(char *ln2, t_object *new_object);
 int						deeper_object(char *ln2, t_object *new_object,
 		t_env *env, size_t *tabs);
 void					less_deeper_object(char *ln2, t_object *new_object,

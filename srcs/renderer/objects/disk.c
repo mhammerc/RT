@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/02 21:16:37 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/08 15:28:28 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/22 15:08:07 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,17 @@
 ** @return the distance between camera and object if there is collision
 ** or a negative value otherwise
 */
+
+int				fill_interval_by_disk(t_obj *self, double d,
+		t_interval *interval)
+{
+	interval->nb_hit = 1;
+	interval->min[0].dist = d;
+	interval->max[0].dist = d;
+	interval->min[0].ref = *self;
+	interval->max[0].ref = *self;
+	return (1);
+}
 
 int				disk_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 {
@@ -40,29 +51,9 @@ int				disk_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	{
 		pos = vec3_add(ray->pos, vec3_mult(d, ray->dir));
 		if (vec3_norm(vec3_sub(pos, self->pos)) < self->radius)
-		{
-			interval->nb_hit = 1;
-			interval->min[0].dist = d;
-			interval->max[0].dist = d;
-			interval->min[0].ref = *self;
-			interval->max[0].ref = *self;
-			return (1);
-		}
+			return (fill_interval_by_disk(self, d, interval));
 	}
 	interval->nb_hit = 0;
-	/*
-	if (d < ray->d && d > 0)
-	{
-		pos = vec3_add(ray->pos, vec3_mult(d, ray->dir));
-		if (vec3_norm(vec3_sub(pos, self->pos)) < self->param)
-		{
-			ray->d = d;
-			if (ray->type == INITIAL_RAY)
-				ray->collided = self;
-			return (1);
-		}
-	}
-	*/
 	return (0);
 }
 

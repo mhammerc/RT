@@ -30,7 +30,7 @@ t_list	*ft_lstat_child(t_list *list, int *index, int depth)
 			list = list->children;
 		i++;
 	}
-		return (list);
+	return (list);
 }
 
 t_list	*ft_lstat_child_before(t_list *list, int *index, int depth)
@@ -55,5 +55,5 @@ t_list	*ft_lstat_child_before(t_list *list, int *index, int depth)
 			list = list->children;
 		i++;
 	}
-		return (list);
+	return (list);
 }

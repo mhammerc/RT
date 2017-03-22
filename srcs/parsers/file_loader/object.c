@@ -1,11 +1,9 @@
 #include <ui.h>
 #include <file_loader.h>
 
-
-static int		read_properties3(char *ln2, t_object *new_object, t_env *env)
+static int		read_properties3(char *ln2, t_object *new_object, t_env *env,
+		size_t tabs)
 {
-	size_t		tabs;
-
 	if (ft_strncmp(ln2, "object:", 7) == 0)
 	{
 		tabs = count_tab(env->ln);
@@ -52,7 +50,7 @@ void			p_parse_object(t_env *env)
 		ln2 = ft_strtrim(env->ln);
 		read_properties1(ln2, &new_object);
 		read_properties2(ln2, &new_object);
-		if (!read_properties3(ln2, &new_object, env))
+		if (!read_properties3(ln2, &new_object, env, 0))
 			return ;
 		read_properties4(ln2, &new_object);
 		free(ln2);

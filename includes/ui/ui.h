@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:00:39 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 18:51:04 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 19:01:59 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ typedef struct			s_object
 	double				rindex;
 	double				transmittance;
 	double				reflectance;
-	int					transparency;
 }						t_object;
 
 typedef struct			s_selected_obj
