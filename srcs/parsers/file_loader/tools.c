@@ -6,6 +6,8 @@ enum e_object_type	p_str_to_type(char *str)
 		return (SPHERE);
 	else if (ft_strncmp(str, "PLANE", 5) == 0)
 		return (PLANE);
+	else if (ft_strncmp(str, "DISK", 4) == 0)
+		return (DISK);
 	else if (ft_strncmp(str, "CONE", 4) == 0)
 		return (CONE);
 	else if (ft_strncmp(str, "CYLINDER", 8) == 0)
