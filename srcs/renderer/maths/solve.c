@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   solve.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 14:51:13 by racousin          #+#    #+#             */
+/*   Updated: 2017/03/22 14:52:26 by racousin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <math.h>
 #include "renderer.h"
 
@@ -6,6 +18,25 @@
 ** Updates interval with new intersection distances and normal direction
 ** @return 1 if smaller solution found, 0 otherwise
 */
+
+void		outwards_inwards_solve(t_interval *interval, double x1, double x2)
+{
+	if (x1 > 0)
+	{
+		interval->min[0].normal = OUTWARDS;
+		interval->max[0].normal = INWARDS;
+	}
+	else if (x2 > 0)
+	{
+		interval->min[0].normal = INWARDS;
+		interval->max[0].normal = INWARDS;
+	}
+	else
+	{
+		interval->min[0].normal = OUTWARDS;
+		interval->max[0].normal = INWARDS;
+	}
+}
 
 int			quad_solve(double a, double b, double c, t_interval *interval)
 {
@@ -30,17 +61,8 @@ int			quad_solve(double a, double b, double c, t_interval *interval)
 		return (0);
 	interval->min[0].dist = x1;
 	interval->max[0].dist = x2;
-	if (x1 > 0)
-	{
-		interval->min[0].normal = OUTWARDS;
-		interval->max[0].normal = INWARDS;
-	}
-	else
-	{
-		interval->min[0].normal = INWARDS;
-		interval->max[0].normal = OUTWARDS;
-	}
-		return (1);
+	outwards_inwards_solve(interval, x1, x2);
+	return (1);
 }
 
 /*
@@ -73,15 +95,6 @@ int			norm_quad_solve(double b, double c, t_interval *interval)
 		return (0);
 	interval->min[0].dist = x1;
 	interval->max[0].dist = x2;
-	if (x1 > 0)
-	{
-		interval->min[0].normal = OUTWARDS;
-		interval->max[0].normal = INWARDS;
-	}
-	else
-	{
-		interval->min[0].normal = INWARDS;
-		interval->max[0].normal = OUTWARDS;
-	}
-		return (1);
+	outwards_inwards_solve(interval, x1, x2);
+	return (1);
 }
