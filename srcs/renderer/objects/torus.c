@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/14 10:32:05 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 12:25:40 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 14:36:56 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,8 +39,7 @@ int		torus_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 		* z[4];
 	res[2] = res[0] * z[7] - 4. * powl(self->radius, 2.) * z[5];
 	res[3] = powl(z[7], 2.) - 4. * powl(self->radius, 2.) * z[6] + EPS;
-	if ((interval->nb_hit = quad4_solve(res[0], res[1], res[2],
-					res[3], interval)))
+	if ((interval->nb_hit = quad4_solve(res, interval)))
 	{
 		interval->min[0].ref = *self;
 		interval->max[0].ref = *self;

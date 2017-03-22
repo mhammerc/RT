@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 11:28:38 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 12:25:37 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 14:36:55 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdio.h>
 #include "renderer.h"
 
-int			quad2_solve(long double b, long double c, long double *root)
+int				quad2_solve(long double b, long double c, long double *root)
 {
 	long double		d;
 
@@ -37,7 +37,8 @@ int			quad2_solve(long double b, long double c, long double *root)
 ** @return 1 if smaller solution found, 0 otherwise
 */
 
-long double			case1(long double g, long double h, long double a, long double b)
+long double		case1(long double g, long double h,
+		long double a, long double b)
 {
 	long double	r;
 	long double s;
@@ -46,71 +47,64 @@ long double			case1(long double g, long double h, long double a, long double b)
 
 	t = -g / 2 - sqrtl(h);
 	r = -g / 2. + sqrtl(h);
-	if (r>0)
-		s = powl(r, 1./3.);
+	if (r > 0)
+		s = powl(r, 1. / 3.);
 	else
-		s = -powl(-r, 1./3.);
-	if (t>0)
-		u = powl(t, 1./3.);
+		s = -powl(-r, 1. / 3.);
+	if (t > 0)
+		u = powl(t, 1. / 3.);
 	else
-		u = -powl(-t, 1./3.);
-	return(s + u - b / (3 * a));
+		u = -powl(-t, 1. / 3.);
+	return (s + u - b / (3 * a));
 }
 
-long double			case2(long double g, long double h, long double a, long double b)
+long double		case2(long double g, long double h,
+		long double a, long double b)
 {
 	long double	i;
 	long double	j;
 	long double	k;
 
 	i = sqrtl(powl(g, 2.) / 4 - h);
-	j = powl(i, 1./3.);
-	k = acosl(-g /(2. * i));
-	return(2* j * cosl(k / 3) - b / ( 3 *a));
+	j = powl(i, 1. / 3.);
+	k = acosl(-g / (2. * i));
+	return (2 * j * cosl(k / 3) - b / (3 * a));
 }
 
-long double			case3(long double g, long double h, long double a, long double b)
-{
-	long double	i;
-	long double	j;
-	long double	k;
-
-	i = sqrtl(powl(g, 2.) / 4 - h);
-	j = powl(i, 1./3.);
-	k = acosl(-g /(2. * i));
-	return(2* j * cosl(k / 3) - b / ( 3 *a));
-}
-
-long double			quad3_solve(long double a, long double b, long double c, long double d)
+long double		quad3_solve(long double a, long double b,
+		long double c, long double d)
 {
 	long double	f;
 	long double	g;
 	long double	h;
 
 	f = (3. * c / a - powl(b, 2.) / powl(a, 2.)) / 3;
-	g = (2. * powl(b, 3.) / powl(a, 3.) - 9. * b * c / powl(a, 2.) + 27 * d / a) / 27;
+	g = (2. * powl(b, 3.) / powl(a, 3.) - 9. * b * c
+			/ powl(a, 2.) + 27 * d / a) / 27;
 	h = powl(g, 2.) / 4. + powl(f, 3.) / 27.;
-	if ( h > 0.)
+	if (h > 0.)
 		return (case1(g, h, a, b));
 	else if (f < EPS && g < EPS && f > EPS && g > EPS)
-		return(powl(d / a, 1. / 3.));
+		return (powl(d / a, 1. / 3.));
 	else
 		return (case2(g, h, a, b));
 }
 
-int		quad4_solve(long double a, long double b, long double c, long double d, t_interval *interval)
+int				quad4_solve(long double *a, t_interval *interval)
 {
 	long double y;
 	long double	r_g[2];
 	long double	r_h[2];
 	long double tmp;
 
-	y = quad3_solve(1, -b, a * c - 4 *d, -powl(a, 2) * d - powl(c, 2) + 4 * b * d);
-	if (!(quad2_solve(-a, b - y, r_g)))
+	y = quad3_solve(1, -a[1], a[0] * a[2] - 4 * a[3], -powl(a[0], 2) *
+			a[3] - powl(a[2], 2) + 4 * a[1] * a[3]);
+	if (!(quad2_solve(-a[0], a[1] - y, r_g)))
 		return (0);
-	if (!(quad2_solve(-y, d, r_h)))
+	if (!(quad2_solve(-y, a[3], r_h)))
 		return (0);
-	if (fabsl(r_g[0] * r_h[1] + r_g[1] * r_h[0] - c) > fabsl(r_g[0] * r_h[0] + r_g[1] * r_h[1] - c))
+	if (fabsl(r_g[0] * r_h[1] + r_g[1] * r_h[0] - a[2])
+			> fabsl(r_g[0] * r_h[0] + r_g[1] * r_h[1] - a[2]))
 	{
 		tmp = r_h[0];
 		r_h[0] = r_h[1];
