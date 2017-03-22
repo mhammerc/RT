@@ -157,6 +157,8 @@ static int		convert_csg(t_obj *renderer_obj, t_list *objects, t_obj *parent)
 		return (FALSE);
 	convert_csg2(renderer_obj, ui_root);
 	apply_parent_relative(parent, renderer_obj);
+	if (ui_son1->type > POLYGONS || ui_son2->type > POLYGONS)
+		return (FALSE);
 	if (ui_son1->type != CSG)
 		convert_object(renderer_obj->left, ui_son1, renderer_obj);
 	else if (!convert_csg(renderer_obj->left, objects->children, renderer_obj))

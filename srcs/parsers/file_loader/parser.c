@@ -15,9 +15,7 @@ void			ft_read_file(char *name, t_env *env)
 {
 	int		fd;
 	int		ret;
-	char	*ln;
 
-	ln = NULL;
 	env->current_object = &env->objects;
 	fd = open(name, O_RDONLY);
 	if (fd == -1 || read(fd, 0, 0) == -1)

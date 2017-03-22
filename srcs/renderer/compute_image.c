@@ -162,11 +162,9 @@ void			filter_sepia(t_vec3 *light, int len)
 
 static void 	light_apply_filters(t_scene *sce, t_vec3 *light, int w, int h)
 {
-	int		i;
 	int		len;
 
 	len = w * h;
-	i = -1;
 	if (sce->filter == BLACK_WHITE)
 		filter_black_and_white(light, len);
 	if (sce->filter == SEPIA)
