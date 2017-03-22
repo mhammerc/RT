@@ -14,7 +14,7 @@ t_ray		ray_new(t_vec3 pos, t_vec3 aim)
 	n = (t_vec3){0, 0, 0};
 	dir = vec3_get_normalized(vec3_sub(aim, pos));
 	return ((t_ray){pos, dir, n, BIG_DIST + 1,
-			INITIAL_RAY, NULL, n, n, stack_new(), LOCATION_NONE, 0.0});
+			INITIAL_RAY, NULL, n, stack_new(), LOCATION_NONE, 0.0});
 }
 
 /*
@@ -43,6 +43,7 @@ t_ray		reflected_ray(t_ray ray)
 	refl = vec3_add(refl, ray.dir);
 	refl = vec3_sub(refl, ray.pos);
 	ray = ray_new_dir(ray, vec3_get_normalized(refl));
+	ray.type = REFLECTION_RAY;
 	return (ray);
 }
 

@@ -48,6 +48,8 @@ t_vec3		vec3_cross(t_vec3 u, t_vec3 v);
 double		vec3_dot(t_vec3 a, t_vec3 b);
 t_vec3		vec3_mult(double m, t_vec3 x);
 t_vec3		vec3_sub(t_vec3 a, t_vec3 b);
+t_vec3		vec3_mul(t_vec3 a, t_vec3 b);
+t_vec3		vec3_apply(t_vec3 a, double (*f)(double x));
 
 t_cam		camera_set(t_cam cam);
 
@@ -89,7 +91,7 @@ t_ray	refracted_ray(t_ray ray);
 int			colorcomp_to_rgb(int r, int g, int b);
 void		light_to_pixel(t_vec3 *light, int *px, int w, int h);
 t_vec3		color_light_mix(t_vec3 obj_color, t_vec3 light_color, double coeff);
-t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam);
+t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam, t_vec3 absorbance);
 t_vec3		color_average(t_vec3 *aa, int size);
 
 t_vec3		ray_trace(t_scene *sce, t_ray ray, int depth);
