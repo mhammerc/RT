@@ -23,7 +23,7 @@ enum e_object_type	p_str_to_type(char *str)
 	return (EMPTY);
 }
 
-size_t		count_tab(char *ln)
+size_t				count_tab(char *ln)
 {
 	size_t	i;
 
@@ -33,7 +33,7 @@ size_t		count_tab(char *ln)
 	return (i);
 }
 
-void 		ft_puterr(int err, t_env *env)
+void				ft_puterr(int err, t_env *env)
 {
 	t_ui			*ui;
 	int				check_first_err;

@@ -56,7 +56,11 @@ SRCS_NAME	=	main.c										\
 				parsers/file_loader/camera.c				\
 				parsers/file_loader/tools.c					\
 				parsers/file_loader/vec3.c					\
-				parsers/obj_parser.c						\
+				parsers/obj_loader/parsing.c				\
+				parsers/obj_loader/obj_loader.c				\
+				parsers/obj_loader/faces.c					\
+				parsers/obj_loader/components.c				\
+				parsers/obj_loader/copy_content.c			\
 				parsers/texture_loader.c					\
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
@@ -100,6 +104,7 @@ $(OBJS_PATH)/%.o: $(SRCS_PATH)/%.c
 				@mkdir $(OBJS_PATH)/parsers 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/parsers/file_loader 2> /dev/null || true
 				@mkdir $(OBJS_PATH)/parsers/file_saver 2> /dev/null || true
+				@mkdir $(OBJS_PATH)/parsers/obj_loader 2> /dev/null || true
 				$(CC) -o $@ -c $< $(CFLAGS)
 
 clean:
