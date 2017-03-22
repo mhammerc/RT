@@ -6,7 +6,8 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 20:47:08 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 22:30:00 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 22:22:36 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,11 +26,11 @@
 # define REFL_ATTENUATION 0.8
 # define WHITE (t_vec3){1., 1., 1.}
 # define BLACK (t_vec3){0., 0., 0.}
-//# define REFR_ATTENUATION 0.8
 # define MAX_REC_DEPTH 8
 # define R_GLASS 1.42
 # define R_DEFAULT 1.0
 # define ABSORB_COEFF 0.15
+# define EXPOSURE -0.1
 
 typedef struct s_ui	t_ui;
 

@@ -10,29 +10,17 @@ int				colorcomp_to_rgb(int r, int g, int b)
 }
 
 void			light_to_pixel(t_vec3 *light, int *px, int w, int h)
-//void			light_to_pixel(t_renderer_thread *data)
 {
-	double		invmax;
-	double		max;
 	int			i;
 	int			len;
 
 	len = w * h;
-	max = 0.;
 	i = -1;
 	while (++i < len)
 	{
-		max = fmax(max, light[i].x);
-		max = fmax(max, light[i].y);
-		max = fmax(max, light[i].z);
-	}
-	invmax = 255. / max;
-	i = -1;
-	while (++i < len)
-	{
-		px[i] = colorcomp_to_rgb(light[i].x * invmax,
-									light[i].y * invmax,
-									light[i].z * invmax);
+		px[i] = colorcomp_to_rgb(255. * (1.0 - exp(EXPOSURE * light[i].x)),
+									255. * (1.0 - exp(EXPOSURE * light[i].y)),
+									255. * (1.0 - exp(EXPOSURE * light[i].z)));
 	}
 }
 
