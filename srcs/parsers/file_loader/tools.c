@@ -49,8 +49,8 @@ void 		ft_puterr(int err, t_env *env)
 	if (err == ERR_FILE_OPEN)
 		ft_strcpy(env->error_text, "Error : could not open this file");
 	flags = GTK_DIALOG_DESTROY_WITH_PARENT;
-	dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window), flags, GTK_MESSAGE_ERROR,
-									GTK_BUTTONS_CLOSE, "%s\n", env->error_text);
+	dialog = gtk_message_dialog_new(GTK_WINDOW(ui->window), flags,
+			GTK_MESSAGE_ERROR, GTK_BUTTONS_CLOSE, "%s\n", env->error_text);
 	gtk_dialog_run(GTK_DIALOG(dialog));
 	gtk_widget_destroy(dialog);
 }
