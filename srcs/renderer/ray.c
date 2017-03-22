@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ray.c                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 22:55:18 by vfour             #+#    #+#             */
+/*   Updated: 2017/03/22 22:55:54 by vfour            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <math.h>
 #include "renderer.h"
 
@@ -20,6 +32,7 @@ t_ray		ray_new(t_vec3 pos, t_vec3 aim)
 /*
 ** From a previous ray, creates a new ray ready for tracing with new direction
 */
+
 t_ray		ray_new_dir(t_ray ray, t_vec3 dir)
 {
 	t_vec3	n;
@@ -47,43 +60,47 @@ t_ray		reflected_ray(t_ray ray)
 	return (ray);
 }
 
-t_ray	refracted_ray(t_ray ray)
+static void	get_refraction_index(t_ray ray, double *ki, double *kr)
 {
-	t_obj		*prev_obj;
-	double		ki;
-	double		kr;
-	double		c1;
-	double		cs2;
-	double		eta;
-	t_vec3		T;
-	double		n_correction;
+	t_obj	*prev_obj;
 
 	if (ray.location == LOCATION_OUTSIDE)
 	{
 		prev_obj = stack_peak(&(ray.rstack));
-		ki = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
-		kr = ray.collided->rindex;
+		*ki = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
+		*kr = ray.collided->rindex;
 		stack_push(&(ray.rstack), ray.collided);
 	}
 	else
 	{
 		stack_pop(&(ray.rstack));
 		prev_obj = stack_peak(&(ray.rstack));
-		kr = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
-		ki = ray.collided->rindex;
+		*kr = (NULL == prev_obj) ? R_DEFAULT : prev_obj->rindex;
+		*ki = ray.collided->rindex;
 	}
-	eta = ki / kr;
+}
+
+t_ray		refracted_ray(t_ray ray)
+{
+	double	ki;
+	double	kr;
+	double	c1;
+	double	cs2;
+	t_vec3	new_dir;
+
+	get_refraction_index(ray, &ki, &kr);
+	ki = ki / kr;
 	c1 = vec3_dot(ray.dir, ray.n);
-	n_correction = (0.0 < c1) ? -1.0 : 1.0;
+	kr = (0.0 < c1) ? -1.0 : 1.0;
 	c1 = c1 > 0 ? c1 : -c1;
-	cs2 = 1.0 - eta * eta * (1.0 - c1 * c1);
+	cs2 = 1.0 - ki * ki * (1.0 - c1 * c1);
 	if (cs2 < 0.0)
 	{
 		ray.t = -1.0;
 		return (ray);
 	}
-	T = vec3_mult(eta, ray.dir);
-	T = vec3_add(T, vec3_mult(n_correction * (eta * c1 - sqrt(cs2)), ray.n));
+	new_dir = vec3_mult(ki, ray.dir);
+	new_dir = vec3_add(T, vec3_mult(kr * (ki * c1 - sqrt(cs2)), ray.n));
 	ray.pos = vec3_add(ray.pos, vec3_mult(2. * EPS, ray.dir));
 	return (ray_new_dir(ray, vec3_get_normalized(T)));
 }
