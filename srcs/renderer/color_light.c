@@ -49,6 +49,8 @@ t_vec3		color_light_mix(t_vec3 obj_color, t_vec3 light_color, double coeff)
 	return (res);
 }
 
+
+
 t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam, t_vec3 absorbance)
 {
 	t_vec3	light;
