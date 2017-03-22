@@ -14,6 +14,7 @@ typedef struct		s_faces_components
 	t_vec3			*normales;
 }					t_faces_components;
 
-t_object	*parse_wavefront_file(char *filename);
+t_object			*parse_wavefront_file(char *filename);
+void				free_strsplit(char **split);
 
 #endif
