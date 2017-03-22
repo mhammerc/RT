@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:00:39 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 18:17:16 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 18:51:04 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,10 @@ typedef struct			s_object
 	enum e_texture_type	have_texture;
 	t_texture			texture;
 	char				*texture_filename;
+	double				rindex;
+	double				transmittance;
+	double				reflectance;
+	int					transparency;
 }						t_object;
 
 typedef struct			s_selected_obj
@@ -120,16 +124,17 @@ void					right_panel(t_ui *ui, t_right_panel *lp);
 */
 void					refresh_obj_tree(t_ui *ui);
 void					add_object(t_object object, gboolean render_new);
-void					create_sphere();
-void					create_plane();
-void					create_disk();
-void					create_cone();
+t_object				create_base_object(void);
+void					create_sphere(gboolean render_new);
+void					create_plane(gboolean render_new);
+void					create_disk(gboolean render_new);
+void					create_cone(gboolean render_new);
 void					create_torus(gboolean render_new);
-void					create_cgs();
-void					create_polygons();
-void					create_cylinder();
-void					create_empty();
-void					create_light();
+void					create_csg(gboolean render_new);
+void					create_polygons(gboolean render_new);
+void					create_cylinder(gboolean render_new);
+void					create_empty(gboolean render_new);
+void					create_light(gboolean render_new);
 
 /*
 ** Homemade tools that can't live in libft

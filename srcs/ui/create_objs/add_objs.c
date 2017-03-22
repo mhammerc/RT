@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 12:05:09 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 12:37:40 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 18:53:06 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,4 +45,24 @@ void		add_object(t_object object, gboolean render_new)
 			gtk_tree_model_get_path(GTK_TREE_MODEL(ui->lp->tree.store), father),
 			FALSE);
 	}
+}
+
+/*
+** Create an object and set everything to zero.
+** Automatically add it to the interface.
+*/
+
+t_object	create_base_object(void)
+{
+	t_object	object;
+
+	ft_bzero(&object, sizeof(t_object));
+	object.color.z = 1;
+	object.type = EMPTY;
+	object.rindex = R_GLASS;
+	object.transmittance = 0;
+	object.kdiff = 1.;
+	object.kspec = 1.;
+	object.operation = '0';
+	return (object);
 }

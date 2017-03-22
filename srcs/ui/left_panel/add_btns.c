@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 17:42:18 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 17:45:37 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 18:52:25 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void		add_obj_btn(GtkButton *button, gpointer view)
 	create_btn(submenu, "Cylinder", create_cylinder);
 	create_btn(submenu, "Cone", create_cone);
 	create_btn(submenu, "Torus", create_torus);
-	create_btn(submenu, "CSG", create_cgs);
+	create_btn(submenu, "CSG", create_csg);
 	create_btn(submenu, "Polygons", create_polygons);
 	gtk_container_add(GTK_CONTAINER(popover), submenu);
 	gtk_widget_show_all(popover);
