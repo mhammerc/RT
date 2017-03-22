@@ -47,6 +47,7 @@ SRCS_NAME	=	main.c										\
 				ui/ui_print_scene.c							\
 				ui/top_menu/top_menu.c						\
 				converter/converter.c						\
+				converter/rot.c								\
 				parsers/file_saver/file_saver.c				\
 				parsers/file_saver/saver_tools.c			\
 				parsers/file_loader/file_loader.c			\

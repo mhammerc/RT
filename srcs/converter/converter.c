@@ -1,7 +1,6 @@
 #include <stdlib.h>
 #include <libft.h>
 #include <math.h>
-
 #include "ui.h"
 #include "renderer.h"
 
@@ -29,6 +28,9 @@ static void		convert_polygon(t_obj *obj, t_object *object)
 	t_face			*face;
 	t_vec3			*sommets;
 
+	obj->length = fabs(obj->length);
+	if (obj->length == 0)
+		obj->length = 1;
 	obj->faces = (t_face*)malloc(sizeof(t_face) * object->nb_faces);
 	memcpy(obj->faces, object->faces, sizeof(t_face) * object->nb_faces);
 	i = 0;
@@ -39,7 +41,8 @@ static void		convert_polygon(t_obj *obj, t_object *object)
 		sommets = (t_vec3*)malloc(sizeof(t_vec3) * face->nb);
 		while (j < face->nb)
 		{
-			sommets[j] = vec3_add(face->sommets[j], obj->pos);
+			sommets[j] = vec3_mult(obj->length, face->sommets[j]);
+			sommets[j] = vec3_add(sommets[j], obj->pos);
 			j++;
 		}
 		face->sommets = sommets;
@@ -52,17 +55,17 @@ static void		convert_torus(t_obj *self)
 	if (self->dir.x == 0 && self->dir.y == 0 && self->dir.z == 0)
 		self->dir.z = 1;
 	if (self->dir.x == 0)
-		self->dir.x = 0.01;
+		self->dir.x = 0.07;
 	if (self->dir.y == 0)
-		self->dir.y = 0.01;
+		self->dir.y = 0.07;
 	if (self->dir.z == 0)
-		self->dir.z = 0.01;
+		self->dir.z = 0.07;
 	if (self->dir.x == 0)
-		self->dir.x = 0.01;
+		self->dir.x = 0.07;
 	if (self->dir.y == 0)
-		self->dir.y = 0.01;
+		self->dir.y = 0.07;
 	if (self->dir.z == 0)
-		self->dir.z = 0.01;
+		self->dir.z = 0.07;
 	if (self->radius < 0.2)
 		self->radius = 0.2;
 	if (self->length < 0.1)
