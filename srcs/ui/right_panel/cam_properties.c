@@ -1,28 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   cam_properties.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 21:35:51 by aditsch           #+#    #+#             */
+/*   Updated: 2017/03/22 21:39:02 by aditsch          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ui.h"
 #include "converter.h"
-
-void		init_cam(t_ui *ui)
-{
-	t_ui_cam	*cam;
-
-	cam = (t_ui_cam*)malloc(sizeof(t_cam));
-	if(!cam)
-		exit(EXIT_FAILURE);
-	ft_bzero(cam, sizeof(t_cam));
-	cam->pos = (t_vec3){0., 0., 7.};
-	cam->dir = (t_vec3){0., 0., 0.};
-	cam->up = (t_vec3){0., 1., 0.};
-	ui->cam = cam;
-}
-
-static void		cam_edited()
-{
-	t_ui		*ui;
-
-	ui = get_interface();
-	if (ui->render_on_change)
-		ask_for_new_image(ui);
-}
 
 static void		pos_edited(GtkWidget *widget, t_vec3 *pos, gpointer data)
 {
@@ -35,29 +24,7 @@ static void		pos_edited(GtkWidget *widget, t_vec3 *pos, gpointer data)
 	cam_edited();
 }
 
-static void		dir_edited(GtkWidget *widget, t_vec3 *dir, gpointer data)
-{
-	t_ui	*ui;
-
-	(void)widget;
-	ui = (t_ui*)data;
-	ui->cam->dir = *dir;
-	free(dir);
-	cam_edited();
-}
-
-static void		up_edited(GtkWidget *widget, t_vec3 *up, gpointer data)
-{
-	t_ui	*ui;
-
-	(void)widget;
-	ui = (t_ui*)data;
-	ui->cam->up = *up;
-	free(up);
-	cam_edited();
-}
-
-void		edit_cam_properties(gpointer data)
+void			edit_cam_properties(gpointer data)
 {
 	t_ui		*view;
 
@@ -79,7 +46,14 @@ void		edit_cam_properties(gpointer data)
 	gtk_widget_show_all(view->window);
 }
 
-void 		refresh_cam_properties(t_ui *ui)
+static void		add_to_container(t_ui *ui)
+{
+	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->pos);
+	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->lkat);
+	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->up);
+}
+
+void			refresh_cam_properties(t_ui *ui)
 {
 	GList		*children;
 	GList		*iter;
@@ -103,8 +77,6 @@ void 		refresh_cam_properties(t_ui *ui)
 		G_CALLBACK(dir_edited), ui);
 	g_signal_connect(ui->rp->up, "rt-vector3-entry-edited",
 		G_CALLBACK(up_edited), ui);
-	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->pos);
-	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->lkat);
-	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop), ui->rp->up);
+	add_to_container(ui);
 	gtk_widget_show_all(ui->rp->cam_prop);
 }
