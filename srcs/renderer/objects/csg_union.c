@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/21 15:28:17 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 21:12:28 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 22:00:07 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int		union_case(t_interval *left, t_interval *right, t_interval *interval)
 		*interval = *right;
 		return (1);
 	}
-	if (right->nb_hit == 0)
+	if (right->nb_hit == 0 || right->nb_hit + left->nb_hit > 20)
 	{
 		*interval = *left;
 		return (1);
