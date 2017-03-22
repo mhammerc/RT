@@ -12,6 +12,7 @@ static int		ray_object(t_obj *obj, t_ray *ray)
 	int			location;
 	t_obj		*collided;
 
+	interval.nb_hit = 0;
 	location = LOCATION_NONE;
 	if (obj->intersect(obj, ray, &interval))
 	{

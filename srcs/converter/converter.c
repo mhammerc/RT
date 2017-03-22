@@ -95,6 +95,8 @@ static void		convert_object2(t_obj *obj, t_object *object)
 	obj->rindex = object->rindex;
 	obj->transmittance = object->transmittance;
 	obj->reflectance = 1 - obj->transmittance;
+	if (obj->transmittance == 0)
+		obj->reflectance = 0;
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
 	obj->left = NULL;

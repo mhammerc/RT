@@ -35,6 +35,8 @@ void		test_csg(t_obj *obj, t_ray *ray, t_interval *interval)
 	t_interval	left;
 	t_interval	right;
 
+	left.nb_hit = 0;
+	right.nb_hit = 0;
 	if (obj->csg == '0')
 		obj->intersect(obj, ray, interval);
 	else

@@ -34,22 +34,22 @@ static void		text_inserted(GtkEntryBuffer *buffer, guint position,
 	char		*text;
 	gchar		*new_text;
 	size_t		length;
-	size_t		i;
+	int			i;
 	size_t		j;
 
 	(void)position;
 	(void)chars;
 	(void)n_chars;
-	i = 0;
+	i = -1;
 	j = 0;
 	if (check_locks())
 		return ;
 	text = (char*)gtk_entry_buffer_get_text(buffer);
 	length = gtk_entry_buffer_get_length(buffer);
 	new_text = malloc(sizeof(gchar) * (length + 1));
-	while (i < length)
+	while (++i < (int)length)
 		if (is_numerical(text[i]))
-			new_text[j++] = text[i++];
+			new_text[j++] = text[i];
 	new_text[j] = 0;
 	gtk_entry_buffer_set_text(buffer, new_text, -1);
 	g_signal_emit_by_name((GtkWidget*)data, "rt-numeric-entry-edited",
