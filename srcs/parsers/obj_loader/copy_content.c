@@ -27,6 +27,7 @@ int			copy_texture(t_faces_components *components,
 		char **split)
 {
 	t_vec2	tmp;
+
 	if (ft_strcmp(split[0], "vt") == 0)
 	{
 		if (!split[1] || !split[2])

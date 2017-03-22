@@ -1,6 +1,6 @@
 #include "obj_parser.h"
 
-void	strsplit_free(char **split)
+void		strsplit_free(char **split)
 {
 	size_t	i;
 
@@ -15,7 +15,7 @@ void	strsplit_free(char **split)
 	free(split);
 }
 
-int	start_parsing(t_object *object, char *filename)
+int			start_parsing(t_object *object, char *filename)
 {
 	t_faces_components	components;
 

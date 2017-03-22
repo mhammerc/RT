@@ -74,4 +74,3 @@ void		free_components(t_faces_components *components)
 	free(components->textures);
 	free(components->normales);
 }
-
