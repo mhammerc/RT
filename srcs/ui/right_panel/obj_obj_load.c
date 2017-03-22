@@ -6,24 +6,17 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:28:58 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:13:13 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:27:56 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
 #include "obj_parser.h"
 
-static void		wavefront_file_set(GtkFileChooserButton *widget,
-					gpointer user_data)
+static void		wavefront_file_set_aux(t_ui *ui, GtkFileChooserButton *widget)
 {
-	t_ui		*ui;
-	t_object	*object;
-	GtkWidget	*dialog;
 	size_t		i;
 
-	ui = (t_ui*)user_data;
-	if (ui->rendering)
-		return ;
 	if (ui->selected_obj.object->filename)
 		g_free(ui->selected_obj.object->filename);
 	if (ui->selected_obj.object->faces)
@@ -40,6 +33,19 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 	}
 	ui->selected_obj.object->filename = gtk_file_chooser_get_filename(
 		GTK_FILE_CHOOSER(widget));
+}
+
+static void		wavefront_file_set(GtkFileChooserButton *widget,
+															gpointer user_data)
+{
+	t_ui		*ui;
+	t_object	*object;
+	GtkWidget	*dialog;
+
+	ui = (t_ui*)user_data;
+	if (ui->rendering)
+		return ;
+	wavefront_file_set_aux(ui, widget);
 	object = parse_wavefront_file(ui->selected_obj.object->filename);
 	if (!object)
 	{

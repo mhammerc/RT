@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:00:29 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 21:27:37 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:58:18 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,22 +52,6 @@ typedef struct			s_scene_gtk
 	enum e_filters		filter;
 }						t_scene_gtk;
 
-typedef struct			s_element_properties
-{
-	GtkWidget			*name;
-	GtkWidget			*pos;
-	GtkWidget			*rot;
-	GtkWidget			*radius;
-	GtkWidget			*length;
-	GtkWidget			*kdiff;
-	GtkWidget			*kspec;
-	GtkWidget			*bound;
-	GtkWidget			*rindex;
-	GtkWidget			*transmittance;
-	GtkWidget			*texture_type;
-	GtkWidget			*texture_chooser;
-}						t_elem_properties;
-
 typedef struct			s_right_panel
 {
 	GtkWidget			*rp_box;
@@ -79,7 +63,6 @@ typedef struct			s_right_panel
 	GtkWidget			*up;
 	GtkWidget			*scene_prop;
 	GtkWidget			*color_chooser;
-	t_elem_properties	el_prop;
 	t_cam_gtk			cam_gtk;
 	t_scene_gtk			scene_gtk;
 }						t_right_panel;
@@ -111,7 +94,9 @@ void		edit_element_properties(GtkTreeView *tree_view,
 void		element_edited();
 void		add_situational_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
 void		add_shared_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
-void		add_texture_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
+void		add_texture_type_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
+void		add_texture_chooser_widgets(t_ui *ui, t_object *focused_obj,
+															GtkWidget *props);
 void		add_material_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
 void		add_objext_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
 void		add_csg_widgets(t_ui *ui, t_object *obj, GtkWidget *props);

@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 12:38:11 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 18:54:29 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:31:58 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 ** Create an object and set everything to zero.
 ** Automatically add it to the interface.
 */
+
 void		create_empty(gboolean render_new)
 {
 	t_object	object;
