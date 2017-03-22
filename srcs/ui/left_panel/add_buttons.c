@@ -1,42 +1,46 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   add_buttons.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/22 12:01:22 by aditsch           #+#    #+#             */
+/*   Updated: 2017/03/22 16:47:26 by aditsch          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 # include "ui.h"
+
+static void	create_btn(GtkWidget *parent, char *label, void (*f)(gboolean))
+{
+	GtkWidget	*btn;
+
+	btn = gtk_button_new_with_label(label);
+	g_signal_connect(btn, "clicked", G_CALLBACK(f), NULL);
+	gtk_container_add(GTK_CONTAINER(parent), btn);
+}
 
 void		add_obj_btn(GtkButton *button, gpointer view)
 {
 	t_ui		*ui;
 	GtkWidget	*popover;
+	GtkWidget	*submenu;
 
 	ui = (t_ui*)view;
 	(void)button;
 	popover = gtk_popover_menu_new();
 	gtk_popover_set_relative_to(GTK_POPOVER(popover), ui->lp->lp_btns.add_obj);
-	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
-	GtkWidget *empty = gtk_button_new_with_label("Empty");
-	GtkWidget *sphere = gtk_button_new_with_label("Sphere");
-	GtkWidget *plane = gtk_button_new_with_label("Plane");
-	GtkWidget *disk = gtk_button_new_with_label("Disk");
-	GtkWidget *cylinder = gtk_button_new_with_label("Cylinder");
-	GtkWidget *cone = gtk_button_new_with_label("Cone");
-	GtkWidget *torus = gtk_button_new_with_label("Torus");
-	GtkWidget *csg = gtk_button_new_with_label("CSG");
-	GtkWidget *polygons = gtk_button_new_with_label("Polygons");
-	g_signal_connect(sphere, "clicked", G_CALLBACK(create_sphere), NULL);
-	g_signal_connect(plane, "clicked", G_CALLBACK(create_plane), NULL);
-	g_signal_connect(disk, "clicked", G_CALLBACK(create_disk), NULL);
-	g_signal_connect(cylinder, "clicked", G_CALLBACK(create_cylinder), NULL);
-	g_signal_connect(cone, "clicked", G_CALLBACK(create_cone), NULL);
-	g_signal_connect(torus, "clicked", G_CALLBACK(create_torus), NULL);
-	g_signal_connect(csg, "clicked", G_CALLBACK(create_cgs), NULL);
-	g_signal_connect(polygons, "clicked", G_CALLBACK(create_polygons), NULL);
-	g_signal_connect(empty, "clicked", G_CALLBACK(create_empty), NULL);
-	gtk_container_add(GTK_CONTAINER(submenu), sphere);
-	gtk_container_add(GTK_CONTAINER(submenu), empty);
-	gtk_container_add(GTK_CONTAINER(submenu), plane);
-	gtk_container_add(GTK_CONTAINER(submenu), disk);
-	gtk_container_add(GTK_CONTAINER(submenu), cylinder);
-	gtk_container_add(GTK_CONTAINER(submenu), cone);
-	gtk_container_add(GTK_CONTAINER(submenu), torus);
-	gtk_container_add(GTK_CONTAINER(submenu), csg);
-	gtk_container_add(GTK_CONTAINER(submenu), polygons);
+	submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
+	create_btn(submenu, "Sphere", create_sphere);
+	create_btn(submenu, "Empty", create_empty);
+	create_btn(submenu, "Plane", create_plane);
+	create_btn(submenu, "Disk", create_disk);
+	create_btn(submenu, "Cylinder", create_cylinder);
+	create_btn(submenu, "Cone", create_cone);
+	create_btn(submenu, "Torus", create_torus);
+	create_btn(submenu, "CSG", create_cgs);
+	create_btn(submenu, "Polygons", create_polygons);
 	gtk_container_add(GTK_CONTAINER(popover), submenu);
 	gtk_widget_show_all(popover);
 }
@@ -50,7 +54,7 @@ void		add_light_btn(GtkButton *button, gpointer view)
 	(void)button;
 	popover = gtk_popover_menu_new();
 	gtk_popover_set_relative_to(GTK_POPOVER(popover),
-													ui->lp->lp_btns.add_light);
+		ui->lp->lp_btns.add_light);
 	GtkWidget *submenu = gtk_box_new(GTK_ORIENTATION_VERTICAL, 3);
 	GtkWidget *light = gtk_button_new_with_label("Diffuse");
 	g_signal_connect(light, "clicked", G_CALLBACK(create_light), NULL);
@@ -66,6 +70,16 @@ void		ft_lst_cpy(t_list **new, t_list *original)
 		ft_lst_cpy(&((*new)->children), original->children);
 	if (original->next)
 		ft_lst_cpy(&((*new)->next), original->next);
+}
+
+void		cpy_obj_btn_2(t)
+{
+	refresh_obj_tree(ui);
+	gtk_tree_view_expand_to_path(GTK_TREE_VIEW(ui->lp->tree.tree), path);
+	gtk_tree_view_set_cursor(GTK_TREE_VIEW(ui->lp->tree.tree), path, 0, 0);
+	ui->selected_obj.object = obj;
+	gtk_tree_model_get_iter(GTK_TREE_MODEL(ui->lp->tree.store),
+		&ui->selected_obj.iter, path);
 }
 
 void		cpy_obj_btn(GtkButton *button, gpointer data)
@@ -86,7 +100,7 @@ void		cpy_obj_btn(GtkButton *button, gpointer data)
 	if (ui->selected_obj.object)
 	{
 		path = gtk_tree_model_get_path(GTK_TREE_MODEL(ui->lp->tree.store),
-				&ui->selected_obj.iter);
+			&ui->selected_obj.iter);
 		obj = ui->selected_obj.object;
 		tmp = ft_lstat_child(ui->objs, index, depth);
 		ft_lstpushback(&new, ft_lstnew(tmp->content, sizeof(t_object)));
@@ -98,7 +112,7 @@ void		cpy_obj_btn(GtkButton *button, gpointer data)
 		gtk_tree_view_set_cursor(GTK_TREE_VIEW(ui->lp->tree.tree), path, 0, 0);
 		ui->selected_obj.object = obj;
 		gtk_tree_model_get_iter(GTK_TREE_MODEL(ui->lp->tree.store),
-				&ui->selected_obj.iter, path);
+			&ui->selected_obj.iter, path);
 	}
 }
 
@@ -134,7 +148,9 @@ static void	ui_free_list_object(t_list	*objects)
 	ui_free_object(object);
 	if (objects->children)
 		ui_free_list_object(objects->children);
-	// Don't free next because we want to free that specific node
+	/*
+	** Don't free next because we want to free that specific node
+	*/
 	free(objects);
 }
 

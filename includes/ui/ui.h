@@ -24,22 +24,22 @@ t_ui			*get_interface();
 
 typedef struct			s_object
 {
-	enum e_object_type		type;
-	t_vec3					pos;
-	t_vec3					rot;
-	t_vec3					color;
-	double					length;
-	double					radius;
-	double					kdiff;
-	double					kspec;
-	char					name[80];
-	char					operation;
-	char					*filename;
-	size_t					nb_faces;
-	t_face					*faces;
-	enum e_texture_type		have_texture;
-	t_texture				texture;
-	char					*texture_filename;
+	enum e_object_type	type;
+	t_vec3				pos;
+	t_vec3				rot;
+	t_vec3				color;
+	double				length;
+	double				radius;
+	double				kdiff;
+	double				kspec;
+	char				name[80];
+	char				operation;
+	char				*filename;
+	size_t				nb_faces;
+	t_face				*faces;
+	enum e_texture_type	have_texture;
+	t_texture			texture;
+	char				*texture_filename;
 }						t_object;
 
 typedef struct			s_selected_obj
