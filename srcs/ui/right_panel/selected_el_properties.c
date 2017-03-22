@@ -277,7 +277,7 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				G_CALLBACK(radius_edited), view);
 
 	}
-	if (type == CONE || type == CYLINDER || type == TORUS)
+	if (type == CONE || type == CYLINDER || type == TORUS || TYPE == POLYGONS)
 	{
 		GtkWidget	*length = create_scale_entry("Length	",
 			view->selected_obj.object->length, 0, 1000);
