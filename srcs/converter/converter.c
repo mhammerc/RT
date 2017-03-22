@@ -94,8 +94,7 @@ static void		convert_object2(t_obj *obj, t_object *object)
 	obj->kp = 256;
 	obj->rindex = object->rindex;
 	obj->transmittance = object->transmittance;
-	obj->reflectance = object->reflectance;
-	//obj->transparency = (obj->type == SPHERE) ? 1.0 : 0.0;
+	obj->reflectance = 1 - obj->transmittance;
 	obj->intersect = get_obj_intersection(obj->type);
 	obj->normal = get_obj_normal(obj->type);
 	obj->left = NULL;

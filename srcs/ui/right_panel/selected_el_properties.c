@@ -202,16 +202,6 @@ static void		transmittance_edited(GtkWidget *widget, gdouble value, gpointer dat
 	element_edited();
 }
 
-static void		reflectance_edited(GtkWidget *widget, gdouble value, gpointer data)
-{
-	t_ui	*ui;
-
-	ui = (t_ui*)data;
-	(void)widget;
-	ui->selected_obj.object->reflectance = value;
-	element_edited();
-}
-
 static void		texture_type_edited(GtkComboBox *widget, gpointer user_data)
 {
 	t_ui	*ui;
@@ -334,18 +324,13 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 				view->selected_obj.object->rindex, 1, 2);
 		GtkWidget	*transmittance  = create_scale_entry("transmittance",
 				view->selected_obj.object->transmittance, 0, 1);
-		GtkWidget	*reflectance = create_scale_entry("reflectance",
-				view->selected_obj.object->reflectance, 0, 1);
 
 		g_signal_connect(rindex, "rt-scale-entry-edited",
 				G_CALLBACK(rindex_edited), view);
 		g_signal_connect(transmittance, "rt-scale-entry-edited",
 				G_CALLBACK(transmittance_edited), view);
-		g_signal_connect(reflectance, "rt-scale-entry-edited",
-				G_CALLBACK(reflectance_edited), view);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), rindex);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), transmittance);
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), reflectance);
 	}
 
 	if (type == LIGHT)
