@@ -65,13 +65,13 @@ t_vec3		color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam, t_vec3 absorbance)
 	if ((diff = fmax(vec3_dot(ray.dir, ray.n), 0)) > 0)
 	{
 		diff *= ray.collided->kdiff * l->intensity * atten * (1.0 - obj->transmittance);
-		light = color_light_mix(obj->color, vec3_mul(l->color, absorbance), diff);
+		light = color_light_mix(get_texture_color(ray), vec3_mul(l->color, absorbance), diff);
 	}
 	h = vec3_get_normalized(vec3_add(obj_cam, ray.dir));
 	if ((diff = fmax(pow(vec3_dot(ray.n, h), ray.collided->kp), 0)) > 0)
 	{
 		diff *= ray.collided->kspec * l->intensity * atten * (1.0 - obj->transmittance);
-		light = vec3_add(light, color_light_mix(obj->color, vec3_mul(l->color, absorbance), diff));
+		light = vec3_add(light, color_light_mix(get_texture_color(ray), vec3_mul(l->color, absorbance), diff));
 	}
 	return (light);
 }

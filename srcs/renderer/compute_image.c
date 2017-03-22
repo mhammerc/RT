@@ -382,5 +382,6 @@ void renderer_compute_image(t_scene *sce)
 
 	sce->ui->rendering = 1;
 	pthread_create(&thread, NULL, renderer_compute_image2, sce);
+	pthread_detach(thread);
 	gdk_threads_add_timeout(100, test, sce);
 }

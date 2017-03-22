@@ -1,6 +1,6 @@
-# include "ui.h"
-# include "obj_parser.h"
-# include "texture_loader.h"
+#include "ui.h"
+#include "obj_parser.h"
+#include "texture_loader.h"
 
 void			load_file(char *filename)
 {
@@ -57,13 +57,5 @@ void			hook_up_obj_lst(t_ui *ui, t_env *env)
 	ui->cam->pos = env->camera.pos;
 	ui->cam->dir = env->camera.look_at;
 	ui->cam->up = env->camera.up;
-	//todo update camera in interface
 	ui->objs = env->objects;
-/*	ft_bzero(&cur_obj, sizeof(t_object));
-	while (env->objects)
-	{
-		add_object(env->objects, FALSE);
-		env->objects =
-	}
-	*/
 }

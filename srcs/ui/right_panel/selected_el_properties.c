@@ -300,16 +300,16 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 	if (type == SPHERE || type == CONE || type == CYLINDER || type == TORUS
 			|| type == DISK)
 	{
-		GtkWidget	*radius = create_scale_entry("Radius  ",
+		GtkWidget	*radius = create_scale_entry("Radius	",
 			view->selected_obj.object->radius, 0, 1000);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), radius);
 		g_signal_connect(radius, "rt-scale-entry-edited",
 				G_CALLBACK(radius_edited), view);
 
 	}
-	if (type == CONE || type == CYLINDER || type == TORUS)
+	if (type == CONE || type == CYLINDER || type == TORUS || type == POLYGONS)
 	{
-		GtkWidget	*length = create_scale_entry("Length  ",
+		GtkWidget	*length = create_scale_entry("Length	",
 			view->selected_obj.object->length, 0, 1000);
 		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), length);
 		g_signal_connect(length, "rt-scale-entry-edited", G_CALLBACK(length_edited),
@@ -317,11 +317,11 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 	}
 
 	if (type == SPHERE || type == CYLINDER || type == CONE || type == PLANE
-			|| type == TORUS || type == POLYGONS)
+			|| type == TORUS || type == POLYGONS || type == DISK)
 	{
-		GtkWidget	*kdiff = create_scale_entry("Kdiff  ",
+		GtkWidget	*kdiff = create_scale_entry("kdiff		",
 				view->selected_obj.object->kdiff, 0, 1);
-		GtkWidget	*kspec  = create_scale_entry("Kspec  ",
+		GtkWidget	*kspec  = create_scale_entry("Kspec	",
 				view->selected_obj.object->kspec, 0, 1);
 		g_signal_connect(kdiff, "rt-scale-entry-edited", G_CALLBACK(kdiff_edited),
 				view);
@@ -376,14 +376,24 @@ void		 	edit_element_properties(GtkTreeView *tree_view,
 		gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar damier");
 		gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type), view->selected_obj.object->have_texture);
 		g_signal_connect(texture_type, "changed", G_CALLBACK(texture_type_edited), view);
+		gtk_widget_set_size_request(texture_type, 130, 0);
+		gtk_container_add(GTK_CONTAINER(texture_type_box), texture_type_title);
+		gtk_container_add(GTK_CONTAINER(texture_type_box), texture_type);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_type_box);
+
+		GtkWidget	*texture_box;
+		texture_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+		GtkWidget	*texture_title;
+		texture_title = gtk_label_new_with_mnemonic("Texture		");
 		GtkWidget	*texture_chooser;
 		texture_chooser = gtk_file_chooser_button_new("Texture images", GTK_FILE_CHOOSER_ACTION_OPEN);
 		if (view->selected_obj.object->texture_filename)
 			gtk_file_chooser_set_filename(GTK_FILE_CHOOSER(texture_chooser), view->selected_obj.object->texture_filename);
 		g_signal_connect(texture_chooser, "file-set", G_CALLBACK(texture_file_set), view);
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), gtk_label_new("Texture"));
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_type);
-		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_chooser);
+		gtk_widget_set_size_request(texture_chooser, 130, 0);
+		gtk_container_add(GTK_CONTAINER(texture_box), texture_title);
+		gtk_container_add(GTK_CONTAINER(texture_box), texture_chooser);
+		gtk_container_add(GTK_CONTAINER(view->rp->el_prop_lst), texture_box);
 	}
 
 	if (type == POLYGONS)

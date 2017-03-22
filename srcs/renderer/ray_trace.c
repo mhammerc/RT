@@ -28,10 +28,8 @@ static int		ray_object(t_obj *obj, t_ray *ray)
 				ray->collided = collided;
 				ray->location = location;
 			}
-			/*
 			else
 				free(collided);
-				*/
 		}
 		/*
 		else
@@ -96,7 +94,7 @@ static t_vec3	rt_shadow(t_scene *sce, t_ray ray)
 			{
 				absorbance = vec3_mul(absorbance,
 						vec3_mult(ray.collided->transmittance,
-							ray.collided->color));
+							get_texture_color(ray)));
 			}
 			else
 				return ((t_vec3){0, 0, 0});
@@ -120,7 +118,7 @@ static t_vec3	rt_light(t_scene *sce, t_ray ray)
 	t_vec3		absorbance;
 
 	obj_cam = vec3_mult(-1, ray.dir);
-	light = color_light_mix(ray.collided->color,
+	light = color_light_mix(get_texture_color(ray),
 			sce->ambiant.color,
 			sce->ambiant.intensity);
 	ray.type = ray.type == REFLECTION_RAY ? REFLECTION_RAY : OCCLUSION_RAY;
@@ -173,10 +171,8 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 			}
 		}
 	}
-	/*
-	   if (ray.collided)
+	if (ray.collided)
 	   free(ray.collided);
-	   */
 	if (ray.type == REFLECTION_RAY)
 		return (vec3_mult(1.0 / ray.dist, light));
 	return (light);

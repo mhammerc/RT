@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/01/21 17:35:22 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/17 14:54:32 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/22 15:16:35 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ int				sphere_intersect(t_obj *self, t_ray *ray, t_interval *interval)
 	ray_sphere = vec3_sub(ray->pos, self->pos);
 	b = vec3_dot(ray_sphere, ray->dir);
 	c = vec3_norm2(ray_sphere) - self->radius;
-	if((interval->nb_hit = norm_quad_solve(b, c, interval)))
+	if ((interval->nb_hit = norm_quad_solve(b, c, interval)))
 	{
 		interval->min[0].ref = *self;
 		interval->max[0].ref = *self;
