@@ -50,6 +50,7 @@ SRCS_NAME	=	main.c										\
 				parsers/file_loader/file_loader.c			\
 				parsers/file_loader/parser.c				\
 				parsers/file_loader/object.c				\
+				parsers/file_loader/object2.c				\
 				parsers/file_loader/camera.c				\
 				parsers/file_loader/tools.c					\
 				parsers/file_loader/vec3.c					\
