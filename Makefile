@@ -57,6 +57,9 @@ SRCS_NAME	=	main.c										\
 				parsers/file_loader/vec3.c					\
 				parsers/obj_loader/parsing.c				\
 				parsers/obj_loader/obj_loader.c				\
+				parsers/obj_loader/faces.c					\
+				parsers/obj_loader/components.c				\
+				parsers/obj_loader/copy_content.c			\
 				parsers/texture_loader.c					\
 
 OBJS_NAME 	= 	$(SRCS_NAME:.c=.o)
