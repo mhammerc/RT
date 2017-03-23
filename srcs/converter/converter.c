@@ -87,6 +87,7 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		spot.pos = object->pos;
 		spot.color = object->color;
 		spot.intensity = object->length;
+		spot.radius = 1.0;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
 	if (objects->children)

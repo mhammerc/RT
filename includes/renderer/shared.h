@@ -169,7 +169,7 @@ struct						s_ray
 	double					t;
 	int						type;
 	t_obj					*collided;
-	t_vec3					light;
+	unsigned int			*seed;
 	t_obj_stack				rstack;
 	int						location;
 	double					dist;
@@ -179,6 +179,7 @@ struct						s_spot
 {
 	t_vec3					pos;
 	t_vec3					color;
+	double					radius;
 	double					intensity;
 };
 typedef struct s_spot		t_spot;
@@ -195,6 +196,7 @@ struct						s_scene
 	int						aa;
 	enum e_filters			filter;
 	t_vec3					*light;
+	unsigned int			seed;
 };
 typedef struct s_scene		t_scene;
 

@@ -19,6 +19,7 @@ static void		launch_threads(pthread_t *threads,
 {
 	threads_data[i].sce = malloc(sizeof(t_scene));
 	ft_memcpy(threads_data[i].sce, sce, sizeof(t_scene));
+	threads_data[i].sce->seed = time(NULL);
 	threads_data[i].pixels = sce->pixels;
 	threads_data[i].light = sce->light;
 	threads_data[i].y_begin = sce->cam.h / CORE_COUNT * i;

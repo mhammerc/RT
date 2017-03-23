@@ -26,7 +26,7 @@ t_ray		ray_new(t_vec3 pos, t_vec3 aim)
 	n = (t_vec3){0, 0, 0};
 	dir = vec3_get_normalized(vec3_sub(aim, pos));
 	return ((t_ray){pos, dir, n, BIG_DIST + 1,
-			INITIAL_RAY, NULL, n, stack_new(), LOCATION_NONE, 0.0});
+			INITIAL_RAY, NULL, 0, stack_new(), LOCATION_NONE, 0.0});
 }
 
 /*

@@ -11,8 +11,11 @@
 /* ************************************************************************** */
 
 #include <stdio.h>
+
 #include <strings.h>
 #include <math.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "ui.h"
 #include "renderer.h"
