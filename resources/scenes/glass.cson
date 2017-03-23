@@ -1,12 +1,12 @@
 camera:
-	position: 7.0; 0.0; 1.0
+	position: 0.0; 2.0; 4.0
 	lookAt: 0.0; 0.0; 0.0
 	up: 0.0; 1.0; 0.0
 
 object:
 	type: LIGHT
 	name: Light
-	position: -1.0; 2.0; 3.0
+	position: -1.0; 8.0; 10.0
 	rotation: 0.0; 1.0; 0.0
 	color: 1.0; 1.0; 1.0
 	radius: 0.000000
@@ -68,36 +68,100 @@ object:
 		texture: 0
 
 		object:
-			type: CONE
-			name: Cone
-			position: 0.0; 0.0; 0.0
-			rotation: 0.0; 1.0; 0.0
-			color: 0.4; 0.6; 0.8
-			radius: 20.000000
-			length: 1.000000
+			type: CSG
+			name: CSG
+			position: 0.0; 0.2; 0.0
+			rotation: 0.0; 0.0; 0.0
+			color: 0.0; 0.0; 1.0
+			radius: 0.000000
+			length: 0.000000
 			kspec: 1.000000
 			kdiff: 1.000000
 			transmittance: 0.000000
 			reflectance: 0.000000
 			rindex: 1.420000
-			csgOperation: 0
+			csgOperation: -
 			texture: 0
 
+			object:
+				type: CONE
+				name: Cone
+				position: 0.0; 0.0; 0.0
+				rotation: 0.0; 1.0; 0.0
+				color: 0.4; 0.6; 0.8
+				radius: 18.000000
+				length: 1.000000
+				kspec: 1.000000
+				kdiff: 1.000000
+				transmittance: 0.000000
+				reflectance: 0.000000
+				rindex: 1.420000
+				csgOperation: 0
+				texture: 0
+
+			object:
+				type: SPHERE
+				name: Sphere
+				position: 0.0; 2.0; 0.0
+				rotation: 0.0; 0.0; 0.0
+				color: 0.4; 0.6; 0.8
+				radius: 1900.000000
+				length: 0.000000
+				kspec: 1.000000
+				kdiff: 1.000000
+				transmittance: 0.000000
+				reflectance: 0.000000
+				rindex: 1.420000
+				csgOperation: 0
+				texture: 0
+
 		object:
-			type: CONE
-			name: Cone
-			position: 0.0; 0.1; 0.0
-			rotation: 0.0; 1.0; 0.0
-			color: 0.9; 0.9; 0.9
-			radius: 20.000000
-			length: 0.900000
+			type: CSG
+			name: CSG
+			position: 0.0; 0.2; 0.0
+			rotation: 0.0; 0.0; 0.0
+			color: 0.0; 0.0; 1.0
+			radius: 0.000000
+			length: 0.000000
 			kspec: 1.000000
-			kdiff: 8.000000
+			kdiff: 1.000000
 			transmittance: 0.000000
 			reflectance: 0.000000
 			rindex: 1.420000
-			csgOperation: 0
+			csgOperation: U
 			texture: 0
+
+			object:
+				type: CONE
+				name: Cone
+				position: 0.0; 0.0; 0.0
+				rotation: 0.0; 1.0; 0.0
+				color: 0.4; 0.6; 0.8
+				radius: 17.000000
+				length: 1.000000
+				kspec: 1.000000
+				kdiff: 1.000000
+				transmittance: 0.000000
+				reflectance: 0.000000
+				rindex: 1.420000
+				csgOperation: 0
+				texture: 0
+
+			object:
+				type: SPHERE
+				name: Sphere
+				position: 0.0; 2.0; 0.0
+				rotation: 0.0; 0.0; 0.0
+				color: 1.0; 0.7; 0.2
+				radius: 1700.000000
+				length: 0.000000
+				kspec: 1.000000
+				kdiff: 1.000000
+				transmittance: 0.000000
+				reflectance: 0.000000
+				rindex: 1.420000
+				csgOperation: 0
+				texture: 0
 
 	object:
 		type: CSG
@@ -121,8 +185,8 @@ object:
 			position: 0.0; 0.0; 0.0
 			rotation: 0.0; 1.0; 0.0
 			color: 0.4; 0.6; 0.8
-			radius: 7.000000
-			length: 1.000000
+			radius: 1.000000
+			length: 0.800000
 			kspec: 1.000000
 			kdiff: 1.000000
 			transmittance: 0.000000
@@ -154,7 +218,7 @@ object:
 				rotation: 0.0; -1.0; 0.0
 				color: 0.4; 0.6; 0.8
 				radius: 70.000000
-				length: 0.100000
+				length: 0.050000
 				kspec: 1.000000
 				kdiff: 1.000000
 				transmittance: 0.000000
@@ -166,10 +230,10 @@ object:
 			object:
 				type: DISK
 				name: Disk
-				position: 0.0; 0.0; 0.0
-				rotation: 0.0; 0.0; 1.0
+				position: 0.0; -0.1; 0.0
+				rotation: 0.0; 1.0; 0.0
 				color: 0.4; 0.6; 0.8
-				radius: 50.000000
+				radius: 100.000000
 				length: 0.000000
 				kspec: 1.000000
 				kdiff: 1.000000
