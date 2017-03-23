@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:00:39 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 19:01:59 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:40:01 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,6 +61,7 @@ typedef struct			s_selected_obj
 	int					depth;
 	t_object			*object;
 	GtkTreeIter			iter;
+	GtkTreePath			*path;
 }						t_selected_obj;
 
 typedef struct			s_ui_cam

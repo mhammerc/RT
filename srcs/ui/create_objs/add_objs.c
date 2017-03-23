@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 12:05:09 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 18:54:21 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/22 23:31:44 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 ** This function may be called from outside.
 ** This is why it use get_interface().
 */
+
 void		add_object(t_object object, gboolean render_new)
 {
 	t_ui		*ui;
@@ -50,6 +51,7 @@ void		add_object(t_object object, gboolean render_new)
 ** Create an object and set everything to zero.
 ** Automatically add it to the interface.
 */
+
 t_object	create_base_object(void)
 {
 	t_object	object;
