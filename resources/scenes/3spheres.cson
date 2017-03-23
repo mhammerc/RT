@@ -1,0 +1,101 @@
+camera:
+	position: 0.0; 3.0; 7.0
+	lookAt: 0.0; 0.0; 0.0
+	up: 0.0; 1.0; 0.0
+
+object:
+	type: LIGHT
+	name: The light
+	position: 0.0; 6.0; 2.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.9; 0.9; 0.9
+	radius: 0.200000
+	length: 70.833333
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 0.000000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.0; 0.0; -2.0
+	rotation: 0.0; 0.0; 1.0
+	color: 0.8; 0.8; 0.8
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 4
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.0; -2.0; 0.0
+	rotation: 0.0; 1.0; 0.0
+	color: 0.9; 0.9; 0.9
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: -1.0; 0.0; 0.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.4; 0.2; 0.4
+	radius: 208.333333
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 1.194444
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: 0.0; 0.0; 0.0
+	rotation: 0.0; 0.0; 0.0
+	color: 1.0; 0.9; 1.0
+	radius: 208.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.875000
+	reflectance: 0.128788
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: 0.5; 1.0; 0.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.5; 0.9; 0.2
+	radius: 208.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.944444
+	reflectance: 0.034091
+	rindex: 1.250000
+	csgOperation: 0
+	texture: 0
+
