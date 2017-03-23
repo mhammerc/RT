@@ -1,0 +1,134 @@
+camera:
+	position: 3.000000; 3.000000; 11.000000
+	lookAt: 0.000000; 0.000000; 0.000000
+	up: 0.000000; 1.000000; 0.000000
+
+object:
+	type: LIGHT
+	name: Light
+	position: 1.000000; 2.000000; 7.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 1.000000; 1.000000; 1.000000
+	radius: 0.000000
+	length: 100.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.000000; 0.000000; -7.000000
+	rotation: 0.000000; 0.000000; 1.000000
+	color: 0.988235; 0.913725; 0.309804
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 2
+
+object:
+	type: CSG
+	name: CSG
+	position: 1.000000; 0.000000; 1.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 0.000000; 0.000000; 1.000000
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: -
+	texture: 0
+
+	object:
+		type: POLYGONS
+		name: Polygons
+		position: 0.000000; 0.000000; 0.000000
+		rotation: 0.000000; 0.000000; 0.000000
+		color: 0.447059; 0.623529; 0.811765
+		radius: 0.000000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
+		transmittance: 0.900000
+		reflectance: 0.100000
+		rindex: 1.420000
+		csgOperation: 0
+		file: /Users/racousin/rt/resources/models/cube.obj
+		texture: 0
+
+	object:
+		type: SPHERE
+		name: Sphere
+		position: 0.000000; 0.000000; 0.000000
+		rotation: 0.000000; 0.000000; 0.000000
+		color: 0.447059; 0.623529; 0.811765
+		radius: 1700.000000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
+		transmittance: 0.900000
+		reflectance: 0.100000
+		rindex: 1.420000
+		csgOperation: 0
+		texture: 0
+
+object:
+	type: EMPTY
+	name: Empty
+	position: -1.000000; 0.000000; 0.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 0.933333; 0.933333; 0.925490
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+	object:
+		type: DISK
+		name: Disk
+		position: -2.000000; 0.000000; 0.000000
+		rotation: 0.000000; 1.000000; 0.000000
+		color: 0.988235; 0.686275; 0.243137
+		radius: 200.000000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 1.420000
+		csgOperation: 0
+		texture: 0
+
+	object:
+		type: DISK
+		name: Disk
+		position: -2.000000; 0.000000; 0.000000
+		rotation: 1.000000; 0.000000; 0.000000
+		color: 0.988235; 0.686275; 0.243137
+		radius: 200.000000
+		length: 0.000000
+		kspec: 1.000000
+		kdiff: 1.000000
+		transmittance: 0.000000
+		reflectance: 0.000000
+		rindex: 1.420000
+		csgOperation: 0
+		texture: 0
+
