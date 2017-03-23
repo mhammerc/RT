@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 09:48:25 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 10:09:19 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:28:25 by aditsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,8 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		spot.color = object->color;
 		spot.intensity = object->length;
 		spot.radius = object->radius;
+		if (spot.radius > 5.)
+			spot.radius = 5.;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
 	}
 	if (objects->children)

@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 09:56:43 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 10:09:01 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/23 18:30:36 by aditsch          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,8 @@ void		convert_object2(t_obj *obj, t_object *object)
 	obj->kdiff = object->kdiff;
 	obj->kp = 256;
 	obj->rindex = object->rindex;
+	if (obj->rindex == 0.)
+		obj->rindex = 1.42;
 	obj->transmittance = object->transmittance;
 	obj->reflectance = object->reflectance;
 	obj->intersect = get_obj_intersection(obj->type);
