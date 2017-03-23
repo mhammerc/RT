@@ -13,14 +13,14 @@
 #ifndef RIGHT_PANEL_H
 # define RIGHT_PANEL_H
 
-#include <errno.h>
+# include <errno.h>
 
 /*
 ** Constants
 */
 
-typedef struct s_ui				t_ui;
-typedef struct s_object			t_object;
+typedef struct s_ui		t_ui;
+typedef struct s_object	t_object;
 
 /*
 ** Object properties
@@ -67,41 +67,48 @@ typedef struct			s_right_panel
 	t_scene_gtk			scene_gtk;
 }						t_right_panel;
 
-void		init_scene(t_ui *ui);
-void		create_ambient_light(t_ui *ui);
-void		create_fov_box(t_ui *ui);
-void		create_filters_box(t_ui *ui);
-void		create_aa_box(t_ui *ui);
-void		scene_edited();
-void		aa_edited(GtkComboBox *widget, gpointer data);
-void		filters_edited(GtkComboBox *widget, gpointer data);
-void		ambiant_light_edited(GtkWidget *widget, gdouble value,
+void					init_scene(t_ui *ui);
+void					create_ambient_light(t_ui *ui);
+void					create_fov_box(t_ui *ui);
+void					create_filters_box(t_ui *ui);
+void					create_aa_box(t_ui *ui);
+void					scene_edited();
+void					aa_edited(GtkComboBox *widget, gpointer data);
+void					filters_edited(GtkComboBox *widget, gpointer data);
+void					ambiant_light_edited(GtkWidget *widget, gdouble value,
 																gpointer data);
-void		fov_edited(GtkWidget *widget, gdouble value, gpointer data);
-void		create_color_chooser(t_ui *ui, t_vec3 color);
-void		edit_scene_properties(gpointer data);
-void		init_cam(t_ui *ui);
-void		edit_cam_properties(gpointer data);
-void 		refresh_cam_properties(t_ui *ui);
-void		cam_edited();
-void		dir_edited(GtkWidget *widget, t_vec3 *dir, gpointer data);
-void		up_edited(GtkWidget *widget, t_vec3 *up, gpointer data);
-void		clear_properties_list(t_ui *ui);
-void		edit_element_properties(GtkTreeView *tree_view,
+void					fov_edited(GtkWidget *widget, gdouble value,
+		gpointer data);
+void					create_color_chooser(t_ui *ui, t_vec3 color);
+void					edit_scene_properties(gpointer data);
+void					init_cam(t_ui *ui);
+void					edit_cam_properties(gpointer data);
+void					refresh_cam_properties(t_ui *ui);
+void					cam_edited();
+void					dir_edited(GtkWidget *widget, t_vec3 *dir,
+		gpointer data);
+void					up_edited(GtkWidget *widget, t_vec3 *up,
+		gpointer data);
+void					clear_properties_list(t_ui *ui);
+void					edit_element_properties(GtkTreeView *tree_view,
 				GtkTreePath *path, GtkTreeViewColumn *column, gpointer data);
 
-
-void		element_edited();
-void		add_situational_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
-void		add_shared_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
-void		add_texture_type_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
-void		add_texture_chooser_widgets(t_ui *ui, t_object *focused_obj,
-															GtkWidget *props);
-void		add_material_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
-void		add_material_widgets_aux(t_ui *ui, t_object *focused_obj,
-															GtkWidget *props);
-void		add_objext_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
-void		add_csg_widgets(t_ui *ui, t_object *obj, GtkWidget *props);
-
+void					element_edited();
+void					add_situational_widgets(t_ui *ui, t_object *obj,
+		GtkWidget *props);
+void					add_shared_widgets(t_ui *ui, t_object *obj,
+		GtkWidget *props);
+void					add_texture_type_widgets(t_ui *ui, t_object *obj,
+		GtkWidget *props);
+void					add_texture_chooser_widgets(t_ui *ui,
+		t_object *focused_obj, GtkWidget *props);
+void					add_material_widgets(t_ui *ui, t_object *obj,
+		GtkWidget *props);
+void					add_material_widgets_aux(t_ui *ui,
+		t_object *focused_obj, GtkWidget *props);
+void					add_objext_widgets(t_ui *ui, t_object *obj,
+		GtkWidget *props);
+void					add_csg_widgets(t_ui *ui, t_object *obj,
+		GtkWidget *props);
 
 #endif
