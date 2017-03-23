@@ -25,7 +25,7 @@ int		register_printf_function(int code, t_printf_func func, void *app_)
 	conversions->next = ft_lstnew(0, 0);
 	if (!conversions->next)
 		return (0);
-	new_conversion = (t_printf_conversion*)malloc(sizeof(t_printf_conversion));
+	new_conversion = (t_printf_conversion*)monloc(sizeof(t_printf_conversion));
 	if (!new_conversion)
 		return (0);
 	new_conversion->code = code;

@@ -14,7 +14,7 @@
 
 void	compute(char **line, unsigned int c, t_printf_info *info, size_t size)
 {
-	*line = malloc(sizeof(char) * (info->width + size + 1));
+	*line = monloc(sizeof(char) * (info->width + size + 1));
 	if (!*line)
 		return ;
 	if (!info->left)

@@ -14,7 +14,7 @@
 
 void		init_faces(t_object *object, t_faces_components *components)
 {
-	object->faces = (t_face*)malloc(sizeof(t_face) * components->n_faces);
+	object->faces = (t_face*)monloc(sizeof(t_face) * components->n_faces);
 	object->nb_faces = components->n_faces;
 	ft_bzero(object->faces, sizeof(t_face) * components->n_faces);
 	components->n_faces = 0;
@@ -53,9 +53,9 @@ int			copy_one_face(t_object *object, t_faces_components *components,
 		while (split[n])
 			++n;
 		face.nb = n - 1;
-		face.sommets = (t_vec3*)malloc(sizeof(t_vec3) * face.nb);
-		face.normales = (t_vec3*)malloc(sizeof(t_vec3) * face.nb);
-		face.textures = (t_vec2*)malloc(sizeof(t_vec2) * face.nb);
+		face.sommets = (t_vec3*)monloc(sizeof(t_vec3) * face.nb);
+		face.normales = (t_vec3*)monloc(sizeof(t_vec3) * face.nb);
+		face.textures = (t_vec2*)monloc(sizeof(t_vec2) * face.nb);
 		if (!face.sommets || !face.normales || !face.textures)
 			return (0);
 		if (!copy_one_face2(&face, components, split))

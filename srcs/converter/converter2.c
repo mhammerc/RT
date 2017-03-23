@@ -27,14 +27,14 @@ void		convert_polygon(t_obj *obj, t_object *object)
 	obj->length = fabs(obj->length);
 	if (obj->length == 0)
 		obj->length = 1;
-	obj->faces = (t_face*)malloc(sizeof(t_face) * object->nb_faces);
+	obj->faces = (t_face*)monloc(sizeof(t_face) * object->nb_faces);
 	memcpy(obj->faces, object->faces, sizeof(t_face) * object->nb_faces);
 	i = 0;
 	while (i < obj->nb_faces)
 	{
 		face = obj->faces + i;
 		j = 0;
-		sommets = (t_vec3*)malloc(sizeof(t_vec3) * face->nb);
+		sommets = (t_vec3*)monloc(sizeof(t_vec3) * face->nb);
 		while (j < face->nb)
 		{
 			sommets[j] = vec3_mult(obj->length, face->sommets[j]);
@@ -121,8 +121,8 @@ void		convert_csg2(t_obj *renderer_obj, t_object *ui_root)
 	renderer_obj->type = CSG;
 	renderer_obj->intersect = get_obj_intersection(renderer_obj->type);
 	renderer_obj->normal = get_obj_normal(renderer_obj->type);
-	renderer_obj->left = (t_obj*)malloc(sizeof(t_obj));
-	renderer_obj->right = (t_obj*)malloc(sizeof(t_obj));
+	renderer_obj->left = (t_obj*)monloc(sizeof(t_obj));
+	renderer_obj->right = (t_obj*)monloc(sizeof(t_obj));
 	renderer_obj->csg = ui_root->operation;
 	renderer_obj->pos = ui_root->pos;
 	renderer_obj->color = ui_root->color;

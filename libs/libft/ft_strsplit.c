@@ -52,7 +52,7 @@ static void		copy_parts(char **arr, char const *s, char c)
 		i = s;
 		while (*s && *s != c)
 			++s;
-		arr[part] = (char*)malloc(sizeof(char) * (s - i + 1));
+		arr[part] = (char*)monloc(sizeof(char) * (s - i + 1));
 		ft_strncpy(arr[part], i, s - i);
 		arr[part][s - i] = 0;
 		++part;
@@ -66,7 +66,7 @@ char			**ft_strsplit(char const *s, char c)
 
 	IFNSETN(s);
 	parts = count_parts(s, c);
-	arr = (char**)malloc(sizeof(char*) * (parts + 1));
+	arr = (char**)monloc(sizeof(char*) * (parts + 1));
 	IFNSETN(arr);
 	copy_parts(arr, s, c);
 	arr[parts] = 0;

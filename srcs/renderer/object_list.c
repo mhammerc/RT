@@ -30,7 +30,7 @@ t_list			*ft_lstdup(t_list *original_begin)
 		obj = (t_obj*)original_cpy->content;
 		if (obj->type == POLYGONS)
 		{
-			faces = malloc(sizeof(t_face) * obj->nb_faces);
+			faces = monloc(sizeof(t_face) * obj->nb_faces);
 			memcpy(faces, obj->faces, sizeof(t_face) * obj->nb_faces);
 			obj->faces = faces;
 		}

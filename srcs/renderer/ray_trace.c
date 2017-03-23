@@ -29,7 +29,7 @@ int				ray_object(t_obj *obj, t_ray *ray)
 	location = LOCATION_NONE;
 	if (obj->intersect(obj, ray, &interval))
 	{
-		collided = (t_obj*)malloc(sizeof(t_obj));
+		collided = (t_obj*)monloc(sizeof(t_obj));
 		if ((location = minimal_positiv(&interval, obj, &(ray->t), &collided)))
 		{
 			if (ray->type != OCCLUSION_RAY)

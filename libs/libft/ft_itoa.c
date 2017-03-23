@@ -20,7 +20,7 @@ char	*ft_itoa(int n)
 	char	*result;
 	size_t	i;
 
-	result = (char*)malloc(sizeof(char) * 11);
+	result = (char*)monloc(sizeof(char) * 11);
 	IFNSETN(result);
 	n2 = (long)n;
 	i = 0;

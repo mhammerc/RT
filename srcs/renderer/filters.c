@@ -6,10 +6,11 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:29:37 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 10:29:38 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/23 17:18:00 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "renderer.h"
 #include "shared.h"
 

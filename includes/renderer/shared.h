@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:15:10 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 10:18:30 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/23 17:15:13 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -202,5 +202,6 @@ typedef struct s_scene		t_scene;
 
 int							minimal_positiv(t_interval *interval,
 		t_obj *obj, double *d, t_obj **collided);
+void						*monloc(size_t size);
 
 #endif

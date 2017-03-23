@@ -72,11 +72,11 @@ void				init_interface(GtkApplication *app, gpointer user_data)
 	ui = get_interface();
 	pthread_mutex_init(&ui->mutex_stock, NULL);
 	setup_custom_signals();
-	index = (int*)malloc(sizeof(int) * 50);
-	ui->lp = (t_left_panel*)malloc(sizeof(t_left_panel));
-	ui->dp = (t_display_panel*)malloc(sizeof(t_display_panel));
-	ui->rp = (t_right_panel*)malloc(sizeof(t_right_panel));
-	ui->percent = (double*)malloc(sizeof(double));
+	index = (int*)monloc(sizeof(int) * 50);
+	ui->lp = (t_left_panel*)monloc(sizeof(t_left_panel));
+	ui->dp = (t_display_panel*)monloc(sizeof(t_display_panel));
+	ui->rp = (t_right_panel*)monloc(sizeof(t_right_panel));
+	ui->percent = (double*)monloc(sizeof(double));
 	ui->selected_obj.index = index;
 	ui->render_on_change = TRUE;
 	ui->window = create_app_window(app, 0, 0, "RT by The Most Awesome Group");

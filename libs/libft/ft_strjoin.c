@@ -21,7 +21,7 @@ char	*ft_strjoin(char const *s1, char const *s2)
 
 	IFNSETN(s1);
 	IFNSETN(s2);
-	s3 = (char*)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
+	s3 = (char*)monloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	IFNSETN(s3);
 	i = 0;
 	while (s1[i])

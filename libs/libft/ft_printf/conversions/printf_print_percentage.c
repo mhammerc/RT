@@ -18,7 +18,7 @@ int	printf_print_percentage(void *param, t_printf_info *info, char **line)
 
 	(void)param;
 	c = info->spec;
-	*line = malloc(sizeof(char) * (info->width + 2));
+	*line = monloc(sizeof(char) * (info->width + 2));
 	if (!*line)
 		return (0);
 	if (!info->left)

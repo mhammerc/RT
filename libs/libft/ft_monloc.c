@@ -1,26 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_monloc.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhammerc <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/03 10:10:26 by mhammerc          #+#    #+#             */
-/*   Updated: 2016/11/03 10:10:49 by mhammerc         ###   ########.fr       */
+/*   Created: 2017/03/23 17:21:51 by vfour             #+#    #+#             */
+/*   Updated: 2017/03/23 17:21:54 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include <stdlib.h>
 #include "libft.h"
-#include "stdlib.h"
 
-char	*ft_strdup(const char *s)
+void			*monloc(size_t size)
 {
-	size_t	len;
-	char	*ns;
+	void		*truc;
 
-	len = ft_strlen(s);
-	ns = (char*)monloc(sizeof(char) * (len + 1));
-	IFNSETN(ns);
-	ft_memcpy((void*)ns, (void*)s, len + 1);
-	return (ns);
+	if (NULL == (truc = malloc(size)))
+		exit(EXIT_FAILURE);
+	return (truc);
 }
