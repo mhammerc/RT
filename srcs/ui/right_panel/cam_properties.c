@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 21:35:51 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/23 02:01:05 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 11:44:41 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void			edit_cam_properties(gpointer data)
 	view = (t_ui*)data;
 	gtk_container_add(GTK_CONTAINER(view->rp->cam_prop),
 		gtk_label_new_with_mnemonic("_Camera"));
-	view->rp->pos = create_vector3_entry("pos		", view->cam->pos);
+	view->rp->pos = create_vector3_entry("Pos		", view->cam->pos);
 	view->rp->lkat = create_vector3_entry("LookAt	", view->cam->dir);
 	view->rp->up = create_vector3_entry("Up           ", view->cam->up);
 	g_signal_connect(view->rp->pos, "rt-vector3-entry-edited",
@@ -68,7 +68,7 @@ void			refresh_cam_properties(t_ui *ui)
 	g_list_free(children);
 	gtk_container_add(GTK_CONTAINER(ui->rp->cam_prop),
 		gtk_label_new_with_mnemonic("_Camera"));
-	ui->rp->pos = create_vector3_entry("pos		", ui->cam->pos);
+	ui->rp->pos = create_vector3_entry("Pos		", ui->cam->pos);
 	ui->rp->lkat = create_vector3_entry("LookAt	", ui->cam->dir);
 	ui->rp->up = create_vector3_entry("Up           ", ui->cam->up);
 	g_signal_connect(ui->rp->pos, "rt-vector3-entry-edited",

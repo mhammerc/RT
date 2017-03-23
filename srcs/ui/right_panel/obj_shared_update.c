@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:28:58 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:10:45 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 11:43:48 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,10 +59,10 @@ void		add_shared_widgets(t_ui *ui, t_object *focused_obj,
 	g_signal_connect(G_OBJECT(name), "rt-entry-edited",
 									G_CALLBACK(object_name_upd), (gpointer)ui);
 	gtk_container_add(GTK_CONTAINER(props), name);
-	pos = create_vector3_entry("pos		", focused_obj->pos);
+	pos = create_vector3_entry("Pos		", focused_obj->pos);
 	g_signal_connect(pos, "rt-vector3-entry-edited", G_CALLBACK(pos_upd), ui);
 	gtk_container_add(GTK_CONTAINER(props), pos);
-	rot = create_vector3_entry("rot		", focused_obj->rot);
+	rot = create_vector3_entry("Rot		", focused_obj->rot);
 	g_signal_connect(rot, "rt-vector3-entry-edited", G_CALLBACK(rot_upd), ui);
 	gtk_container_add(GTK_CONTAINER(props), rot);
 }
