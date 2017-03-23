@@ -58,9 +58,9 @@ void		read_properties2(char *ln2, t_object *new_object)
 		new_object->operation = *ln3;
 		free(ln3);
 	}
-	else if (ft_strncmp(ln2, "filename:", 9) == 0)
+	else if (ft_strncmp(ln2, "file:", 5) == 0)
 	{
-		ln3 = ft_strtrim(ln2 + 9);
+		ln3 = ft_strtrim(ln2 + 5);
 		new_object->filename = ft_strdup(ln3);
 		free(ln3);
 	}
