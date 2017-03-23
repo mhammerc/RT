@@ -1,0 +1,87 @@
+camera:
+	position: 0.000000; 0.000000; 7.000000
+	lookAt: 0.000000; 0.000000; 0.000000
+	up: 0.000000; 1.000000; 0.000000
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: -1.000000; 0.000000; -1.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 1.000000; 1.000000; 1.000000
+	radius: 50.000000
+	length: 0.000000
+	kspec: 0.597222
+	kdiff: 0.486111
+	transmittance: 0.555556
+	reflectance: 0.916667
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: POLYGONS
+	name: Polygons
+	position: 0.000000; 0.550000; 0.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 0.933333; 0.933333; 0.925490
+	radius: 0.000000
+	length: 0.000000
+	kspec: 0.000000
+	kdiff: 0.000000
+	transmittance: 0.930556
+	reflectance: 0.875000
+	rindex: 1.902778
+	csgOperation: 0
+	file: /Users/gpoblon/Documents/42/RT/resources/models/pyramid.obj
+	texture: 0
+
+object:
+	type: LIGHT
+	name: Light
+	position: -1.000000; 1.000000; 2.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 1.000000; 1.000000; 1.000000
+	radius: 0.000000
+	length: 100.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.000000; -1.000000; 0.000000
+	rotation: 0.000000; 3.000000; 1.000000
+	color: 0.000000; 0.000000; 1.000000
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 3
+	texture_filename: /Users/gpoblon/Documents/42/RT/resources/textures/Brick_ground.jpg
+
+object:
+	type: LIGHT
+	name: Light
+	position: 0.000000; 0.000000; 7.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 1.000000; 1.000000; 1.000000
+	radius: 0.000000
+	length: 100.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+

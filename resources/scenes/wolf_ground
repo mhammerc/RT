@@ -1,0 +1,38 @@
+camera:
+	position: -5.0; 2.0; 8.0
+	lookAt: 1.0; -5.0; 0.0
+	up: 0.0; 1.0; 0.0
+
+object:
+	type: LIGHT
+	name: Light
+	position: 0.0; 0.0; 7.0
+	rotation: 0.0; 0.0; 0.0
+	color: 1.0; 1.0; 1.0
+	radius: 0.000000
+	length: 100.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: POLYGONS
+	name: Polygons
+	position: 3.0; -5.0; 0.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.8; 0.8; 0.8
+	radius: 0.000000
+	length: 0.000000
+	kspec: 0.097222
+	kdiff: 1.000000
+	transmittance: 0.361111
+	reflectance: 0.277778
+	rindex: 1.708333
+	csgOperation: 0
+	file: /Users/gpoblon/Documents/42/RT/resources/models/ground+wolf.obj
+	texture: 0
+
