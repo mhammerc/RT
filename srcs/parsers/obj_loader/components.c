@@ -69,11 +69,11 @@ int			count_components(char *filename, t_faces_components *components)
 
 void		prepare_components(t_faces_components *components)
 {
-	components->sommets = (t_vec3*)malloc(sizeof(t_vec3)
+	components->sommets = (t_vec3*)monloc(sizeof(t_vec3)
 			* components->n_sommets);
-	components->textures = (t_vec2*)malloc(sizeof(t_vec2)
+	components->textures = (t_vec2*)monloc(sizeof(t_vec2)
 			* components->n_textures);
-	components->normales = (t_vec3*)malloc(sizeof(t_vec3)
+	components->normales = (t_vec3*)monloc(sizeof(t_vec3)
 			* components->n_normales);
 	components->n_sommets = 0;
 	components->n_textures = 0;

@@ -17,7 +17,7 @@ void		init_cam(t_ui *ui)
 {
 	t_ui_cam	*cam;
 
-	cam = (t_ui_cam*)malloc(sizeof(t_cam));
+	cam = (t_ui_cam*)monloc(sizeof(t_cam));
 	if (!cam)
 		exit(EXIT_FAILURE);
 	ft_bzero(cam, sizeof(t_cam));

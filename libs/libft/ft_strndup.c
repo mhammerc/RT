@@ -20,7 +20,7 @@ char	*ft_strndup(const char *s, size_t n)
 
 	len = ft_strlen(s);
 	len = (len > n ? n : len);
-	ns = (char*)malloc(sizeof(char) * (len + 1));
+	ns = (char*)monloc(sizeof(char) * (len + 1));
 	IFNSETN(ns);
 	ft_memcpy((void*)ns, (void*)s, len);
 	ns[len] = 0;

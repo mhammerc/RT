@@ -46,7 +46,7 @@ static void		text_inserted(GtkEntryBuffer *buffer, guint position,
 		return ;
 	text = (char*)gtk_entry_buffer_get_text(buffer);
 	length = gtk_entry_buffer_get_length(buffer);
-	new_text = malloc(sizeof(gchar) * (length + 1));
+	new_text = monloc(sizeof(gchar) * (length + 1));
 	while (++i < (int)length)
 		if (is_numerical(text[i]))
 			new_text[j++] = text[i];

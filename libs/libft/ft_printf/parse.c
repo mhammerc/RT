@@ -16,7 +16,7 @@ static void		init(char const **s, t_printf_info **info,
 		char const *conversion, t_app *app)
 {
 	*s = conversion;
-	*info = (t_printf_info*)malloc(sizeof(t_printf_info));
+	*info = (t_printf_info*)monloc(sizeof(t_printf_info));
 	ft_bzero(*info, sizeof(t_printf_info));
 	(*info)->prec = -1;
 	(*info)->pad = ' ';
@@ -28,7 +28,7 @@ static void		apply_func2(t_printf_info *info, char **line, int *i, long r)
 	t_list	*list;
 
 	(void)i;
-	list = (t_list*)malloc(sizeof(t_list));
+	list = (t_list*)monloc(sizeof(t_list));
 	list->content = *line;
 	list->content_size = r;
 	list->next = NULL;

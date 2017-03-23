@@ -17,7 +17,7 @@
 static void		launch_threads(pthread_t *threads,
 		t_renderer_thread *threads_data, int i, t_scene *sce)
 {
-	threads_data[i].sce = malloc(sizeof(t_scene));
+	threads_data[i].sce = monloc(sizeof(t_scene));
 	ft_memcpy(threads_data[i].sce, sce, sizeof(t_scene));
 	threads_data[i].sce->seed = time(NULL);
 	threads_data[i].pixels = sce->pixels;
@@ -59,11 +59,11 @@ void			*renderer_compute_image2(void *sce2)
 	t_scene				*sce;
 
 	sce = (t_scene *)sce2;
-	sce->percent = malloc(sizeof(double));
+	sce->percent = monloc(sizeof(double));
 	*sce->percent = 0.;
 	*sce->ui->percent = 0.;
-	sce->pixels = (int*)malloc(sizeof(int) * sce->cam.w * sce->cam.h);
-	light = (t_vec3*)malloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
+	sce->pixels = (int*)monloc(sizeof(int) * sce->cam.w * sce->cam.h);
+	light = (t_vec3*)monloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
 	sce->light = light;
 	i = -1;
 	while (++i < CORE_COUNT)

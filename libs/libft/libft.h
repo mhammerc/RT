@@ -6,7 +6,7 @@
 /*   By: mhammerc <mhammerc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/02 18:13:57 by mhammerc          #+#    #+#             */
-/*   Updated: 2017/03/08 13:31:32 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 17:16:37 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -163,5 +163,6 @@ int						ft_dprintf(int fd, char const *format, ...);
 */
 
 void					ft_exit_fd(const char *message, int fd);
+void					*monloc(size_t size);
 
 #endif

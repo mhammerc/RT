@@ -18,7 +18,7 @@ t_ui	*get_interface(void)
 
 	if (ui == NULL)
 	{
-		ui = (t_ui*)malloc(sizeof(t_ui));
+		ui = (t_ui*)monloc(sizeof(t_ui));
 		ft_bzero(ui, sizeof(t_ui));
 	}
 	return (ui);

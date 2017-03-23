@@ -39,7 +39,7 @@ static t_menu_file		*create_file_menu(void)
 {
 	t_menu_file		*fmenu;
 
-	fmenu = (t_menu_file *)malloc(sizeof(t_menu_file));
+	fmenu = (t_menu_file *)monloc(sizeof(t_menu_file));
 	fmenu->menu = gtk_menu_new();
 	fmenu->open = gtk_menu_item_new_with_label("Open (F1)");
 	fmenu->save = gtk_menu_item_new_with_label("Save scene (F2)");

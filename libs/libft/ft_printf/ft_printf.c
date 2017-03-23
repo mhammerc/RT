@@ -40,7 +40,7 @@ int			ft_printf(char const *format, ...)
 	if (app.conversions == NULL)
 		init_conversions(&app);
 	app.written_chars = 0;
-	app.ap = (va_list*)malloc(sizeof(va_list));
+	app.ap = (va_list*)monloc(sizeof(va_list));
 	va_start(*app.ap, format);
 	parse(format, &app);
 	va_end(*app.ap);
@@ -63,7 +63,7 @@ int			ft_dprintf(int fd, char const *format, ...)
 	if (app.conversions == NULL)
 		init_conversions(&app);
 	app.written_chars = 0;
-	app.ap = (va_list*)malloc(sizeof(va_list));
+	app.ap = (va_list*)monloc(sizeof(va_list));
 	va_start(*app.ap, format);
 	parse(format, &app);
 	va_end(*app.ap);
@@ -99,7 +99,7 @@ int			ft_sprintf(char **str, char const *format, ...)
 	if (app.conversions == NULL)
 		init_conversions(&app);
 	app.written_chars = 0;
-	app.ap = (va_list*)malloc(sizeof(va_list));
+	app.ap = (va_list*)monloc(sizeof(va_list));
 	va_start(*app.ap, format);
 	parse(format, &app);
 	va_end(*app.ap);
@@ -111,7 +111,7 @@ int			ft_sprintf(char **str, char const *format, ...)
 		len += list->content_size;
 		list = list->next;
 	}
-	*str = (char*)malloc(sizeof(char) * (len + 1));
+	*str = (char*)monloc(sizeof(char) * (len + 1));
 	if (!*str)
 		return (0);
 	ft_sprintf2(str, len, &list, &app);

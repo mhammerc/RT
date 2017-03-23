@@ -14,7 +14,7 @@
 
 static void	print(char **line, t_printf_info *info, int is_valid, char *s)
 {
-	*line = (char*)malloc(sizeof(char) * (info->prec + info->width + 1));
+	*line = (char*)monloc(sizeof(char) * (info->prec + info->width + 1));
 	if (info->width != 0 && info->width - info->prec > 0 && !info->left)
 	{
 		ft_memset(*line, info->pad, info->width - info->prec);
@@ -60,7 +60,7 @@ static int	compute(void *param, t_printf_info *info, int *i, char **s)
 		}
 		++(*i);
 	}
-	*s = (char*)malloc(sizeof(char) * (count + 1));
+	*s = (char*)monloc(sizeof(char) * (count + 1));
 	(*s)[count] = 0;
 	*i = -1;
 	j = 0;

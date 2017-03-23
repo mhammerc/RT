@@ -29,7 +29,7 @@ static void		vector3_edited(GtkWidget *widget, gdouble value, gpointer data)
 	group.y = (GtkWidget*)childs->data;
 	childs = childs->next;
 	group.z = (GtkWidget*)childs->data;
-	values = malloc(sizeof(t_vec3));
+	values = monloc(sizeof(t_vec3));
 	values->x = atof(gtk_entry_buffer_get_text(
 		gtk_entry_get_buffer(GTK_ENTRY(group.x))));
 	values->y = atof(gtk_entry_buffer_get_text(

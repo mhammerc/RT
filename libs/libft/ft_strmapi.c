@@ -20,7 +20,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 
 	IFNSETN(s);
 	IFNSETN(f);
-	new_s = (char*)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	new_s = (char*)monloc(sizeof(char) * (ft_strlen(s) + 1));
 	i = 0;
 	IFNSETN(new_s);
 	while (s[i])
