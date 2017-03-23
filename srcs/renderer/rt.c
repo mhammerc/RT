@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 23:04:23 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/22 23:41:40 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/23 12:36:01 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,7 @@ t_vec3			rt_light(t_scene *sce, t_ray ray)
 			sce->ambiant.color,
 			sce->ambiant.intensity);
 	ray.type = ray.type == REFLECTION_RAY ? REFLECTION_RAY : OCCLUSION_RAY;
+	ray.seed = sce.seed;
 	absorb = (t_vec3){0.0, 0.0, 0.0};
 	l = sce->spot;
 	while (l)

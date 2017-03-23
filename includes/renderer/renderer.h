@@ -8,7 +8,7 @@
 # include "shared.h"
 # include "csg.h"
 
-# define CORE_COUNT 4
+# define CORE_COUNT 16
 
 # define ALPHA_BITSHIFT 24
 # define R_BITSHIFT 0
