@@ -1,146 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   converter.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/23 09:48:25 by racousin          #+#    #+#             */
+/*   Updated: 2017/03/23 10:09:19 by racousin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include <stdlib.h>
 #include <libft.h>
 #include <math.h>
 #include "ui.h"
+#include "converter.h"
 #include "renderer.h"
-
-static int		is_obj(t_object *object)
-{
-	return (object->type < EMPTY);
-}
-
-static int		is_light(t_object *object)
-{
-	return (object->type == LIGHT);
-}
-
-static void		apply_parent_relative(t_obj *parent, t_obj *child)
-{
-	if (!parent)
-		return ;
-	child->pos = vec3_add(child->pos, parent->pos);
-}
-
-static void		convert_polygon(t_obj *obj, t_object *object)
-{
-	size_t			i;
-	size_t			j;
-	t_face			*face;
-	t_vec3			*sommets;
-
-	obj->length = fabs(obj->length);
-	if (obj->length == 0)
-		obj->length = 1;
-	obj->faces = (t_face*)malloc(sizeof(t_face) * object->nb_faces);
-	memcpy(obj->faces, object->faces, sizeof(t_face) * object->nb_faces);
-	i = 0;
-	while (i < obj->nb_faces)
-	{
-		face = obj->faces + i;
-		j = 0;
-		sommets = (t_vec3*)malloc(sizeof(t_vec3) * face->nb);
-		while (j < face->nb)
-		{
-			sommets[j] = vec3_mult(obj->length, face->sommets[j]);
-			sommets[j] = vec3_add(sommets[j], obj->pos);
-			j++;
-		}
-		face->sommets = sommets;
-		i++;
-	}
-}
-
-static void		convert_torus(t_obj *self)
-{
-	if (self->dir.x == 0 && self->dir.y == 0 && self->dir.z == 0)
-		self->dir.z = 1;
-	if (self->dir.x == 0)
-		self->dir.x = 0.07;
-	if (self->dir.y == 0)
-		self->dir.y = 0.07;
-	if (self->dir.z == 0)
-		self->dir.z = 0.07;
-	if (self->dir.x == 0)
-		self->dir.x = 0.07;
-	if (self->dir.y == 0)
-		self->dir.y = 0.07;
-	if (self->dir.z == 0)
-		self->dir.z = 0.07;
-	if (self->radius < 0.2)
-		self->radius = 0.2;
-	if (self->length < 0.1)
-		self->length = 0.1;
-	if (self->length > self->radius / 1.1)
-		self->length = self->radius / 1.1;
-}
-
-static void		convert_object2(t_obj *obj, t_object *object)
-{
-	obj->pos = object->pos;
-	obj->color = object->color;
-	if (vec3_norm2(object->rot) > EPS)
-		obj->dir = vec3_get_normalized(object->rot);
-	else
-		obj->dir = object->rot;
-	if (object->type == CONE)
-		obj->radius = cos(object->radius * DEG_TO_RAD);
-	else
-		obj->radius =  object->radius / 1000;
-	obj->length = object->length;
-	obj->param = object->length / 1000;
-	obj->type = object->type;
-	obj->kspec = object->kspec;
-	obj->kdiff = object->kdiff;
-	obj->kp = 256;
-	obj->rindex = object->rindex;
-	obj->transmittance = object->transmittance;
-	obj->reflectance = object->reflectance;
-	obj->intersect = get_obj_intersection(obj->type);
-	obj->normal = get_obj_normal(obj->type);
-	obj->left = NULL;
-	obj->right = NULL;
-	obj->csg = '0';
-	obj->nb_faces = object->nb_faces;
-	obj->faces = object->faces;
-	obj->have_texture = object->have_texture;
-	obj->texture = object->texture;
-}
-
-static void		convert_object(t_obj *obj, t_object *object, t_obj *parent)
-{
-	obj->pos = object->pos;
-	obj->color = object->color;
-	if (vec3_norm2(object->rot) > EPS)
-		obj->dir = vec3_get_normalized(object->rot);
-	else
-		obj->dir = object->rot;
-	if (object->type == CONE)
-		obj->radius = object->radius;
-	else
-		obj->radius = object->radius / 1000;
-	convert_object2(obj, object);
-	apply_parent_relative(parent, obj);
-	if (obj->type == POLYGONS)
-		convert_polygon(obj, object);
-	else if (obj->type == TORUS)
-		convert_torus(obj);
-}
-
-static void		convert_csg2(t_obj *renderer_obj, t_object *ui_root)
-{
-	renderer_obj->type = CSG;
-	renderer_obj->intersect = get_obj_intersection(renderer_obj->type);
-	renderer_obj->normal = get_obj_normal(renderer_obj->type);
-	renderer_obj->left = (t_obj*)malloc(sizeof(t_obj));
-	renderer_obj->right = (t_obj*)malloc(sizeof(t_obj));
-	renderer_obj->csg = ui_root->operation;
-	renderer_obj->pos = ui_root->pos;
-	renderer_obj->color = ui_root->color;
-	renderer_obj->dir = ui_root->rot;
-	renderer_obj->radius = ui_root->radius;
-	renderer_obj->length = ui_root->length;
-	renderer_obj->param = ui_root->length / 1000;
-}
 
 static int		convert_csg(t_obj *renderer_obj, t_list *objects, t_obj *parent)
 {
@@ -218,52 +93,6 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		fill_spot(objects->children, spots);
 	if (objects->next)
 		fill_spot(objects->next, spots);
-}
-
-static void		del_list(t_list **list)
-{
-	t_list	*object;
-	t_list	*next;
-
-	if (NULL == list)
-		return ;
-	object = *list;
-	while (object)
-	{
-		next = object->next;
-		free(object->content);
-		free(object);
-		object = next;
-	}
-	*list = NULL;
-}
-
-static void		del_list_obj(t_list **list)
-{
-	t_list	*object;
-	t_list	*next;
-	t_obj	*obj;
-	int		i;
-
-	if (!list)
-		return ;
-	object = *list;
-	while (object)
-	{
-		next = object->next;
-		obj = (t_obj*)object->content;
-		if (obj->type == POLYGONS)
-		{
-			i = -1;
-			while ((size_t)++i < obj->nb_faces)
-				free(obj->faces[i].sommets);
-			free(obj->faces);
-		}
-		free(object->content);
-		free(object);
-		object = next;
-	}
-	*list = NULL;
 }
 
 void			ask_for_new_image(t_ui *ui)

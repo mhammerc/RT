@@ -68,6 +68,8 @@ SRCS_NAME	=	main.c										\
 				ui/widgets/text_entry.c						\
 				ui/widgets/vector3_entry.c					\
 				converter/converter.c						\
+				converter/converter2.c						\
+				converter/converter_tools.c					\
 				parsers/file_saver/file_saver.c				\
 				parsers/file_saver/saver_tools.c			\
 				parsers/file_loader/file_loader.c			\
