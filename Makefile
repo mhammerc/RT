@@ -104,10 +104,10 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc -fdiagnostics-color=auto
 
-CFLAGS		=	-g -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra -Werror
+CFLAGS		=	-O3 -I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra -Werror -ffast-math
 CFLAGS		+=	$(GTK_CFLAGS)
 
-CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft -flto
+CLIBS		=	-O3 -lm -lpthread -L$(LFT_PATH) -lft -flto
 CLIBS		+=	$(GTK_CLIBS)
 
 SRCS		=	$(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
