@@ -1,0 +1,122 @@
+camera:
+	position: 0.5; 0.5; 7.0
+	lookAt: 0.5; 0.0; 0.0
+	up: 0.0; 1.0; 0.0
+
+object:
+	type: LIGHT
+	name: Light
+	position: 2.0; 5.0; 4.0
+	rotation: 0.0; 0.0; 0.0
+	color: 1.0; 1.0; 1.0
+	radius: 0.000000
+	length: 56.944444
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.0; -0.2; 0.0
+	rotation: 0.0; 1.0; 0.0
+	color: 0.0; 0.0; 1.0
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 3
+	texture_filename: /sgoinfre/goinfre/Perso/vfour/felt.jpg
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: 0.0; 0.0; 0.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.9; 0.9; 0.9
+	radius: 50.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 1
+	texture_filename: /sgoinfre/goinfre/Perso/vfour/ball3.jpg
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: 1.0; 0.0; 1.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.0; 0.0; 1.0
+	radius: 50.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 1
+	texture_filename: /sgoinfre/goinfre/Perso/vfour/ball14.jpg
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: -0.5; 0.0; 2.0
+	rotation: 0.0; 0.0; 0.0
+	color: 0.0; 0.0; 1.0
+	radius: 50.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 1
+	texture_filename: /sgoinfre/goinfre/Perso/vfour/ball13.jpg
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: 0.4; 0.0; 4.0
+	rotation: 1.0; 1.0; 0.0
+	color: 0.9; 0.9; 0.9
+	radius: 50.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.722222
+	reflectance: 0.280303
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 1
+	texture_filename: /sgoinfre/goinfre/Perso/vfour/ball15.jpg
+
+object:
+	type: LIGHT
+	name: Light
+	position: -3.0; 5.0; 4.0
+	rotation: 0.0; 0.0; 0.0
+	color: 1.0; 1.0; 1.0
+	radius: 0.100000
+	length: 34.722222
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
