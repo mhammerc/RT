@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:28:58 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:27:56 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 01:47:54 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,8 +67,12 @@ static void		wavefront_file_set(GtkFileChooserButton *widget,
 void			add_objext_widgets(t_ui *ui, t_object *focused_obj,
 															GtkWidget *props)
 {
+	GtkWidget	*file_box;
+	GtkWidget	*file_title;
 	GtkWidget	*file_chooser;
 
+	file_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+	file_title = gtk_label_new_with_mnemonic("Model .obj	");
 	file_chooser = gtk_file_chooser_button_new(".obj Wavefront model file",
 												GTK_FILE_CHOOSER_ACTION_OPEN);
 	if (focused_obj->filename)
@@ -76,6 +80,8 @@ void			add_objext_widgets(t_ui *ui, t_object *focused_obj,
 														focused_obj->filename);
 	g_signal_connect(file_chooser, "file-set",
 											G_CALLBACK(wavefront_file_set), ui);
-	gtk_container_add(GTK_CONTAINER(props), gtk_label_new("Model .obj"));
-	gtk_container_add(GTK_CONTAINER(props), file_chooser);
+	gtk_widget_set_size_request(file_chooser, 130, 0);
+	gtk_container_add(GTK_CONTAINER(file_box), file_title);
+	gtk_container_add(GTK_CONTAINER(file_box), file_chooser);
+	gtk_container_add(GTK_CONTAINER(props), file_box);
 }

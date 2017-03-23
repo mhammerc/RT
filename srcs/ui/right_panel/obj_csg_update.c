@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:34:09 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:11:20 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 02:00:12 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,8 +46,12 @@ static void	bounding_upd(GtkComboBox *widget, gpointer user_data)
 
 void		add_csg_widgets(t_ui *ui, t_object *focused_obj, GtkWidget *props)
 {
+	GtkWidget	*bound_box;
+	GtkWidget	*bound_title;
 	GtkWidget	*bound;
 
+	bound_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
+	bound_title = gtk_label_new_with_mnemonic("Operation	");
 	bound = gtk_combo_box_text_new();
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bound), 0, "None");
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(bound), 0, "Intersection");
@@ -56,5 +60,8 @@ void		add_csg_widgets(t_ui *ui, t_object *focused_obj, GtkWidget *props)
 	gtk_combo_box_set_active(GTK_COMBO_BOX(bound),
 							get_operation_id_from_code(focused_obj->operation));
 	g_signal_connect(bound, "changed", G_CALLBACK(bounding_upd), ui);
-	gtk_container_add(GTK_CONTAINER(props), bound);
+	gtk_widget_set_size_request(bound, 130, 0);
+	gtk_container_add(GTK_CONTAINER(bound_box), bound_title);
+	gtk_container_add(GTK_CONTAINER(bound_box), bound);
+	gtk_container_add(GTK_CONTAINER(props), bound_box);
 }
