@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   renderer.h                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/23 10:32:33 by aditsch           #+#    #+#             */
+/*   Updated: 2017/03/23 10:32:34 by aditsch          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef RENDERER_H
 # define RENDERER_H
 
@@ -83,7 +95,7 @@ int					torus_intersect(t_obj *self, t_ray *ray,
 		t_interval *interval);
 t_vec3				torus_normal(t_obj *self, t_vec3 pos);
 
-typedef	int			(*t_intersect_f);
+typedef	int			(*t_intersect_f)(struct s_obj*, t_ray*, t_interval*);
 typedef t_vec3		(*t_normal_f)(t_obj*, t_vec3);
 
 t_intersect_f		get_obj_intersection(enum e_object_type type);

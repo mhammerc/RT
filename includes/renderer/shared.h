@@ -107,6 +107,8 @@ typedef struct s_obj		t_obj;
 
 typedef struct s_ray		t_ray;
 typedef struct s_interval	t_interval;
+typedef	int			(*t_intersect_f2)(struct s_obj*, t_ray*, t_interval*);
+typedef t_vec3		(*t_normal_f2)(t_obj*, t_vec3);
 
 struct						s_obj
 {
@@ -130,9 +132,8 @@ struct						s_obj
 	char					csg;
 	int						normal_dir;
 	struct s_obj			*csg_ref;
-	int						(*intersect)(struct s_obj *self,
-			t_ray *ray, t_interval*);
-	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
+	t_intersect_f2			intersect;
+	t_normal_f2				normal;
 	size_t					nb_faces;
 	t_face					*faces;
 	enum e_texture_type		have_texture;
