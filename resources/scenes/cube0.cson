@@ -65,7 +65,7 @@ object:
 		reflectance: 0.100000
 		rindex: 1.420000
 		csgOperation: 0
-		file: /Users/racousin/rt/resources/models/cube.obj
+		file: resources/models/cube.obj
 		texture: 0
 
 	object:
@@ -131,4 +131,3 @@ object:
 		rindex: 1.420000
 		csgOperation: 0
 		texture: 0
-

@@ -33,7 +33,7 @@ object:
 	reflectance: 0.875000
 	rindex: 1.902778
 	csgOperation: 0
-	file: /Users/gpoblon/Documents/42/RT/resources/models/pyramid.obj
+	file: resources/models/pyramid.obj
 	texture: 0
 
 object:
@@ -67,7 +67,7 @@ object:
 	rindex: 1.420000
 	csgOperation: 0
 	texture: 3
-	texture_filename: /Users/gpoblon/Documents/42/RT/resources/textures/Brick_ground.jpg
+	texture_filename: resources/textures/Brick_ground.jpg
 
 object:
 	type: LIGHT
@@ -84,4 +84,3 @@ object:
 	rindex: 1.420000
 	csgOperation: 0
 	texture: 0
-

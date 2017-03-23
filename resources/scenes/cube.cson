@@ -33,6 +33,5 @@ object:
 	reflectance: 0.000000
 	rindex: 1.420000
 	csgOperation: 0
-	file: /Users/mhammerc/Dev/rt/resources/models/cube.obj
+	file: resources/models/cube.obj
 	texture: 0
-

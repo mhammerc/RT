@@ -33,6 +33,5 @@ object:
 	reflectance: 0.541667
 	rindex: 1.708333
 	csgOperation: 0
-	file: /Users/gpoblon/Documents/42/RT/resources/models/ground+wolf.obj
+	file: resources/models/ground+wolf.obj
 	texture: 0
-

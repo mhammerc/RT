@@ -146,7 +146,7 @@ object:
 		rindex: 1.420000
 		csgOperation: 0
 		texture: 1
-		texture_filename: /Users/racousin/test/resources/textures/sun.jpg
+		texture_filename: resources/textures/sun.jpg
 
 	object:
 		type: CYLINDER
@@ -195,7 +195,7 @@ object:
 		rindex: 1.420000
 		csgOperation: 0
 		texture: 1
-		texture_filename: /Users/racousin/test/resources/textures/Mars.jpg
+		texture_filename: resources/textures/Mars.jpg
 
 	object:
 		type: CSG
@@ -260,4 +260,3 @@ object:
 	rindex: 1.420000
 	csgOperation: 0
 	texture: 0
-
