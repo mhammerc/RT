@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 21:33:35 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/22 21:33:36 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/03/23 11:19:28 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	create_filters_box(t_ui *ui)
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Sepia");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(filters), 0);
 	g_signal_connect(filters, "changed", G_CALLBACK(filters_edited), ui);
-	gtk_widget_set_size_request(filters, 130, 0);
+	gtk_widget_set_size_request(filters, 158, 0);
 	gtk_container_add(GTK_CONTAINER(filters_box), filters_title);
 	gtk_container_add(GTK_CONTAINER(filters_box), filters);
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), filters_box);
@@ -68,7 +68,7 @@ void	create_aa_box(t_ui *ui)
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(aa), 0, "8x8");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(aa), 0);
 	g_signal_connect(aa, "changed", G_CALLBACK(aa_edited), ui);
-	gtk_widget_set_size_request(aa, 130, 0);
+	gtk_widget_set_size_request(aa, 158, 0);
 	gtk_container_add(GTK_CONTAINER(aa_box), aa_title);
 	gtk_container_add(GTK_CONTAINER(aa_box), aa);
 	gtk_container_add(GTK_CONTAINER(ui->rp->scene_prop), aa_box);

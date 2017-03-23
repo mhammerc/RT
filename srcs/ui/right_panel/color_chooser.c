@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 21:35:58 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/23 01:40:29 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 11:14:53 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void		create_color_chooser(t_ui *ui, t_vec3 color)
 	gtk_color.blue = color.z;
 	gtk_color.alpha = 1;
 	color_box = gtk_box_new(GTK_ORIENTATION_HORIZONTAL, 5);
-	color_title = gtk_label_new_with_mnemonic("Color		");
+	color_title = gtk_label_new_with_mnemonic("Color	");
 	color_chooser = gtk_color_button_new();
 	ui->rp->color_chooser = color_chooser;
 	g_signal_connect(G_OBJECT(color_chooser), "color-set",

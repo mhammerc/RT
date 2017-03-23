@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 16:15:34 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/23 01:49:36 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/23 11:26:54 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ static void		left_panel_tree(t_ui *ui, t_left_panel *lp)
 		G_CALLBACK(make_lock), ui);
 	g_signal_connect_after(GTK_SCROLLABLE(lp->tree.tree),
 		"button-release-event", G_CALLBACK(button_relase), ui);
-	gtk_widget_set_size_request(lp->tree.tree, 277, 863);
+	gtk_widget_set_size_request(lp->tree.tree, 277, 868);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree), lp->tree.col_el);
 	gtk_tree_view_append_column(GTK_TREE_VIEW(lp->tree.tree),
 		lp->tree.col_type);
@@ -89,7 +89,7 @@ void			left_panel(t_ui *ui, t_left_panel *lp)
 	left_panel_btn(ui, lp);
 	gtk_container_add(GTK_CONTAINER(ui->workspace), lp->lp_box);
 	scroll = gtk_scrolled_window_new(NULL, NULL);
-	gtk_widget_set_size_request(scroll, 277, 863);
+	gtk_widget_set_size_request(scroll, 277, 868);
 	gtk_container_add(GTK_CONTAINER(scroll), lp->tree.tree);
 	gtk_container_add(GTK_CONTAINER(lp->lp_box), lp->lp_btns.button);
 	gtk_container_add(GTK_CONTAINER(lp->lp_box), scroll);
