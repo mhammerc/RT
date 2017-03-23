@@ -38,8 +38,8 @@ static void		add_situational_widgets_aux(t_ui *ui, t_object *focused_obj,
 	GtkWidget	*radius;
 	GtkWidget	*length;
 
-	if (type == SPHERE || type == CONE || type == CYLINDER ||
-												type == TORUS || type == DISK)
+	if (type == SPHERE || type == CONE || type == CYLINDER
+			|| type == TORUS || type == DISK || type == LIGHT)
 	{
 		radius = create_scale_entry("Radius	", focused_obj->radius, 0, 1000);
 		g_signal_connect(radius, "rt-scale-entry-edited",
