@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   csg.h                                              :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/03/23 10:19:04 by racousin          #+#    #+#             */
+/*   Updated: 2017/03/23 10:27:19 by racousin         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CSG_H
 # define CSG_H
 
@@ -23,7 +35,8 @@ void	ft_union(t_interval *left, t_interval *right, t_interval *interval);
 int		is_disjoint(t_interval *a_i, t_interval *a_j, int i, int j);
 void	inter(t_interval *left, t_interval *right, t_interval *interval);
 void	minus(t_interval *left, t_interval *right, t_interval *interval);
-int		minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **collided);
+int		minimal_positiv(t_interval *interval,
+		t_obj *obj, double *d, t_obj **collided);
 int		minus_case(t_interval *left, t_interval *right, t_interval *interval);
 int		minus_test0(t_interval *a_i, t_interval *a_j, int i, int j);
 int		minus_test00(t_interval *a_i, t_interval *a_j, int i, int j);

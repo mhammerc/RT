@@ -1,21 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   shared.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/02/24 11:35:18 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/22 22:30:00 by racousin         ###   ########.fr       */
-/*   Updated: 2017/03/22 22:22:36 by vfour            ###   ########.fr       */
+/*   Created: 2017/03/23 10:15:10 by racousin          #+#    #+#             */
+/*   Updated: 2017/03/23 10:18:30 by racousin         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#ifndef SHARED_H
+# define SHARED_H
 # include <libft.h>
 # include <texture_loader.h>
-
 # define DEG_TO_RAD M_PI / 180.0
 # define RAD_TO_DEG 180.0 / M_PI
 # define BIG_DIST 1e12
@@ -32,9 +30,9 @@
 # define ABSORB_COEFF 0.15
 # define EXPOSURE -0.1
 
-typedef struct s_ui	t_ui;
+typedef struct s_ui			t_ui;
 
-enum e_object_type
+enum						e_object_type
 {
 	SPHERE,
 	PLANE,
@@ -49,7 +47,7 @@ enum e_object_type
 	OBJECT_TYPE_COUNT
 };
 
-enum e_texture_type
+enum						e_texture_type
 {
 	NO_TEXTURE,
 	SPHERICAL,
@@ -59,7 +57,7 @@ enum e_texture_type
 	TEXTURE_TYPE_COUNT
 };
 
-enum e_filters
+enum						e_filters
 {
 	NONE,
 	BLACK_WHITE,
@@ -80,7 +78,6 @@ typedef struct				s_vec2
 	double					x;
 	double					y;
 }							t_vec2;
-
 
 struct						s_cam
 {
@@ -133,7 +130,8 @@ struct						s_obj
 	char					csg;
 	int						normal_dir;
 	struct s_obj			*csg_ref;
-	int						(*intersect)(struct s_obj *self, t_ray *ray, t_interval*);
+	int						(*intersect)(struct s_obj *self,
+			t_ray *ray, t_interval*);
 	t_vec3					(*normal)(struct s_obj *self, t_vec3 pos);
 	size_t					nb_faces;
 	t_face					*faces;
@@ -156,11 +154,11 @@ struct						s_interval
 	int						nb_hit;
 };
 
-typedef struct		s_obj_stack
+typedef struct				s_obj_stack
 {
 	t_obj			*obj[MAX_REC_DEPTH];
 	int				size;
-}					t_obj_stack;
+}							t_obj_stack;
 
 struct						s_ray
 {
@@ -199,6 +197,7 @@ struct						s_scene
 };
 typedef struct s_scene		t_scene;
 
-int			minimal_positiv(t_interval *interval, t_obj *obj, double *d, t_obj **collided);
+int							minimal_positiv(t_interval *interval,
+		t_obj *obj, double *d, t_obj **collided);
 
 #endif
