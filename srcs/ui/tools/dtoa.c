@@ -22,6 +22,6 @@ char		*dtoa(double value)
 	char	*output;
 
 	output = (char*)malloc(sizeof(char) * 10);
-	snprintf(output, 5, "%f", value);
+	snprintf(output, 10, "%f", value);
 	return (output);
 }
