@@ -10,6 +10,12 @@ SRCS_NAME	=	main.c										\
 				renderer/rt.c								\
 				renderer/ray_trace.c						\
 				renderer/color_light.c						\
+				renderer/texture.c							\
+				renderer/texture2.c							\
+				renderer/filters.c							\
+				renderer/object_list.c						\
+				renderer/main_thread.c						\
+				renderer/compute_threads.c					\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\
 				renderer/maths/solve.c						\

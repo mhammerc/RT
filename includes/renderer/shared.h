@@ -195,6 +195,7 @@ struct						s_scene
 	int						*pixels;
 	int						aa;
 	enum e_filters			filter;
+	t_vec3					*light;
 };
 typedef struct s_scene		t_scene;
 

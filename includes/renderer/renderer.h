@@ -31,6 +31,13 @@ typedef struct		s_renderer_thread
 	int				y_range;
 }					t_renderer_thread;
 
+typedef struct		s_vec2i
+{
+	int				x;
+	int				y;
+	t_ray			r;
+}					t_vec2i;
+
 
 void		renderer_compute_image();
 
@@ -88,7 +95,7 @@ t_obj_stack	stack_new(void);
 t_ray		ray_new(t_vec3 pos, t_vec3 aim);
 t_ray		ray_new_dir(t_ray ray, t_vec3 dir);
 t_ray		reflected_ray(t_ray ray);
-t_ray	refracted_ray(t_ray ray);
+t_ray		refracted_ray(t_ray ray);
 
 int			colorcomp_to_rgb(int r, int g, int b);
 void		light_to_pixel(t_vec3 *light, int *px, int w, int h);
@@ -101,5 +108,17 @@ int			rt_object(t_scene *sce, t_ray *ray);
 t_vec3		rt_shadow(t_scene *sce, t_ray ray);
 t_vec3		rt_light(t_scene *sce, t_ray ray);
 int			ray_object(t_obj *obj, t_ray *ray);
+
+void 		light_apply_filters(t_scene *sce, t_vec3 *light, int w, int h);
+
+void		lstfree(t_list *begin);
+t_list		*ft_lstdup(t_list *original_begin);
+
+void		*renderer_compute_image2(void *sce2);
+void		*thread_compute_image(void *thread_data);
+void		update_progress_bar(t_scene *scene, double percent_per_line);
+
+t_vec3		tex_spherical(t_ray ray);
+t_vec3		tex_spherical_damier(t_ray ray);
 
 #endif
