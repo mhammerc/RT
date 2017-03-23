@@ -3,6 +3,7 @@
 
 # include <libft.h>
 # include <pthread.h>
+# include <stdlib.h>
 
 # include "shared.h"
 # include "csg.h"
@@ -20,6 +21,9 @@
 # define LOCATION_NONE 0
 # define LOCATION_INSIDE -1
 # define LOCATION_OUTSIDE 1
+
+# define INVRANDMAX (1.0/(double)RAND_MAX)
+# define NRAY_SHADOW 64
 
 typedef struct		s_renderer_thread
 {
@@ -98,8 +102,13 @@ t_vec3		color_average(t_vec3 *aa, int size);
 
 t_vec3		ray_trace(t_scene *sce, t_ray ray, int depth);
 int			rt_object(t_scene *sce, t_ray *ray);
-t_vec3		rt_shadow(t_scene *sce, t_ray ray);
+//t_vec3		rt_shadow(t_scene *sce, t_ray ray);
 t_vec3		rt_light(t_scene *sce, t_ray ray);
 int			ray_object(t_obj *obj, t_ray *ray);
+
+
+t_vec3		rand_sphere(t_vec3 c, double r);
+t_vec3		absorb_light_ray(t_list *l_obj, t_ray ray);
+t_vec3		rt_shadow(t_list *l_obj, t_spot *spot, t_ray ray);
 
 #endif

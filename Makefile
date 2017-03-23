@@ -9,6 +9,7 @@ SRCS_NAME	=	main.c										\
 				renderer/ray.c								\
 				renderer/rt.c								\
 				renderer/ray_trace.c						\
+				renderer/shadow.c							\
 				renderer/color_light.c						\
 				renderer/maths/vec3_norm.c					\
 				renderer/maths/vec3_op.c					\

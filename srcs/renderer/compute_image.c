@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <strings.h>
 #include <math.h>
+#include <time.h>
+#include <stdlib.h>
 
 #include "ui.h"
 #include "renderer.h"
@@ -259,6 +261,7 @@ static void		*thread_compute_image(void *thread_data)
 	t_vec3					aa[64];
 	double					percent_per_line;
 
+	srand(time(NULL));
 	data = (t_renderer_thread*)thread_data;
 	sce = data->sce;
 	sce->obj = ft_lstdup(sce->obj);

@@ -180,6 +180,7 @@ struct						s_spot
 {
 	t_vec3					pos;
 	t_vec3					color;
+	double					radius;
 	double					intensity;
 };
 typedef struct s_spot		t_spot;
