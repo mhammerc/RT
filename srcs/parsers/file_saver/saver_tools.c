@@ -14,7 +14,7 @@
 
 void	print_vec3(FILE *file, char *key, t_vec3 value, char *tab)
 {
-	fprintf(file, "%s\t%s: %.1f; %.1f; %.1f\n", tab, key,
+	fprintf(file, "%s\t%s: %f; %f; %f\n", tab, key,
 		value.x, value.y, value.z);
 }
 
