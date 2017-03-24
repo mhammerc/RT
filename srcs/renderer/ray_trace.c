@@ -6,7 +6,7 @@
 /*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 23:04:28 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/22 23:40:16 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/24 14:23:01 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,10 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 	t_vec3		light;
 
 	light = (t_vec3){0, 0, 0};
+	/*
+	if (direct_light(sce, ray, &light))
+		return (light);
+		*/
 	if (rt_object(sce, &ray))
 	{
 		ray.dist = ray.dist < 1.0 ? 1.0 : ray.dist + ray.t;
@@ -99,6 +103,8 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 			if (ray.collided->transmittance > 0)
 				light = acc_refr_light(sce, ray, light, depth);
 		}
+		if (sce->global_illum)
+			light = vec3_add(light, global_illum(sce, ray, depth));
 	}
 	if (ray.collided)
 		free(ray.collided);

@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:32:33 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/23 10:32:34 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/03/24 14:25:55 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,6 +36,8 @@
 
 # define INVRANDMAX (1.0/(double)RAND_MAX)
 # define NRAY_SHADOW 64
+# define NRAY_GLOBAL 64
+# define GLOBAL_ATTEN 1.0
 
 typedef struct		s_renderer_thread
 {
@@ -155,5 +157,6 @@ t_vec3				tex_spherical_damier(t_ray ray);
 t_vec3				rand_sphere(t_vec3 c, double r, unsigned int *seed);
 t_vec3				absorb_light_ray(t_list *l_obj, t_ray ray);
 t_vec3				rt_shadow(t_list *l_obj, t_spot *spot, t_ray ray);
+t_vec3				global_illum(t_scene *sce, t_ray ray, int depth);
 
 #endif

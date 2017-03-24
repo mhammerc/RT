@@ -14,6 +14,7 @@ SRCS_NAME	=	main.c										\
 				renderer/texture.c							\
 				renderer/texture2.c							\
 				renderer/filters.c							\
+				renderer/global_illum.c						\
 				renderer/object_list.c						\
 				renderer/main_thread.c						\
 				renderer/compute_threads.c					\

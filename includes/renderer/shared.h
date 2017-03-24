@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:15:10 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 17:15:13 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/24 12:45:18 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -197,6 +197,7 @@ struct						s_scene
 	enum e_filters			filter;
 	t_vec3					*light;
 	unsigned int			seed;
+	int						global_illum;
 };
 typedef struct s_scene		t_scene;
 
