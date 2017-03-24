@@ -6,7 +6,7 @@
 /*   By: mhammerc <mhammerc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 12:57:54 by mhammerc          #+#    #+#             */
-/*   Updated: 2017/03/23 12:57:55 by mhammerc         ###   ########.fr       */
+/*   Updated: 2017/03/24 17:20:10 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ t_vec3			absorb_light_ray(t_list *l_obj, t_ray ray)
 	ray.collided = NULL;
 	while (l_obj)
 	{
-		ray.t = dist;
 		if (ray_object((t_obj*)l_obj->content, &ray))
 		{
 			if (ray.collided->transmittance > 0)
