@@ -6,7 +6,7 @@
 /*   By: mhammerc <mhammerc@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 12:57:54 by mhammerc          #+#    #+#             */
-/*   Updated: 2017/03/24 17:20:10 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/14 12:18:17 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,11 +50,9 @@ t_vec3			rand_sphere(t_vec3 c, double r, unsigned int *seed)
 
 t_vec3			absorb_light_ray(t_list *l_obj, t_ray ray)
 {
-	double	dist;
 	t_vec3	absorb;
 
 	absorb = (t_vec3){1, 1, 1};
-	dist = ray.t;
 	ray.type = REFLECTION_RAY;
 	ray.collided = NULL;
 	while (l_obj)
