@@ -3,21 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   color_light.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: vfour <vfour@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 22:29:01 by vfour             #+#    #+#             */
-/*   Updated: 2017/03/23 12:35:59 by vfour            ###   ########.fr       */
+/*   Updated: 2017/03/24 15:31:09 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <math.h>
 #include "renderer.h"
 
-int			colorcomp_to_rgb(int r, int g, int b)
+int			colorcomp_to_rgb(t_scene *sce, int r, int g, int b)
 {
 	r = r < 0 ? 0 : (r & 0xff);
 	g = g < 0 ? 0 : (g & 0xff);
 	b = b < 0 ? 0 : (b & 0xff);
+	if (sce->filter == CARTOON)
+		filter_cartoon(&r, &g, &b);
 	return ((0xff << ALPHA_BITSHIFT)
 			+ (r << R_BITSHIFT)
 			+ (g << G_BITSHIFT)
@@ -28,16 +30,20 @@ int			colorcomp_to_rgb(int r, int g, int b)
 ** Exposure function: color = 255 * (1 - exp(constant * light));
 */
 
-void		light_to_pixel(t_vec3 *light, int *px, int w, int h)
+void		light_to_pixel(t_scene *sce, t_vec3 *light, int *px)
 {
 	int		i;
 	int		len;
 
-	len = w * h;
+	len = sce->cam.w * sce->cam.h;
 	i = -1;
+	if (sce->filter == BLACK_WHITE)
+		filter_black_and_white(light, len);
+	if (sce->filter == SEPIA)
+		filter_sepia(light, len);
 	while (++i < len)
 	{
-		px[i] = colorcomp_to_rgb(255. * (1.0 - exp(EXPOSURE * light[i].x)),
+		px[i] = colorcomp_to_rgb(sce, 255. * (1.0 - exp(EXPOSURE * light[i].x)),
 									255. * (1.0 - exp(EXPOSURE * light[i].y)),
 									255. * (1.0 - exp(EXPOSURE * light[i].z)));
 	}

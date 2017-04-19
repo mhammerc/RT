@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 16:18:27 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 16:33:38 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/12 10:41:53 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ void			open_dialog_open(void)
 	char					*filename;
 
 	ui = get_interface();
+	clear_properties_list(ui);
 	dialog = gtk_file_chooser_dialog_new("Open File", GTK_WINDOW(ui->window),
 				GTK_FILE_CHOOSER_ACTION_OPEN, "_Cancel", GTK_RESPONSE_CANCEL,
 				"_Open", GTK_RESPONSE_ACCEPT, NULL);
