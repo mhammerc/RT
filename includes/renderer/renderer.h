@@ -35,8 +35,8 @@
 # define LOCATION_OUTSIDE 1
 
 # define INVRANDMAX (1.0/(double)RAND_MAX)
-# define NRAY_SHADOW 64
-# define NRAY_GLOBAL 64
+# define NRAY_SHADOW 16
+# define NRAY_GLOBAL 16
 # define GLOBAL_ATTEN 1.0
 
 typedef struct		s_renderer_thread

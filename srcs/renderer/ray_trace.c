@@ -48,9 +48,8 @@ int				ray_object(t_obj *obj, t_ray *ray)
 	return (location == LOCATION_NONE ? 0 : 1);
 }
 
-static t_vec3	acc_refl_light(t_scene *sce,
+static t_vec3	reflected_light(t_scene *sce,
 								t_ray ray,
-								t_vec3 light,
 								int depth)
 {
 	double		coeff;
@@ -59,35 +58,33 @@ static t_vec3	acc_refl_light(t_scene *sce,
 	refl_light = ray_trace(sce, reflected_ray(ray), depth + 1);
 	coeff = REFL_ATTENUATION * ray.collided->reflectance;
 	coeff /= ray.dist * (1.0 - ray.collided->transmittance);
-	light = vec3_add(light, color_light_mix(get_texture_color(ray),
-					refl_light, coeff));
-	return (light);
+	return (color_light_mix(get_texture_color(ray), refl_light, coeff));
 }
 
-static t_vec3	acc_refr_light(t_scene *sce,
+static t_vec3	refracted_light(t_scene *sce,
 								t_ray ray,
-								t_vec3 light,
 								int depth)
 {
-	t_vec3		refl_light;
+	t_vec3		refr_light;
 	t_ray		new_ray;
 
 	new_ray = refracted_ray(ray);
 	if (new_ray.t > 0)
 	{
-		refl_light = ray_trace(sce, new_ray, depth + 1);
-		light = vec3_add(light,
-				color_light_mix(get_texture_color(ray),
-				refl_light, ray.collided->transmittance));
+		refr_light = ray_trace(sce, new_ray, depth + 1);
+		return (color_light_mix(get_texture_color(ray),
+				refr_light, ray.collided->transmittance));
 	}
-	return (light);
+	return ((t_vec3){0.0, 0.0, 0.0});
 }
 
 t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 {
 	t_vec3		light;
+	t_vec3		glob_light;
+	t_vec3		ll;
 
-	light = (t_vec3){0, 0, 0};
+	light = (t_vec3){0.0, 0.0, 0.0};
 	/*
 	if (direct_light(sce, ray, &light))
 		return (light);
@@ -95,16 +92,22 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 	if (rt_object(sce, &ray))
 	{
 		ray.dist = ray.dist < 1.0 ? 1.0 : ray.dist + ray.t;
+		ray.seed = &sce->seed;
 		light = rt_light(sce, ray);
 		if (depth < MAX_REC_DEPTH)
 		{
 			if (ray.collided->reflectance > 0)
-				light = acc_refl_light(sce, ray, light, depth);
+				light = vec3_add(light, reflected_light(sce, ray, depth));
 			if (ray.collided->transmittance > 0)
-				light = acc_refr_light(sce, ray, light, depth);
+				light = vec3_add(light, refracted_light(sce, ray, depth));
+			//TODO:if (sce->global_illum)
+			glob_light = global_illum(sce, ray, depth);
+			light = vec3_add(light, glob_light);
+			//printf("ll:%.2f, %.2f, %.2f\ngl:%.2f, %.2f, %.2f\ntl:%.2f,%.2f,%.2f\n", light.x, light.y, light.z, glob_light.x, glob_light.y, glob_light.z, ll.x, ll.y, ll.z);
+			//light = ll;
+			//light = vec3_add(light, glob_light);
+			//light = vec3_add(light, global_illum(sce, ray, depth));
 		}
-		if (sce->global_illum)
-			light = vec3_add(light, global_illum(sce, ray, depth));
 	}
 	if (ray.collided)
 		free(ray.collided);
