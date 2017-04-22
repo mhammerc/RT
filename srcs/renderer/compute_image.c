@@ -60,7 +60,7 @@ int				check_renderer(void *data)
 
 void			renderer_compute_image(t_scene *sce)
 {
-	pthread_t thread;
+	pthread_t	thread;
 
 	sce->ui->rendering = 1;
 	pthread_create(&thread, NULL, renderer_compute_image2, sce);

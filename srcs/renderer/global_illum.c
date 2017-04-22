@@ -1,23 +1,6 @@
 #include <stdlib.h>
 #include "renderer.h"
 
-static int		light_intersect(t_spot spot, t_ray ray)
-{
-	double		b;
-	double		c;
-	t_vec3		ray_sphere;
-	t_interval	interval;
-
-	if (spot.radius < EPS)
-		return (0);
-	ray_sphere = vec3_sub(ray.pos, spot.pos);
-	b = vec3_dot(ray_sphere, ray.dir);
-	c = vec3_norm2(ray_sphere) - spot.radius;
-	if ((interval.nb_hit = norm_quad_solve(b, c, &interval)))
-		return (1);
-	return (0);
-}
-
 static t_vec3	rand_half_sphere(t_vec3 c, double r, t_vec3 n, unsigned int *seed)
 {
 	t_vec3	v;

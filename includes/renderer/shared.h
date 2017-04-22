@@ -29,6 +29,7 @@
 # define R_DEFAULT 1.0
 # define ABSORB_COEFF 0.15
 # define EXPOSURE -0.1
+# define IED 0.05
 
 typedef struct s_ui			t_ui;
 
@@ -63,6 +64,13 @@ enum						e_filters
 	BLACK_WHITE,
 	SEPIA,
 	FILTERS_COUNT
+};
+
+enum						e_cam_type
+{
+	CAM_NORMAL,
+	CAM_LEFT,
+	CAM_RIGHT
 };
 
 struct						s_vec3
@@ -198,6 +206,7 @@ struct						s_scene
 	t_vec3					*light;
 	unsigned int			seed;
 	int						global_illum;
+	enum e_cam_type			stereo;
 };
 typedef struct s_scene		t_scene;
 

@@ -28,14 +28,12 @@ int			colorcomp_to_rgb(int r, int g, int b)
 ** Exposure function: color = 255 * (1 - exp(constant * light));
 */
 
-void		light_to_pixel(t_vec3 *light, int *px, int w, int h)
+void		light_to_pixel(t_vec3 *light, int *px, int nb_pixels)
 {
 	int		i;
-	int		len;
 
-	len = w * h;
 	i = -1;
-	while (++i < len)
+	while (++i < nb_pixels)
 	{
 		px[i] = colorcomp_to_rgb(255. * (1.0 - exp(EXPOSURE * light[i].x)),
 									255. * (1.0 - exp(EXPOSURE * light[i].y)),
