@@ -13,6 +13,7 @@ SRCS_NAME	=	main.c										\
 				renderer/color_light.c						\
 				renderer/texture.c							\
 				renderer/texture2.c							\
+				renderer/tools_perlin.c						\
 				renderer/filters.c							\
 				renderer/global_illum.c						\
 				renderer/stereo.c							\
