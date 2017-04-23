@@ -69,6 +69,7 @@ static t_vec3	refracted_light(t_scene *sce,
 	t_ray		new_ray;
 
 	new_ray = refracted_ray(ray);
+	new_ray.type = TRANSMISSION_RAY;
 	if (new_ray.t > 0)
 	{
 		refr_light = ray_trace(sce, new_ray, depth + 1);
@@ -94,13 +95,14 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 				light = vec3_add(light, reflected_light(sce, ray, depth));
 			if (ray.collided->transmittance > 0)
 				light = vec3_add(light, refracted_light(sce, ray, depth));
-			//TODO:if (sce->global_illum)
-			//light = vec3_add(light, global_illum(sce, ray, depth);
+			if (sce->global_illum)
+				light = vec3_add(light, global_illum(sce, ray, depth));
 		}
 	}
 	if (ray.collided)
 		free(ray.collided);
-	if (ray.type == REFLECTION_RAY)
-		return (vec3_mult(1.0 / ray.dist, light));
-	return (light);
+	if (ray.type != TRANSMISSION_RAY)
+		return (vec3_mult(1.0 / (ray.dist * ray.dist), light));
+	else
+		return (light);
 }

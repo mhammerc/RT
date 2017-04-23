@@ -116,7 +116,7 @@ void			ask_for_new_image(t_ui *ui)
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
-	ui->scene.stereo = CAM_LEFT;
+	ui->scene.stereo = CAM_NORMAL;
 	ui->scene.filter = ui->rp->scene_gtk.filter;
 	ui->scene.aa = ui->rp->scene_gtk.aa * 2;
 	if (ui->scene.aa == 6)

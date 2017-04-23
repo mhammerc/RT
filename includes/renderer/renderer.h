@@ -36,8 +36,8 @@
 
 # define INVRANDMAX (1.0/(double)RAND_MAX)
 # define NRAY_SHADOW 16
-# define NRAY_GLOBAL 16
-# define GLOBAL_ATTEN 1.0
+# define NRAY_GLOBAL 32
+# define GLOBAL_ATTEN 0.66
 # define RED_MASK 0x000000ff
 
 typedef struct		s_renderer_thread

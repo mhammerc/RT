@@ -21,6 +21,7 @@
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 # define REFLECTION_RAY 2
+# define TRANSMISSION_RAY 3
 # define REFL_ATTENUATION 0.8
 # define WHITE (t_vec3){1., 1., 1.}
 # define BLACK (t_vec3){0., 0., 0.}
