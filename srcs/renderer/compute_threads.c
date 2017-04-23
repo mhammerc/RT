@@ -53,6 +53,8 @@ void		pixel_loop(t_vec2i i, t_vec3 aim, t_scene *sce,
 
 	percent_per_line = (double)sce->cam.w / ((double)sce->cam.w
 				* (double)sce->cam.h);
+	if (sce->stereo != CAM_NORMAL)
+		percent_per_line *= 0.5;
 	while (++i.x < data->y_end)
 	{
 		start = aim;

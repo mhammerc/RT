@@ -6,7 +6,7 @@
 /*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:15:10 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/24 17:12:27 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/03/24 12:45:18 by vfour            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # define INITIAL_RAY 0
 # define OCCLUSION_RAY 1
 # define REFLECTION_RAY 2
+# define TRANSMISSION_RAY 3
 # define REFL_ATTENUATION 0.8
 # define WHITE (t_vec3){1., 1., 1.}
 # define BLACK (t_vec3){0., 0., 0.}
@@ -29,6 +30,7 @@
 # define R_DEFAULT 1.0
 # define ABSORB_COEFF 0.15
 # define EXPOSURE -0.1
+# define IED 0.05
 
 typedef struct s_ui			t_ui;
 
@@ -65,6 +67,13 @@ enum						e_filters
 	SEPIA,
 	STEREOSCOPIC,
 	FILTERS_COUNT
+};
+
+enum						e_cam_type
+{
+	CAM_NORMAL,
+	CAM_LEFT,
+	CAM_RIGHT
 };
 
 struct						s_vec3
@@ -199,6 +208,8 @@ struct						s_scene
 	enum e_filters			filter;
 	t_vec3					*light;
 	unsigned int			seed;
+	int						global_illum;
+	enum e_cam_type			stereo;
 };
 typedef struct s_scene		t_scene;
 

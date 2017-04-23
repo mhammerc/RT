@@ -37,33 +37,28 @@ static void		finish_rendering(t_scene *sce, t_renderer_thread *threads_data)
 {
 	int		i;
 
-	light_to_pixel(sce, sce->light, sce->pixels);
-	free(sce->light);
-	i = 0;
-	while (i < CORE_COUNT)
+	light_to_pixel(sce, sce->light, sce->pixels, sce->cam.w * sce->cam.h);
+  	free(sce->light);
+	if (sce->stereo != CAM_LEFT)
 	{
-		free(threads_data[i].sce);
-		++i;
+			free(sce->light);
+		i = 0;
+		while (i < CORE_COUNT)
+		{
+			free(threads_data[i].sce);
+			++i;
+		}
+		free(sce->percent);
+		*sce->ui->percent = 1.1;
 	}
-	free(sce->percent);
-	*sce->ui->percent = 1.1;
 }
 
-void			*renderer_compute_image2(void *sce2)
+static void		compute_image(t_scene *sce)
 {
+	int					i;
 	pthread_t			threads[CORE_COUNT];
 	t_renderer_thread	threads_data[CORE_COUNT];
-	int					i;
-	t_vec3				*light;
-	t_scene				*sce;
 
-	sce = (t_scene *)sce2;
-	sce->percent = monloc(sizeof(double));
-	*sce->percent = 0.;
-	*sce->ui->percent = 0.;
-	sce->pixels = (int*)monloc(sizeof(int) * sce->cam.w * sce->cam.h);
-	light = (t_vec3*)monloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
-	sce->light = light;
 	i = -1;
 	while (++i < CORE_COUNT)
 		launch_threads(threads, threads_data, i, sce);
@@ -75,5 +70,31 @@ void			*renderer_compute_image2(void *sce2)
 			exit(0);
 		}
 	finish_rendering(sce, threads_data);
+}
+
+
+void			*renderer_compute_image2(void *sce2)
+{
+	t_scene				*sce;
+	t_cam				second_cam;
+
+	sce = (t_scene *)sce2;
+	sce->percent = monloc(sizeof(double));
+	*sce->percent = 0.;
+	*sce->ui->percent = 0.;
+	sce->light = (t_vec3*)monloc(sizeof(t_vec3) * sce->cam.w * sce->cam.h);
+	if (sce->stereo == CAM_LEFT)
+		stereo_camera(sce, &(sce->cam), &second_cam);
+	sce->pixels = (int*)monloc(sizeof(int) * sce->cam.w * sce->cam.h
+										* (sce->stereo == CAM_LEFT ? 2 : 1));
+	compute_image(sce);
+	if (sce->stereo == CAM_LEFT)
+	{
+		stereo_store_first_cam_pixels(sce);
+		sce->stereo = CAM_RIGHT;
+		sce->cam = second_cam;
+		compute_image(sce);
+		stereo_join_cam_pixels(sce);
+	}
 	return (NULL);
 }

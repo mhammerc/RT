@@ -30,18 +30,16 @@ int			colorcomp_to_rgb(t_scene *sce, int r, int g, int b)
 ** Exposure function: color = 255 * (1 - exp(constant * light));
 */
 
-void		light_to_pixel(t_scene *sce, t_vec3 *light, int *px)
+void		light_to_pixel(t_scene *sce, t_vec3 *light, int *px, int nb_pixels)
 {
 	int		i;
-	int		len;
 
-	len = sce->cam.w * sce->cam.h;
 	i = -1;
 	if (sce->filter == BLACK_WHITE)
-		filter_black_and_white(light, len);
+		filter_black_and_white(light, nb_pixels);
 	if (sce->filter == SEPIA)
-		filter_sepia(light, len);
-	while (++i < len)
+		filter_sepia(light, nb_pixels);
+	while (++i < nb_pixels)
 	{
 		px[i] = colorcomp_to_rgb(sce, 255. * (1.0 - exp(EXPOSURE * light[i].x)),
 									255. * (1.0 - exp(EXPOSURE * light[i].y)),

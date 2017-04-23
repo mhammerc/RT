@@ -24,8 +24,8 @@
 # include "file_loader.h"
 # include "file_saver.h"
 
-# define RENDER_SIZE_W 1600
-# define RENDER_SIZE_H 960
+# define RENDER_SIZE_W 800
+# define RENDER_SIZE_H 640
 
 /*
 ** Interface singleton (just in case, will be removed

@@ -1,0 +1,85 @@
+camera:
+	position: 0.000000; 2.000000; 7.000000
+	lookAt: 0.000000; 0.000000; 0.000000
+	up: 0.000000; 1.000000; 0.000000
+
+object:
+	type: SPHERE
+	name: Sphere
+	position: 0.000000; 0.000000; 1.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 0.360784; 0.207843; 0.400000
+	radius: 291.666667
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: LIGHT
+	name: Light
+	position: 0.000000; 3.000000; 2.000000
+	rotation: 0.000000; 0.000000; 0.000000
+	color: 1.000000; 1.000000; 1.000000
+	radius: 0.000000
+	length: 100.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.000000; 0.000000; 0.000000
+	rotation: 0.000000; 0.000000; 1.000000
+	color: 0.952941; 0.952941; 0.952941
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: 0.000000; -1.400000; 0.000000
+	rotation: 0.000000; 1.000000; 0.000000
+	color: 0.010556; 0.133000; 0.316667
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
+object:
+	type: PLANE
+	name: Plane
+	position: -1.000000; 0.000000; 0.000000
+	rotation: 1.000000; 0.000000; 0.000000
+	color: 0.807843; 0.360784; 0.000000
+	radius: 0.000000
+	length: 0.000000
+	kspec: 1.000000
+	kdiff: 1.000000
+	transmittance: 0.000000
+	reflectance: 0.000000
+	rindex: 1.420000
+	csgOperation: 0
+	texture: 0
+
