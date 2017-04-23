@@ -113,7 +113,7 @@ void		convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	convert_object2(obj, object);
 	if (get_interface()->scene.filter == CARTOON)
 	{
-		obj->kspec = 0.;
+		// obj->kspec = 0.;
 		obj->kp = 0;
 		obj->reflectance = 0.;
 	}
