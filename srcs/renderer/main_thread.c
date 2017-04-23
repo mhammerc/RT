@@ -38,10 +38,9 @@ static void		finish_rendering(t_scene *sce, t_renderer_thread *threads_data)
 	int		i;
 
 	light_to_pixel(sce, sce->light, sce->pixels, sce->cam.w * sce->cam.h);
-  	free(sce->light);
 	if (sce->stereo != CAM_LEFT)
 	{
-			free(sce->light);
+	  	free(sce->light);
 		i = 0;
 		while (i < CORE_COUNT)
 		{

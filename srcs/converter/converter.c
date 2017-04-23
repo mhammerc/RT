@@ -105,6 +105,7 @@ static void		fill_spot(t_list *objects, t_list **spots)
 
 void			ask_for_new_image(t_ui *ui)
 {
+	ft_printf("filter = %d\n", get_interface()->scene.filter);
 	if (ui->rendering == 1)
 		return ;
 	del_list_obj(&ui->scene.obj);
@@ -123,7 +124,10 @@ void			ask_for_new_image(t_ui *ui)
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
-	ui->scene.stereo = CAM_NORMAL;
+	if (get_interface()->scene.filter == STEREOSCOPIC)
+		ui->scene.stereo = CAM_LEFT;
+	else
+		ui->scene.stereo = CAM_NORMAL;
 	ui->scene.filter = ui->rp->scene_gtk.filter;
 	ui->scene.aa = ui->rp->scene_gtk.aa * 2;
 	if (ui->scene.aa == 6)

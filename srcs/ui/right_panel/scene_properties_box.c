@@ -43,10 +43,11 @@ void	create_filters_box(t_ui *ui)
 	filters_title = gtk_label_new_with_mnemonic("Filters		");
 	filters = gtk_combo_box_text_new();
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "None");
-	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Stereoscopic");
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Cartoon");
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Black & White");
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Sepia");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Global Illum");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(filters), 0, "Stereoscopic");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(filters), 0);
 	g_signal_connect(filters, "changed", G_CALLBACK(filters_edited), ui);
 	gtk_widget_set_size_request(filters, 158, 0);

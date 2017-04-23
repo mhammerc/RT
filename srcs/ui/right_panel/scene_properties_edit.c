@@ -12,15 +12,6 @@
 
 #include "ui.h"
 
-void		scene_edited(void)
-{
-	t_ui	*ui;
-
-	ui = get_interface();
-	if (ui->render_on_change)
-		ask_for_new_image(ui);
-}
-
 void		aa_edited(GtkComboBox *widget, gpointer data)
 {
 	t_ui	*ui;
@@ -38,6 +29,7 @@ void		filters_edited(GtkComboBox *widget, gpointer data)
 	ui->rp->scene_gtk.filter = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
 	scene_edited();
 }
+
 
 void		ambiant_light_edited(GtkWidget *widget, gdouble value,
 					gpointer data)
