@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 09:48:25 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 18:28:25 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/03/24 17:50:45 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		spot.color = object->color;
 		spot.intensity = object->length;
 		spot.radius = object->radius;
+		if (get_interface()->scene.filter == CARTOON)
+		{
+			spot.intensity = 30.;
+			spot.radius = 0.;
+		}
 		if (spot.radius > 5.)
 			spot.radius = 5.;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
@@ -112,6 +117,8 @@ void			ask_for_new_image(t_ui *ui)
 	ui->scene.cam.w = RENDER_SIZE_W;
 	ui->scene.cam.h = RENDER_SIZE_H;
 	ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;
+	if (get_interface()->scene.filter == CARTOON)
+		ui->scene.ambiant.intensity = 10.;
 	ui->scene.cam.fov = ui->rp->scene_gtk.fov;
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;

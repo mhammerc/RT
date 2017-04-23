@@ -135,14 +135,14 @@ t_vec3				color_light_mix(t_vec3 obj_color, t_vec3 light_color,
 t_vec3				color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam,
 		t_vec3 absorbance);
 t_vec3				color_average(t_vec3 *aa, int size);
+void				filter_cartoon(int *r, int *g, int *b);
+void				filter_black_and_white(t_vec3 *light, int len);
+void				filter_sepia(t_vec3 *light, int len);
 
 t_vec3				ray_trace(t_scene *sce, t_ray ray, int depth);
 int					rt_object(t_scene *sce, t_ray *ray);
 t_vec3				rt_light(t_scene *sce, t_ray ray);
 int					ray_object(t_obj *obj, t_ray *ray);
-
-void				light_apply_filters(t_scene *sce, t_vec3 *light,
-		int w, int h);
 
 void				lstfree(t_list *begin);
 t_list				*ft_lstdup(t_list *original_begin);

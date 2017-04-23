@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   shared.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:15:10 by racousin          #+#    #+#             */
 /*   Updated: 2017/03/24 12:45:18 by vfour            ###   ########.fr       */
@@ -62,8 +62,10 @@ enum						e_texture_type
 enum						e_filters
 {
 	NONE,
+	CARTOON,
 	BLACK_WHITE,
 	SEPIA,
+	STEREOSCOPIC,
 	FILTERS_COUNT
 };
 

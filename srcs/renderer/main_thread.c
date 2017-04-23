@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main_thread.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:29:45 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 10:29:46 by racousin         ###   ########.fr       */
+/*   Updated: 2017/03/24 15:17:24 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,8 @@ static void		finish_rendering(t_scene *sce, t_renderer_thread *threads_data)
 {
 	int		i;
 
-	light_apply_filters(sce, sce->light, sce->cam.w, sce->cam.h);
-	light_to_pixel(sce->light, sce->pixels, sce->cam.w * sce->cam.h);
+	light_to_pixel(sce, sce->light, sce->pixels, sce->cam.w * sce->cam.h);
+  	free(sce->light);
 	if (sce->stereo != CAM_LEFT)
 	{
 			free(sce->light);
