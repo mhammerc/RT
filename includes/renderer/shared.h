@@ -65,6 +65,7 @@ enum						e_filters
 	CARTOON,
 	BLACK_WHITE,
 	SEPIA,
+	GLOBAL_ILLUM,
 	STEREOSCOPIC,
 	FILTERS_COUNT
 };
@@ -208,7 +209,6 @@ struct						s_scene
 	enum e_filters			filter;
 	t_vec3					*light;
 	unsigned int			seed;
-	int						global_illum;
 	enum e_cam_type			stereo;
 };
 typedef struct s_scene		t_scene;

@@ -95,7 +95,7 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 				light = vec3_add(light, reflected_light(sce, ray, depth));
 			if (ray.collided->transmittance > 0)
 				light = vec3_add(light, refracted_light(sce, ray, depth));
-			if (sce->global_illum)
+			if (sce->filter == GLOBAL_ILLUM)
 				light = vec3_add(light, global_illum(sce, ray, depth));
 		}
 	}

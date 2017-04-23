@@ -20,6 +20,16 @@ void			init_scene(t_ui *ui)
 	ui->rp->scene_gtk.filter = 0;
 }
 
+
+void		scene_edited(void)
+{
+	t_ui	*ui;
+
+	ui = get_interface();
+	if (ui->render_on_change)
+		ask_for_new_image(ui);
+}
+
 void			edit_scene_properties(gpointer data)
 {
 	t_ui		*ui;
