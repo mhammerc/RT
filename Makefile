@@ -13,8 +13,10 @@ SRCS_NAME	=	main.c										\
 				renderer/color_light.c						\
 				renderer/texture.c							\
 				renderer/texture2.c							\
+				renderer/tools_perlin.c						\
 				renderer/filters.c							\
 				renderer/global_illum.c						\
+				renderer/stereo.c							\
 				renderer/object_list.c						\
 				renderer/main_thread.c						\
 				renderer/compute_threads.c					\
@@ -105,7 +107,7 @@ GTK_CLIBS	=	$(shell pkg-config --libs gtk+-3.0)
 
 CC			=	gcc -fdiagnostics-color=auto
 
-CFLAGS		=	-I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra -O3 -ffast-math -funroll-loops
+CFLAGS		=	-I$(LFT_PATH) -I$(INCS_PATH) -I$(INCS_PATH)/ui -I$(INCS_PATH)/renderer -I$(INCS_PATH)/converter -I$(INCS_PATH)/parsers -Wall -Wextra -Werror -O3 -ffast-math -funroll-loops
 CFLAGS		+=	$(GTK_CFLAGS)
 
 CLIBS		=	-lm -lpthread -L$(LFT_PATH) -lft -O3 -flto

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   filters.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/23 10:29:37 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 17:18:00 by vfour            ###   ########.fr       */
+/*   Created: 2017/04/24 16:18:54 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/04/24 16:18:55 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,17 @@
 #include "renderer.h"
 #include "shared.h"
 
-static void		filter_black_and_white(t_vec3 *light, int len)
+void		filter_cartoon(int *r, int *g, int *b)
+{
+	int		coeff;
+
+	coeff = 255 / 8;
+	*r = (*r / coeff) * coeff;
+	*g = (*g / coeff) * coeff;
+	*b = (*b / coeff) * coeff;
+}
+
+void		filter_black_and_white(t_vec3 *light, int len)
 {
 	int		i;
 	double	tmp2;
@@ -30,7 +40,7 @@ static void		filter_black_and_white(t_vec3 *light, int len)
 	}
 }
 
-static void		filter_sepia(t_vec3 *light, int len)
+void		filter_sepia(t_vec3 *light, int len)
 {
 	int		i;
 	t_vec3	tmp;
@@ -43,15 +53,4 @@ static void		filter_sepia(t_vec3 *light, int len)
 		tmp.z = (light[i].x * .272) + (light[i].y * .534) + (light[i].z * .131);
 		light[i] = tmp;
 	}
-}
-
-void			light_apply_filters(t_scene *sce, t_vec3 *light, int w, int h)
-{
-	int		len;
-
-	len = w * h;
-	if (sce->filter == BLACK_WHITE)
-		filter_black_and_white(light, len);
-	if (sce->filter == SEPIA)
-		filter_sepia(light, len);
 }

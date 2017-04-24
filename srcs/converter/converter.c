@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/23 09:48:25 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 18:28:25 by aditsch          ###   ########.fr       */
+/*   Created: 2017/04/24 16:14:32 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/04/24 16:14:38 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,11 @@ static void		fill_spot(t_list *objects, t_list **spots)
 		spot.color = object->color;
 		spot.intensity = object->length;
 		spot.radius = object->radius;
+		if (get_interface()->scene.filter == CARTOON)
+		{
+			spot.intensity = 30.;
+			spot.radius = 0.;
+		}
 		if (spot.radius > 5.)
 			spot.radius = 5.;
 		ft_lstpushback(spots, ft_lstnew(&spot, sizeof(t_spot)));
@@ -102,6 +107,7 @@ void			ask_for_new_image(t_ui *ui)
 {
 	if (ui->rendering == 1)
 		return ;
+	ui->scene.filter = ui->rp->scene_gtk.filter;
 	del_list_obj(&ui->scene.obj);
 	del_list(&ui->scene.spot);
 	fill_obj(ui->objs, &(ui->scene.obj), NULL);
@@ -112,13 +118,16 @@ void			ask_for_new_image(t_ui *ui)
 	ui->scene.cam.w = RENDER_SIZE_W;
 	ui->scene.cam.h = RENDER_SIZE_H;
 	ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;
+	if (ui->scene.filter == CARTOON)
+		ui->scene.ambiant.intensity = 5.;
 	ui->scene.cam.fov = ui->rp->scene_gtk.fov;
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
-	ui->scene.filter = ui->rp->scene_gtk.filter;
+	ui->scene.stereo = CAM_NORMAL;
+	if (ui->scene.filter == STEREOSCOPIC)
+		ui->scene.stereo = CAM_LEFT;
 	ui->scene.aa = ui->rp->scene_gtk.aa * 2;
-	if (ui->scene.aa == 6)
-		ui->scene.aa = 8;
+	ui->scene.aa = ui->scene.aa == 6 ? 8 : ui->scene.aa;
 	renderer_compute_image((&(ui->scene)));
 }

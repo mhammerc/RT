@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compute_threads.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/23 10:29:28 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 10:29:29 by racousin         ###   ########.fr       */
+/*   Created: 2017/04/24 16:18:48 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/04/24 16:18:49 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,6 +53,8 @@ void		pixel_loop(t_vec2i i, t_vec3 aim, t_scene *sce,
 
 	percent_per_line = (double)sce->cam.w / ((double)sce->cam.w
 				* (double)sce->cam.h);
+	if (sce->stereo != CAM_NORMAL)
+		percent_per_line *= 0.5;
 	while (++i.x < data->y_end)
 	{
 		start = aim;

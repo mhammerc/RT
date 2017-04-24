@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:32:33 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/24 14:25:55 by vfour            ###   ########.fr       */
+/*   Updated: 2017/04/24 16:11:54 by lmarques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,9 @@
 
 # define INVRANDMAX (1.0/(double)RAND_MAX)
 # define NRAY_SHADOW 16
-# define NRAY_GLOBAL 16
-# define GLOBAL_ATTEN 1.0
+# define NRAY_GLOBAL 32
+# define GLOBAL_ATTEN 0.66
+# define RED_MASK 0x000000ff
 
 typedef struct		s_renderer_thread
 {
@@ -127,21 +128,22 @@ t_ray				ray_new_dir(t_ray ray, t_vec3 dir);
 t_ray				reflected_ray(t_ray ray);
 t_ray				refracted_ray(t_ray ray);
 
-int					colorcomp_to_rgb(int r, int g, int b);
-void				light_to_pixel(t_vec3 *light, int *px, int w, int h);
+int					colorcomp_to_rgb(t_scene *sce, int r, int g, int b);
+void				light_to_pixel(t_scene *sce, t_vec3 *light, int *px,
+		int nb_pixels);
 t_vec3				color_light_mix(t_vec3 obj_color, t_vec3 light_color,
 		double coeff);
 t_vec3				color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam,
 		t_vec3 absorbance);
 t_vec3				color_average(t_vec3 *aa, int size);
+void				filter_cartoon(int *r, int *g, int *b);
+void				filter_black_and_white(t_vec3 *light, int len);
+void				filter_sepia(t_vec3 *light, int len);
 
 t_vec3				ray_trace(t_scene *sce, t_ray ray, int depth);
 int					rt_object(t_scene *sce, t_ray *ray);
 t_vec3				rt_light(t_scene *sce, t_ray ray);
 int					ray_object(t_obj *obj, t_ray *ray);
-
-void				light_apply_filters(t_scene *sce, t_vec3 *light,
-		int w, int h);
 
 void				lstfree(t_list *begin);
 t_list				*ft_lstdup(t_list *original_begin);
@@ -153,10 +155,17 @@ void				update_progress_bar(t_scene *scene,
 
 t_vec3				tex_spherical(t_ray ray);
 t_vec3				tex_spherical_damier(t_ray ray);
+float				ft_perlin(float x, float y, int res);
+t_vec3				tex_spherical_perlin(t_ray ray);
 
 t_vec3				rand_sphere(t_vec3 c, double r, unsigned int *seed);
 t_vec3				absorb_light_ray(t_list *l_obj, t_ray ray);
 t_vec3				rt_shadow(t_list *l_obj, t_spot *spot, t_ray ray);
 t_vec3				global_illum(t_scene *sce, t_ray ray, int depth);
+
+void				stereo_camera(t_scene *sce, t_cam *cam_left,
+									t_cam *cam_right);
+void				stereo_store_first_cam_pixels(t_scene *sce);
+void				stereo_join_cam_pixels(t_scene *sce);
 
 #endif

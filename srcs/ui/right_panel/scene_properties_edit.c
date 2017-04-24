@@ -6,20 +6,11 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 21:33:21 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/22 21:41:59 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/04/24 15:27:59 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
-
-void		scene_edited(void)
-{
-	t_ui	*ui;
-
-	ui = get_interface();
-	if (ui->render_on_change)
-		ask_for_new_image(ui);
-}
 
 void		aa_edited(GtkComboBox *widget, gpointer data)
 {

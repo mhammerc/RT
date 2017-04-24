@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   compute_image.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mhammerc <mhammerc@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/23 10:53:37 by mhammerc          #+#    #+#             */
-/*   Updated: 2017/03/23 10:53:39 by mhammerc         ###   ########.fr       */
+/*   Created: 2017/04/24 16:18:42 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/04/24 16:18:44 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int				check_renderer(void *data)
 
 void			renderer_compute_image(t_scene *sce)
 {
-	pthread_t thread;
+	pthread_t	thread;
 
 	sce->ui->rendering = 1;
 	pthread_create(&thread, NULL, renderer_compute_image2, sce);

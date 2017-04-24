@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   ray_trace.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: vfour <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: vfour <vfour@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 23:04:28 by vfour             #+#    #+#             */
 /*   Updated: 2017/03/24 14:23:01 by vfour            ###   ########.fr       */
@@ -69,6 +69,7 @@ static t_vec3	refracted_light(t_scene *sce,
 	t_ray		new_ray;
 
 	new_ray = refracted_ray(ray);
+	new_ray.type = TRANSMISSION_RAY;
 	if (new_ray.t > 0)
 	{
 		refr_light = ray_trace(sce, new_ray, depth + 1);
@@ -81,14 +82,8 @@ static t_vec3	refracted_light(t_scene *sce,
 t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 {
 	t_vec3		light;
-	t_vec3		glob_light;
-	t_vec3		ll;
 
 	light = (t_vec3){0.0, 0.0, 0.0};
-	/*
-	if (direct_light(sce, ray, &light))
-		return (light);
-		*/
 	if (rt_object(sce, &ray))
 	{
 		ray.dist = ray.dist < 1.0 ? 1.0 : ray.dist + ray.t;
@@ -100,18 +95,14 @@ t_vec3			ray_trace(t_scene *sce, t_ray ray, int depth)
 				light = vec3_add(light, reflected_light(sce, ray, depth));
 			if (ray.collided->transmittance > 0)
 				light = vec3_add(light, refracted_light(sce, ray, depth));
-			//TODO:if (sce->global_illum)
-			glob_light = global_illum(sce, ray, depth);
-			light = vec3_add(light, glob_light);
-			//printf("ll:%.2f, %.2f, %.2f\ngl:%.2f, %.2f, %.2f\ntl:%.2f,%.2f,%.2f\n", light.x, light.y, light.z, glob_light.x, glob_light.y, glob_light.z, ll.x, ll.y, ll.z);
-			//light = ll;
-			//light = vec3_add(light, glob_light);
-			//light = vec3_add(light, global_illum(sce, ray, depth));
+			if (sce->filter == GLOBAL_ILLUM)
+				light = vec3_add(light, global_illum(sce, ray, depth));
 		}
 	}
 	if (ray.collided)
 		free(ray.collided);
-	if (ray.type == REFLECTION_RAY)
-		return (vec3_mult(1.0 / ray.dist, light));
-	return (light);
+	if (ray.type != TRANSMISSION_RAY)
+		return (vec3_mult(1.0 / (ray.dist * ray.dist), light));
+	else
+		return (light);
 }

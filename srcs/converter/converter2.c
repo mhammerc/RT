@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   converter2.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/03/23 09:56:43 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 18:30:36 by aditsch          ###   ########.fr       */
+/*   Created: 2017/04/24 16:15:04 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/04/24 16:15:05 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,12 @@ void		convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	else
 		obj->radius = object->radius / 1000;
 	convert_object2(obj, object);
+	if (get_interface()->scene.filter == CARTOON)
+	{
+		obj->kspec = 0.;
+		obj->kp = 0;
+		obj->reflectance = 0.;
+	}
 	apply_parent_relative(parent, obj);
 	if (obj->type == POLYGONS)
 		convert_polygon(obj, object);
