@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 20:30:24 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/22 23:19:56 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/24 13:09:54 by lmarques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,8 @@ void		add_texture_type_widgets(t_ui *ui, t_object *focused_obj,
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0, "Planar");
 	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0,
 															"Planar damier");
+	gtk_combo_box_text_append(GTK_COMBO_BOX_TEXT(texture_type), 0,
+															"Spherical perlin");
 	gtk_combo_box_set_active(GTK_COMBO_BOX(texture_type),
 													focused_obj->have_texture);
 	g_signal_connect(texture_type, "changed", G_CALLBACK(texture_type_upd), ui);

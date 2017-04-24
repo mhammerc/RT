@@ -6,7 +6,7 @@
 /*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:15:10 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/24 12:45:18 by vfour            ###   ########.fr       */
+/*   Updated: 2017/04/24 13:14:19 by lmarques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ enum						e_texture_type
 	SPHERICAL_DAMIER,
 	PLANAR,
 	PLANAR_DAMIER,
+	SPHERICAL_PERLIN,
 	TEXTURE_TYPE_COUNT
 };
 

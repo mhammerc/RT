@@ -6,7 +6,7 @@
 /*   By: racousin <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:30:08 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/23 10:30:09 by racousin         ###   ########.fr       */
+/*   Updated: 2017/04/24 13:14:57 by lmarques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,6 +122,8 @@ t_vec3			get_texture_color(t_ray ray)
 		return (tex_planar(ray));
 	else if (ray.collided->have_texture == PLANAR_DAMIER)
 		return (tex_planar_damier(ray));
+	else if (ray.collided->have_texture == SPHERICAL_PERLIN)
+		return (tex_spherical_perlin(ray));
 	else
 		return (ray.collided->color);
 }
