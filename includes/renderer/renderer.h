@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:32:33 by aditsch           #+#    #+#             */
-/*   Updated: 2017/04/24 13:08:31 by lmarques         ###   ########.fr       */
+/*   Updated: 2017/04/24 16:11:54 by lmarques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,7 +129,8 @@ t_ray				reflected_ray(t_ray ray);
 t_ray				refracted_ray(t_ray ray);
 
 int					colorcomp_to_rgb(t_scene *sce, int r, int g, int b);
-void				light_to_pixel(t_scene *sce, t_vec3 *light, int *px, int nb_pixels);
+void				light_to_pixel(t_scene *sce, t_vec3 *light, int *px,
+		int nb_pixels);
 t_vec3				color_light_mix(t_vec3 obj_color, t_vec3 light_color,
 		double coeff);
 t_vec3				color_add_light(t_ray ray, t_spot *l, t_vec3 obj_cam,
