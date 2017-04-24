@@ -6,7 +6,7 @@
 /*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 09:56:43 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/24 18:08:46 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/24 15:10:14 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,7 @@ void		convert_object(t_obj *obj, t_object *object, t_obj *parent)
 	convert_object2(obj, object);
 	if (get_interface()->scene.filter == CARTOON)
 	{
-		// obj->kspec = 0.;
+		obj->kspec = 0.;
 		obj->kp = 0;
 		obj->reflectance = 0.;
 	}

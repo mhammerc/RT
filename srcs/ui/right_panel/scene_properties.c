@@ -6,20 +6,19 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 21:33:28 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/23 11:18:42 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/24 15:29:02 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ui.h"
 
-void			init_scene(t_ui *ui)
+void		init_scene(t_ui *ui)
 {
 	ui->rp->scene_gtk.ambiant_light = 1.;
 	ui->rp->scene_gtk.fov = 45;
 	ui->rp->scene_gtk.aa = 0;
 	ui->rp->scene_gtk.filter = 0;
 }
-
 
 void		scene_edited(void)
 {
@@ -30,7 +29,7 @@ void		scene_edited(void)
 		ask_for_new_image(ui);
 }
 
-void			edit_scene_properties(gpointer data)
+void		edit_scene_properties(gpointer data)
 {
 	t_ui		*ui;
 

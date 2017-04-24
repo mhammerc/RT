@@ -6,7 +6,7 @@
 /*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 09:48:25 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/24 17:50:45 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/24 16:00:52 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,20 +117,17 @@ void			ask_for_new_image(t_ui *ui)
 	ui->scene.cam.up = ui->cam->up;
 	ui->scene.cam.w = RENDER_SIZE_W;
 	ui->scene.cam.h = RENDER_SIZE_H;
-	// if (ui->scene.filter == CARTOON)
-	// 	ui->scene.ambiant.intensity = 10.;
-	// else
-		ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;
+	ui->scene.ambiant.intensity = ui->rp->scene_gtk.ambiant_light;
+	if (ui->scene.filter == CARTOON)
+		ui->scene.ambiant.intensity = 5.;
 	ui->scene.cam.fov = ui->rp->scene_gtk.fov;
 	ui->scene.ambiant.color = (t_vec3){1, 1, 1};
 	ui->scene.cam.ratio = 1.0;
 	ui->scene.ui = ui;
+	ui->scene.stereo = CAM_NORMAL;
 	if (ui->scene.filter == STEREOSCOPIC)
 		ui->scene.stereo = CAM_LEFT;
-	else
-		ui->scene.stereo = CAM_NORMAL;
 	ui->scene.aa = ui->rp->scene_gtk.aa * 2;
-	if (ui->scene.aa == 6)
-		ui->scene.aa = 8;
+	ui->scene.aa = ui->scene.aa == 6 ? 8 : ui->scene.aa;
 	renderer_compute_image((&(ui->scene)));
 }

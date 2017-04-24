@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 21:33:21 by aditsch           #+#    #+#             */
-/*   Updated: 2017/03/22 21:41:59 by aditsch          ###   ########.fr       */
+/*   Updated: 2017/04/24 15:27:59 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,6 @@ void		filters_edited(GtkComboBox *widget, gpointer data)
 	ui->rp->scene_gtk.filter = gtk_combo_box_get_active(GTK_COMBO_BOX(widget));
 	scene_edited();
 }
-
 
 void		ambiant_light_edited(GtkWidget *widget, gdouble value,
 					gpointer data)

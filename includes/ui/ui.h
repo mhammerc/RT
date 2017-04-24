@@ -6,7 +6,7 @@
 /*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/22 18:00:39 by gpoblon           #+#    #+#             */
-/*   Updated: 2017/03/23 11:24:48 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/24 15:12:06 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,8 @@
 # include "file_loader.h"
 # include "file_saver.h"
 
-# define RENDER_SIZE_W 800
-# define RENDER_SIZE_H 640
+# define RENDER_SIZE_W 1600
+# define RENDER_SIZE_H 900
 
 /*
 ** Interface singleton (just in case, will be removed

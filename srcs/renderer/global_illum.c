@@ -1,6 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   global_illum.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: gpoblon <gpoblon@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2017/04/24 15:43:52 by gpoblon           #+#    #+#             */
+/*   Updated: 2017/04/24 15:48:34 by gpoblon          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "renderer.h"
 
-static t_vec3	rand_half_sphere(t_vec3 c, double r, t_vec3 n, unsigned int *seed)
+static t_vec3	rand_half_sphere(t_vec3 c, double r, t_vec3 n,
+															unsigned int *seed)
 {
 	t_vec3	v;
 	t_vec3	rand_dir;
@@ -15,7 +28,7 @@ static t_vec3	rand_half_sphere(t_vec3 c, double r, t_vec3 n, unsigned int *seed)
 	return (v);
 }
 
-t_vec3	global_illum(t_scene *sce, t_ray ray, int depth)
+t_vec3			global_illum(t_scene *sce, t_ray ray, int depth)
 {
 	t_vec3		dir;
 	t_vec3		light;
@@ -25,7 +38,7 @@ t_vec3	global_illum(t_scene *sce, t_ray ray, int depth)
 	i = NRAY_GLOBAL;
 	new_light = (t_vec3){0, 0, 0};
 	light = new_light;
-	depth = depth == MAX_REC_DEPTH - 1? MAX_REC_DEPTH : MAX_REC_DEPTH - 1;
+	depth = depth == MAX_REC_DEPTH - 1 ? MAX_REC_DEPTH : MAX_REC_DEPTH - 1;
 	while (--i)
 	{
 		dir = rand_half_sphere(ray.pos, 1, ray.n, ray.seed);

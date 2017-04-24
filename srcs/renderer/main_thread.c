@@ -6,7 +6,7 @@
 /*   By: racousin <racousin@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:29:45 by racousin          #+#    #+#             */
-/*   Updated: 2017/03/24 15:17:24 by gpoblon          ###   ########.fr       */
+/*   Updated: 2017/04/24 15:46:23 by gpoblon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static void		finish_rendering(t_scene *sce, t_renderer_thread *threads_data)
 	light_to_pixel(sce, sce->light, sce->pixels, sce->cam.w * sce->cam.h);
 	if (sce->stereo != CAM_LEFT)
 	{
-	  	free(sce->light);
+		free(sce->light);
 		i = 0;
 		while (i < CORE_COUNT)
 		{
@@ -70,7 +70,6 @@ static void		compute_image(t_scene *sce)
 		}
 	finish_rendering(sce, threads_data);
 }
-
 
 void			*renderer_compute_image2(void *sce2)
 {
