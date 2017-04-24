@@ -6,7 +6,7 @@
 /*   By: lmarques <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/04/08 19:07:31 by lmarques          #+#    #+#             */
-/*   Updated: 2017/04/22 21:43:02 by lmarques         ###   ########.fr       */
+/*   Updated: 2017/04/24 13:07:49 by lmarques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -105,7 +105,6 @@ float			ft_perlin(float x, float y, int res)
 {
 	float	nb;
 
-	//nb = (noise(fabs(x + 100), fabs(y * 100), res) + 1);
 	nb = (noise(fabs(x * 100), fabs(y * 100), res) + 1);
 	return (nb);
 }

@@ -6,7 +6,7 @@
 /*   By: aditsch <aditsch@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/23 10:32:33 by aditsch           #+#    #+#             */
-/*   Updated: 2017/04/23 16:35:54 by lmarques         ###   ########.fr       */
+/*   Updated: 2017/04/24 13:08:31 by lmarques         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,7 +155,7 @@ void				update_progress_bar(t_scene *scene,
 t_vec3				tex_spherical(t_ray ray);
 t_vec3				tex_spherical_damier(t_ray ray);
 float				ft_perlin(float x, float y, int res);
-t_vec3				tex_perlin(t_ray ray);
+t_vec3				tex_spherical_perlin(t_ray ray);
 
 t_vec3				rand_sphere(t_vec3 c, double r, unsigned int *seed);
 t_vec3				absorb_light_ray(t_list *l_obj, t_ray ray);
