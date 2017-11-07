@@ -1,6 +1,6 @@
 # RT
 
-Our RT it a full-featured raytracer.
+Our RT is a full-featured raytracer.
 
  * Dynamic interface and object manipulation (blender-like)
  * Textures (from image or dynamically generated)
