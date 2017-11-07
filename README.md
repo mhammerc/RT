@@ -19,3 +19,7 @@ On Ubuntu you must install ```libgtk-3-dev```. Install the equivalent or your di
 
     make
     ./rt
+
+## Look at the screen captures!
+
+![Screen capture](https://github.com/mhammerc/RT/blob/develop/Screenshot%20from%202017-11-07%2014-14-40.png "Screen capture")
