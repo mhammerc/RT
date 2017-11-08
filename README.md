@@ -12,8 +12,8 @@ https://www.youtube.com/watch?v=DvWrLdIM9mo&list=PLffb33rgTvvnFtewQDzyHzqqMk0s0g
  * Torus (fourth degree equation)
  * Polygons (.obj parser and renderer)
  * Multithreading
- * Save and open scenes in CSON format
- * All in C, with GTK+3 as the only dependency
+ * Save and open scenes in [CSON](https://github.com/bevry/cson)
+ * All in C, with GTK+3 and libc as the only dependencies
 
 ## How to launch
 
