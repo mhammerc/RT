@@ -1,6 +1,6 @@
 # RT
 
-This is our full-featured raytracer.
+This is our full-featured [raytracer](https://en.wikipedia.org/wiki/Ray_tracing_(graphics)).
 
 https://www.youtube.com/watch?v=DvWrLdIM9mo&list=PLffb33rgTvvnFtewQDzyHzqqMk0s0gW2f
 
